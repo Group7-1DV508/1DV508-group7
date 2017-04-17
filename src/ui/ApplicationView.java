@@ -61,21 +61,4 @@ public class ApplicationView extends Application {
 		primaryStage.show();
 	}
 
-	static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-	// launch application
-	public static void main(String[] args) {
-		ApplicationFunction af = new ApplicationFunction();
-		LocalDate start = LocalDate.parse("2005-11-12", dtf);
-		LocalDate end = LocalDate.parse("2015-11-12", dtf);
-		af.addTimeline("Timeline 1", start, end);
-		start = LocalDate.parse("2016-11-12", dtf);
-		end = LocalDate.parse("2017-11-12", dtf);
-		af.addTimeline("Timeline 2", start, end);
-
-		ApplicationView.setApplicationFunction(af);
-
-		launch(args);
-	}
-
 }
