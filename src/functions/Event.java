@@ -2,7 +2,7 @@ package functions;
 
 import java.time.LocalDate;
 
-public class EventFunction {
+public class Event {
 
 	private String name;
 	private String description;
@@ -10,14 +10,14 @@ public class EventFunction {
 	private LocalDate dateEnd;
 
 	
-	EventFunction(String eventName, String eventDescription, LocalDate start, LocalDate end) {
+	Event(String eventName, String eventDescription, LocalDate start, LocalDate end) {
 		name = eventName;
 		description = eventDescription;
 		dateStart = start;
 		dateEnd = end;
 	}
 	
-	EventFunction(String eventName, String eventDescription, LocalDate start) {
+	Event(String eventName, String eventDescription, LocalDate start) {
 		name = eventName;
 		description = eventDescription;
 		dateStart = start;
