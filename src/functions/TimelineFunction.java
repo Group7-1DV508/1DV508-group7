@@ -52,5 +52,9 @@ public class TimelineFunction {
 	public void addEvent(String eventName, String eventDescription, LocalDate start, LocalDate end) {
 		events.add(new EventFunction(eventName, eventDescription, start, end));
 	}
+	
+	public void addEvent(String eventName, String eventDescription, LocalDate start) {
+		events.add(new EventFunction(eventName, eventDescription, start));
+	}
 
 }
