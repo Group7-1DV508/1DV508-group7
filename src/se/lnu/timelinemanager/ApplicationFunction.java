@@ -16,4 +16,13 @@ public class ApplicationFunction implements ApplicationInterface {
 		timelines.add(currentTimeLine);
 	}
 
+	public TimelineFunction getCurrentTimeLine() {
+		return currentTimeLine;
+	}
+
+	public void setCurrentTimeLine(TimelineFunction currentTimeLine) {
+		this.currentTimeLine = currentTimeLine;
+	}
+	
+
 }
