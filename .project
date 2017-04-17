@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>se.lnu.TimelineManager</name>
+	<name>Timeline-Manager</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -10,18 +10,6 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
-	</buildSpec>
-	<natures>
-		<nature>org.eclipse.jdt.core.javanature</nature>
-	</natures>
-</projectDescription>
-<?xml version="1.0" encoding="UTF-8"?>
-<projectDescription>
-	<name>Timeline-Manager</name>
-	<comment></comment>
-	<projects>
-	</projects>
-	<buildSpec>
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
