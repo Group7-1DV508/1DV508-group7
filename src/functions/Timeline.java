@@ -3,16 +3,16 @@ package functions;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class TimelineFunction {
+public class Timeline {
 	
-	private ArrayList<EventFunction> events;
+	private ArrayList<Event> events;
 	private String name;
 	private LocalDate start;
 	private LocalDate end;
 	
 	
 	// Constructor
-	public TimelineFunction (String name, LocalDate start, LocalDate end) {
+	public Timeline (String name, LocalDate start, LocalDate end) {
 		this.name = name;
 		this.start = start;
 		this.end = end;
@@ -31,7 +31,7 @@ public class TimelineFunction {
 		return end;
 	}
 	
-	public ArrayList<EventFunction> getEvents() {
+	public ArrayList<Event> getEvents() {
 		return events;
 	}
 	
@@ -49,12 +49,12 @@ public class TimelineFunction {
 	}
 	
 	// Methods
-	public void addEvent(String eventName, String eventDescription, LocalDate start, LocalDate end) {
-		events.add(new EventFunction(eventName, eventDescription, start, end));
+	public void addEventDuration(String eventName, String eventDescription, LocalDate start, LocalDate end) {
+		events.add(new Event(eventName, eventDescription, start, end));
 	}
 	
 	public void addEvent(String eventName, String eventDescription, LocalDate start) {
-		events.add(new EventFunction(eventName, eventDescription, start));
+		events.add(new Event(eventName, eventDescription, start));
 	}
 
 }
