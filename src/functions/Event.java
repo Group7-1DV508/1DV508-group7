@@ -23,27 +23,35 @@ public class Event {
 		dateStart = start;
 		
 	}
+	
 	public String getEventName() {
 		return name;
 	}
+	
 	public void setEventName(String eventName) {
 		name = eventName;
 	}
+	
 	public String getEventDescription() {
 		return description;
 	}
+	
 	public void setEventDescription(String eventDescription) {
 		description = eventDescription;
 	}
+	
 	public LocalDate getEventStart() {
 		return dateStart;
 	}
+	
 	public void setEventStart(LocalDate start) {
 		dateStart = start;
 	}
+	
 	public LocalDate getEventEnd() {
 		return dateEnd;
 	}
+	
 	public void setEventEnd(LocalDate end) {
 		dateEnd = end;
 	}
