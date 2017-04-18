@@ -1,11 +1,12 @@
 package functions;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Application {
+public class App {
 	
-	ArrayList<Timeline> Timelines;
+	ArrayList<Timeline> Timelines = new ArrayList<Timeline>();
 	Timeline current;
 	
 	/**
@@ -15,7 +16,7 @@ public class Application {
 	 * @param start - LocalDate the start of the timeline
 	 * @param end - LocalDate the end of the timeline
 	 */
-	public void addTimeline(String name, LocalDate start, LocalDate end) {
+	public void addTimeline(String name, LocalDateTime start, LocalDateTime end) {
 		current = new Timeline(name, start, end);
 		Timelines.add(current);
 	}
