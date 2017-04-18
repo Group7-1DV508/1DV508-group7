@@ -2,6 +2,7 @@ package ui;
 
 import java.time.LocalDateTime;
 
+import controls.EventControl;
 import controls.EventListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -81,7 +82,7 @@ public class EventView {
 	   	            		String eventdescrip = "";
 	   	            		try {
 	   	            			//try to convert to LocalDateTime and String
-	   	            			localDate = year.getText()+"-"+month.getText()+"-"+day.getText()+"-"+hours.getText()+"-00";
+	   	            			localDate = year.getText()+"-"+month.getText()+"-"+day.getText()+"T03:"+hours.getText()+":00";
 	   	            			eventname = name.getText();
 	   	            			eventdescrip = description.getText();
 	   	            			startTime = LocalDateTime.parse(localDate);
