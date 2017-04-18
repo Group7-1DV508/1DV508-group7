@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
+import functions.Event;
+
 public class EventTest {
 	
 	String name = "Smoke";
