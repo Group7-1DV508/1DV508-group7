@@ -2,7 +2,7 @@ package ui;
 
 import java.time.LocalDateTime;
 
-
+import controls.EventListener;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -23,7 +23,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class EventView  extends Application{
+public class EventView {
+	
+	private EventListener eventListener;
 	
 	public TextField tF1 = new TextField ();
 	public TextField tF2 = new TextField ();
@@ -41,9 +43,11 @@ public class EventView  extends Application{
 		 
 		 VBox holder = new VBox();
 		 
-		 
-		 
-		 
+	}
+	 
+	 public void addListener(EventListener eventList) {
+			eventListener = eventList;
+	 }
 		 
 		 HBox b1 = new HBox();//hold year month day 
 			  b1.setSpacing(20);

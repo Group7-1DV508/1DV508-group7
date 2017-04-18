@@ -1,7 +1,9 @@
 package ui;
 
-	import controls.TimelineControl;
-    import javafx.application.Application;
+	import controls.EventListener;
+import controls.TimelineControl;
+import controls.TimelineListener;
+import javafx.application.Application;
 	import javafx.stage.Stage;
 	import javafx.scene.Scene;
 	import javafx.scene.control.Button;
@@ -12,8 +14,10 @@ package ui;
 	import javafx.scene.layout.VBox;
 	import javafx.scene.text.Font;
 
-	public class TimelineView extends Application {
+	public class TimelineView {
 
+		private TimelineListener timelineListener;
+		
 		public int startYear = 0;
 		public int endYear = 0;
 		public boolean eStartYear = true;
@@ -31,8 +35,12 @@ package ui;
 		Stage st ;
 		Stage ntStage ;
 		TimelineControl tc = new TimelineControl();
+		
+		public void addListener(TimelineListener timelineList) {
+			timelineListener = timelineList;
+	 }
 
-		@Override
+		
 		public void start(Stage primaryStage) {
 			try {
 				st = new Stage();
