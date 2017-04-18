@@ -37,8 +37,9 @@ public class EventView {
 	public   VBox root = new VBox();
 	public   HBox b5 = new HBox();
 	public 	 VBox b3 = new VBox();
-	LocalDateTime a;
-	LocalDateTime a2 ;
+	public LocalDateTime a;
+	public LocalDateTime a2 ;
+	public EventControl getDuration = new  EventControl();
 	 public  VBox  create() {
 		 
 		 VBox holder = new VBox();
@@ -197,7 +198,7 @@ public class EventView {
 			    a2 = LocalDateTime.of(year1,mon1,day1,hour12,min12);
 				System.out.println(a +"\t"+a2);}
 				
-				EventControl getDuration = new  EventControl();
+				
 				getDuration.OnAddEvantDuration(titleS,describe, a,a2);
 				getDuration.OnAddEvent(titleS,describe, a);
 		 });
@@ -325,7 +326,7 @@ public void start(Stage primaryStage){
 	VBox v= new VBox();
 	addEvent add= new addEvent();
 	
-	primaryStage.setTitle("Random Panel");
+	primaryStage.setTitle("Add event");
 	Scene se = new Scene(v,550,450);
 	v.getChildren().addAll(add.create());
 	add.brows(primaryStage, se);
