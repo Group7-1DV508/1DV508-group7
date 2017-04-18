@@ -1,12 +1,16 @@
 package ui;
 
+
 import controls.ApplicationListener;
+
 import java.awt.TextField;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+
 //import functions.ApplicationFunction;
+
 import functions.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -15,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+
 public class ApplicationView {
 	
 	private EventView eventView;
@@ -22,6 +27,8 @@ public class ApplicationView {
 	private ApplicationListener appListener;
 	
 	//private static ApplicationFunction af = null;
+	
+
 
 	public TextField tF1 = new TextField();
 	public TextField tF2 = new TextField();
@@ -36,6 +43,7 @@ public class ApplicationView {
 	public Scene scene;
 	public Scene scene1;
 	public Stage stage;
+
 	
 	public ApplicationView() {
 		eventView = new EventView();
@@ -59,6 +67,7 @@ public class ApplicationView {
 		//ApplicationView.af = af;
 	//}
 
+
 	public VBox create() {
 		VBox holder = new VBox();
 		List<Timeline> timeLines = af.getTimelines();
@@ -75,6 +84,7 @@ public class ApplicationView {
 		}
 		return holder;
 	}
+
 
 	
 	public void start(Stage primaryStage) throws Exception {
