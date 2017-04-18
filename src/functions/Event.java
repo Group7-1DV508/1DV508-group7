@@ -1,23 +1,24 @@
 package functions;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Event {
 
 	private String name;
 	private String description;
-	private LocalDate dateStart;
-	private LocalDate dateEnd;
+	private LocalDateTime dateStart;
+	private LocalDateTime dateEnd;
 
 	
-	Event(String eventName, String eventDescription, LocalDate start, LocalDate end) {
+	public Event(String eventName, String eventDescription, LocalDateTime start, LocalDateTime end) {
 		name = eventName;
 		description = eventDescription;
 		dateStart = start;
 		dateEnd = end;
 	}
 	
-	Event(String eventName, String eventDescription, LocalDate start) {
+	public Event(String eventName, String eventDescription, LocalDateTime start) {
 		name = eventName;
 		description = eventDescription;
 		dateStart = start;
@@ -40,19 +41,19 @@ public class Event {
 		description = eventDescription;
 	}
 	
-	public LocalDate getEventStart() {
+	public LocalDateTime getEventStart() {
 		return dateStart;
 	}
 	
-	public void setEventStart(LocalDate start) {
+	public void setEventStart(LocalDateTime start) {
 		dateStart = start;
 	}
 	
-	public LocalDate getEventEnd() {
+	public LocalDateTime getEventEnd() {
 		return dateEnd;
 	}
 	
-	public void setEventEnd(LocalDate end) {
+	public void setEventEnd(LocalDateTime end) {
 		dateEnd = end;
 	}
 	
