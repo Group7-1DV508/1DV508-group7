@@ -35,7 +35,8 @@ public class EventView  extends Application{
 	public   VBox root = new VBox();
 	public   HBox b5 = new HBox();
 	public 	 VBox b3 = new VBox();
-	
+	LocalDateTime a;
+	LocalDateTime a2 ;
 	 public  VBox  create() {
 		 
 		 VBox holder = new VBox();
@@ -98,6 +99,7 @@ public class EventView  extends Application{
 		 Label tL = new Label("Describe");
 		 TextField t1 = new TextField ();
 			 t1.setPrefSize(300, 150);
+		String describe = t1.getText();
 			 b2.setPadding(new Insets(10,10,10,10));
 			 v4.getChildren().addAll(tL,t1);
 		 
@@ -123,12 +125,80 @@ public class EventView  extends Application{
 		 b4.setAlignment(Pos.BOTTOM_LEFT);
 		 
 		 
-		 
-		 //*****************//
-		 		getSave(btn);
-		 
 		 TextField title= new TextField("add title");
 		 title.setPrefSize(30, 10);
+		 String titleS = title.getText();
+		 //*****************//
+		 btn.setOnAction((ActionEvent e) -> {	
+			 Alert alert = new Alert(AlertType.ERROR); 
+					
+			 
+				 String year = tF1.getText();
+				 int year1 =Integer.parseInt(year);
+				 String mon = tF2.getText();
+				 int mon1 =Integer.parseInt(mon);
+				 String day = tF3.getText();
+				 int day1 =Integer.parseInt(day);
+				 String hour = tF4.getText();
+				 int hour1 =Integer.parseInt(hour);
+				 String min = tF5.getText();
+				 int min1 =Integer.parseInt(min);
+				 
+				 String hour2 = tF6.getText();
+				 int hour12 =Integer.parseInt(hour2);
+				 String min2 = tF7.getText();
+				 int min12 =Integer.parseInt(min2);
+				 
+				 
+				if (year1 <1000 ||year1 >10000){
+					alert.setTitle("ERROR");
+					alert.setHeaderText("Year is not correct" );
+					alert.showAndWait();
+				}
+				
+				else if (mon1 <1 ||mon1 > 12){
+					alert.setTitle("ERROR");
+					alert.setHeaderText("month is not correct" );
+					alert.showAndWait();
+					
+				} else if (day1 <1 ||day1 > 31){
+					alert.setTitle("ERROR");
+					alert.setHeaderText("day is not correct" );
+					alert.showAndWait();
+					
+					
+				}else if (hour1 < 0  || hour1 >24){
+					alert.setTitle("ERROR");
+					alert.setHeaderText("hour is not correct" );
+					alert.showAndWait();
+					
+				}else if (min1 < 0  || min1 >24){
+					alert.setTitle("ERROR");
+					alert.setHeaderText("minte is not correct" );
+					alert.showAndWait();
+				
+				}else if  (hour12 < hour1){
+							alert.setTitle("ERROR");
+							alert.setHeaderText("the duration time is not correct(hour)" );
+							alert.showAndWait();
+				
+				}else if (hour12 == hour1 && min12 <min1){
+					alert.setTitle("ERROR");
+					alert.setHeaderText("the duration time is not correct (min)" );
+					alert.showAndWait();
+		
+				} else{
+				
+				a = LocalDateTime.of(year1,mon1,day1,hour1,min1);
+			    a2 = LocalDateTime.of(year1,mon1,day1,hour12,min12);
+				System.out.println(a +"\t"+a2);}
+				
+				EventControl getDuration = new  EventControl();
+				getDuration.OnAddEvantDuration(titleS,describe, a,a2);
+				getDuration.OnAddEvent(titleS,describe, a);
+		 });
+		 
+		
 		 HBox Hholder = new HBox();
 		 Hholder.setPrefSize(600, 250);
 		 Hholder.setPadding(new Insets(10,0,10,10));
@@ -164,77 +234,6 @@ public class EventView  extends Application{
 	 
 
 	 
-	 public void getSave(Button bt){
-		 
-		 bt.setOnAction((ActionEvent e) -> {	
-		 Alert alert = new Alert(AlertType.ERROR); 
-				
-		 
-			 String year = tF1.getText();
-			 int year1 =Integer.parseInt(year);
-			 String mon = tF2.getText();
-			 int mon1 =Integer.parseInt(mon);
-			 String day = tF3.getText();
-			 int day1 =Integer.parseInt(day);
-			 String hour = tF4.getText();
-			 int hour1 =Integer.parseInt(hour);
-			 String min = tF5.getText();
-			 int min1 =Integer.parseInt(min);
-			 
-			 String hour2 = tF6.getText();
-			 int hour12 =Integer.parseInt(hour2);
-			 String min2 = tF7.getText();
-			 int min12 =Integer.parseInt(min2);
-			 
-			 
-			if (year1 <1000 ||year1 >10000){
-				alert.setTitle("ERROR");
-				alert.setHeaderText("Year is not correct" );
-				alert.showAndWait();
-			}
-			
-			else if (mon1 <1 ||mon1 > 12){
-				alert.setTitle("ERROR");
-				alert.setHeaderText("month is not correct" );
-				alert.showAndWait();
-				
-			} else if (day1 <1 ||day1 > 31){
-				alert.setTitle("ERROR");
-				alert.setHeaderText("day is not correct" );
-				alert.showAndWait();
-				
-				
-			}else if (hour1 < 0  || hour1 >24){
-				alert.setTitle("ERROR");
-				alert.setHeaderText("hour is not correct" );
-				alert.showAndWait();
-				
-			}else if (min1 < 0  || min1 >24){
-				alert.setTitle("ERROR");
-				alert.setHeaderText("minte is not correct" );
-				alert.showAndWait();
-			
-			}else if  (hour12 < hour1){
-						alert.setTitle("ERROR");
-						alert.setHeaderText("the duration time is not correct(hour)" );
-						alert.showAndWait();
-			
-			}else if (hour12 == hour1 && min12 <min1){
-				alert.setTitle("ERROR");
-				alert.setHeaderText("the duration time is not correct (min)" );
-				alert.showAndWait();
-	
-			} else{
-			
-			LocalDateTime a = LocalDateTime.of(year1,mon1,day1,hour1,min1);
-			LocalDateTime a2 = LocalDateTime.of(year1,mon1,day1,hour12,min12);
-			System.out.println(a +"\t"+a2);}
-		
-	 });
-	 
-		 
-		 
-	 }
 
 	 
 public void brows(Stage st, Scene sc){ // not finished 
@@ -336,5 +335,4 @@ public void start(Stage primaryStage){
 		 launch(args);
 
 		}
-
 }
