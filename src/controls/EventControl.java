@@ -3,20 +3,21 @@ package controls;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class EventControl {
-	
-	
-	 
-	 public void OnAddEvantDuration (String s1, String s2, LocalDateTime L1,LocalDateTime L2 ){
-		  
-	 }
-	 
-	 public void OnAddEvent(String s1, String s2 , LocalDateTime L1){
-		 
-	 }
+public class EventControl implements EventListener {
 
-	 public void OnEditEvent(String s1,String s2, LocalDate L1, LocalDate L2 ){}	 
-				 
-	 public void OnDeleteEvent(){}	
+	@Override
+	public void onAddEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onAddEvent(String name, String description, LocalDateTime start) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+
+		
 
 }
