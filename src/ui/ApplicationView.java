@@ -26,7 +26,7 @@ public class ApplicationView {
 	private TimelineView timelineView;
 	private ApplicationListener appListener;
 	
-	//private static ApplicationFunction af = null;
+
 	
 
 
@@ -63,9 +63,6 @@ public class ApplicationView {
 	}
 
 
-	//public static void setApplicationFunction(ApplicationFunction af) {
-		//ApplicationView.af = af;
-	//}
 
 
 	public VBox create() {
