@@ -2,16 +2,16 @@ package controls;
 
 import java.time.LocalDateTime;
 
-import functions.Application;
+import functions.App;
 
 public class TimelineControl implements TimelineListener {
 	
-	private Application app = new Application();
+	private App currentApp;
 
 	@Override
 	public boolean onAddTimeline(String name, LocalDateTime start, LocalDateTime end) {
 		if (isCorrectInput (name, start, end)) {
-			app.addTimeline(name, start, end);
+			//currentApp.addTimeline(name, start, end);
 			return true;
 		}
 		else {
@@ -56,6 +56,10 @@ public class TimelineControl implements TimelineListener {
 		else {
 			return false;
 		}
+	}
+	
+	public void setApp(App app) {
+		currentApp = app;
 	}
 	
 	
