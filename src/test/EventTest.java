@@ -76,5 +76,12 @@ public class EventTest {
 		event.setEventEnd(aYearfromNow);
 		assertEquals(aYearfromNow, event.getEventEnd());
 	}
+	
+	@Test
+	public void testSaveEvent() {
+		assertEquals(true, timeline.isEmpty());
+		event.addEvent();
+		assertEquals(false, timeline.isEmpty);
+	}
 
 }
