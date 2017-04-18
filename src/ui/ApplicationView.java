@@ -9,8 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
-//import functions.ApplicationFunction;
-
 import functions.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
