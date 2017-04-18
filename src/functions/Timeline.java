@@ -1,18 +1,19 @@
 package functions;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Timeline {
 	
 	private ArrayList<Event> events;
 	private String name;
-	private LocalDate start;
-	private LocalDate end;
+	private LocalDateTime start;
+	private LocalDateTime end;
 	
 	
 	// Constructor
-	public Timeline (String name, LocalDate start, LocalDate end) {
+	public Timeline (String name, LocalDateTime start, LocalDateTime end) {
+		events = new ArrayList<Event>();
 		this.name = name;
 		this.start = start;
 		this.end = end;
@@ -23,11 +24,11 @@ public class Timeline {
 		return name;
 	}
 	
-	public LocalDate getStart() {
+	public LocalDateTime getStart() {
 		return start;
 	}
 	
-	public LocalDate getEnd() {
+	public LocalDateTime getEnd() {
 		return end;
 	}
 	
@@ -40,20 +41,28 @@ public class Timeline {
 		this.name = name;
 	}
 	
-	public void setStart(LocalDate start) {
+	public void setStart(LocalDateTime start) {
 		this.start = start;
 	}
 	
-	public void setEnd(LocalDate end) {
+	public void setEnd(LocalDateTime end) {
 		this.end = end;
 	}
 	
 	// Methods
-	public void addEventDuration(String eventName, String eventDescription, LocalDate start, LocalDate end) {
+	public int size() {
+		return events.size();
+	}
+	
+	public boolean isEmpty() {
+		return (size() == 0);
+	}
+	
+	public void addEventDuration(String eventName, String eventDescription, LocalDateTime start, LocalDateTime end) {
 		events.add(new Event(eventName, eventDescription, start, end));
 	}
 	
-	public void addEvent(String eventName, String eventDescription, LocalDate start) {
+	public void addEvent(String eventName, String eventDescription, LocalDateTime start) {
 		events.add(new Event(eventName, eventDescription, start));
 	}
 

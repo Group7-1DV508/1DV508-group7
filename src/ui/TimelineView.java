@@ -1,122 +1,115 @@
 package ui;
 
-	import controls.EventListener;
-import controls.TimelineControl;
+import java.time.LocalDateTime;
+
 import controls.TimelineListener;
-import javafx.application.Application;
-	import javafx.stage.Stage;
-	import javafx.scene.Scene;
-	import javafx.scene.control.Button;
-	import javafx.scene.control.ComboBox;
-	import javafx.scene.control.Label;
-	import javafx.scene.control.TextField;
-	import javafx.scene.layout.HBox;
-	import javafx.scene.layout.VBox;
-	import javafx.scene.text.Font;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
-	public class TimelineView {
+public class TimelineView {
 
-		private TimelineListener timelineListener;
+	private Button addTimeline = new Button("Add Timeline");
+	private Button confirmTimeline = new Button("Save");
+	private HBox addTimelineButton= new HBox();
+	private Stage addTimelineWindow = new Stage();
+	private final TextField timelineName = new TextField("Name");
+	private final TextField timelineStart = new TextField("Year");
+	private final TextField timelineEnd = new TextField("Year");
+	private TimelineListener timelineListener;
+	
+	
+	public void addListener (TimelineListener timelineListener) {
+		this.timelineListener = timelineListener;
+	}
+	
+	// Return HBox with a button "Add timeline" that, when pressed,
+	// will open new window with 3 text fields (name, start and end date)
+	// and a "Save" button
+	public HBox getRoot() {
+		return addTimelineWindow();
+	}
+	
+	// Sets setOnAction method for button
+	private HBox addTimelineWindow() {
+		addTimelineButton.getChildren().add(addTimeline);
+		addTimeline.setPadding(new Insets(5));
+		addTimeline.setOnAction(new TimelineHandler());
 		
-		public int startYear = 0;
-		public int endYear = 0;
-		public boolean eStartYear = true;
-		public boolean eEndYear = true;
-		public String sYear;
-		public String eYear;
-		public TextField tf;
-		Button addT;
-		Button finish;
-		public ComboBox<Integer> yearcmb = new ComboBox<Integer>();
-		public ComboBox<Integer> yearcmb2 = new ComboBox<Integer>();
-		Label startT;
-		Label endT;
-		Label name;
-		Stage st ;
-		Stage ntStage ;
-		TimelineControl tc = new TimelineControl();
+		return addTimelineButton;
+	}
+	
+	// Responsible for opening new window when 
+	// add timeline is clicked.
+	private void openAddTimeline() {
+		GridPane addTimelineRoot = initAddTimeline();
+		// Sets what happens when "Save" button is clicked
+		confirmTimeline.setOnAction(new ConfirmTimelineHandler());
+		addTimelineWindow.setTitle("Add timeline");
+		addTimelineWindow.setScene(new Scene(addTimelineRoot, 400, 400));
+		addTimelineWindow.show();
+	}
+	
+	// Window that opens after "Add timeline" is clicked.
+	// Contains 3 text fields and a button. 
+	private GridPane initAddTimeline() {
 		
-		public void addListener(TimelineListener timelineList) {
-			timelineListener = timelineList;
-	 }
-
+		GridPane addTimelineRoot = new GridPane();
 		
-		public void start(Stage primaryStage) {
-			try {
-				st = new Stage();
-				st.setTitle("Timeline Manager");
-				addT = new Button("Add Timeline");
+		HBox nameBox = new HBox(timelineName);
+		HBox startBox = new HBox(timelineStart);
+		HBox endBox = new HBox(timelineEnd);
+		HBox dates = new HBox();
+		HBox confirmTimelineButton = new HBox(confirmTimeline);
+		
+		nameBox.setAlignment(Pos.CENTER);
+		startBox.setAlignment(Pos.CENTER);
+		endBox.setAlignment(Pos.CENTER);
+		confirmTimelineButton.setAlignment(Pos.CENTER);
+		
+		dates.getChildren().addAll(startBox, endBox);
+		addTimelineRoot.add(nameBox, 0, 1);
+		addTimelineRoot.add(dates, 0, 2);
+		addTimelineRoot.add(confirmTimelineButton, 0, 3);
+		
+		return addTimelineRoot;
+	}
+	
+	// handle() method for "Add timeline" button
+	private class TimelineHandler implements EventHandler<ActionEvent> {
 
-				VBox vb = new VBox(15);
-				vb.getChildren().add(addT);
-				st.setScene(new Scene(vb, 200, 300));
-				st.setResizable(false);
-				st.show();
-				addT.setOnAction(e -> TimelineControl.addTimeline());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		@Override
+		public void handle(ActionEvent event) {
+			openAddTimeline();
 		}
+	}
+	
+	// handle() method for "Save" button
+	private class ConfirmTimelineHandler implements EventHandler<ActionEvent> {
 
-		public void secStart(){
-			try {
-			ntStage = new Stage();
-
-			ntStage.setTitle("Add Timeline Window");
-			finish = new Button("Finish");
-
-			startT = new Label("Start Year");
-			endT = new Label("End Year");
-			name = new Label("Name:");
-			tf = new TextField();
-
-			startT.setTranslateX(147);
-			startT.setTranslateY(40);
-			startT.setFont(new Font("Times new Roman", 20));
-
-			endT.setTranslateX(175);
-			endT.setTranslateY(40);
-			endT.setFont(new Font("Times new Roman", 20));
-
-			name.setTranslateY(2);
-			finish.setTranslateX(190);
-			finish.setTranslateY(120);
-			finish.setMinHeight(30);
-			finish.setMinWidth(100);
-
-			yearcmb.setEditable(false);
-			yearcmb.setMinSize(50, 30);
-
-			yearcmb2.setEditable(false);
-			yearcmb2.setMinSize(50, 30);
-
-			HBox hb = new HBox();
-			HBox hb1 = new HBox();
-			HBox hb2 = new HBox();
-			VBox vb2 = new VBox();
-
-			yearcmb.setTranslateX(150);
-			yearcmb.setTranslateY(50);
-			yearcmb2.setTranslateX(180);
-			yearcmb2.setTranslateY(50);
-
-			hb2.getChildren().addAll(name, tf);
-			hb2.setTranslateY(-45);
-			hb2.setTranslateX(10);
-			hb1.getChildren().addAll(yearcmb, yearcmb2);
-			hb1.setTranslateY(20);
-			hb.getChildren().addAll(startT, endT);
-			hb.setTranslateY(20);
-			vb2.getChildren().addAll(hb, hb1, hb2, finish);
-			ntStage.setScene(new Scene(vb2, 500, 300));
-			ntStage.setResizable(false);
-			ntStage.show();
-
-			finish.setOnAction(e -> TimelineControl.finish());
-
-			} catch (Exception e) {
-				e.printStackTrace();
+		@Override
+		public void handle(ActionEvent arg0) {
+			String name = timelineName.getText();
+			String startDate = timelineStart.getText();
+			String endDate = timelineEnd.getText();
+			
+			LocalDateTime start = LocalDateTime.parse(startDate);
+			LocalDateTime end = LocalDateTime.parse(endDate);
+			
+			// If timeline was added successfully, closes the window
+			if (timelineListener.onAddTimeline(name, start, end)) {
+				addTimelineWindow.close();
 			}
+			
 		}
-
+		
+	}
+	
 }
