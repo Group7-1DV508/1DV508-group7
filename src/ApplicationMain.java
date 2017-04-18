@@ -8,6 +8,7 @@ public class ApplicationMain {
 
 	public static void main(String[] args) {
 		
+		
 		ApplicationView appView = new ApplicationView();
 		Application app = new Application();
 		FileHandler fileHandler = new FileHandler();
