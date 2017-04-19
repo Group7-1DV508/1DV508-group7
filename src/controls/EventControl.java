@@ -9,11 +9,12 @@ public class EventControl implements EventListener {
 	private App currentApp;
 
 	@Override
-	public void onAddEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
+	public boolean onAddEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
 		//if (isCorrectInput(name, description, start, end)) {
 			//currentApp.getCurrentTimeline().addEventDuration(name, description, start, end);
 			//return true;
 		//}
+		return true;
 		
 		
 	}
