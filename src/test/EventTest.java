@@ -1,6 +1,8 @@
+package test;
+
 import static org.junit.Assert.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.Test;
 
@@ -10,19 +12,32 @@ public class EventTest {
 	
 	String name = "Smoke";
 	String description = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-	LocalDate start = LocalDate.now();
-	LocalDate end = start.plusDays(2);
+	LocalDateTime start = LocalDateTime.now();
+	LocalDateTime end = start.plusDays(2);
 	Event event = new Event(name, description, start, end);
-
-	/* @Test
+	
+	@Test
 	public void testEventStringStringLocalDateLocalDate() {
-		fail("Not yet implemented");
+		LocalDateTime start = LocalDateTime.now();
+		LocalDateTime end = start.plusDays(20);
+		String name = "Hi";
+		String description = "Bye!";
+		Event event = new Event(name, description, start, end);
+		assertEquals(event.getEventName(), name);
+
 	}
 
 	@Test
 	public void testEventStringStringLocalDate() {
-		fail("Not yet implemented");
-	} */
+		LocalDateTime start = LocalDateTime.now();
+		LocalDateTime end = start.plusDays(20);
+		String name = "Hi";
+		String description = "Bye!";
+		Event event = new Event(name, description, start, end);
+		assertEquals(event.getEventDescription(), description);
+	}
+
+	
 
 	@Test
 	public void testGetEventName() {
@@ -59,7 +74,7 @@ public class EventTest {
 
 	@Test
 	public void testSetEventStart() {
-		LocalDate yesterday = start.minusDays(-1);
+		LocalDateTime yesterday = start.minusDays(-1);
 		event.setEventStart(yesterday);
 		assertEquals(yesterday, event.getEventStart());
 	}
@@ -72,16 +87,9 @@ public class EventTest {
 
 	@Test
 	public void testSetEventEnd() {
-		LocalDate aYearfromNow = start.plusDays(365);
+		LocalDateTime aYearfromNow = start.plusDays(365);
 		event.setEventEnd(aYearfromNow);
 		assertEquals(aYearfromNow, event.getEventEnd());
-	}
-	
-	@Test
-	public void testSaveEvent() {
-		assertEquals(true, timeline.isEmpty());
-		event.addEvent();
-		assertEquals(false, timeline.isEmpty);
 	}
 
 }

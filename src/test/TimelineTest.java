@@ -1,42 +1,31 @@
 package test;
 
 import static org.junit.Assert.*;
+import java.time.LocalDateTime;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+
+import functions.Timeline;
 
 public class TimelineTest {
 	
-
 	String tName = "Sup";
 	String eName = "Hup";
 	String eDescription = "W";
-	LocalDate aDay = LocalDate.now();
-	LocalDate aFuture = aDay.plusDays(500);
-	LocalDate eDay = aDay.plusDays(200);
+	LocalDateTime aDay = LocalDateTime.now();
+	LocalDateTime aFuture = aDay.plusDays(500);
+	LocalDateTime eDay = aDay.plusDays(200);
 	Timeline t =  new Timeline(tName, aDay, aFuture);
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
 	
 	
-	
-	
-	/* @Test
+	 @Test
 	public void testTimeline() {
-		 fail("Not yet implemented");
-	} */
+		LocalDateTime start = LocalDateTime.now();
+		LocalDateTime end = start.plusDays(20);
+		String name = "Hi";
+		Timeline time = new Timeline(name, start, end);
+		assertEquals(time.getName(), name);
+	} 
 
 	@Test
 	public void testGetName() {
@@ -80,30 +69,25 @@ public class TimelineTest {
 
 	@Test
 	public void testAddEventDuration() {
-	
-		t.addEventDuration(eDescription, eName, eDay, eDay);
-		 assertTrue(t.getEvents().size() == 1);
+		LocalDateTime help = LocalDateTime.MAX;
+		LocalDateTime help2 = LocalDateTime.MIN;
+		t.addEventDuration(eDescription, eDescription, help2, help);
+		assertTrue(t.getEvents().size() == 1);
 		
 	}
-	
-
-
-
 
 	@Test
 	public void testAddEvent() {
 		String tName = "Sup";
 		String eName = "Hup";
 		String eDescription = "W";
-		LocalDate aDay = LocalDate.now();
-		LocalDate aFuture = aDay.plusDays(500);
-		LocalDate eDay = aDay.plusDays(200);
+		LocalDateTime today = LocalDateTime.now();
+		LocalDateTime aFuture = aDay.plusDays(500);
+		LocalDateTime eventDay = today.plusDays(200);
 		Timeline t1 =  new Timeline(tName, aDay, aFuture);
-		t1.addEvent(eDescription, eName, eDay);
-		 assertTrue(t1.getEvents().size() == 1);	
+		t1.addEvent(eDescription, eName, eventDay);
+		assertTrue(t1.getEvents().size() == 1);	
 		 
 	}
-	
-		
-
 }
+		

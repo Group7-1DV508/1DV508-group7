@@ -1,13 +1,16 @@
 package functions;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class App {
 	
-	ArrayList<Timeline> Timelines = new ArrayList<Timeline>();
-	Timeline current;
+	private ArrayList<Timeline> Timelines;
+	private Timeline current;
+	
+	public App() {
+		Timelines = new ArrayList<Timeline>();
+	}
 	
 	/**
 	 * Create a new timeline and adds it to the timeline list, also update the "current timeline"
@@ -27,6 +30,9 @@ public class App {
 	public Timeline getCurrentTimeline() {
 		return current;
 	}
-	
+
+	public ArrayList<Timeline> getTimelines(){
+		return Timelines;
+	}
 	
 }
