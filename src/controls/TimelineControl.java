@@ -11,7 +11,7 @@ public class TimelineControl implements TimelineListener {
 	@Override
 	public boolean onAddTimeline(String name, LocalDateTime start, LocalDateTime end) {
 		if (isCorrectInput (name, start, end)) {
-			//currentApp.addTimeline(name, start, end);
+			currentApp.addTimeline(name, start, end);
 			return true;
 		}
 		else {

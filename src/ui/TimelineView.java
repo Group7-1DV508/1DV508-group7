@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -55,6 +56,8 @@ public class TimelineView {
 		gp.add(addTimelineButton, 0, 1);
 		gp.add(timelineBox, 0, 2);
 		this.eventButton = eventButton;
+		gp.setMinWidth(500);
+		addTimelineButton.setPadding(new Insets(10));
 		
 		return gp;
 	}
@@ -105,8 +108,12 @@ public class TimelineView {
 	
 	private void displayTimeline () {
 		HBox rect = new HBox ();
-		rect.setBackground(new Background(new BackgroundFill(Color.PINK, null, null)));
+		rect.setStyle("-fx-background-color: #FF87C3;");
+		rect.setMinWidth(500);
+		rect.setMinHeight(200);
 		rect.getChildren().add(eventButton);
+		eventButton.setPadding(new Insets(5));
+		rect.setAlignment(Pos.BOTTOM_CENTER);
 		timelineBox.getChildren().add(rect);
 		
 		
@@ -126,7 +133,6 @@ public class TimelineView {
 
 		@Override
 		public void handle(ActionEvent arg0) {
-			TimelineControl tc = new TimelineControl();
 			String name = timelineName.getText();
 			String startDate = timelineStart.getText()+"-01-01T03:00:00";
 			String endDate = timelineEnd.getText()+"-01-01T03:00:00";
@@ -135,7 +141,7 @@ public class TimelineView {
 			LocalDateTime end = LocalDateTime.parse(endDate);
 			
 			// If timeline was added successfully, closes the window
-			if (tc.onAddTimeline(name, start, end)) {
+			if (timelineListener.onAddTimeline(name, start, end)) {
 				setTimelineAdd(true);
 				displayTimeline();
 				addTimelineWindow.close();
