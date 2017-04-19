@@ -3,13 +3,16 @@ package functions;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import controls.ChangeListener;
+
 public class App {
 	
-	private ArrayList<Timeline> Timelines;
+	ChangeListener changeListener;
+	private ArrayList<Timeline> timelines;
 	private Timeline current;
 	
 	public App() {
-		Timelines = new ArrayList<Timeline>();
+		timelines = new ArrayList<Timeline>();
 	}
 	
 	/**
@@ -21,18 +24,29 @@ public class App {
 	 */
 	public void addTimeline(String name, LocalDateTime start, LocalDateTime end) {
 		current = new Timeline(name, start, end);
-		Timelines.add(current);
+		timelines.add(current);
+		changeListener.onChangedTimeline(timelines, current);
+	}
+	
+	public void addEventToCurrent(String name, String description, LocalDateTime start) {
+		current.addEvent(name, description, start);
+		changeListener.onEditTimeline(current);
+	}
+	
+	public void addListener(ChangeListener cl) {
+		changeListener = cl;
 	}
 	
 	public void setCurrentTimeline(Timeline t) {
 		current = t;
+		changeListener.onNewTimelineSelected(current);
 	}
 	public Timeline getCurrentTimeline() {
 		return current;
 	}
 
 	public ArrayList<Timeline> getTimelines(){
-		return Timelines;
+		return timelines;
 	}
 	
 }
