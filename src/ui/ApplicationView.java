@@ -2,10 +2,12 @@ package ui;
 
 
 import controls.ApplicationListener;
+import controls.ChangeListener;
 
 import java.awt.TextField;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,7 +20,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
-public class ApplicationView {
+public class ApplicationView implements ChangeListener {
 	
 	private EventView eventView;
 	private TimelineView timelineView;
@@ -43,11 +45,27 @@ public class ApplicationView {
 	}
 
 
-
-	
 	public VBox getRoot()  {
 		VBox view = new VBox();
 		view.getChildren().addAll(timelineView.getRoot(eventView.getRoot()));
 		return view;
+	}
+
+	@Override
+	public void onChangedTimeline(ArrayList<Timeline> timelines, Timeline current) {
+		
+		
+	}
+
+	@Override
+	public void onNewTimelineSelected(Timeline current) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onEditTimeline(Timeline current) {
+		// TODO Auto-generated method stub
+		
 	}
 }
