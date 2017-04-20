@@ -12,24 +12,21 @@ import org.junit.Test;
 import functions.Timeline;
 
 public class TimelineControlTest {
-	String tIsCorrect = "A";
-	LocalDateTime start = LocalDateTime.now();
-	LocalDateTime end = start.plusDays(90);
-	Timeline t = new Timeline(tIsCorrect, start, end);
+	String tIsCorrect;
+	LocalDateTime start;
+	LocalDateTime end;
+	Timeline t;
 	@Before
 	public void setUp() throws Exception {
+		tIsCorrect = "A";
+		start = LocalDateTime.now();
+		end = start.plusDays(90);
+		t = new Timeline(tIsCorrect, start, end);
 	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
 
 	@Test
 	public void testisNameCorrect() {
-		
 		assertEquals(t.getName(), tIsCorrect);
-		
 	}
 	
 	@Test
