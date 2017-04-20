@@ -51,11 +51,10 @@ public class TimelineView {
 	// Return HBox with a button "Add timeline" that, when pressed,
 	// will open new window with 3 text fields (name, start and end date)
 	// and a "Save" button
-	public GridPane getRoot(HBox eventButton) {
+	public GridPane getRoot() {
 		addTimelineWindow();
 		gp.add(addTimelineButton, 0, 1);
 		gp.add(timelineBox, 0, 2);
-		this.eventButton = eventButton;
 		gp.setMinWidth(500);
 		addTimelineButton.setPadding(new Insets(10));
 		
