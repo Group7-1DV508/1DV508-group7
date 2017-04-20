@@ -12,6 +12,14 @@ public class ApplicationControl implements ApplicationListener {
 	private TimelineControl timelineControl;
 	private EventControl eventControl;
 	
+	/**
+	 * Constructor, Creates an ApplicationControl and sets variables for 
+	 * ApplicationView, App, FileHandler. Also creates a new TimelineControl and 
+	 * an EventControl. 
+	 * @param av , ApplicationView
+	 * @param app , App
+	 * @param fh , FileHandler
+	 */
 	public ApplicationControl(ApplicationView av, App app, FileHandler fh) {
 		appView = av;
 		this.app = app;
@@ -22,6 +30,10 @@ public class ApplicationControl implements ApplicationListener {
 		timelineControl.setApp(app);
 	}
 	
+	/**
+	 * Connects the View and Control through the Listener
+	 * Also connects ApplicationView to App through the Listener 
+	 */
 	public void setUpListeners() {
 		appView.getTimelineView().addListener(timelineControl);
 		appView.getEventView().addListener(eventControl);
