@@ -87,6 +87,18 @@ public class EventControl implements EventListener {
 			return false;
 		}
 	}
+
+	@Override
+	public boolean onEditEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onEditEvent(String name, String description, LocalDateTime start) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 
 		
