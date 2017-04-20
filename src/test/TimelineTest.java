@@ -3,28 +3,35 @@ package test;
 import static org.junit.Assert.*;
 import java.time.LocalDateTime;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import functions.Timeline;
 
 public class TimelineTest {
 	
-	String tName = "Sup";
-	String eName = "Hup";
-	String eDescription = "W";
-	LocalDateTime aDay = LocalDateTime.now();
-	LocalDateTime aFuture = aDay.plusDays(500);
-	LocalDateTime eDay = aDay.plusDays(200);
-	Timeline t =  new Timeline(tName, aDay, aFuture);
+	String tName ;
+	String eName;
+	String eDescription;
+	LocalDateTime aDay;
+	LocalDateTime aFuture;
+	Timeline t;
 	
+	@Before
+	public void setUp() {
+		tName = "Sup";
+		eName = "Hup";
+		eDescription = "W";
+		aDay = LocalDateTime.now();
+		aFuture = aDay.plusDays(500);
+		t =  new Timeline(tName, aDay, aFuture);
+	}
 	
-	 @Test
-	public void testTimeline() {
-		LocalDateTime start = LocalDateTime.now();
-		LocalDateTime end = start.plusDays(20);
-		String name = "Hi";
-		Timeline time = new Timeline(name, start, end);
-		assertEquals(time.getName(), name);
+	@Test
+	public void testTimelineConstructor() {
+		assertEquals(t.getName(), tName);
+		assertEquals(t.getStart(), aDay);
+		assertEquals(t.getEnd(), aFuture);
 	} 
 
 	@Test
@@ -43,22 +50,23 @@ public class TimelineTest {
 		assertEquals(t.getEnd(), aFuture);
 	}
 
-	/* @Test
+	@Test
 	public void testGetEvents() {
-		 fail("Not yet implemented");
-	} */
+		 t.addEvent(eName, eDescription, aDay);
+		 assertEquals(t.getEvents().size(), 1);
+	}
 
 	@Test
 	public void testSetName() {
-	String aName = "a";
+		String aName = "a";
 		t.setName(aName);
 		assertEquals(aName, t.getName());
 	}
 
 	@Test
 	public void testSetStart() {
-		t.setStart(aDay);
-		assertEquals(aDay, t.getStart());
+		t.setStart(aFuture);
+		assertEquals(aFuture, t.getStart());
 	}
 
 	@Test
