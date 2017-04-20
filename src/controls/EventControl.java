@@ -14,9 +14,7 @@ public class EventControl implements EventListener {
 			currentApp.getCurrentTimeline().addEventDuration(name, description, start, end);
 			return true;
 		}
-		return true;
-		
-		
+		return true;	
 	}
 
 	@Override
@@ -28,66 +26,6 @@ public class EventControl implements EventListener {
 		return false;
 	}
 	
-	public void setApp(App app) {
-		currentApp = app;
-	}
-	
-	private boolean isNameCorrect(String name) {
-		if (name.length() == 0) {
-			System.out.println("Please chose a name for your timeline");
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-	
-	private boolean isDescriptionCorrect(String description) {
-		if (description == null) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-	
-	private boolean isStartCorrect(LocalDateTime start) {
-		if (start == null) {
-			System.out.println("Please chose a start date for your timeline");
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-	
-	private boolean isEndCorrect (LocalDateTime end) {
-		if (end == null) {
-			System.out.println("Please chose an end date for your timeline");
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-	
-	private boolean isCorrectInput(String name, String description, LocalDateTime start) {
-		if (isNameCorrect(name) && isStartCorrect(start) && isDescriptionCorrect(description)) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	private boolean isCorrectInputDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
-		if (isNameCorrect(name) && isStartCorrect(start)&& isEndCorrect(end) && isDescriptionCorrect(description)) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
 	@Override
 	public boolean onEditEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
 		// TODO Auto-generated method stub
@@ -99,8 +37,98 @@ public class EventControl implements EventListener {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-
-		
+	/**
+	 * Set the variable currentApp to the App created by the ApplicationControl 
+	 * @param app, the currently used App
+	 */
+	public void setApp(App app) {
+		currentApp = app;
+	}
+	/**
+	 * validate if a name is chosen for the event that is being created 
+	 * @param name, entered by the user
+	 * @return boolean, true if name is valid otherwise false
+	 */
+	private boolean isNameCorrect(String name) {
+		if (name.length() == 0) {
+			System.out.println("Please chose a name for your timeline");
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	/**
+	 * validate that a description is added to the event being created
+	 * @param description, entered by the user
+	 * @return boolean, true if description is valid otherwise false
+	 */
+	private boolean isDescriptionCorrect(String description) {
+		if (description == null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	/**
+	 * validate that the LocalDateTime has been initialized (that it´s not null)
+	 * @param start, date added by the user
+	 * @return boolean, true if start date is valid otherwise false
+	 */
+	private boolean isStartCorrect(LocalDateTime start) {
+		if (start == null) {
+			System.out.println("Please chose a start date for your timeline");
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	/**
+	 * validate that the LocalDateTime has been initialized (that it´s not null)
+	 * @param end, date added by the user
+	 * @return boolean, true if end date is valid otherwise false
+	 */
+	private boolean isEndCorrect (LocalDateTime end) {
+		if (end == null) {
+			System.out.println("Please chose an end date for your timeline");
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	/**
+	 * combines isCorrect methods to validate all input at once.
+	 * @param name String added by the user
+	 * @param description String added by the user
+	 * @param start LocalDateTime added by the user
+	 * @return boolean, true if all inputs are valid otherwise false
+	 */
+	private boolean isCorrectInput(String name, String description, LocalDateTime start) {
+		if (isNameCorrect(name) && isStartCorrect(start) && isDescriptionCorrect(description)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	/**
+	 * combines isCorrect methods to validate all input at once.
+	 * @param name String added by the user
+	 * @param description String added by the user
+	 * @param start LocalDateTime added by the user
+	 * @param end LocalDateTime added by the user
+	 * @return boolean, true if all inputs are valid otherwise false
+	 */
+	private boolean isCorrectInputDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
+		if (isNameCorrect(name) && isStartCorrect(start)&& isEndCorrect(end) && isDescriptionCorrect(description)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}	
 
 }
