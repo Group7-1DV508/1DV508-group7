@@ -19,13 +19,15 @@ public class ApplicationMain extends Application {
 	}
 
 	public void start(Stage primaryStage) throws Exception {
-		
+		//Create a App, FileHandler, ApplicationView and ApplicationControl
 		App app = new App();
 		FileHandler fileHandler = new FileHandler();
 		ApplicationView appView = new ApplicationView();
 		ApplicationControl appControl = new ApplicationControl(appView, app, fileHandler);
+		
 		appControl.setUpListeners();
 		
+		//Collect Root from ApplicationView and build
 		Scene scene = new Scene(appView.getRoot(), 900, 900);
 		primaryStage.setTitle("Timeline Manager");
 		primaryStage.setScene(scene);
