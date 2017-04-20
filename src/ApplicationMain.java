@@ -26,7 +26,7 @@ public class ApplicationMain extends Application {
 		ApplicationControl appControl = new ApplicationControl(appView, app, fileHandler);
 		appControl.setUpListeners();
 		
-		Scene scene = new Scene(appView.getRoot(), 500, 500);
+		Scene scene = new Scene(appView.getRoot(), 900, 900);
 		primaryStage.setTitle("Timeline Manager");
 		primaryStage.setScene(scene);
 		primaryStage.show();

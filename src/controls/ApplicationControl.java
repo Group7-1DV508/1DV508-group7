@@ -26,6 +26,7 @@ public class ApplicationControl implements ApplicationListener {
 		appView.getTimelineView().addListener(timelineControl);
 		appView.getEventView().addListener(eventControl);
 		appView.addListener(this);
+		app.addListener(appView);
 	}
 
 }

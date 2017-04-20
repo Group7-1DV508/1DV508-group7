@@ -10,10 +10,10 @@ public class EventControl implements EventListener {
 
 	@Override
 	public boolean onAddEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
-		//if (isCorrectInput(name, description, start, end)) {
-			//currentApp.getCurrentTimeline().addEventDuration(name, description, start, end);
-			//return true;
-		//}
+		if (isCorrectInputDuration(name, description, start, end)) {
+			currentApp.getCurrentTimeline().addEventDuration(name, description, start, end);
+			return true;
+		}
 		return true;
 		
 		
@@ -22,7 +22,7 @@ public class EventControl implements EventListener {
 	@Override
 	public boolean onAddEvent(String name, String description, LocalDateTime start) {
 		if (isCorrectInput(name, description, start)) {
-			currentApp.getCurrentTimeline().addEvent(name, description, start);
+			currentApp.addEventToCurrent(name, description, start);
 			return true;
 		}
 		return false;
@@ -73,6 +73,14 @@ public class EventControl implements EventListener {
 	
 	private boolean isCorrectInput(String name, String description, LocalDateTime start) {
 		if (isNameCorrect(name) && isStartCorrect(start) && isDescriptionCorrect(description)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	private boolean isCorrectInputDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
+		if (isNameCorrect(name) && isStartCorrect(start)&& isEndCorrect(end) && isDescriptionCorrect(description)) {
 			return true;
 		}
 		else {
