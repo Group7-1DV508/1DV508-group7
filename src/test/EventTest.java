@@ -4,45 +4,40 @@ import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import functions.Event;
 
 public class EventTest {
 	
-	String name = "Smoke";
-	String description = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-	LocalDateTime start = LocalDateTime.now();
-	LocalDateTime end = start.plusDays(2);
-	Event event = new Event(name, description, start, end);
+	String name;
+	String description;
+	LocalDateTime start;
+	LocalDateTime end;
+	Event event;
+	
+	@Before
+	public void setUp() {
+		name = "Smoke";
+		description = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+		start = LocalDateTime.now();
+		end = start.plusDays(2);
+		event = new Event(name, description, start, end);
+	}
 	
 	@Test
-	public void testEventStringStringLocalDateLocalDate() {
-		LocalDateTime start = LocalDateTime.now();
-		LocalDateTime end = start.plusDays(20);
-		String name = "Hi";
-		String description = "Bye!";
-		Event event = new Event(name, description, start, end);
+	public void testEventConstructor() {
 		assertEquals(event.getEventName(), name);
-
-	}
-
-	@Test
-	public void testEventStringStringLocalDate() {
-		LocalDateTime start = LocalDateTime.now();
-		LocalDateTime end = start.plusDays(20);
-		String name = "Hi";
-		String description = "Bye!";
-		Event event = new Event(name, description, start, end);
 		assertEquals(event.getEventDescription(), description);
-	}
+		assertEquals(event.getEventStart(), start);
+		assertEquals(event.getEventEnd(), end);
 
-	
+	}
 
 	@Test
 	public void testGetEventName() {
-		assertTrue(event.getEventName() == name);
-		 assertEquals(event.getEventName(), name);
+		assertEquals(event.getEventName(), name);
 	}
 
 	@Test
@@ -50,12 +45,10 @@ public class EventTest {
 		String newName = "Anything";
 		event.setEventName(newName);
 	    assertEquals(newName, event.getEventName());
-		
 	}
 
 	@Test
 	public void testGetEventDescription() {
-		assertTrue(event.getEventDescription() == description);
 		assertEquals(event.getEventDescription(), description);
 	}
 
@@ -68,7 +61,6 @@ public class EventTest {
 
 	@Test
 	public void testGetEventStart() {
-		assertTrue(event.getEventStart() == start);
 		 assertEquals(event.getEventStart(), start);
 	}
 
@@ -81,7 +73,6 @@ public class EventTest {
 
 	@Test
 	public void testGetEventEnd() {
-		assertTrue(event.getEventEnd() == end);
 		assertEquals(event.getEventEnd(), end);
 	}
 
