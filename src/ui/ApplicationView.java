@@ -13,15 +13,27 @@ import java.util.List;
 import functions.Event;
 import functions.Timeline;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 
@@ -33,12 +45,25 @@ public class ApplicationView implements ChangeListener {
 	private GridPane view;
 	private GridPane timelineBox;
 	
+	private ComboBox<Timeline> chooseTimeline;
+	private ArrayList<Circle> eventCircles;
+	private GridPane currentTimeline;
+	private HBox timelineMonth;
+	private HBox eventBox = new HBox();
+	private Circle eventShape;
+	
+	final int MONTH_BOX_HEIGHT = 50;
+	final int MONTH_BOX_LENGTH = 100;
+	
+	ArrayList<Text> monthTexts;
+	
 	/**
 	 * Constructor, creates and initialize EventView and TimelineView
 	 */
 	public ApplicationView() {
 		eventView = new EventView();
 		timelineView = new TimelineView();
+		monthTexts = initializeMonthsText();
 	}
 	
 	/**
@@ -129,9 +154,26 @@ public class ApplicationView implements ChangeListener {
 	 * creates a combo box where loaded timelines can be chosen from
 	 * @return
 	 */
-	private ComboBox createChoseTimeline() {
-		return new ComboBox();
+	private void chooseTimeline(ArrayList<Timeline> timelines, Timeline current) {
+		chooseTimeline = new ComboBox<Timeline>();
+		
+		for (Timeline t : timelines) {
+			chooseTimeline.getItems().add(t);
+		}
+		chooseTimeline.setValue(current);
+		currentTimeline(current);
+		addEventsToTimeline(current);
+		
+		chooseTimeline.setOnAction( new EventHandler<ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent event) {
+				appListener.onTimelineSelected(chooseTimeline.getValue());	
+			}
+			
+		});
 	}
+	
 	/**
 	 * puts the timeline view together
 	 */
@@ -146,15 +188,78 @@ public class ApplicationView implements ChangeListener {
 	 * Creates a ScrollPane for the timeline
 	 */
 	private ScrollPane timelineScrollBox() {
+		VBox content = new VBox();
 		ScrollPane scrollTimeline = new ScrollPane();
 		scrollTimeline.setPrefSize(400, 200);
+		content.getChildren().addAll(currentTimeline, eventBox);
+		scrollTimeline.setContent(content);
+		
 		return scrollTimeline;
 	}
 	/**
 	 * Creates the current Timeline
 	 */
-	private void currentTimeline() {
+	private void currentTimeline(Timeline current) {
+		currentTimeline = new GridPane();
+		currentTimeline.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+		currentTimeline.setHgap(5.0);
+		int yearStart = current.getYear(current.getStart());
+		int yearEnd = current.getYear(current.getEnd());
 		
+		
+		System.out.printf("yearStart: %d, yearEnd: %d", yearStart, yearEnd);
+		
+		for (int year = 0 ; year < (yearEnd-yearStart) ; year++) {
+			
+			for (int i = 1 ; i <= 12 ; i++) {
+				createTimelineMonth();
+				timelineMonth.getChildren().add(monthTexts.get(i-1));
+				currentTimeline.add(timelineMonth, i + 12 * year, 0);
+			}
+			
+		}
+		
+	}
+	
+	/**
+	 * adds all events from the current timeline 
+	 * @param current , current Timeline
+	 */
+	private void addEventsToTimeline(Timeline current) {
+		ArrayList<Event> events = new ArrayList<Event>();
+		eventCircles = new ArrayList<Circle>();
+		createEventBox(current);
+		int timelineYearStart = current.getYear(current.getStart());
+		int yearStart;
+		int monthStart;
+		int dayStart;
+		int yearEnd;
+		int monthEnd;
+		int dayEnd;
+		
+		events = current.getEvents();
+		for (Event event : events) {
+			if (event.getEventEnd() == null) {
+				yearStart = current.getYear(event.getEventStart());
+				monthStart = current.getMonth(event.getEventStart());
+				dayStart = current.getDay(event.getEventStart());
+			}
+			else {
+				yearStart = current.getYear(event.getEventStart());
+				monthStart = current.getMonth(event.getEventStart());
+				dayStart = current.getDay(event.getEventStart());
+				yearEnd = current.getYear(event.getEventEnd());
+				monthEnd = current.getMonth(event.getEventEnd());
+				dayEnd = current.getDay(event.getEventEnd());
+			}
+			
+		createEventShape(timelineYearStart-yearStart, monthStart , dayStart );
+		eventCircles.add(eventShape);
+		}
+		
+		for (Circle circle : eventCircles) {
+			eventBox.getChildren().add(circle);
+		}
 	}
 	/**
 	 * puts all buttons associated with timeline together in a HBox
@@ -164,7 +269,7 @@ public class ApplicationView implements ChangeListener {
 		HBox timelineButtons = new HBox();
 		timelineButtons.setAlignment(Pos.CENTER);
 		timelineButtons.setSpacing(20.0);
-		timelineButtons.getChildren().addAll(createChoseTimeline(), getAddTimelineButton(),
+		timelineButtons.getChildren().addAll(chooseTimeline, getAddTimelineButton(),
 				getDeleteTimelineButton(), createHelpButton());
 		return timelineButtons;
 	}
@@ -180,21 +285,102 @@ public class ApplicationView implements ChangeListener {
 				getDeleteEventButton());
 		return eventButtons;
 	}
+	
+	/**
+	 * Creates a month box for the Mimeline
+	 */
+	private void createTimelineMonth() {
+		timelineMonth = new HBox();
+		timelineMonth.setMaxSize(MONTH_BOX_LENGTH, MONTH_BOX_HEIGHT);
+		timelineMonth.setMinSize(MONTH_BOX_LENGTH, MONTH_BOX_HEIGHT);
+		timelineMonth.setAlignment(Pos.CENTER);
+		timelineMonth.setBackground(new Background(new BackgroundFill(Color.AQUAMARINE, null, null)));
+		
+	}
+	
+	/**
+	 * Creates a pane with the same lenght as the timeline where
+	 * Events are added
+	 * @param current
+	 */
+	private void createEventBox(Timeline current) {
+		eventBox = new HBox();
+		int start = current.getYear(current.getStart());
+		int end = current.getYear(current.getEnd());
+		eventBox.setBackground(new Background(new BackgroundFill(Color.HOTPINK, null , null)));
+		long boxLength = ((end-start) * 12 ) * 100 +(end-start) * 5 * 12 ;
+		eventBox.setMaxSize(boxLength, 50);
+		eventBox.setMinSize(boxLength, 50);
+	}
+	/**
+	 * create a circle shape that is visuals for the Event
+	 * @param year what year in the timeline the Event begins at
+	 * @param month month of the Event
+	 * @param day day of the Event
+	 */
+	private void createEventShape(int year, int month, int day) {
+		eventShape = new Circle();
+		eventShape.setRadius(12.5);
+		eventShape.setStroke(Color.BLACK);
+		eventShape.setFill(Color.PEACHPUFF);
+		long xAllignment = (((year) * 12) + (month-1)) *100 + (100/30 * day) + (5 * (12 *year + month));
+		eventShape.setCenterX(xAllignment);
+		eventShape.setCenterY(25);
+		eventShape.setManaged(false);
+	}
+	/**
+	 * if Event shapes collide event gets a lower allignment
+	 * @param events , ArrayList<Circle>
+	 */
+	private void setAllignmentEvents(ArrayList<Circle> events) {
+		
+		
+	}
+	
+	/**
+	 * Creates an ArrayList<Text> with the months name
+	 * @return ArrayList<Text>
+	 */
+	public ArrayList<Text> initializeMonthsText() {
+		ArrayList<Text> month = new ArrayList<Text>();
+		
+		Text january = new Text("Jan");
+		Text february = new Text("Feb");
+		Text march = new Text("Mar");
+		Text april = new Text("Apr");
+		Text may = new Text("May");
+		Text june = new Text("Jun");
+		Text july = new Text("Jul");
+		Text august = new Text("Aug");
+		Text september = new Text("Sep");
+		Text october = new Text("Oct");
+		Text november = new Text("Nov");
+		Text december = new Text("Dec");
+		
+		month.add(january);
+		month.add(february);
+		month.add(march);
+		month.add(april);
+		month.add(may);
+		month.add(june);
+		month.add(july);
+		month.add(august);
+		month.add(september);
+		month.add(october);
+		month.add(november);
+		month.add(december);
+		
+		return month;
+		
+	}
 
 	@Override
 	public void onChangedTimeline(ArrayList<Timeline> timelines, Timeline current) {
-		Text info = new Text("You have created a Timeline:");
-		Text name = new Text("Name: "+current.getName());
-		Text start = new Text("Start Year: "+getYear(current.getStart().toString()));
-		Text end = new Text("End Year: "+getYear(current.getEnd().toString()));
+		chooseTimeline(timelines, current);
 		
-		timelineBox.add(info, 0, 1);
-		timelineBox.add(name, 0, 2);
-		timelineBox.add(start, 0, 3);
-		timelineBox.add(end, 0, 4);
-		timelineBox.add(eventView.getRoot(), 0, 8);
-		view.add(timelineBox, 0, 3);
 		
+		
+		root();
 		
 	}
 
@@ -206,31 +392,10 @@ public class ApplicationView implements ChangeListener {
 
 	@Override
 	public void onEditTimeline(Timeline current) {
-		ArrayList<Event> events = current.getEvents();
-		VBox eventBox = new VBox();
+		addEventsToTimeline(current);
 		
-		for (Event e : events) {
-			Text name = new Text(e.getEventName());
-			Text description = new Text(e.getEventDescription());
-			Text start = new Text(getDateTime(e.getEventStart().toString()));
-			eventBox.getChildren().addAll(name, description, start);
-		}
-		timelineBox.add(eventBox, 5, 1);
-		
-	}
-	/**
-	 * takes a LocalDateTime as a String as input and recieves the year
-	 * @param str LocalDateTime in String format
-	 * @return String 
-	 */
-	public String getYear(String str) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(str.charAt(0));
-		sb.append(str.charAt(1));
-		sb.append(str.charAt(2));
-		sb.append(str.charAt(3));
-		return sb.toString();
-	}
+		root();
+	}	
 	
 	/**
 	 * takes a LocalDateTime as a String as input and returns as Date: ... Time: ..
@@ -241,5 +406,26 @@ public class ApplicationView implements ChangeListener {
 		String temp = "Date: "+str.replace("T", " Time: ");
 		return temp;
 	}
+	
+	/**
+	 * helpmethod while implementing
+	 * @param row 
+	 * @param column
+	 * @param pane
+	 * @return Pane
+	 */
+	private Pane getNodeAtIndex(int row, int column, GridPane pane) {
+		ObservableList<Node> children = pane.getChildren();
+		
+		for (Node n : children) {
+			if (pane.getRowIndex(n) == row && pane.getColumnIndex(n) == column) {
+				return (Pane)n;
+			}
+		}
+		
+		return null;
+	}
+	
+	
 	
 }
