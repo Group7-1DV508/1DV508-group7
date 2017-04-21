@@ -14,7 +14,7 @@ public class EventControl implements EventListener {
 			currentApp.getCurrentTimeline().addEventDuration(name, description, start, end);
 			return true;
 		}
-		return true;	
+		return false;	
 	}
 
 	@Override
@@ -28,13 +28,19 @@ public class EventControl implements EventListener {
 	
 	@Override
 	public boolean onEditEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
-		// TODO Auto-generated method stub
+		if (isCorrectInputDuration(name, description, start, end) || name != oldName || description != oldDes || start != oldStart || end != OldEnd) {
+			currentApp.getCurrentTimeline().addEventDuration(name, description, start, end);
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean onEditEvent(String name, String description, LocalDateTime start) {
-		// TODO Auto-generated method stub
+		if (isCorrectInput(name, description, start) || name != oldName || description != oldDes || start != oldStart) {
+			currentApp.getCurrentTimeline().addEvent(name, description, start);
+			return true;
+		}
 		return false;
 	}
 	/**
