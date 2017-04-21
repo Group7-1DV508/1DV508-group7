@@ -32,7 +32,9 @@ public class ApplicationMain extends Application {
 		
 		app.addTimeline("TheTimeline", LocalDateTime.of(2000, 01, 01, 00, 00), LocalDateTime.of(2001, 01, 01, 00, 00));
 		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 04, 13, 00, 00));
-		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 12, 1, 00, 00));
+		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 04, 30, 00, 00));
+		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 04, 15, 00, 00));
+		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 12, 05, 00, 00));
 
 		
 		//Collect Root from ApplicationView and build

@@ -8,6 +8,8 @@ import java.awt.TextField;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import functions.Event;
@@ -30,6 +32,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -206,9 +209,6 @@ public class ApplicationView implements ChangeListener {
 		int yearStart = current.getYear(current.getStart());
 		int yearEnd = current.getYear(current.getEnd());
 		
-		
-		System.out.printf("yearStart: %d, yearEnd: %d", yearStart, yearEnd);
-		
 		for (int year = 0 ; year < (yearEnd-yearStart) ; year++) {
 			
 			for (int i = 1 ; i <= 12 ; i++) {
@@ -226,6 +226,7 @@ public class ApplicationView implements ChangeListener {
 	 * @param current , current Timeline
 	 */
 	private void addEventsToTimeline(Timeline current) {
+		System.out.println("hej hej");
 		ArrayList<Event> events = new ArrayList<Event>();
 		eventCircles = new ArrayList<Circle>();
 		createEventBox(current);
@@ -257,6 +258,17 @@ public class ApplicationView implements ChangeListener {
 		eventCircles.add(eventShape);
 		}
 		
+		sortEventList(eventCircles); 
+		setAllignmentEvents(eventCircles);
+		for (Circle circle : eventCircles) {
+			Line line = new Line();
+			line.setStartX(circle.getCenterX());
+			line.setStartY(0);
+			line.setEndX(circle.getCenterX());
+			line.setEndY(circle.getCenterY()-12.5);
+			line.setManaged(false);
+			eventBox.getChildren().add(line);
+		}
 		for (Circle circle : eventCircles) {
 			eventBox.getChildren().add(circle);
 		}
@@ -307,10 +319,10 @@ public class ApplicationView implements ChangeListener {
 		eventBox = new HBox();
 		int start = current.getYear(current.getStart());
 		int end = current.getYear(current.getEnd());
-		eventBox.setBackground(new Background(new BackgroundFill(Color.HOTPINK, null , null)));
+		//eventBox.setBackground(new Background(new BackgroundFill(Color.HOTPINK, null , null)));
 		long boxLength = ((end-start) * 12 ) * 100 +(end-start) * 5 * 12 ;
-		eventBox.setMaxSize(boxLength, 50);
-		eventBox.setMinSize(boxLength, 50);
+		eventBox.setMaxSize(boxLength, 150);
+		eventBox.setMinSize(boxLength, 150);
 	}
 	/**
 	 * create a circle shape that is visuals for the Event
@@ -333,9 +345,45 @@ public class ApplicationView implements ChangeListener {
 	 * @param events , ArrayList<Circle>
 	 */
 	private void setAllignmentEvents(ArrayList<Circle> events) {
+		boolean previousMoved = false;
 		
+		
+		for (int i = events.size()-1 ; i > 0 ; i--) {
+			System.out.println(i);
+			System.out.println(events.get(i).getCenterX());
+			if (events.get(i).getCenterX() - events.get(i-1).getCenterX() >= 25) {
+				previousMoved = false;
+			}
+			else if (!previousMoved) {
+				events.get(i).setCenterY(55);
+				previousMoved = true;
+			}
+			else {
+				events.get(i).setCenterY(85);
+				previousMoved = false;
+			}
+		}
 		
 	}
+	
+	/**
+	 * compare Allignment of the Circles and sort the ArrayList acording to that
+	 * @param events ArrayList<Circle>
+	 */
+	private void sortEventList(ArrayList<Circle> events) {
+		Comparator<Circle> compare = new Comparator<Circle>(){
+
+			@Override
+			public int compare(Circle o1, Circle o2) {
+				return (int) (o1.getCenterX() - o2.getCenterX());
+			}
+			
+		};
+		
+		Collections.sort(events, compare);
+	
+	}
+	
 	
 	/**
 	 * Creates an ArrayList<Text> with the months name
