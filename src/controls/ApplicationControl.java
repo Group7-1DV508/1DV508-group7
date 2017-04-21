@@ -1,7 +1,11 @@
 package controls;
 
+import java.util.ArrayList;
+
 import functions.App;
+import functions.Timeline;
 import io.FileHandler;
+import javafx.scene.text.Text;
 import ui.ApplicationView;
 
 public class ApplicationControl implements ApplicationListener {
@@ -40,5 +44,13 @@ public class ApplicationControl implements ApplicationListener {
 		appView.addListener(this);
 		app.addListener(appView);
 	}
+	
+
+	@Override
+	public void onTimelineSelected(Timeline t) {
+		app.setCurrentTimeline(t);
+		
+	}
+	
 
 }
