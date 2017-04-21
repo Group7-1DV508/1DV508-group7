@@ -9,12 +9,12 @@ import javafx.stage.Stage;
 import ui.ApplicationView;
 
 public class ApplicationMain extends Application {
-	
+
 	public static void main(String[] args) {
-		
-		
+
+
 		launch(args);
-		
+
 
 	}
 
@@ -24,16 +24,16 @@ public class ApplicationMain extends Application {
 		FileHandler fileHandler = new FileHandler();
 		ApplicationView appView = new ApplicationView();
 		ApplicationControl appControl = new ApplicationControl(appView, app, fileHandler);
-		
+
 		appControl.setUpListeners();
-		
+
 		//Collect Root from ApplicationView and build
-		Scene scene = new Scene(appView.getRoot(), 900, 900);
+		Scene scene = new Scene(appView.getRoot(), 935, 935);
 		primaryStage.setTitle("Timeline Manager");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
-		
+
+
 	}
 
 }
