@@ -115,6 +115,7 @@ public class ApplicationView implements ChangeListener {
 	 * collects the Timeline Buttons and the Main Timeline Box
 	 */
 	private VBox root() {
+		view.getChildren().clear();
 		view.setSpacing(20);
 		view.setAlignment(Pos.CENTER);
 		view.getChildren().addAll(timelineButtonsBox(), timelineMainBox());
@@ -167,6 +168,7 @@ public class ApplicationView implements ChangeListener {
 	 * @return HBox
 	 */
 	private HBox timelineButtonsBox() {
+		timelineButtons.getChildren().clear();
 		timelineButtons.setAlignment(Pos.CENTER);
 		timelineButtons.setSpacing(20.0);
 		timelineButtons.getChildren().addAll(chooseTimeline, getAddTimelineButton(),
@@ -178,6 +180,7 @@ public class ApplicationView implements ChangeListener {
 	 * @return HBox
 	 */
 	private HBox eventButtonsBox() {
+		eventButtons.getChildren().clear();
 		eventButtons.setAlignment(Pos.CENTER);
 		eventButtons.setSpacing(20.0);
 		eventButtons.getChildren().addAll(getAddEventButton(), getEditEventButton(),
@@ -191,6 +194,7 @@ public class ApplicationView implements ChangeListener {
 	 * @param current , the currently open timeline
 	 */
 	private void chooseTimeline(ArrayList<Timeline> timelines, Timeline current) {
+		chooseTimeline.setValue(null);
 		for (Timeline t : timelines) {
 			chooseTimeline.getItems().add(t);
 		}
@@ -212,6 +216,7 @@ public class ApplicationView implements ChangeListener {
 	 * The main timeline box, contains scroll box, and event buttons box
 	 */
 	private VBox timelineMainBox() {
+		timelineMainBox.getChildren().clear();
 		timelineMainBox.setSpacing(10.0);
 		timelineMainBox.setAlignment(Pos.CENTER);
 		timelineMainBox.getChildren().addAll(timelineScrollBox(), eventButtonsBox());
@@ -432,7 +437,6 @@ public class ApplicationView implements ChangeListener {
 	public void onEditTimeline(Timeline current) {
 		addEventsToTimeline(current);
 		
-		root();
 	}	
 	
 	/**
