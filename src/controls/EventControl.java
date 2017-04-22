@@ -3,22 +3,35 @@ package controls;
 import java.time.LocalDateTime;
 
 import functions.App;
+import functions.Event;
 
 public class EventControl implements EventListener {
 	
 	private App currentApp;
+	private Event currentEvent;
+	String oldName;
+	String oldDes;
+	LocalDateTime oldStart;
+	LocalDateTime oldEnd;
 
 	@Override
 	public boolean onAddEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
+		oldName = name;
+		oldDes = description;
+		oldStart = start;
+		oldEnd = end;
 		if (isCorrectInputDuration(name, description, start, end)) {
 			currentApp.getCurrentTimeline().addEventDuration(name, description, start, end);
 			return true;
 		}
-		return true;	
+		return false;	
 	}
 
 	@Override
 	public boolean onAddEvent(String name, String description, LocalDateTime start) {
+		oldName = name;
+		oldDes = description;
+		oldStart = start;
 		if (isCorrectInput(name, description, start)) {
 			currentApp.addEventToCurrent(name, description, start);
 			return true;
@@ -28,13 +41,24 @@ public class EventControl implements EventListener {
 	
 	@Override
 	public boolean onEditEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
-		// TODO Auto-generated method stub
+		if (isCorrectInputDuration(name, description, start, end) || name != oldName || description != oldDes || start != oldStart || end != oldEnd) {
+			currentEvent.setEventName(name);
+			currentEvent.setEventDescription(description);
+			currentEvent.setEventStart(start);
+			currentEvent.setEventEnd(end);
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean onEditEvent(String name, String description, LocalDateTime start) {
-		// TODO Auto-generated method stub
+		if (isCorrectInput(name, description, start) || name != oldName || description != oldDes || start != oldStart) {
+			currentEvent.setEventName(name);
+			currentEvent.setEventDescription(description);
+			currentEvent.setEventStart(start);
+			return true;
+		}
 		return false;
 	}
 	/**
