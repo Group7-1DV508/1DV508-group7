@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class EventView {
@@ -38,6 +39,7 @@ public class EventView {
 	// Buttons - Add Event Window
 	private Button ok;
 	private Button cancel;
+	private Button close;
 
 	/**
 	 * Update the EventListener variable with the EventListener given as input
@@ -222,6 +224,72 @@ public class EventView {
 		return pane;
 	}
 	
+private VBox ViewEventwindow(){// it could be change that it will return GridPane
+		
+		VBox event = new VBox();
+		event.setSpacing(10);
+		event.setPrefSize(200, 200);
+		Label info = new Label ("Information");
+		Text title = new Text(name.getText());
+		Text date  = new Text(yearStart.getText()+ monthStart.getText() +dayStart.getText() );
+		Text dec   = new Text (description.getText());
+			 dec.setWrappingWidth(30);
+		Text start = new Text ("Event Starts "+hoursStart.getText());
+		Text end   = new Text ("Event Ends "+hoursEnd.getText());
+			close  = new Button("Close");
+		
+		 if (isNotDurationEvent()) {
+		 event.getChildren().addAll(info, title, date,dec,start, close);	
+		} else{
+			
+			 event.getChildren().addAll(info, title, date,dec,start,end,close);	
+		}
+		
+		
+		return event;
+		
+	}
+	
+	
+	
+
+	public GridPane getEvent(GridPane P) {/*the argument type, it will depend on 
+											*what we are using in Timeline View, 
+											*I used GridPane just to set up method
+										
+											*/
+		
+		GridPane root = new GridPane();
+		 VBox textFieldsStart = new VBox();
+		  P.setOnMouseClicked(e1 -> {
+			  	
+			final Stage eventWindow = new Stage();
+			
+				
+					close.setOnAction(new EventHandler<ActionEvent>() {
+
+							@Override
+							public void handle(ActionEvent event) {
+								eventWindow.close();
+							}
+					});
+
+						
+						Scene eventScene = new Scene(textFieldsStart);
+						eventWindow.setScene(eventScene);
+						eventWindow.show();
+
+					
+				});
+				// return the root created.
+		  root.add(textFieldsStart,0,1);
+		  root.add(close,0,2);
+				
+
+		  return root;
+
+
+	}
 	
 	
 	private VBox ViewEventWindow(){// it could be change that it will return GridPane
@@ -260,11 +328,11 @@ public class EventView {
 											*/
 		
 		GridPane root = new GridPane();
-	
+		  VBox textFieldsStart =  ViewEventWindow();
 		  P.setOnMouseClicked(e1 -> {
 			  	
 			final Stage eventWindow = new Stage();
-				  VBox textFieldsStart =  ViewEventWindow();
+				
 				
 					close.setOnAction(new EventHandler<ActionEvent>() {
 
