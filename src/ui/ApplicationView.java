@@ -35,17 +35,37 @@ public class ApplicationView implements ChangeListener {
 	private EventView eventView;
 	private TimelineView timelineView;
 	private ApplicationListener appListener;
-	private GridPane view;
-	private GridPane timelineBox;
 	
-	private ComboBox<Timeline> chooseTimeline;
-	private ArrayList<Text> monthTexts = new ArrayList<Text>();
-	private ArrayList<Circle> eventCircles;
-	private GridPane currentTimeline;
+	//contains all parts of the window (Main view)
+	private final VBox view = new VBox();
+	//contains ComboBox to choose current timeline, add/delete timeline and help button
+	private final HBox timelineButtons = new HBox();
+
+	/*
+	 * contains all parts within the Current Timeline View
+	 * Add/Edit/Delete event buttons, scroll window, current timeline and events visuals 	
+	 */
+	private final VBox timelineMainBox = new VBox();
+	//scroll window for timeline
+	private final ScrollPane scrollTimeline = new ScrollPane();
+	//buttons for add/edit/delete event
+	private final HBox eventButtons = new HBox();
+	//comboBox to choose timeline
+	private final ComboBox<Timeline> chooseTimeline = new ComboBox<Timeline>();
+	//contains all created events for the current timeline
+	private final ArrayList<Circle> eventCircles = new ArrayList<Circle>();
+	//contains all months/years for the current timeline
+	private final GridPane currentTimeline = new GridPane();
+	//list of months, used to divide the month names to the month boxes
+	private final ArrayList<Text> monthTexts = new ArrayList<Text>();
+	//contains one month
 	private HBox timelineMonth;
-	private HBox eventBox = new HBox();
+	//contains all events at the correct position 
+	private final HBox eventBox = new HBox();
+	//shape that represents an event
 	private Circle eventShape;
 	
+	//size of the month boxes
 	final int MONTH_BOX_HEIGHT = 50;
 	final int MONTH_BOX_LENGTH = 100;
 	
@@ -92,12 +112,12 @@ public class ApplicationView implements ChangeListener {
 	
 	/**
 	 * Creates the Root for the Application Window
+	 * collects the Timeline Buttons and the Main Timeline Box
 	 */
 	private VBox root() {
-		VBox view = new VBox();
 		view.setSpacing(20);
 		view.setAlignment(Pos.CENTER);
-		view.getChildren().addAll(timelineButtonsBox(), timelineBox());
+		view.getChildren().addAll(timelineButtonsBox(), timelineMainBox());
 		return view;
 	}
 	/**
@@ -141,13 +161,36 @@ public class ApplicationView implements ChangeListener {
 	private Button createHelpButton() {
 		return new Button("Help");
 	}
+	
+	/**
+	 * collects and return all buttons associated with timeline
+	 * @return HBox
+	 */
+	private HBox timelineButtonsBox() {
+		timelineButtons.setAlignment(Pos.CENTER);
+		timelineButtons.setSpacing(20.0);
+		timelineButtons.getChildren().addAll(chooseTimeline, getAddTimelineButton(),
+				getDeleteTimelineButton(), createHelpButton());
+		return timelineButtons;
+	}
+	/**
+	 * collects and return all buttons associated with event
+	 * @return HBox
+	 */
+	private HBox eventButtonsBox() {
+		eventButtons.setAlignment(Pos.CENTER);
+		eventButtons.setSpacing(20.0);
+		eventButtons.getChildren().addAll(getAddEventButton(), getEditEventButton(),
+				getDeleteEventButton());
+		return eventButtons;
+	}
 	/**
 	 * creates a combo box where loaded timelines can be chosen from
-	 * @return
+	 * also calls method to create the current timeline and add events to it
+	 * @param timelines , the timelines available
+	 * @param current , the currently open timeline
 	 */
 	private void chooseTimeline(ArrayList<Timeline> timelines, Timeline current) {
-		chooseTimeline = new ComboBox<Timeline>();
-		
 		for (Timeline t : timelines) {
 			chooseTimeline.getItems().add(t);
 		}
@@ -166,21 +209,20 @@ public class ApplicationView implements ChangeListener {
 	}
 	
 	/**
-	 * puts the timeline view together
+	 * The main timeline box, contains scroll box, and event buttons box
 	 */
-	private VBox timelineBox() {
-		VBox timelineView = new VBox();
-		timelineView.setSpacing(10.0);
-		timelineView.setAlignment(Pos.CENTER);
-		timelineView.getChildren().addAll(timelineScrollBox(), eventButtonsBox());
-		return timelineView;
+	private VBox timelineMainBox() {
+		timelineMainBox.setSpacing(10.0);
+		timelineMainBox.setAlignment(Pos.CENTER);
+		timelineMainBox.getChildren().addAll(timelineScrollBox(), eventButtonsBox());
+		return timelineMainBox;
 	}
 	/**
-	 * Creates a ScrollPane for the timeline
+	 * Creates a ScrollPane for the timeline and adds the current 
+	 * timeline and the events pane to it
 	 */
 	private ScrollPane timelineScrollBox() {
 		VBox content = new VBox();
-		ScrollPane scrollTimeline = new ScrollPane();
 		scrollTimeline.setPrefSize(400, 200);
 		content.getChildren().addAll(currentTimeline, eventBox);
 		scrollTimeline.setContent(content);
@@ -188,10 +230,11 @@ public class ApplicationView implements ChangeListener {
 		return scrollTimeline;
 	}
 	/**
-	 * Creates the current Timeline
+	 * fetch months for the current timeline and adds them to the timeline pane
+	 * @param current , the currently open timeline
 	 */
 	private void currentTimeline(Timeline current) {
-		currentTimeline = new GridPane();
+		currentTimeline.getChildren().clear();
 		currentTimeline.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		currentTimeline.setHgap(5.0);
 		int yearStart = current.getYear(current.getStart());
@@ -203,20 +246,30 @@ public class ApplicationView implements ChangeListener {
 				createTimelineMonth();
 				timelineMonth.getChildren().add(monthTexts.get(i-1));
 				currentTimeline.add(timelineMonth, i + 12 * year, 0);
-			}
-			
-		}
+			}	
+		}	
+	}
+	/**
+	 * Creates a month box for the Timeline
+	 */
+	private void createTimelineMonth() {
+		timelineMonth = new HBox();
+		timelineMonth.setMaxSize(MONTH_BOX_LENGTH, MONTH_BOX_HEIGHT);
+		timelineMonth.setMinSize(MONTH_BOX_LENGTH, MONTH_BOX_HEIGHT);
+		timelineMonth.setAlignment(Pos.CENTER);
+		timelineMonth.setBackground(new Background(new BackgroundFill(Color.AQUAMARINE, null, null)));
 		
 	}
 	
 	/**
-	 * adds all events from the current timeline 
+	 * Collects event information (start/end) and calls method to create an event
+	 * shape with the correct allignment at the timeline
+	 * also creates a line to connect the shape to the timeline
 	 * @param current , current Timeline
 	 */
 	private void addEventsToTimeline(Timeline current) {
-		
 		ArrayList<Event> events = new ArrayList<Event>();
-		eventCircles = new ArrayList<Circle>();
+		eventCircles.clear();
 		createEventBox(current);
 		int timelineYearStart = current.getYear(current.getStart());
 		int yearStart;
@@ -261,50 +314,14 @@ public class ApplicationView implements ChangeListener {
 			eventBox.getChildren().add(circle);
 		}
 	}
-	/**
-	 * puts all buttons associated with timeline together in a HBox
-	 * @return HBox
-	 */
-	private HBox timelineButtonsBox() {
-		HBox timelineButtons = new HBox();
-		timelineButtons.setAlignment(Pos.CENTER);
-		timelineButtons.setSpacing(20.0);
-		timelineButtons.getChildren().addAll(chooseTimeline, getAddTimelineButton(),
-				getDeleteTimelineButton(), createHelpButton());
-		return timelineButtons;
-	}
-	/**
-	 * puts all buttons associated with event together in a HBox
-	 * @return HBox
-	 */
-	private HBox eventButtonsBox() {
-		HBox eventButtons = new HBox();
-		eventButtons.setAlignment(Pos.CENTER);
-		eventButtons.setSpacing(20.0);
-		eventButtons.getChildren().addAll(getAddEventButton(), getEditEventButton(),
-				getDeleteEventButton());
-		return eventButtons;
-	}
 	
 	/**
-	 * Creates a month box for the Mimeline
-	 */
-	private void createTimelineMonth() {
-		timelineMonth = new HBox();
-		timelineMonth.setMaxSize(MONTH_BOX_LENGTH, MONTH_BOX_HEIGHT);
-		timelineMonth.setMinSize(MONTH_BOX_LENGTH, MONTH_BOX_HEIGHT);
-		timelineMonth.setAlignment(Pos.CENTER);
-		timelineMonth.setBackground(new Background(new BackgroundFill(Color.AQUAMARINE, null, null)));
-		
-	}
-	
-	/**
-	 * Creates a pane with the same lenght as the timeline where
+	 * Creates a pane with the same length as the timeline where
 	 * Events are added
 	 * @param current
 	 */
 	private void createEventBox(Timeline current) {
-		eventBox = new HBox();
+		eventBox.getChildren().clear();
 		int start = current.getYear(current.getStart());
 		int end = current.getYear(current.getEnd());
 		long boxLength = ((end-start) * 12 ) * 100 +(end-start) * 5 * 12 ;
@@ -328,15 +345,12 @@ public class ApplicationView implements ChangeListener {
 		eventShape.setManaged(false);
 	}
 	/**
-	 * if Event shapes collide event gets a lower allignment
+	 * if Event shapes collide event gets a lower alignment
 	 * @param events , ArrayList<Circle>
 	 */
 	private void setAllignmentEvents(ArrayList<Circle> events) {
 		boolean previousMoved = false;
-		
-		
 		for (int i = events.size()-1 ; i > 0 ; i--) {
-			
 			if (events.get(i).getCenterX() - events.get(i-1).getCenterX() >= 25) {
 				previousMoved = false;
 			}
@@ -348,12 +362,11 @@ public class ApplicationView implements ChangeListener {
 				events.get(i).setCenterY(85);
 				previousMoved = false;
 			}
-		}
-		
+		}	
 	}
 	
 	/**
-	 * compare Allignment of the Circles and sort the ArrayList acording to that
+	 * compare Alignment of the Circles and sort the ArrayList according to that
 	 * @param events ArrayList<Circle>
 	 */
 	private void sortEventList(ArrayList<Circle> events) {
@@ -363,17 +376,12 @@ public class ApplicationView implements ChangeListener {
 			public int compare(Circle o1, Circle o2) {
 				return (int) (o1.getCenterX() - o2.getCenterX());
 			}
-			
 		};
-		
 		Collections.sort(events, compare);
-	
 	}
-	
-	
 	/**
 	 * Creates an ArrayList<Text> with the months name
-	 * @return ArrayList<Text>
+	 * is used to add correct month name to the correct monthBox
 	 */
 	public void initializeMonthsText() {
 		monthTexts.clear();
@@ -403,15 +411,12 @@ public class ApplicationView implements ChangeListener {
 		monthTexts.add(october);
 		monthTexts.add(november);
 		monthTexts.add(december);
-		
-		
+			
 	}
 
 	@Override
 	public void onChangedTimeline(ArrayList<Timeline> timelines, Timeline current) {
 		chooseTimeline(timelines, current);
-		
-		
 		
 		root();
 		
