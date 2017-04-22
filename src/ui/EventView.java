@@ -259,9 +259,6 @@ public class EventView {
 										
 											*/
 		
-		/*
-		 * 
-		 */
 		GridPane root = new GridPane();
 	
 		  P.setOnMouseClicked(e1 -> {
@@ -285,6 +282,8 @@ public class EventView {
 					
 				});
 				// return the root created.
+		  root.add(textFieldsStart,0,1);
+		  root.add(close,0,1);
 				
 
 		  return root;
