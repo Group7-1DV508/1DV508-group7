@@ -236,7 +236,7 @@ public class EventView {
 			 dec.setWrappingWidth(30);
 		Text start = new Text ("Event Starts "+hoursStart.getText());
 		Text end   = new Text ("Event Ends "+hoursEnd.getText());
-			close  = new Button("Close");
+			close  = new Button("Close ");
 		
 		 if (isNotDurationEvent()) {
 		 event.getChildren().addAll(info, title, date,dec,start, close);	
