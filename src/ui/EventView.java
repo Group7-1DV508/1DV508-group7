@@ -6,6 +6,7 @@ import controls.EventControl;
 import controls.EventListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -309,7 +310,9 @@ private VBox ViewEventwindow(){// it could be change that it will return GridPan
 		Text date  = new Text(yearStart.getText()+ monthStart.getText() +dayStart.getText() );
 		Text dec   = new Text (description.getText());
 			 dec.setWrappingWidth(30);
+		
 		Text start = new Text ("Event Starts "+hoursStart.getText());
+		//the view event only needs end hour,  
 		Text end   = new Text ("Event Ends "+hoursEnd.getText());
 			close  = new Button("Close ");
 		
@@ -335,6 +338,8 @@ private VBox ViewEventwindow(){// it could be change that it will return GridPan
 	public GridPane getevent(Circle P) {
 		
 		GridPane root = new GridPane();
+		root.setPadding(new Insets(10,10,10,10));
+		
 		  VBox textFieldsStart =  ViewEventWindow();
 		  P.setOnMouseClicked(e1 -> {
 			  	
@@ -358,7 +363,7 @@ private VBox ViewEventwindow(){// it could be change that it will return GridPan
 				});
 				// return the root created.
 		  root.add(textFieldsStart,0,1);
-		  root.add(close,0,2);
+		  root.add(close,1,2);
 				
 
 		  return root;
