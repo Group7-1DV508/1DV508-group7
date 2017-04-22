@@ -18,18 +18,26 @@ import ui.ApplicationView;
 public class EventControlTest {
 	
 	String name2;
+	String name;
+	String des2;
 	String des;
 	LocalDateTime start2;
+	LocalDateTime start;
 	LocalDateTime end2;
+	LocalDateTime end;
 	EventControl eventC;
 	App app;
 	
 	@Before
 	public void setUp() throws Exception {
 		name2 = "a";
-		des = "b";
+		name = "c";
+		des2 = "b";
+		des = "d";
 		start2 = LocalDateTime.now();
+		start = start2.plusHours(20);
 		end2 = start2.plusDays(30);
+		end = end2.plusMonths(2);
 		eventC = new EventControl();
 		app = new App();
 		eventC.setApp(app);
@@ -57,21 +65,40 @@ public class EventControlTest {
 	
 	@Test 
 	public void testonAddEventDuration() {
-		assertTrue(eventC.onAddEventDuration(name2, des, start2, end2)); 
+		boolean result = eventC.onAddEventDuration(name2, des2, start2, end2);
+		assertTrue(result); 
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventName(), name2);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventDescription(), des2);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventStart(), start2);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventEnd(), end2);
+		
 	}
 	
 	@Test
 	public void testonAddEvent(){
-		assertTrue(eventC.onAddEvent(name2, des, start2));
+		boolean result = eventC.onAddEvent(name2, des2, start2);
+		assertTrue(result);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventName(), name2);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventDescription(), des2);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventStart(), start2);
 	}
 	
 	@Test
 	public void testonEditEvent() {
-		assertTrue(eventC.onEditEvent(name2, des, start2));
+		boolean result = eventC.onEditEvent(name, des, start);
+		assertTrue(result);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventName(), name);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventDescription(), des);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventStart(), start);
 	}
 	
 	@Test
 	public void testonEditEventDuration() {
-		assertTrue(eventC.onEditEventDuration(name2, des, start2, end2));
+		boolean result = eventC.onEditEventDuration(name, des, start, end);
+		assertTrue(result);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventName(), name);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventDescription(), des);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventStart(), start);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventEnd(), end);
 	}
 }
