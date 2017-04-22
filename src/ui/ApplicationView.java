@@ -4,23 +4,17 @@ package ui;
 import controls.ApplicationListener;
 import controls.ChangeListener;
 
-import java.awt.TextField;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import functions.Event;
 import functions.Timeline;
-import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
@@ -33,11 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 
 
 public class ApplicationView implements ChangeListener {
@@ -49,6 +39,7 @@ public class ApplicationView implements ChangeListener {
 	private GridPane timelineBox;
 	
 	private ComboBox<Timeline> chooseTimeline;
+	private ArrayList<Text> monthTexts = new ArrayList<Text>();
 	private ArrayList<Circle> eventCircles;
 	private GridPane currentTimeline;
 	private HBox timelineMonth;
@@ -58,15 +49,12 @@ public class ApplicationView implements ChangeListener {
 	final int MONTH_BOX_HEIGHT = 50;
 	final int MONTH_BOX_LENGTH = 100;
 	
-	ArrayList<Text> monthTexts;
-	
 	/**
 	 * Constructor, creates and initialize EventView and TimelineView
 	 */
 	public ApplicationView() {
 		eventView = new EventView();
 		timelineView = new TimelineView();
-		monthTexts = initializeMonthsText();
 	}
 	
 	/**
@@ -210,7 +198,7 @@ public class ApplicationView implements ChangeListener {
 		int yearEnd = current.getYear(current.getEnd());
 		
 		for (int year = 0 ; year < (yearEnd-yearStart) ; year++) {
-			
+			initializeMonthsText();
 			for (int i = 1 ; i <= 12 ; i++) {
 				createTimelineMonth();
 				timelineMonth.getChildren().add(monthTexts.get(i-1));
@@ -226,7 +214,7 @@ public class ApplicationView implements ChangeListener {
 	 * @param current , current Timeline
 	 */
 	private void addEventsToTimeline(Timeline current) {
-		System.out.println("hej hej");
+		
 		ArrayList<Event> events = new ArrayList<Event>();
 		eventCircles = new ArrayList<Circle>();
 		createEventBox(current);
@@ -319,7 +307,6 @@ public class ApplicationView implements ChangeListener {
 		eventBox = new HBox();
 		int start = current.getYear(current.getStart());
 		int end = current.getYear(current.getEnd());
-		//eventBox.setBackground(new Background(new BackgroundFill(Color.HOTPINK, null , null)));
 		long boxLength = ((end-start) * 12 ) * 100 +(end-start) * 5 * 12 ;
 		eventBox.setMaxSize(boxLength, 150);
 		eventBox.setMinSize(boxLength, 150);
@@ -349,8 +336,7 @@ public class ApplicationView implements ChangeListener {
 		
 		
 		for (int i = events.size()-1 ; i > 0 ; i--) {
-			System.out.println(i);
-			System.out.println(events.get(i).getCenterX());
+			
 			if (events.get(i).getCenterX() - events.get(i-1).getCenterX() >= 25) {
 				previousMoved = false;
 			}
@@ -389,8 +375,8 @@ public class ApplicationView implements ChangeListener {
 	 * Creates an ArrayList<Text> with the months name
 	 * @return ArrayList<Text>
 	 */
-	public ArrayList<Text> initializeMonthsText() {
-		ArrayList<Text> month = new ArrayList<Text>();
+	public void initializeMonthsText() {
+		monthTexts.clear();
 		
 		Text january = new Text("Jan");
 		Text february = new Text("Feb");
@@ -405,20 +391,19 @@ public class ApplicationView implements ChangeListener {
 		Text november = new Text("Nov");
 		Text december = new Text("Dec");
 		
-		month.add(january);
-		month.add(february);
-		month.add(march);
-		month.add(april);
-		month.add(may);
-		month.add(june);
-		month.add(july);
-		month.add(august);
-		month.add(september);
-		month.add(october);
-		month.add(november);
-		month.add(december);
+		monthTexts.add(january);
+		monthTexts.add(february);
+		monthTexts.add(march);
+		monthTexts.add(april);
+		monthTexts.add(may);
+		monthTexts.add(june);
+		monthTexts.add(july);
+		monthTexts.add(august);
+		monthTexts.add(september);
+		monthTexts.add(october);
+		monthTexts.add(november);
+		monthTexts.add(december);
 		
-		return month;
 		
 	}
 
