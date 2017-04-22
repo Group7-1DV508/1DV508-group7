@@ -30,7 +30,7 @@ public class ApplicationMain extends Application {
 		
 		appControl.setUpListeners();
 		
-		app.addTimeline("TheTimeline", LocalDateTime.of(2000, 01, 01, 00, 00), LocalDateTime.of(2001, 01, 01, 00, 00));
+		app.addTimeline("TheTimeline", LocalDateTime.of(2000, 01, 01, 00, 00), LocalDateTime.of(2002, 01, 01, 00, 00));
 		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 04, 13, 00, 00));
 		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 04, 30, 00, 00));
 		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 04, 15, 00, 00));
