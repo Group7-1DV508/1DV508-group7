@@ -41,30 +41,53 @@ public class EventView {
 
 	/**
 	 * Update the EventListener variable with the EventListener given as input
-	 * @param eventList , (EventListener)
+	 * 
+	 * @param eventList
+	 *            , (EventListener)
 	 */
 	public void addListener(EventListener eventList) {
 		eventListener = eventList;
 	}
 
 	/**
-	 * method to create and return the add Event button, 
+	 * method to create and return the add Event button,
+	 * 
 	 * @return GridPane root
 	 */
 	public GridPane getRoot() {
 		GridPane root = new GridPane();
 		// alignment in the root
-		root.setAlignment(Pos.BOTTOM_CENTER); 
+		root.setAlignment(Pos.BOTTOM_CENTER);
 		// button for add event
-		Button addEvent = new Button("Add Event"); 
+		Button addEvent = new Button("Add Event");
 		root.add(addEvent, 0, 1);
+
+		// New edit Event button is created
+				Button editEvent = new Button("Edit Event");
+				root.add(editEvent, 1, 1);
+				
 		/*
-		 * when Add Event button is clicked a popup window is created where
-		 * the user can provide information about the Event,
-		 * User has to provide Name, Description and Start Date, End Date
-		 * however is optional.
+		 * when Add Event button is clicked a popup window is created where the
+		 * user can provide information about the Event, User has to provide
+		 * Name, Description and Start Date, End Date however is optional.
 		 */
+
+		
+
 		addEvent.setOnAction(new EventHandler<ActionEvent>() {
+			/*if (event.getSource() == addEvent){
+ 
+				
+				final Stage editEventWindow = new Stage();
+
+				GridPane editEvent = createAddEventWindow();
+		
+				ok.setOnAction(new Eventhandler<ActionEvent>(){
+					
+				});
+				*/
+					
+			
 
 			@Override
 			public void handle(ActionEvent event) {
@@ -89,10 +112,10 @@ public class EventView {
 							Alert emptyFieldError = new Alert(Alert.AlertType.ERROR,
 									"Name, Description and Start Date can't be empty.");
 							emptyFieldError.showAndWait();
-							} 
+						}
 						/*
-						 * If the event doesn't have End Date an non duration Event 
-						 * is created
+						 * If the event doesn't have End Date an non duration
+						 * Event is created
 						 */
 						else if (isNotDurationEvent()) {
 							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
@@ -103,9 +126,10 @@ public class EventView {
 							if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
 								eventWindow.close();
 							}
-						} 
+						}
 						/*
-						 * If the Event has End Time an Event with duration is created
+						 * If the Event has End Time an Event with duration is
+						 * created
 						 */
 						else {
 							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
@@ -118,15 +142,14 @@ public class EventView {
 							if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
 								eventWindow.close();
 							}
-
+						 
 						}
 
 					}
 				});
 
 				/*
-				 * when cancel button is clicked the popup window
-				 * is closed
+				 * when cancel button is clicked the popup window is closed
 				 */
 				cancel.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -137,8 +160,7 @@ public class EventView {
 				});
 
 				/*
-				 * Creates a Scene and builds the Add Event popup
-				 * window
+				 * Creates a Scene and builds the Add Event popup window
 				 */
 				Scene eventScene = new Scene(textFieldsStart);
 				eventWindow.setScene(eventScene);
@@ -146,34 +168,39 @@ public class EventView {
 
 			}
 		});
-		// return the root created.
+		
+	
+		
+		  
+		  // return the root created.
 		return root;
 
 	}
 
 	/**
-	 * Help method to create popup window, initializes all TextFields,
-	 * Labels and Buttons for the window, and then add it all to the GridPane
+	 * Help method to create popup window, initializes all TextFields, Labels
+	 * and Buttons for the window, and then add it all to the GridPane
+	 * 
 	 * @return GridPane
 	 */
 	private GridPane createAddEventWindow() {
 		GridPane pane = new GridPane();
-		
-		//TextFields initialized
-		name = new TextField(); 			
-		description = new TextField(); 		
 
-		yearStart = new TextField(); 		
-		monthStart = new TextField(); 		
-		dayStart = new TextField(); 		
-		hoursStart = new TextField(); 		
+		// TextFields initialized
+		name = new TextField();
+		description = new TextField();
+
+		yearStart = new TextField();
+		monthStart = new TextField();
+		dayStart = new TextField();
+		hoursStart = new TextField();
 
 		yearEnd = new TextField();
 		monthEnd = new TextField();
 		dayEnd = new TextField();
 		hoursEnd = new TextField();
 
-		//Labels initialized
+		// Labels initialized
 		Label nameLabel = new Label("Name: ");
 		Label descriptionLabel = new Label("Description: ");
 
@@ -189,11 +216,11 @@ public class EventView {
 		Label dayLabel2 = new Label("Day: ");
 		Label hourLabel2 = new Label("Time of day (hour)");
 
-		//Buttons initialized
+		// Buttons initialized
 		ok = new Button();
 		cancel = new Button();
 
-		//Add initialized Nodes to the GridPane
+		// Add initialized Nodes to the GridPane
 		pane.add(nameLabel, 0, 1);
 		pane.add(name, 1, 1);
 		pane.add(descriptionLabel, 0, 2);
@@ -223,23 +250,29 @@ public class EventView {
 	}
 
 	/**
-	 * Help method to create a LocalDateTime from the User input
-	 * if invalid input an error alert window will show to the user
-	 * @param year, user input
-	 * @param month, user input
-	 * @param day, user input
-	 * @param hour, user input
+	 * Help method to create a LocalDateTime from the User input if invalid
+	 * input an error alert window will show to the user
+	 * 
+	 * @param year,
+	 *            user input
+	 * @param month,
+	 *            user input
+	 * @param day,
+	 *            user input
+	 * @param hour,
+	 *            user input
 	 * @return LocalDateTime
 	 */
 	private LocalDateTime createLocalDateTime(String year, String month, String day, String hour) {
 		String localDate;
 		LocalDateTime time = null;
 
-		//if user input year is less than 4 digits, zeroes will be added in front. 
+		// if user input year is less than 4 digits, zeroes will be added in
+		// front.
 		for (int i = 0; i < 4 - year.length(); i++) {
 			year = "0" + year;
 		}
-		//creates the String format that is needed to create LocalDateTime
+		// creates the String format that is needed to create LocalDateTime
 		localDate = year + "-" + month + "-" + day + "T" + hour + ":00:00";
 
 		try {
@@ -254,8 +287,9 @@ public class EventView {
 	}
 
 	/**
-	 * help method to check if any fields that are needed to create an Event
-	 * is empty (Name, Description, Year, Month, Day and Hour) 
+	 * help method to check if any fields that are needed to create an Event is
+	 * empty (Name, Description, Year, Month, Day and Hour)
+	 * 
 	 * @return boolean, true if needed fields are empty otherwise false
 	 */
 	private boolean isNeededFieldEmpty() {
@@ -270,7 +304,9 @@ public class EventView {
 	}
 
 	/**
-	 * help method to check if the Event to be created is a duration event or not
+	 * help method to check if the Event to be created is a duration event or
+	 * not
+	 * 
 	 * @return boolean, true if it is not a duration event otherwise false
 	 */
 	private boolean isNotDurationEvent() {
