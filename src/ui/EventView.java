@@ -12,9 +12,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -233,7 +235,7 @@ private VBox ViewEventwindow(){// it could be change that it will return GridPan
 		Text title = new Text(name.getText());
 		Text date  = new Text(yearStart.getText()+ monthStart.getText() +dayStart.getText() );
 		Text dec   = new Text (description.getText());
-			 dec.setWrappingWidth(30);
+			 dec.setWrappingWidth(250);
 		Text start = new Text ("Event Starts "+hoursStart.getText());
 		Text end   = new Text ("Event Ends "+hoursEnd.getText());
 			close  = new Button("Close");
@@ -251,19 +253,23 @@ private VBox ViewEventwindow(){// it could be change that it will return GridPan
 	}
 	
 	
-	
+/**
+ * the argument type, it will depend on 
+ * what we are using in Timeline View, 
+ * I used GridPane just to set up method
+*/
 
-	public GridPane getEvent(GridPane P) {/*the argument type, it will depend on 
-											*what we are using in Timeline View, 
-											*I used GridPane just to set up method
-										
-											*/
+	public GridPane getEvent(Circle P) {
 		
 		GridPane root = new GridPane();
 		 VBox textFieldsStart = new VBox();
-		  P.setOnMouseClicked(e1 -> {
-			  	
-			final Stage eventWindow = new Stage();
+		 
+			
+			P.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					// TODO Auto-generated method stub
+					final Stage eventWindow = new Stage();
 			
 				
 					close.setOnAction(new EventHandler<ActionEvent>() {
@@ -279,8 +285,9 @@ private VBox ViewEventwindow(){// it could be change that it will return GridPan
 						eventWindow.setScene(eventScene);
 						eventWindow.show();
 
-					
-				});
+			}
+		});
+			
 				// return the root created.
 		  root.add(textFieldsStart,0,1);
 		  root.add(close,0,2);
@@ -320,12 +327,12 @@ private VBox ViewEventwindow(){// it could be change that it will return GridPan
 	
 	
 	
-
-	public GridPane getevent(GridPane P) {/*the argument type, it will depend on 
-											*what we are using in Timeline View, 
-											*I used GridPane just to set up method
-										
-											*/
+	/**
+	 * the argument type, it will depend on 
+	 * what we are using in Timeline View, 
+	 *  I used GridPane just to set up method 
+	 */
+	public GridPane getevent(Circle P) {
 		
 		GridPane root = new GridPane();
 		  VBox textFieldsStart =  ViewEventWindow();
