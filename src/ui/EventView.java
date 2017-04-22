@@ -283,7 +283,7 @@ public class EventView {
 				});
 				// return the root created.
 		  root.add(textFieldsStart,0,1);
-		  root.add(close,0,1);
+		  root.add(close,0,2);
 				
 
 		  return root;
