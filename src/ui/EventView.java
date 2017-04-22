@@ -221,6 +221,78 @@ public class EventView {
 
 		return pane;
 	}
+	
+	
+	
+	private VBox ViewEventWindow(){// it could be change that it will return GridPane
+		
+		VBox event = new VBox();
+		event.setSpacing(10);
+		event.setPrefSize(200, 200);
+		Label info = new Label ("Information");
+		Text title = new Text(name.getText());
+		Text date  = new Text(yearStart.getText()+ monthStart.getText() +dayStart.getText() );
+		Text dec   = new Text (description.getText());
+			 dec.setWrappingWidth(30);
+		Text start = new Text ("Event Starts "+hoursStart.getText());
+		Text end   = new Text ("Event Ends "+hoursEnd.getText());
+			close  = new Button("Close");
+		
+		 if (isNotDurationEvent()) {
+		 event.getChildren().addAll(info, title, date,dec,start, close);	
+		} else{
+			
+			 event.getChildren().addAll(info, title, date,dec,start,end,close);	
+		}
+		
+		
+		return event;
+		
+	}
+	
+	
+	
+
+	public GridPane getevent(GridPane P) {/*the argument type, it will depend on 
+											*what we are using in Timeline View, 
+											*I used GridPane just to set up method
+										
+											*/
+		
+		/*
+		 * 
+		 */
+		GridPane root = new GridPane();
+	
+		  P.setOnMouseClicked(e1 -> {
+			  	
+			final Stage eventWindow = new Stage();
+				  VBox textFieldsStart =  ViewEventWindow();
+				
+					close.setOnAction(new EventHandler<ActionEvent>() {
+
+							@Override
+							public void handle(ActionEvent event) {
+								eventWindow.close();
+							}
+					});
+
+						
+						Scene eventScene = new Scene(textFieldsStart);
+						eventWindow.setScene(eventScene);
+						eventWindow.show();
+
+					
+				});
+				// return the root created.
+				
+
+		  return root;
+
+
+	}
+	
+	
 
 	/**
 	 * Help method to create a LocalDateTime from the User input
