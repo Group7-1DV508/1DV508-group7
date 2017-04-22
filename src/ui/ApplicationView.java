@@ -354,19 +354,19 @@ public class ApplicationView implements ChangeListener {
 	 * @param events , ArrayList<Circle>
 	 */
 	private void setAllignmentEvents(ArrayList<Circle> events) {
-		boolean previousMoved = false;
-		for (int i = events.size()-1 ; i > 0 ; i--) {
-			if (events.get(i).getCenterX() - events.get(i-1).getCenterX() >= 25) {
-				previousMoved = false;
+		int allignment = 25;
+		int firstCircle;
+		int secondCircle;
+		
+		for (int index = 0 ; index < events.size()-1 ; index++ ) {
+			firstCircle = (int)events.get(index).getCenterX();
+			secondCircle = (int)events.get(1+index).getCenterX();
+			System.out.println(firstCircle +"   " + secondCircle);
+			if (firstCircle > secondCircle) {
+				allignment = allignment+30;
 			}
-			else if (!previousMoved) {
-				events.get(i).setCenterY(55);
-				previousMoved = true;
-			}
-			else {
-				events.get(i).setCenterY(85);
-				previousMoved = false;
-			}
+			System.out.println("allignment  "+allignment);
+			events.get(index+1).setCenterY(allignment);
 		}	
 	}
 	
@@ -381,8 +381,32 @@ public class ApplicationView implements ChangeListener {
 			public int compare(Circle o1, Circle o2) {
 				return (int) (o1.getCenterX() - o2.getCenterX());
 			}
+			
 		};
+		
 		Collections.sort(events, compare);
+		
+		int counter;
+		int firstCircle;
+		int secondCircle;
+		for (int index = 0 ; index < events.size() -1; index++ ) {
+			counter = index;
+			firstCircle = (int)events.get(index).getCenterX();
+			secondCircle = (int)events.get(1+index).getCenterX();
+			while(firstCircle - secondCircle < 26 && events.size()-1 > counter && firstCircle - secondCircle > -26) {
+				counter++;
+				Circle temp = events.get(index+1);
+				events.remove(index+1);
+				events.add(temp);
+				secondCircle = (int)events.get(1+index).getCenterX();
+				
+			}
+		}
+		for (Circle c : events) {
+			System.out.println(c.getCenterX());
+		}
+		
+		
 	}
 	/**
 	 * Creates an ArrayList<Text> with the months name
