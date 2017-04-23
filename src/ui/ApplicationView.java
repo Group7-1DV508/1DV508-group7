@@ -10,6 +10,7 @@ import java.util.Comparator;
 
 import functions.Event;
 import functions.Timeline;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,6 +19,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
@@ -53,7 +55,7 @@ public class ApplicationView implements ChangeListener {
 	//comboBox to choose timeline
 	private final ComboBox<Timeline> chooseTimeline = new ComboBox<Timeline>();
 	//contains all created events for the current timeline
-	private final ArrayList<Circle> eventCircles = new ArrayList<Circle>();
+	private final ArrayList<EventShape> eventShapes = new ArrayList<EventShape>();
 	//contains all months/years for the current timeline
 	private final GridPane currentTimeline = new GridPane();
 	//list of months, used to divide the month names to the month boxes
@@ -63,7 +65,7 @@ public class ApplicationView implements ChangeListener {
 	//contains all events at the correct position 
 	private final HBox eventBox = new HBox();
 	//shape that represents an event
-	private Circle eventShape;
+	private EventShape eventShape;
 	
 	//size of the month boxes
 	final int MONTH_BOX_HEIGHT = 50;
@@ -262,7 +264,7 @@ public class ApplicationView implements ChangeListener {
 		timelineMonth.setMaxSize(MONTH_BOX_LENGTH, MONTH_BOX_HEIGHT);
 		timelineMonth.setMinSize(MONTH_BOX_LENGTH, MONTH_BOX_HEIGHT);
 		timelineMonth.setAlignment(Pos.CENTER);
-		timelineMonth.setBackground(new Background(new BackgroundFill(Color.AQUAMARINE, null, null)));
+		timelineMonth.setBackground(new Background(new BackgroundFill(Color.LIGHTSKYBLUE, null, null)));
 		
 	}
 	
@@ -274,39 +276,46 @@ public class ApplicationView implements ChangeListener {
 	 */
 	private void addEventsToTimeline(Timeline current) {
 		ArrayList<Event> events = new ArrayList<Event>();
-		eventCircles.clear();
+		eventShapes.clear();
 		createEventBox(current);
-		int timelineYearStart = current.getYear(current.getStart());
-		int yearStart;
-		int monthStart;
-		int dayStart;
-		int yearEnd;
-		int monthEnd;
-		int dayEnd;
+		
 		
 		events = current.getEvents();
 		for (Event event : events) {
 			if (event.getEventEnd() == null) {
-				yearStart = current.getYear(event.getEventStart());
-				monthStart = current.getMonth(event.getEventStart());
-				dayStart = current.getDay(event.getEventStart());
+				eventShape = new EventShape(current, event, event.getEventStart());
 			}
 			else {
-				yearStart = current.getYear(event.getEventStart());
-				monthStart = current.getMonth(event.getEventStart());
-				dayStart = current.getDay(event.getEventStart());
-				yearEnd = current.getYear(event.getEventEnd());
-				monthEnd = current.getMonth(event.getEventEnd());
-				dayEnd = current.getDay(event.getEventEnd());
+				eventShape = new EventShape(current, event, event.getEventStart(), event.getEventEnd());
+				
+				eventShape.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+					@Override
+					public void handle(MouseEvent event) {
+						EventShape source = (EventShape) event.getSource();
+						source.getBar().setVisible(true);
+					}
+					
+				});
+				eventShape.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+					@Override
+					public void handle(MouseEvent event) {
+						EventShape source = (EventShape) event.getSource();
+						source.getBar().setVisible(false);
+						
+					}
+					
+				});
+				eventBox.getChildren().add(eventShape.getBar());
 			}
 			
-		createEventShape(timelineYearStart-yearStart, monthStart , dayStart );
-		eventCircles.add(eventShape);
+		eventShapes.add(eventShape);
 		}
 		
-		sortEventList(eventCircles); 
-		setAllignmentEvents(eventCircles);
-		for (Circle circle : eventCircles) {
+		sortEventList(eventShapes); 
+		setAllignmentEvents(eventShapes);
+		for (Circle circle : eventShapes) {
 			Line line = new Line();
 			line.setStartX(circle.getCenterX());
 			line.setStartY(0);
@@ -315,7 +324,7 @@ public class ApplicationView implements ChangeListener {
 			line.setManaged(false);
 			eventBox.getChildren().add(line);
 		}
-		for (Circle circle : eventCircles) {
+		for (EventShape circle : eventShapes) {
 			eventBox.getChildren().add(circle);
 		}
 	}
@@ -333,27 +342,13 @@ public class ApplicationView implements ChangeListener {
 		eventBox.setMaxSize(boxLength, 150);
 		eventBox.setMinSize(boxLength, 150);
 	}
-	/**
-	 * create a circle shape that is visuals for the Event
-	 * @param year what year in the timeline the Event begins at
-	 * @param month month of the Event
-	 * @param day day of the Event
-	 */
-	private void createEventShape(int year, int month, int day) {
-		eventShape = new Circle();
-		eventShape.setRadius(12.5);
-		eventShape.setStroke(Color.BLACK);
-		eventShape.setFill(Color.PEACHPUFF);
-		long xAllignment = (((year) * 12) + (month-1)) *100 + (100/30 * day) + (5 * (12 *year + month));
-		eventShape.setCenterX(xAllignment);
-		eventShape.setCenterY(25);
-		eventShape.setManaged(false);
-	}
+
+	
 	/**
 	 * if Event shapes collide event gets a lower alignment
 	 * @param events , ArrayList<Circle>
 	 */
-	private void setAllignmentEvents(ArrayList<Circle> events) {
+	private void setAllignmentEvents(ArrayList<EventShape> events) {
 		int allignment = 25;
 		int firstCircle;
 		int secondCircle;
@@ -374,11 +369,11 @@ public class ApplicationView implements ChangeListener {
 	 * compare Alignment of the Circles and sort the ArrayList according to that
 	 * @param events ArrayList<Circle>
 	 */
-	private void sortEventList(ArrayList<Circle> events) {
-		Comparator<Circle> compare = new Comparator<Circle>(){
+	private void sortEventList(ArrayList<EventShape> events) {
+		Comparator<EventShape> compare = new Comparator<EventShape>(){
 
 			@Override
-			public int compare(Circle o1, Circle o2) {
+			public int compare(EventShape o1, EventShape o2) {
 				return (int) (o1.getCenterX() - o2.getCenterX());
 			}
 			
@@ -387,26 +382,21 @@ public class ApplicationView implements ChangeListener {
 		Collections.sort(events, compare);
 		
 		int counter;
-		int firstCircle;
-		int secondCircle;
+		int firstShape;
+		int secondShape;
 		for (int index = 0 ; index < events.size() -1; index++ ) {
 			counter = index;
-			firstCircle = (int)events.get(index).getCenterX();
-			secondCircle = (int)events.get(1+index).getCenterX();
-			while(firstCircle - secondCircle < 26 && events.size()-1 > counter && firstCircle - secondCircle > -26) {
+			firstShape = (int)events.get(index).getCenterX();
+			secondShape = (int)events.get(1+index).getCenterX();
+			while(firstShape - secondShape < 26 && events.size()-1 > counter && firstShape - secondShape > -26) {
 				counter++;
-				Circle temp = events.get(index+1);
+				EventShape temp = events.get(index+1);
 				events.remove(index+1);
 				events.add(temp);
-				secondCircle = (int)events.get(1+index).getCenterX();
+				secondShape = (int)events.get(1+index).getCenterX();
 				
 			}
 		}
-		for (Circle c : events) {
-			System.out.println(c.getCenterX());
-		}
-		
-		
 	}
 	/**
 	 * Creates an ArrayList<Text> with the months name
