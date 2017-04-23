@@ -105,5 +105,8 @@ public class Timeline {
 	public void addEvent(String eventName, String eventDescription, LocalDateTime start) {
 		events.add(new Event(eventName, eventDescription, start));
 	}
+	public String toString() {
+		return name;
+	}
 
 }
