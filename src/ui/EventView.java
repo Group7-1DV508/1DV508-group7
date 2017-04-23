@@ -7,6 +7,8 @@ import controls.EventListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -14,9 +16,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class EventView {
@@ -83,12 +89,6 @@ public class EventView {
 				final Stage eventWindow = new Stage();
 
 				GridPane textFieldsStart = createAddEventWindow();
-
-				/*
-				 * When "Ok" button is clicked, textfields are fetched and
-				 * converted to String and LocalDateTime then application
-				 * listener is calling the onAddEvent-method
-				 */
 				ok.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
@@ -151,6 +151,13 @@ public class EventView {
 				/*
 				 * Creates a Scene and builds the Add Event popup window
 				 */
+
+				/*
+				 * When "Ok" button is clicked, textfields are fetched and
+				 * converted to String and LocalDateTime then application
+				 * listener is calling the onAddEvent-method
+				 */
+				
 				Scene eventScene = new Scene(textFieldsStart);
 				eventWindow.setScene(eventScene);
 				eventWindow.show();
@@ -162,19 +169,55 @@ public class EventView {
 			@Override
 			public void handle(ActionEvent event) {
 				final Stage editEventWindow = new Stage();
-				  final String[] editEventBox = new String[] { };;
-				    final ChoiceBox<String> cb = new ChoiceBox<String>(
-				        FXCollections.observableArrayList());
-				    cb.getItems().add("1");
+				 BorderPane root = new BorderPane();
+				    Scene scene = new Scene(root, 280, 100, Color.BLACK);
+
+				    GridPane gridpane = new GridPane();
+				    gridpane.setPadding(new Insets(5));
+				    gridpane.setHgap(5);
+				    gridpane.setVgap(5);
+				    ColumnConstraints column1 = new ColumnConstraints(50);
+				    ColumnConstraints column2 = new ColumnConstraints(100, 10, 300);
+				    column2.setHgrow(Priority.ALWAYS);
+				    gridpane.getColumnConstraints().addAll(column1, column2);
+
+
+				    Button okEdit = new Button("OK");
+				    okEdit.setOnAction(new EventHandler<ActionEvent>() {
+
+				        @Override
+				        public void handle(ActionEvent event) {
+				        	final Stage eventWindow = new Stage();
+
+							GridPane textFieldsStart = createAddEventWindow();
+							Scene eventScene = new Scene(textFieldsStart);
+							eventWindow.setScene(eventScene);
+							eventWindow.show();
+							editEventWindow.close();
+				            
+				        }
+				    });
 				    
-				
-				
-				Scene eventScene = new Scene(cb);
-			
-				editEventWindow.setScene(eventScene);
-				editEventWindow.show();
-				
-				GridPane textFieldsStart = createAddEventWindow();
+				    String[] editEventBox = new String[] { };;
+				   ChoiceBox<String> cb = new ChoiceBox<String>(
+				        FXCollections.observableArrayList());
+				    cb.getItems().add(""); //add the created events
+
+				    
+
+				    // ok-button
+				    GridPane.setHalignment(okEdit, HPos.RIGHT);
+				    gridpane.add(okEdit, 1, 0);
+				    
+				    
+				    //cb
+				    GridPane.setHalignment(cb, HPos.LEFT);
+				    gridpane.add(cb, 0, 0);
+				    
+				    root.setCenter(gridpane);
+				   editEventWindow.setScene(scene);
+				    editEventWindow.show();
+				  
 	
 				//YOUR CODE GOES HERE 
 				// New window opens with text fields filled with current event paraments
