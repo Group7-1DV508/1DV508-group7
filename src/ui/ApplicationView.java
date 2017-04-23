@@ -10,12 +10,9 @@ import java.util.Comparator;
 
 import functions.Event;
 import functions.Timeline;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
@@ -24,11 +21,11 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 
@@ -66,6 +63,8 @@ public class ApplicationView implements ChangeListener {
 	private final HBox eventBox = new HBox();
 	//shape that represents an event
 	private EventShape eventShape;
+	private final HBox showYearBox = new HBox();
+	
 	
 	//size of the month boxes
 	final int MONTH_BOX_HEIGHT = 50;
@@ -196,14 +195,13 @@ public class ApplicationView implements ChangeListener {
 	 * @param current , the currently open timeline
 	 */
 	private void chooseTimeline(ArrayList<Timeline> timelines, Timeline current) {
-		chooseTimeline.setValue(null);
+		
+		chooseTimeline.getItems().clear();
+		
 		for (Timeline t : timelines) {
 			chooseTimeline.getItems().add(t);
 		}
 		chooseTimeline.setValue(current);
-		currentTimeline(current);
-		addEventsToTimeline(current);
-		
 		chooseTimeline.setOnAction( new EventHandler<ActionEvent>(){
 
 			@Override
@@ -231,7 +229,7 @@ public class ApplicationView implements ChangeListener {
 	private ScrollPane timelineScrollBox() {
 		VBox content = new VBox();
 		scrollTimeline.setPrefSize(400, 200);
-		content.getChildren().addAll(currentTimeline, eventBox);
+		content.getChildren().addAll(showYearBox, currentTimeline, eventBox);
 		scrollTimeline.setContent(content);
 		
 		return scrollTimeline;
@@ -339,8 +337,8 @@ public class ApplicationView implements ChangeListener {
 		int start = current.getYear(current.getStart());
 		int end = current.getYear(current.getEnd());
 		long boxLength = ((end-start) * 12 ) * 100 +(end-start) * 5 * 12 ;
-		eventBox.setMaxSize(boxLength, 150);
-		eventBox.setMinSize(boxLength, 150);
+		eventBox.setMaxSize(boxLength, 250);
+		eventBox.setMinSize(boxLength, 250);
 	}
 
 	
@@ -356,11 +354,10 @@ public class ApplicationView implements ChangeListener {
 		for (int index = 0 ; index < events.size()-1 ; index++ ) {
 			firstCircle = (int)events.get(index).getCenterX();
 			secondCircle = (int)events.get(1+index).getCenterX();
-			System.out.println(firstCircle +"   " + secondCircle);
-			if (firstCircle > secondCircle) {
+			if (firstCircle > secondCircle ||( firstCircle-secondCircle <26 && 
+					firstCircle - secondCircle >-26)) {
 				allignment = allignment+30;
 			}
-			System.out.println("allignment  "+allignment);
 			events.get(index+1).setCenterY(allignment);
 		}	
 	}
@@ -397,6 +394,29 @@ public class ApplicationView implements ChangeListener {
 				
 			}
 		}
+		
+	}
+	/**
+	 * creates box to show years on top of the Timeline
+	 * @param current , current timeline
+	 */
+	private void showYear(Timeline current) {
+		showYearBox.getChildren().clear();
+		int start = current.getYear(current.getStart());
+		int end = current.getYear(current.getEnd());
+		long boxLength = ((end-start) * 12 ) * 100 +(end-start) * 5 * 12 ;
+		showYearBox.setMaxSize(boxLength, 50);
+		showYearBox.setMinSize(boxLength, 50);
+		
+		for (int i = 0 ; i < end-start ; i++) {
+			Text text = new Text(Integer.toString(start+i));
+			text.setFont(new Font(25));
+			text.setManaged(false);
+			text.setX( ( i * 12 * 100) +( i * 5 * 12 ) +5 );
+			text.setY(40);
+			showYearBox.getChildren().add(text);
+		}
+		
 	}
 	/**
 	 * Creates an ArrayList<Text> with the months name
@@ -436,14 +456,17 @@ public class ApplicationView implements ChangeListener {
 	@Override
 	public void onChangedTimeline(ArrayList<Timeline> timelines, Timeline current) {
 		chooseTimeline(timelines, current);
-		
-		root();
+		showYear(current);
+		currentTimeline(current);
+		addEventsToTimeline(current);
 		
 	}
 
 	@Override
 	public void onNewTimelineSelected(Timeline current) {
-		// TODO Auto-generated method stub
+		currentTimeline(current);
+		showYear(current);
+		addEventsToTimeline(current);
 		
 	}
 
@@ -451,35 +474,6 @@ public class ApplicationView implements ChangeListener {
 	public void onEditTimeline(Timeline current) {
 		addEventsToTimeline(current);
 		
-	}	
-	
-	/**
-	 * takes a LocalDateTime as a String as input and returns as Date: ... Time: ..
-	 * @param str LocalDateTime in String format
-	 * @return String
-	 */
-	public String getDateTime(String str) {
-		String temp = "Date: "+str.replace("T", " Time: ");
-		return temp;
-	}
-	
-	/**
-	 * helpmethod while implementing
-	 * @param row 
-	 * @param column
-	 * @param pane
-	 * @return Pane
-	 */
-	private Pane getNodeAtIndex(int row, int column, GridPane pane) {
-		ObservableList<Node> children = pane.getChildren();
-		
-		for (Node n : children) {
-			if (pane.getRowIndex(n) == row && pane.getColumnIndex(n) == column) {
-				return (Pane)n;
-			}
-		}
-		
-		return null;
 	}
 	
 	
