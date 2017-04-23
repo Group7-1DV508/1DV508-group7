@@ -28,22 +28,14 @@ public class ApplicationMain extends Application {
 		ApplicationView appView = new ApplicationView();
 		ApplicationControl appControl = new ApplicationControl(appView, app, fileHandler);
 		
+		
 		appControl.setUpListeners();
 		
 		app.addTimeline("TheTimeline", LocalDateTime.of(2000, 01, 01, 00, 00), LocalDateTime.of(2002, 01, 01, 00, 00));
-		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 04, 13, 00, 00));
-		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 06, 30, 00, 00));
-		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 07, 15, 00, 00));
-		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 12, 15, 00, 00));
-		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 06, 13, 00, 00));
-		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 07, 30, 00, 00));
-		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 04, 15, 00, 00));
-		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 12, 05, 00, 00));
-		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 07, 13, 00, 00));
-		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 04, 30, 00, 00));
-		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 06, 15, 00, 00));
-		app.addEventToCurrent("MyEvent", "hi", LocalDateTime.of(2000, 12, 12, 00, 00));
-		
+		app.addEventToCurrentDuration("MyEvent", "hi", LocalDateTime.of(2000, 04, 13, 00, 00), LocalDateTime.of(2000, 04, 30, 00, 00));
+		app.addEventToCurrentDuration("MyEvent", "hi", LocalDateTime.of(2000, 12, 15, 00, 00), LocalDateTime.of(2000, 12, 30, 00, 00));
+		app.addEventToCurrentDuration("MyEvent", "hi", LocalDateTime.of(2000, 05, 15, 00, 00), LocalDateTime.of(2000, 05, 30, 00, 00));
+
 		//Collect Root from ApplicationView and build
 		Scene scene = new Scene(appView.getRoot(), 900, 900);
 		primaryStage.setTitle("Timeline Manager");
