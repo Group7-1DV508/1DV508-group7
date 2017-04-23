@@ -194,6 +194,64 @@ public class EventView {
 							eventWindow.setScene(eventScene);
 							eventWindow.show();
 							editEventWindow.close();
+							ok.setOnAction(new EventHandler<ActionEvent>() {
+
+								@Override
+								public void handle(ActionEvent event) {
+									/*
+									 * If Name, Description or Start Date fields are empty
+									 * an Error alert shows to the user
+									 */
+									if (isNeededFieldEmpty()) {
+										Alert emptyFieldError = new Alert(Alert.AlertType.ERROR,
+												"Name, Description and Start Date can't be empty.");
+										emptyFieldError.showAndWait();
+									}
+									/*
+									 * If the event doesn't have End Date an non duration
+									 * Event is created
+									 */
+									else if (isNotDurationEvent()) {
+										LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
+												dayStart.getText(), hoursStart.getText());
+										String eventname = name.getText();
+										String eventdescrip = description.getText();
+
+										if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
+											eventWindow.close();
+										}
+									}
+									/*
+									 * If the Event has End Time an Event with duration is
+									 * created
+									 */
+									else {
+										LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
+												dayStart.getText(), hoursStart.getText());
+										LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
+												dayEnd.getText(), hoursEnd.getText());
+										String eventname = name.getText();
+										String eventdescrip = description.getText();
+
+										if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
+											eventWindow.close();
+										}
+									 
+									}
+
+								}
+							});
+
+							/*
+							 * when cancel button is clicked the popup window is closed
+							 */
+							cancel.setOnAction(new EventHandler<ActionEvent>() {
+
+								@Override
+								public void handle(ActionEvent event) {
+									eventWindow.close();
+								}
+							});
 				            
 				        }
 				    });
@@ -217,6 +275,7 @@ public class EventView {
 				    root.setCenter(gridpane);
 				   editEventWindow.setScene(scene);
 				    editEventWindow.show();
+				    
 				  
 	
 				//YOUR CODE GOES HERE 
