@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 
 import controls.EventControl;
 import controls.EventListener;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -75,20 +77,7 @@ public class EventView {
 		
 
 		addEvent.setOnAction(new EventHandler<ActionEvent>() {
-			/*if (event.getSource() == addEvent){
- 
-				
-				final Stage editEventWindow = new Stage();
-
-				GridPane editEvent = createAddEventWindow();
 		
-				ok.setOnAction(new Eventhandler<ActionEvent>(){
-					
-				});
-				*/
-					
-			
-
 			@Override
 			public void handle(ActionEvent event) {
 				final Stage eventWindow = new Stage();
@@ -168,8 +157,37 @@ public class EventView {
 
 			}
 		});
-		
+		editEvent.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				final Stage editEventWindow = new Stage();
+				  final String[] editEventBox = new String[] { };;
+				    final ChoiceBox<String> cb = new ChoiceBox<String>(
+				        FXCollections.observableArrayList());
+				    cb.getItems().add("1");
+				    
+				
+				
+				Scene eventScene = new Scene(cb);
+			
+				editEventWindow.setScene(eventScene);
+				editEventWindow.show();
+				
+				GridPane textFieldsStart = createAddEventWindow();
 	
+				//YOUR CODE GOES HERE 
+				// New window opens with text fields filled with current event paraments
+				// such as name, dates, description.
+				// eventListener.onEditEvent should be ran and eventListener.onEditEventDuration
+				// depending what kind of event was opened. Read code for
+				// adding new event, because your code should be very similar to it (it 
+				// also opens new window, also checks what kind of event, also user has to 
+				// make some sort of input).
+			}
+});
+
+
 		
 		  
 		  // return the root created.
@@ -317,5 +335,6 @@ public class EventView {
 			return false;
 		}
 	}
+
 
 }
