@@ -127,7 +127,7 @@ public class ApplicationView implements ChangeListener {
 	 * @return Button
 	 */
 	private Button getAddTimelineButton() {
-		return new Button("Add Timeline");
+		return timelineView.getAddTimelineButton();
 	}
 	/**
 	 * Returns the "Delete Timeline" Button
@@ -141,7 +141,7 @@ public class ApplicationView implements ChangeListener {
 	 * @return Button
 	 */
 	private Button getAddEventButton() {
-		return new Button("Add Event");
+		return eventView.getAddEventButton();
 	}
 	/**
 	 * Returns the "Edit Event" Button
@@ -206,7 +206,9 @@ public class ApplicationView implements ChangeListener {
 
 			@Override
 			public void handle(ActionEvent event) {
-				appListener.onTimelineSelected(chooseTimeline.getValue());	
+				if (chooseTimeline.getItems().size() > 0) {
+					appListener.onTimelineSelected(chooseTimeline.getValue());
+				}
 			}
 			
 		});
