@@ -228,7 +228,7 @@ public class EventView {
 		return pane;
 	}
 	
-private void ViewEventInfo(Event e){// it could be change that it will return GridPane
+private void ViewEventInfo(Event e){
   final Stage eventWindow = new Stage();
 	
 		VBox window = new VBox();
@@ -255,9 +255,20 @@ private void ViewEventInfo(Event e){// it could be change that it will return Gr
 			 window.getChildren().addAll(info, title, dateStart,dec,end);	
 		}
 		 
-		 	 
-		//get edite Button
-		 //get delet Button 
+		 	 Button b = new Button();
+		 	 //get edite Button
+		 	 // after the button is pressd it should check if the input data has been changed 
+		 if (b.isPressed()){
+			 title = new Text(e.getEventName()); 
+			 formattedStringS = e.getEventStart().format(formatter);
+			 dec   = new Text (e.getEventDescription());
+			 formattedStringE = e.getEventEnd().format(formatter2);
+		 }
+		 
+		 
+	    //get delet Button 
+		 	//
+			HBox buttonsHolder = new HBox();
 		 
 		     Scene eventScene = new Scene(window);
 			 eventWindow.setScene(eventScene);
