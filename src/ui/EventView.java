@@ -1,9 +1,11 @@
 package ui;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import controls.EventControl;
 import controls.EventListener;
+import functions.Event;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -42,8 +44,7 @@ public class EventView {
 	// Buttons - Add Event Window
 	private Button ok;
 	private Button cancel;
-	private Button close;
-
+	
 	/**
 	 * Update the EventListener variable with the EventListener given as input
 	 * @param eventList , (EventListener)
@@ -227,29 +228,40 @@ public class EventView {
 		return pane;
 	}
 	
-private VBox ViewEventwindow(){// it could be change that it will return GridPane
-		
-		VBox event = new VBox();
-		event.setSpacing(10);
-		event.setPrefSize(200, 200);
+private void ViewEventInfo(Event e){// it could be change that it will return GridPane
+  final Stage eventWindow = new Stage();
+	
+		VBox window = new VBox();
+		   	 window.setSpacing(10);
+			 window.setPrefSize(200, 200);
+			 
 		Label info = new Label ("Information");
-		Text title = new Text(name.getText());
-		Text date  = new Text(yearStart.getText()+ monthStart.getText() +dayStart.getText() );
-		Text dec   = new Text (description.getText());
+		Text title = new Text(e.getEventName());
+			 
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
+		String formattedStringS = e.getEventStart().format(formatter);
+		
+		Text dateStart  = new Text("Event starts at: "+formattedStringS );
+		Text dec   = new Text (e.getEventDescription());
 			 dec.setWrappingWidth(250);
-		Text start = new Text ("Event Starts "+hoursStart.getText());
-		Text end   = new Text ("Event Ends "+hoursEnd.getText());
-			close  = new Button("Close");
+			 DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
+			 String formattedStringE = e.getEventEnd().format(formatter2);
+		Text end   = new Text ("Event Ends at: "+ formattedStringE);
+			
 		
 		 if (isNotDurationEvent()) {
-		 event.getChildren().addAll(info, title, date,dec,start, close);	
+			 window.getChildren().addAll(info, title, dateStart,dec);	
 		} else{
-			
-			 event.getChildren().addAll(info, title, date,dec,start,end,close);	
+			 window.getChildren().addAll(info, title, dateStart,dec,end);	
 		}
+		 
+		 	 
 		
+		 
+		     Scene eventScene = new Scene(window);
+			 eventWindow.setScene(eventScene);
+			 eventWindow.show();
 		
-		return event;
 		
 	}
 	
