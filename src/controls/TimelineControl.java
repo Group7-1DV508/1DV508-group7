@@ -25,10 +25,9 @@ public class TimelineControl implements TimelineListener {
 	 *
 	 * @param name
 	 *            Name of timeline
-	 * @return true if name is not a null
+	 * @return true if name length is not 0
 	 */
 	private boolean isNameCorrect(String name) {
-
 		if (name.length() == 0) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error in timeline name");
@@ -45,13 +44,15 @@ public class TimelineControl implements TimelineListener {
 	 *
 	 * @param start
 	 *            Date of when timeline starts
-	 * @return true if start date is not a null
+	 * @return true if start date is not temp date
 	 */
 	private boolean isStartCorrect(LocalDateTime start) {
-		if (start == null) {
+		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
+		if (start.equals(temp)) {
 			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error in start date");
+			alert.setTitle("Error in timeline start date");
 			alert.setHeaderText("Please choose a start date for your timeline");
+			alert.setContentText("Start year must be 4 numbers long. (Ex. 0001,0002...2016,2017)");
 			alert.show();
 			return false;
 		} else {
@@ -64,11 +65,16 @@ public class TimelineControl implements TimelineListener {
 	 *
 	 * @param end
 	 *            Date of when timeline ends
-	 * @return true if end date is not a null
+	 * @return true if end date is not temp date
 	 */
 	private boolean isEndCorrect(LocalDateTime end) {
-		if (end == null) {
-			System.out.println("Please choose an end date for your timeline");
+		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
+		if (end.equals(temp)) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error in timeline end date");
+			alert.setHeaderText("Please choose an end date for your timeline.");
+			alert.setContentText("End year must be 4 numbers long. (Ex. 0001,0002...2016,2017)");
+			alert.show();
 			return false;
 		} else {
 			return true;
