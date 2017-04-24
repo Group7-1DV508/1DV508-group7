@@ -282,6 +282,15 @@ public class ApplicationView implements ChangeListener {
 		for (Event event : events) {
 			if (event.getEventEnd() == null) {
 				eventShape = new EventShape(current, event, event.getEventStart());
+				eventShape.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+					@Override
+					public void handle(MouseEvent event) {
+						System.out.println("clicked Event");
+						
+					}
+					
+				});
 			}
 			else {
 				eventShape = new EventShape(current, event, event.getEventStart(), event.getEventEnd());
@@ -301,6 +310,16 @@ public class ApplicationView implements ChangeListener {
 					public void handle(MouseEvent event) {
 						EventShape source = (EventShape) event.getSource();
 						source.getBar().setVisible(false);
+						
+					}
+					
+				});
+				
+				eventShape.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+					@Override
+					public void handle(MouseEvent event) {
+						System.out.println("clicked Event");
 						
 					}
 					
