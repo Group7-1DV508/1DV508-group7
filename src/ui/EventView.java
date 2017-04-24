@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import controls.EventControl;
 import controls.EventListener;
+import controls.TimelineListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -189,7 +190,7 @@ public class EventView {
 				        public void handle(ActionEvent event) {
 				        	final Stage eventWindow = new Stage();
 
-							GridPane textFieldsStart = createAddEventWindow();
+							GridPane textFieldsStart = createEditEventWindow();
 							Scene eventScene = new Scene(textFieldsStart);
 							eventWindow.setScene(eventScene);
 							eventWindow.show();
@@ -254,6 +255,8 @@ public class EventView {
 							});
 				            
 				        }
+
+					
 				    });
 				    
 				    String[] editEventBox = new String[] { };;
@@ -276,16 +279,7 @@ public class EventView {
 				   editEventWindow.setScene(scene);
 				    editEventWindow.show();
 				    
-				  
-	
-				//YOUR CODE GOES HERE 
-				// New window opens with text fields filled with current event paraments
-				// such as name, dates, description.
-				// eventListener.onEditEvent should be ran and eventListener.onEditEventDuration
-				// depending what kind of event was opened. Read code for
-				// adding new event, because your code should be very similar to it (it 
-				// also opens new window, also checks what kind of event, also user has to 
-				// make some sort of input).
+			
 			}
 });
 
@@ -303,7 +297,9 @@ public class EventView {
 	 * 
 	 * @return GridPane
 	 */
+	
 	private GridPane createAddEventWindow() {
+		
 		GridPane pane = new GridPane();
 
 		// TextFields initialized
@@ -383,6 +379,76 @@ public class EventView {
 	 *            user input
 	 * @return LocalDateTime
 	 */
+	
+	public void addEventListener (EventListener EventListener) {
+		this.eventListener = EventListener;
+	}
+	private GridPane createEditEventWindow() {
+		
+		GridPane pane = new GridPane();
+		
+		name = new TextField();
+		description = new TextField();
+
+		yearStart = new TextField();
+		monthStart = new TextField();
+		dayStart = new TextField();
+		hoursStart = new TextField();
+
+		yearEnd = new TextField();
+		monthEnd = new TextField();
+		dayEnd = new TextField();
+		hoursEnd = new TextField();
+		
+		
+		Label nameLabel = new Label("Name: ");
+		Label descriptionLabel = new Label("Description: ");
+
+		Label start = new Label("Start Date:");
+		Label end = new Label("End Date: ");
+		Label yearLabel = new Label("Year: ");
+		Label monthLabel = new Label("Month: ");
+		Label dayLabel = new Label("Day: ");
+		Label hourLabel = new Label("Time of day (hour)");
+
+		Label yearLabel2 = new Label("Year: ");
+		Label monthLabel2 = new Label("Month: ");
+		Label dayLabel2 = new Label("Day: ");
+		Label hourLabel2 = new Label("Time of day (hour)");
+
+		// Buttons initialized
+		ok = new Button();
+		cancel = new Button();
+		
+		pane.add(nameLabel, 0, 1);
+		pane.add(name, 1, 1);
+		pane.add(descriptionLabel, 0, 2);
+		pane.add(description, 1, 2);
+		pane.add(start, 0, 3);
+		pane.add(yearLabel, 0, 4);
+		pane.add(yearStart, 0, 5);
+		pane.add(monthLabel, 1, 4);
+		pane.add(monthStart, 1, 5);
+		pane.add(dayLabel, 2, 4);
+		pane.add(dayStart, 2, 5);
+		pane.add(hourLabel, 3, 4);
+		pane.add(hoursStart, 3, 5);
+		pane.add(end, 0, 6);
+		pane.add(yearLabel2, 0, 7);
+		pane.add(yearEnd, 0, 8);
+		pane.add(monthLabel2, 1, 7);
+		pane.add(monthEnd, 1, 8);
+		pane.add(dayLabel2, 2, 7);
+		pane.add(dayEnd, 2, 8);
+		pane.add(hourLabel2, 3, 7);
+		pane.add(hoursEnd, 3, 8);
+		pane.add(ok, 0, 9);
+		pane.add(cancel, 1, 9);
+
+		return pane;
+	}
+	
+	
 	private LocalDateTime createLocalDateTime(String year, String month, String day, String hour) {
 		String localDate;
 		LocalDateTime time = null;
