@@ -138,7 +138,7 @@ public class ApplicationView implements ChangeListener {
 	 * Returns the "Add Event" Button
 	 * @return Button
 	 */
-	private Button getAddEventButton() {
+	/*private Button getAddEventButton() {
 		return eventView.getAddEventButton();
 	}
 	/**
@@ -182,7 +182,7 @@ public class ApplicationView implements ChangeListener {
 		eventButtons.getChildren().clear();
 		eventButtons.setAlignment(Pos.CENTER);
 		eventButtons.setSpacing(20.0);
-		eventButtons.getChildren().addAll(getAddEventButton(), getEditEventButton(),
+		eventButtons.getChildren().addAll( getEditEventButton(),
 				getDeleteEventButton());
 		return eventButtons;
 	}

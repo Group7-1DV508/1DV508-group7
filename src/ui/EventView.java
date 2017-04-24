@@ -6,18 +6,21 @@ import controls.EventControl;
 import controls.EventListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
+import functions.Event;
 public class EventView {
 
 	private EventListener eventListener;
@@ -39,6 +42,7 @@ public class EventView {
 	// Buttons - Add Event Window
 	private Button ok;
 	private Button cancel;
+	private Button close;
 
 	/**
 	 * Update the EventListener variable with the EventListener given as input
@@ -52,8 +56,13 @@ public class EventView {
 	 * method to create and return the add Event button, 
 	 * @return GridPane root
 	 */
-	public Button getAddEventButton() {
+	public GridPane getRoot() {
+		GridPane root = new GridPane();
+		// alignment in the root
+		root.setAlignment(Pos.BOTTOM_CENTER); 
+		// button for add event
 		Button addEvent = new Button("Add Event"); 
+		root.add(addEvent, 0, 1);
 		/*
 		 * when Add Event button is clicked a popup window is created where
 		 * the user can provide information about the Event,
@@ -143,7 +152,7 @@ public class EventView {
 			}
 		});
 		// return the root created.
-		return addEvent;
+		return root;
 
 	}
 
@@ -221,6 +230,107 @@ public class EventView {
 
 		return pane;
 	}
+	
+private VBox ViewEventwindow(){// it could be change that it will return GridPane
+		VBox event = new VBox();
+		event.setSpacing(10);
+		event.setPrefSize(200, 200);
+		Label info = new Label ("Information");
+		Text title = new Text(name.getText());
+		Text date  = new Text(yearStart.getText()+ monthStart.getText() +dayStart.getText() );
+		Text dec   = new Text (description.getText());
+			 dec.setWrappingWidth(250);
+		Text start = new Text ("Event Starts "+hoursStart.getText());
+		Text end   = new Text ("Event Ends "+hoursEnd.getText());
+			close  = new Button("Close");
+		
+		 if (isNotDurationEvent()) {
+		 event.getChildren().addAll(info, title, date,dec,start, close);	
+		} else{
+			
+			 event.getChildren().addAll(info, title, date,dec,start,end,close);	
+		}
+		
+		
+		return event;
+		
+	}
+	
+	
+/**
+ * the argument type, it will depend on 
+ * what we are using in Timeline View, 
+ * I used GridPane just to set up method
+*/
+
+	public GridPane getEvent(Circle P) {
+		
+		GridPane root = new GridPane();
+		 VBox textFieldsStart = new VBox();
+		 
+			
+			P.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					// TODO Auto-generated method stub
+					final Stage eventWindow = new Stage();
+			
+				
+					close.setOnAction(new EventHandler<ActionEvent>() {
+
+							@Override
+							public void handle(ActionEvent event) {
+								eventWindow.close();
+							}
+					});
+
+						
+						Scene eventScene = new Scene(textFieldsStart);
+						eventWindow.setScene(eventScene);
+						eventWindow.show();
+
+			}
+		});
+			
+				// return the root created.
+		  root.add(textFieldsStart,0,1);
+		  root.add(close,0,2);
+				
+
+		  return root;
+
+
+	}
+	
+	
+	private void ViewEventWindow( Event e){// it could be change that it will return GridPane
+		
+		VBox event = new VBox();
+		event.setSpacing(10);
+		event.setPrefSize(200, 200);
+		Label info = new Label ("Information");
+		Text title = new Text();
+		Text date  = new Text(yearStart.getText()+ monthStart.getText() +dayStart.getText() );
+		Text dec   = new Text (description.getText());
+			 dec.setWrappingWidth(30);
+		
+		Text start = new Text ("Event Starts "+hoursStart.getText());
+		//the view event only needs end hour,  
+		Text end   = new Text ("Event Ends "+hoursEnd.getText());
+			close  = new Button("Close ");
+		
+		 if (isNotDurationEvent()) {
+		 event.getChildren().addAll(info, title, date,dec,start, close);	
+		} else{
+			
+			 event.getChildren().addAll(info, title, date,dec,start,end,close);	
+		}
+		
+		
+	
+		
+	}
+	
 	
 	
 	
