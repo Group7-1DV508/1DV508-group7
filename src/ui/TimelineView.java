@@ -46,14 +46,9 @@ public class TimelineView {
 	 * input information about timeline (name, start and end dates) and a "Save" button
 	 * @return An HBox with a button "Add Timeline"
 	 */
-	public GridPane getRoot() {
+	public Button getAddTimelineButton() {
 		addTimelineWindow();
-		gp.add(addTimelineButton, 0, 1);
-		gp.add(timelineBox, 0, 2);
-		gp.setMinWidth(500);
-		addTimelineButton.setPadding(new Insets(10));
-		
-		return gp;
+		return addTimeline;
 	}
 	
 	/**
@@ -159,7 +154,7 @@ public class TimelineView {
 			// If timeline was added successfully, closes the window
 			if (timelineListener.onAddTimeline(name, start, end)) {
 				// Displays timeline
-				displayTimeline();
+				//displayTimeline();
 				addTimelineWindow.close();
 			}
 			
