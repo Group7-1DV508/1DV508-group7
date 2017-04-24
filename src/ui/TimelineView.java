@@ -3,24 +3,17 @@ package ui;
 import java.time.LocalDateTime;
 
 import controls.TimelineListener;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -36,12 +29,11 @@ public class TimelineView {
 	private HBox timelineBox = new HBox();
 	// Stage for new window where user inputs information about timeline
 	private Stage addTimelineWindow = new Stage();
-	private final TextField timelineName = new TextField("Timeline Name");
-	private final TextField timelineStart = new TextField("Start Date");
-	private final TextField timelineEnd = new TextField("End Date");
+	private final TextField timelineName = new TextField();
+	private final TextField timelineStart = new TextField();
+	private final TextField timelineEnd = new TextField();
+	private final BooleanProperty theFocus = new SimpleBooleanProperty(true);
 	private TimelineListener timelineListener;
-	// HBox that contains "Add Event" button
-	private HBox eventButton = new HBox();
 
 	/**
 	 * Sets listener to be able to implement functions for certain UI actions
@@ -68,7 +60,11 @@ public class TimelineView {
 		return gp;
 	}
 
-	public Button getAddTimelineButton(){
+	/**
+	 *
+	 * @return addTimeline
+	 */
+	public Button getAddTimelineButton() {
 
 		return addTimeline;
 	}
@@ -81,7 +77,6 @@ public class TimelineView {
 		addTimelineButton.getChildren().add(addTimeline);
 		addTimeline.setPadding(new Insets(5));
 		addTimeline.setOnAction(new TimelineHandler());
-
 	}
 
 	/**
@@ -91,8 +86,9 @@ public class TimelineView {
 		GridPane addTimelineRoot = initAddTimeline();
 		// Sets what happens when "Save" button is clicked
 		confirmTimeline.setOnAction(new ConfirmTimelineHandler());
-		addTimelineWindow.setTitle("Add timeline");
+		addTimelineWindow.setTitle("ADD TIMELINE WINDOW");
 		addTimelineWindow.setScene(new Scene(addTimelineRoot, 600, 300));
+		addTimelineWindow.setResizable(false);
 		addTimelineWindow.show();
 	}
 
@@ -106,8 +102,11 @@ public class TimelineView {
 		GridPane addTimelineRoot = new GridPane();
 
 		confirmTimeline.setFont(new Font("Times new Roman", 20));
+		timelineName.setPromptText("Timeline Name");
 		timelineName.setFont(new Font("Times new Roman", 20));
+		timelineStart.setPromptText("Start Year");
 		timelineStart.setFont(new Font("Times new Roman", 15));
+		timelineEnd.setPromptText("End Year");
 		timelineEnd.setFont(new Font("Times new Roman", 15));
 
 		confirmTimeline.setMinSize(100, 30);
@@ -118,38 +117,33 @@ public class TimelineView {
 		HBox dates = new HBox();
 		HBox confirmTimelineButton = new HBox(confirmTimeline);
 
-		startBox.setTranslateY(75);
-		startBox.setTranslateX(-10);
+		startBox.setPadding(new Insets(0, 25, 0, 0));
+		confirmTimelineButton.setPadding(new Insets(10));
+		dates.setPadding(new Insets(30));
 
-		endBox.setTranslateY(75);
-		endBox.setTranslateX(10);
-
-		confirmTimelineButton.setTranslateY(100);
-		nameBox.setTranslateY(50);
-
-		nameBox.setAlignment(Pos.TOP_CENTER);
-		startBox.setAlignment(Pos.TOP_CENTER);
-		endBox.setAlignment(Pos.TOP_CENTER);
-		confirmTimelineButton.setAlignment(Pos.TOP_CENTER);
+		confirmTimelineButton.setAlignment(Pos.CENTER);
+		dates.setAlignment(Pos.CENTER);
+		nameBox.setAlignment(Pos.CENTER);
 
 		dates.getChildren().addAll(startBox, endBox);
 		addTimelineRoot.add(nameBox, 0, 1);
 		addTimelineRoot.add(dates, 0, 2);
 		addTimelineRoot.add(confirmTimelineButton, 0, 3);
-		addTimelineRoot.setAlignment(Pos.TOP_CENTER);
+		addTimelineRoot.setAlignment(Pos.CENTER);
 
+		/*
+		 * The textfield timelineName was already focused(clicked) once the user
+		 * enters the add timeline window. Using BooleanProperty we change the
+		 * focus to the root and the promptText from the TextField is displayed.
+		 */
+		timelineName.focusedProperty().addListener((obsV, oldV, newV) -> {
+			if (newV && theFocus.get()) {
+				addTimelineRoot.requestFocus();
+				theFocus.setValue(false);
+			}
+		});
 		return addTimelineRoot;
 	}
-
-	/**
-	 * Displays a draft of how the timeline should look when it's added. The
-	 * timeline contains "Add event" button.
-	 */
-	private void displayTimeline() {
-
-
-	}
-
 
 	/**
 	 * Private class of EventHandler that runs a method to open add timeline
@@ -166,13 +160,13 @@ public class TimelineView {
 		}
 	}
 
-
 	/**
 	 * Private class of EventHandler that runs a method to save timeline in
 	 * application if input is correct and close add timeline window. Is ran
-	 * when "Save" button is clicked.
+	 * when "Save" button is clicked. Also checks if LocalDateTime format is
+	 * correct.
 	 *
-	 * @author Indre Kvedaraite
+	 * @author Indre Kvedaraite, Stefanos Bampovits
 	 *
 	 */
 	private class ConfirmTimelineHandler implements EventHandler<ActionEvent> {
@@ -181,16 +175,26 @@ public class TimelineView {
 		public void handle(ActionEvent arg0) {
 			// Variables to collect input from user
 			String name = timelineName.getText();
-			String startDate = timelineStart.getText() + "-01-01T03:00:00";
-			String endDate = timelineEnd.getText() + "-01-01T03:00:00";
+			String startDate = timelineStart.getText();
+			String endDate = timelineEnd.getText();
 
-			LocalDateTime start = LocalDateTime.parse(startDate);
-			LocalDateTime end = LocalDateTime.parse(endDate);
+			// Parses temporary values if user input is wrong, to avoid
+			// exception
+			LocalDateTime start = LocalDateTime.parse("0000-01-01T03:00:01");
+			LocalDateTime end = LocalDateTime.parse("0000-01-01T03:00:01");
+
+			// If the startDate is 4 integers long, parse into LocalDateTime
+			if (startDate.length() == 4 && startDate.matches("[0-9]+")) {
+				start = LocalDateTime.parse(startDate + "-01-01T03:00:00");
+			}
+			// If the endDate is 4 integers long, parse into LocalDateTime
+			if (endDate.length() == 4 && endDate.matches("[0-9]+")) {
+				end = LocalDateTime.parse(endDate + "-01-01T03:00:00");
+			}
 
 			// If timeline was added successfully, closes the window
 			if (timelineListener.onAddTimeline(name, start, end)) {
-				// Displays timeline
-				displayTimeline();
+
 				addTimelineWindow.close();
 			}
 
