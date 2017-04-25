@@ -342,8 +342,9 @@ public class EventView {
 		Label info = new Label("Information");
 		Text title = new Text(e.getEventName());
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm"); //Jul 20 2013  07:30 PM the printed result
 		String formattedStringS = e.getEventStart().format(formatter);
+		
 
 		Text dateStart = new Text("Event starts at: " + formattedStringS);
 		Text dec = new Text(e.getEventDescription());
