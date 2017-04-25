@@ -13,7 +13,7 @@ public class EventControl implements EventListener {
 	@Override
 	public boolean onAddEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
 		if (isCorrectInputDuration(name, description, start, end)) {
-			currentApp.getCurrentTimeline().addEventDuration(name, description, start, end);
+			currentApp.addEventToCurrentDuration(name, description, start, end);
 			return true;
 		}
 		return true;	
