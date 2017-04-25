@@ -186,8 +186,12 @@ public class EventView {
 		Label hourLabel2 = new Label("Time of day (hour)");
 
 		//Buttons initialized
-		ok = new Button();
-		cancel = new Button();
+		ok = new Button("Ok");
+		ok.setMaxSize(75, 35);
+		ok.setMinSize(75, 35);
+		cancel = new Button("Cancel");
+		cancel.setMaxSize(75, 35);
+		cancel.setMinSize(75, 35);
 
 		//Add initialized Nodes to the GridPane
 		pane.add(nameLabel, 0, 1);
