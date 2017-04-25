@@ -65,7 +65,7 @@ public class TimelineView {
 	 * @return addTimeline
 	 */
 	public Button getAddTimelineButton() {
-
+		addTimelineWindow();
 		return addTimeline;
 	}
 
