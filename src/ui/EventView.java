@@ -1,10 +1,12 @@
 package ui;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import controls.EventControl;
 import controls.EventListener;
 import controls.TimelineListener;
+import functions.Event;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,6 +26,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class EventView {
@@ -47,6 +50,8 @@ public class EventView {
 	// Buttons - Add Event Window
 	private Button ok;
 	private Button cancel;
+	private Button editEvent;
+	private Button delete;
 
 	/**
 	 * Update the EventListener variable with the EventListener given as input
@@ -71,20 +76,14 @@ public class EventView {
 		Button addEvent = new Button("Add Event");
 		root.add(addEvent, 0, 1);
 
-		// New edit Event button is created
-				Button editEvent = new Button("Edit Event");
-				root.add(editEvent, 1, 1);
-				
 		/*
 		 * when Add Event button is clicked a popup window is created where the
 		 * user can provide information about the Event, User has to provide
 		 * Name, Description and Start Date, End Date however is optional.
 		 */
 
-		
-
 		addEvent.setOnAction(new EventHandler<ActionEvent>() {
-		
+
 			@Override
 			public void handle(ActionEvent event) {
 				final Stage eventWindow = new Stage();
@@ -132,7 +131,7 @@ public class EventView {
 							if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
 								eventWindow.close();
 							}
-						 
+
 						}
 
 					}
@@ -148,6 +147,14 @@ public class EventView {
 						eventWindow.close();
 					}
 				});
+				editEvent.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+
+					}
+
+				});
 
 				/*
 				 * Creates a Scene and builds the Add Event popup window
@@ -158,135 +165,87 @@ public class EventView {
 				 * converted to String and LocalDateTime then application
 				 * listener is calling the onAddEvent-method
 				 */
-				
+
 				Scene eventScene = new Scene(textFieldsStart);
 				eventWindow.setScene(eventScene);
 				eventWindow.show();
 
 			}
+
 		});
+		
+
 		editEvent.setOnAction(new EventHandler<ActionEvent>() {
 
-			@Override
 			public void handle(ActionEvent event) {
 				final Stage editEventWindow = new Stage();
-				 BorderPane root = new BorderPane();
-				    Scene scene = new Scene(root, 280, 100, Color.BLACK);
 
-				    GridPane gridpane = new GridPane();
-				    gridpane.setPadding(new Insets(5));
-				    gridpane.setHgap(5);
-				    gridpane.setVgap(5);
-				    ColumnConstraints column1 = new ColumnConstraints(50);
-				    ColumnConstraints column2 = new ColumnConstraints(100, 10, 300);
-				    column2.setHgrow(Priority.ALWAYS);
-				    gridpane.getColumnConstraints().addAll(column1, column2);
+				GridPane textFieldsEdit = createEditEventWindow();
 
+				ok.setOnAction(new EventHandler<ActionEvent>() {
 
-				    Button okEdit = new Button("OK");
-				    okEdit.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						/*
+						 * If Name, Description or Start Date fields are empty
+						 * an Error alert shows to the user
+						 */
+						if (isNeededFieldEmpty()) {
+							Alert emptyFieldError = new Alert(Alert.AlertType.ERROR,
+									"Name, Description and Start Date can't be empty.");
+							emptyFieldError.showAndWait();
+						}
+						/*
+						 * If the event doesn't have End Date an non duration
+						 * Event is created
+						 */
+						else if (isNotDurationEvent()) {
+							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
+									dayStart.getText(), hoursStart.getText());
+							String eventname = name.getText();
+							String eventdescrip = description.getText();
 
-				        @Override
-				        public void handle(ActionEvent event) {
-				        	final Stage eventWindow = new Stage();
+							if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
+								editEventWindow.close();
+							}
+						}
+						/*
+						 * If the Event has End Time an Event with duration is
+						 * created
+						 */
+						else {
+							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
+									dayStart.getText(), hoursStart.getText());
+							LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
+									dayEnd.getText(), hoursEnd.getText());
+							String eventname = name.getText();
+							String eventdescrip = description.getText();
 
-							GridPane textFieldsStart = createEditEventWindow();
-							Scene eventScene = new Scene(textFieldsStart);
-							eventWindow.setScene(eventScene);
-							eventWindow.show();
-							editEventWindow.close();
-							ok.setOnAction(new EventHandler<ActionEvent>() {
+							if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
+								editEventWindow.close();
+							}
 
-								@Override
-								public void handle(ActionEvent event) {
-									/*
-									 * If Name, Description or Start Date fields are empty
-									 * an Error alert shows to the user
-									 */
-									if (isNeededFieldEmpty()) {
-										Alert emptyFieldError = new Alert(Alert.AlertType.ERROR,
-												"Name, Description and Start Date can't be empty.");
-										emptyFieldError.showAndWait();
-									}
-									/*
-									 * If the event doesn't have End Date an non duration
-									 * Event is created
-									 */
-									else if (isNotDurationEvent()) {
-										LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-												dayStart.getText(), hoursStart.getText());
-										String eventname = name.getText();
-										String eventdescrip = description.getText();
+						}
 
-										if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
-											eventWindow.close();
-										}
-									}
-									/*
-									 * If the Event has End Time an Event with duration is
-									 * created
-									 */
-									else {
-										LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-												dayStart.getText(), hoursStart.getText());
-										LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
-												dayEnd.getText(), hoursEnd.getText());
-										String eventname = name.getText();
-										String eventdescrip = description.getText();
+					}
+				});
 
-										if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
-											eventWindow.close();
-										}
-									 
-									}
+				/*
+				 * when cancel button is clicked the popup window is closed
+				 */
+				cancel.setOnAction(new EventHandler<ActionEvent>() {
 
-								}
-							});
+					@Override
+					public void handle(ActionEvent event) {
+						editEventWindow.close();
+					}
+				});
+				Scene eventScene = new Scene(textFieldsEdit);
+				editEventWindow.setScene(eventScene);
+				editEventWindow.show();
 
-							/*
-							 * when cancel button is clicked the popup window is closed
-							 */
-							cancel.setOnAction(new EventHandler<ActionEvent>() {
-
-								@Override
-								public void handle(ActionEvent event) {
-									eventWindow.close();
-								}
-							});
-				            
-				        }
-
-					
-				    });
-				    
-				    String[] editEventBox = new String[] { };;
-				   ChoiceBox<String> cb = new ChoiceBox<String>(
-				        FXCollections.observableArrayList());
-				    cb.getItems().add(""); //add the created events
-
-				    
-
-				    // ok-button
-				    GridPane.setHalignment(okEdit, HPos.RIGHT);
-				    gridpane.add(okEdit, 1, 0);
-				    
-				    
-				    //cb
-				    GridPane.setHalignment(cb, HPos.LEFT);
-				    gridpane.add(cb, 0, 0);
-				    
-				    root.setCenter(gridpane);
-				   editEventWindow.setScene(scene);
-				    editEventWindow.show();
-				    
-			
 			}
-});
-
-
-		
-		  
-		  // return the root created.
+		});
 		return root;
 
 	}
@@ -297,9 +256,9 @@ public class EventView {
 	 * 
 	 * @return GridPane
 	 */
-	
+
 	private GridPane createAddEventWindow() {
-		
+
 		GridPane pane = new GridPane();
 
 		// TextFields initialized
@@ -333,8 +292,10 @@ public class EventView {
 		Label hourLabel2 = new Label("Time of day (hour)");
 
 		// Buttons initialized
-		ok = new Button();
-		cancel = new Button();
+		ok = new Button("OK");
+		cancel = new Button("Cancel");
+		editEvent = new Button("Edit");
+		delete = new Button("Delete");
 
 		// Add initialized Nodes to the GridPane
 		pane.add(nameLabel, 0, 1);
@@ -361,8 +322,58 @@ public class EventView {
 		pane.add(hoursEnd, 3, 8);
 		pane.add(ok, 0, 9);
 		pane.add(cancel, 1, 9);
+		pane.add(editEvent, 2, 9);
+		pane.add(delete, 3, 9);
 
 		return pane;
+	}
+
+	private void ViewEventInfo(Event e) {
+		final Stage eventWindow = new Stage();
+
+		VBox window = new VBox();
+		window.setSpacing(10);
+		window.setPrefSize(200, 200);
+
+		Label info = new Label("Information");
+		Text title = new Text(e.getEventName());
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
+		String formattedStringS = e.getEventStart().format(formatter);
+
+		Text dateStart = new Text("Event starts at: " + formattedStringS);
+		Text dec = new Text(e.getEventDescription());
+		dec.setWrappingWidth(250);
+		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
+		String formattedStringE = e.getEventEnd().format(formatter2);
+		Text end = new Text("Event Ends at: " + formattedStringE);
+
+		if (isNotDurationEvent()) {
+			window.getChildren().addAll(info, title, dateStart, dec);
+		} else {
+			window.getChildren().addAll(info, title, dateStart, dec, end);
+		}
+
+		Button b = new Button();
+		
+		// get edit Button
+		// after the button is pressed it should check if the input data has been
+		// changed
+		if (b.isPressed()) {
+			title = new Text(e.getEventName());
+			formattedStringS = e.getEventStart().format(formatter);
+			dec = new Text(e.getEventDescription());
+			formattedStringE = e.getEventEnd().format(formatter2);
+		}
+
+		// get delete Button
+		
+		HBox buttonsHolder = new HBox();
+
+		Scene eventScene = new Scene(window);
+		eventWindow.setScene(eventScene);
+		eventWindow.show();
+
 	}
 
 	/**
@@ -379,76 +390,44 @@ public class EventView {
 	 *            user input
 	 * @return LocalDateTime
 	 */
+
+	private GridPane createEditEventWindow(Event e) {
+
+		e.getEventName();
+		e.getEventDescription();
+
+		e.getEventStart().getYear();
+		e.getEventStart().getMonth();
+		e.getEventStart().getDayOfMonth();
+		e.getEventStart().getHour();
+
+		e.getEventEnd().getYear();
+		e.getEventEnd().getMonth();
+		e.getEventEnd().getDayOfMonth();
+		e.getEventEnd().getHour();
+
+		// Change the so event can be edited:
+		name.setDisable(false);
+		description.setDisable(false);
+
+		yearStart.setDisable(false);
+		monthStart.setDisable(false);
+		dayStart.setDisable(false);
+		hoursStart.setDisable(false);
+
+		yearEnd.setDisable(false);
+		monthEnd.setDisable(false);
+		dayEnd.setDisable(false);
+		hoursEnd.setDisable(false);
 	
-	public void addEventListener (EventListener EventListener) {
-		this.eventListener = EventListener;
-	}
-	private GridPane createEditEventWindow() {
-		
-		GridPane pane = new GridPane();
-		
-		name = new TextField();
-		description = new TextField();
-
-		yearStart = new TextField();
-		monthStart = new TextField();
-		dayStart = new TextField();
-		hoursStart = new TextField();
-
-		yearEnd = new TextField();
-		monthEnd = new TextField();
-		dayEnd = new TextField();
-		hoursEnd = new TextField();
-		
-		
-		Label nameLabel = new Label("Name: ");
-		Label descriptionLabel = new Label("Description: ");
-
-		Label start = new Label("Start Date:");
-		Label end = new Label("End Date: ");
-		Label yearLabel = new Label("Year: ");
-		Label monthLabel = new Label("Month: ");
-		Label dayLabel = new Label("Day: ");
-		Label hourLabel = new Label("Time of day (hour)");
-
-		Label yearLabel2 = new Label("Year: ");
-		Label monthLabel2 = new Label("Month: ");
-		Label dayLabel2 = new Label("Day: ");
-		Label hourLabel2 = new Label("Time of day (hour)");
 
 		// Buttons initialized
 		ok = new Button();
 		cancel = new Button();
-		
-		pane.add(nameLabel, 0, 1);
-		pane.add(name, 1, 1);
-		pane.add(descriptionLabel, 0, 2);
-		pane.add(description, 1, 2);
-		pane.add(start, 0, 3);
-		pane.add(yearLabel, 0, 4);
-		pane.add(yearStart, 0, 5);
-		pane.add(monthLabel, 1, 4);
-		pane.add(monthStart, 1, 5);
-		pane.add(dayLabel, 2, 4);
-		pane.add(dayStart, 2, 5);
-		pane.add(hourLabel, 3, 4);
-		pane.add(hoursStart, 3, 5);
-		pane.add(end, 0, 6);
-		pane.add(yearLabel2, 0, 7);
-		pane.add(yearEnd, 0, 8);
-		pane.add(monthLabel2, 1, 7);
-		pane.add(monthEnd, 1, 8);
-		pane.add(dayLabel2, 2, 7);
-		pane.add(dayEnd, 2, 8);
-		pane.add(hourLabel2, 3, 7);
-		pane.add(hoursEnd, 3, 8);
-		pane.add(ok, 0, 9);
-		pane.add(cancel, 1, 9);
+		return getRoot();
 
-		return pane;
 	}
-	
-	
+
 	private LocalDateTime createLocalDateTime(String year, String month, String day, String hour) {
 		String localDate;
 		LocalDateTime time = null;
@@ -503,6 +482,5 @@ public class EventView {
 			return false;
 		}
 	}
-
 
 }
