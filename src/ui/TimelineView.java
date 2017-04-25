@@ -52,18 +52,6 @@ public class TimelineView {
 	 *
 	 * @return An HBox with a button "Add Timeline"
 	 */
-	public GridPane getRoot() {
-		addTimelineWindow();
-		gp.add(addTimelineButton, 0, 1);
-		gp.add(timelineBox, 0, 2);
-		addTimelineButton.setPadding(new Insets(10));
-		return gp;
-	}
-
-	/**
-	 *
-	 * @return addTimeline
-	 */
 	public Button getAddTimelineButton() {
 		addTimelineWindow();
 		return addTimeline;
@@ -144,11 +132,11 @@ public class TimelineView {
 		});
 		return addTimelineRoot;
 	}
-
+  
 	/**
 	 * Private class of EventHandler that runs a method to open add timeline
 	 * window when "Add Timeline" button is pressed
-	 *
+   *
 	 * @author Indre Kvedaraite
 	 *
 	 */
@@ -194,7 +182,6 @@ public class TimelineView {
 
 			// If timeline was added successfully, closes the window
 			if (timelineListener.onAddTimeline(name, start, end)) {
-
 				addTimelineWindow.close();
 			}
 

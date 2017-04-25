@@ -3,15 +3,17 @@ package controls;
 import java.time.LocalDateTime;
 
 import functions.App;
+import functions.Event;
 
 public class EventControl implements EventListener {
 	
 	private App currentApp;
+	private Event currentEvent;
 
 	@Override
 	public boolean onAddEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
 		if (isCorrectInputDuration(name, description, start, end)) {
-			currentApp.getCurrentTimeline().addEventDuration(name, description, start, end);
+			currentApp.addEventToCurrentDuration(name, description, start, end);
 			return true;
 		}
 		return true;	
@@ -36,6 +38,14 @@ public class EventControl implements EventListener {
 	public boolean onEditEvent(String name, String description, LocalDateTime start) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public void setCurrentEvent (Event e) {
+		currentEvent = e;
+	}
+	
+	public Event getCurrentEvent (Event e) {
+		return currentEvent;
 	}
 	/**
 	 * Set the variable currentApp to the App created by the ApplicationControl 
@@ -130,5 +140,7 @@ public class EventControl implements EventListener {
 			return false;
 		}
 	}	
+	
+	
 
 }
