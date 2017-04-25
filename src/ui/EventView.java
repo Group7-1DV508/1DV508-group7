@@ -364,7 +364,7 @@ public class EventView {
 		} else {
 			window.getChildren().addAll(info, title, dateStart, dec, end,editEvent);
 		}
-		createEditEventWindow(e);
+		
 		
 		// get edit Button
 		// after the button is pressed it should check if the input data has been
@@ -379,6 +379,7 @@ public class EventView {
 
 		// get delete Button
 		HBox all = new HBox();
+		all.setPrefSize(400, 400);
 		
 
 		all.getChildren().addAll(createEditEventWindow(e), window);
