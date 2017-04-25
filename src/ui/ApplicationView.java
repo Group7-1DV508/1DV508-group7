@@ -30,11 +30,10 @@ import javafx.scene.text.Text;
 
 
 public class ApplicationView implements ChangeListener {
-	
+
 	private EventView eventView;
 	private TimelineView timelineView;
 	private ApplicationListener appListener;
-	
 	//contains all parts of the window (Main view)
 	private final VBox view = new VBox();
 	//contains ComboBox to choose current timeline, add/delete timeline and help button
@@ -77,7 +76,6 @@ public class ApplicationView implements ChangeListener {
 		eventView = new EventView();
 		timelineView = new TimelineView();
 	}
-	
 	/**
 	 * Update the ApplicationListener variable with the ApplicationListener given as input
 	 * @param appList , (ApplicationListener)
@@ -203,7 +201,6 @@ public class ApplicationView implements ChangeListener {
 		}
 		chooseTimeline.setValue(current);
 		chooseTimeline.setOnAction( new EventHandler<ActionEvent>(){
-
 			@Override
 			public void handle(ActionEvent event) {
 				if (chooseTimeline.getItems().size() > 0) {
@@ -265,7 +262,6 @@ public class ApplicationView implements ChangeListener {
 		timelineMonth.setMinSize(MONTH_BOX_LENGTH, MONTH_BOX_HEIGHT);
 		timelineMonth.setAlignment(Pos.CENTER);
 		timelineMonth.setBackground(new Background(new BackgroundFill(Color.LIGHTSKYBLUE, null, null)));
-		
 	}
 	
 	/**
@@ -285,7 +281,6 @@ public class ApplicationView implements ChangeListener {
 			if (event.getEventEnd() == null) {
 				eventShape = new EventShape(current, event, event.getEventStart());
 				eventShape.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
 					@Override
 					public void handle(MouseEvent event) {
 						System.out.println("clicked Event");
@@ -480,7 +475,6 @@ public class ApplicationView implements ChangeListener {
 		showYear(current);
 		currentTimeline(current);
 		addEventsToTimeline(current);
-		
 	}
 
 	@Override
@@ -488,7 +482,6 @@ public class ApplicationView implements ChangeListener {
 		currentTimeline(current);
 		showYear(current);
 		addEventsToTimeline(current);
-		
 	}
 
 	@Override
@@ -496,7 +489,5 @@ public class ApplicationView implements ChangeListener {
 		addEventsToTimeline(current);
 		
 	}
-	
-	
-	
+  
 }
