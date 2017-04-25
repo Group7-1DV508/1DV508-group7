@@ -146,7 +146,7 @@ public class EventControlTest {
 		app.getCurrentTimeline().addEventDuration(name2, des2, start2, end2);
 		eventC.setCurrentEvent(app.getCurrentTimeline().getEvents().get(0));
 		boolean result = eventC.onEditEventDuration(name3, des3, start3, end3);
-		assertTrue(result);
+		assertFalse(result);
 		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventName(), name2);
 		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventDescription(), des2);
 		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventStart(), start2);
