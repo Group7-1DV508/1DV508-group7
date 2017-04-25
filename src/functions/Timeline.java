@@ -58,12 +58,55 @@ public class Timeline {
 		return (size() == 0);
 	}
 	
+
+	/**
+	 * takes a LocalDateTime as input and recieves the year as an int
+	 * @param date, LocalDateTime 
+	 * @return int
+	 */
+	public int getYear(LocalDateTime date) {
+		String str = date.toString();
+		StringBuilder sb = new StringBuilder();
+		sb.append(str.charAt(0));
+		sb.append(str.charAt(1));
+		sb.append(str.charAt(2));
+		sb.append(str.charAt(3));
+		return Integer.parseInt(sb.toString());
+	}
+	/**
+	 * takes a LocalDateTime as input and recieves the month as an int
+	 * @param date, LocalDateTime 
+	 * @return int
+	 */
+	public int getMonth(LocalDateTime date) {
+		String str = date.toString();
+		StringBuilder sb = new StringBuilder();
+		sb.append(str.charAt(5));
+		sb.append(str.charAt(6));
+		return Integer.parseInt(sb.toString());
+	}
+	/**
+	 * takes a LocalDateTime as input and recieves the day as an int
+	 * @param date, LocalDateTime 
+	 * @return int
+	 */
+	public int getDay(LocalDateTime date) {
+		String str = date.toString();
+		StringBuilder sb = new StringBuilder();
+		sb.append(str.charAt(8));
+		sb.append(str.charAt(9));
+		return Integer.parseInt(sb.toString());
+	}
+	
 	public void addEventDuration(String eventName, String eventDescription, LocalDateTime start, LocalDateTime end) {
 		events.add(new Event(eventName, eventDescription, start, end));
 	}
 	
 	public void addEvent(String eventName, String eventDescription, LocalDateTime start) {
 		events.add(new Event(eventName, eventDescription, start));
+	}
+	public String toString() {
+		return name;
 	}
 
 }

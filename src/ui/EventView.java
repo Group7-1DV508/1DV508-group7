@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class EventView {
@@ -51,13 +52,8 @@ public class EventView {
 	 * method to create and return the add Event button, 
 	 * @return GridPane root
 	 */
-	public GridPane getRoot() {
-		GridPane root = new GridPane();
-		// alignment in the root
-		root.setAlignment(Pos.BOTTOM_CENTER); 
-		// button for add event
+	public Button getAddEventButton() {
 		Button addEvent = new Button("Add Event"); 
-		root.add(addEvent, 0, 1);
 		/*
 		 * when Add Event button is clicked a popup window is created where
 		 * the user can provide information about the Event,
@@ -147,7 +143,7 @@ public class EventView {
 			}
 		});
 		// return the root created.
-		return root;
+		return addEvent;
 
 	}
 
@@ -190,8 +186,12 @@ public class EventView {
 		Label hourLabel2 = new Label("Time of day (hour)");
 
 		//Buttons initialized
-		ok = new Button();
-		cancel = new Button();
+		ok = new Button("Ok");
+		ok.setMaxSize(75, 35);
+		ok.setMinSize(75, 35);
+		cancel = new Button("Cancel");
+		cancel.setMaxSize(75, 35);
+		cancel.setMinSize(75, 35);
 
 		//Add initialized Nodes to the GridPane
 		pane.add(nameLabel, 0, 1);
@@ -221,6 +221,9 @@ public class EventView {
 
 		return pane;
 	}
+	
+	
+	
 
 	/**
 	 * Help method to create a LocalDateTime from the User input
