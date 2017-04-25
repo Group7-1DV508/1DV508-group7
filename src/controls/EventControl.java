@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import functions.App;
 import functions.Event;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class EventControl implements EventListener {
 
@@ -30,9 +32,7 @@ public class EventControl implements EventListener {
 
 	@Override
 	public boolean onEditEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
-		if (isCorrectInputDuration(name, description, start, end) || name != currentEvent.getEventName()
-				|| description != currentEvent.getEventDescription() || start != currentEvent.getEventStart()
-				|| end != currentEvent.getEventEnd()) {
+		if (isCorrectInputDuration(name, description, start, end)) {
 			currentEvent.setEventName(name);
 			currentEvent.setEventDescription(description);
 			currentEvent.setEventStart(start);
@@ -44,8 +44,7 @@ public class EventControl implements EventListener {
 
 	@Override
 	public boolean onEditEvent(String name, String description, LocalDateTime start) {
-		if (isCorrectInput(name, description, start) || name != currentEvent.getEventName()
-				|| description != currentEvent.getEventDescription() || start != currentEvent.getEventStart()) {
+		if (isCorrectInput(name, description, start)) {
 			currentEvent.setEventName(name);
 			currentEvent.setEventDescription(description);
 			currentEvent.setEventStart(start);
@@ -80,7 +79,6 @@ public class EventControl implements EventListener {
 	 */
 	private boolean isNameCorrect(String name) {
 		if (name.length() == 0) {
-			System.out.println("Please chose a name for your timeline");
 			return false;
 		} else {
 			return true;
@@ -111,8 +109,13 @@ public class EventControl implements EventListener {
 	 * @return boolean, true if start date is valid otherwise false
 	 */
 	private boolean isStartCorrect(LocalDateTime start) {
-		if (start == null) {
-			System.out.println("Please chose a start date for your timeline");
+		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
+		if (start.equals(temp)) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error in timeline start date");
+			alert.setHeaderText("Please choose a start date for your timeline");
+			alert.setContentText("Start year must be 4 numbers long. (Ex. 0001,0002...2016,2017)");
+			alert.show();
 			return false;
 		} else {
 			return true;
@@ -128,8 +131,13 @@ public class EventControl implements EventListener {
 	 * @return boolean, true if end date is valid otherwise false
 	 */
 	private boolean isEndCorrect(LocalDateTime end) {
-		if (end == null) {
-			System.out.println("Please chose an end date for your timeline");
+		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
+		if (end.equals(temp)) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error in timeline end date");
+			alert.setHeaderText("Please choose an end date for your timeline.");
+			alert.setContentText("End year must be 4 numbers long. (Ex. 0001,0002...2016,2017)");
+			alert.show();
 			return false;
 		} else {
 			return true;
