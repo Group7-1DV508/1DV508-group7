@@ -102,23 +102,6 @@ public class TimelineView {
 	}
 	
 	/**
-	 * Displays pink rectangle when timeline is added in main 
-	 * program window. The rectangle contains "Add event" button.
-	 */
-	private void displayTimeline () {
-		HBox rect = new HBox ();
-		rect.setStyle("-fx-background-color: #FF87C3;");
-		rect.setMinWidth(500);
-		rect.setMinHeight(200);
-		rect.getChildren().add(eventButton);
-		eventButton.setPadding(new Insets(5));
-		rect.setAlignment(Pos.BOTTOM_CENTER);
-		timelineBox.getChildren().add(rect);
-		
-		
-	}
-	
-	/**
 	 * Private class of EventHandler that runs a method to open
 	 * add timeline window when "Add Timeline" button is pressed
 	 * @author Indre Kvedaraite
@@ -153,8 +136,6 @@ public class TimelineView {
 			
 			// If timeline was added successfully, closes the window
 			if (timelineListener.onAddTimeline(name, start, end)) {
-				// Displays timeline
-				//displayTimeline();
 				addTimelineWindow.close();
 			}
 			
