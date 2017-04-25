@@ -147,7 +147,7 @@ public class EventView {
 						eventWindow.close();
 					}
 				});
-			
+
 				/*
 				 * Creates a Scene and builds the Add Event popup window
 				 */
@@ -165,23 +165,19 @@ public class EventView {
 			}
 
 		});
-		
 
 		return root;
 
 	}
 
-	
-	
-
-	private Button EditeButton(){
+	private Button EditButton() {
 
 		editEvent.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
 				final Stage editEventWindow = new Stage();
 
-				//GridPane textFieldsEdit = createEditEventWindow();
+				// GridPane textFieldsEdit = createEditEventWindow();
 
 				ok.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -201,7 +197,7 @@ public class EventView {
 						 * Event is created
 						 */
 						else if (isNotDurationEvent()) {
-							
+
 							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
 									dayStart.getText(), hoursStart.getText());
 							String eventname = name.getText();
@@ -236,8 +232,7 @@ public class EventView {
 				 * when cancel button is clicked the popup window is closed
 				 */
 				cancel.setOnAction(new EventHandler<ActionEvent>() {
-					//after that the edite window will be the same with eventInfoView so we don't
-					//need to close the window only set Disable again to TextField 
+
 					@Override
 					public void handle(ActionEvent event) {
 						name.setDisable(true);
@@ -254,15 +249,13 @@ public class EventView {
 						hoursEnd.setDisable(true);
 					}
 				});
-				//Scene eventScene = new Scene(textFieldsEdit);
-				//editEventWindow.setScene(eventScene);
-				//editEventWindow.show();
 
 			}
 		});
 		return editEvent;
-		
+
 	}
+
 	/**
 	 * Help method to create popup window, initializes all TextFields, Labels
 	 * and Buttons for the window, and then add it all to the GridPane
@@ -360,16 +353,14 @@ public class EventView {
 		Text end = new Text("Event Ends at: " + formattedStringE);
 
 		if (isNotDurationEvent()) {
-			window.getChildren().addAll(info, title, dateStart, dec,editEvent);
+			window.getChildren().addAll(info, title, dateStart, dec, editEvent);
 		} else {
-			window.getChildren().addAll(info, title, dateStart, dec, end,editEvent);
+			window.getChildren().addAll(info, title, dateStart, dec, end, editEvent);
 		}
-		
-		
+
 		// get edit Button
-		// after the button is pressed it should check if the input data has been
-		// changed
-		if (EditeButton().isPressed()) {
+
+		if (EditButton().isPressed()) {
 			createEditEventWindow(e);
 			title = new Text(e.getEventName());
 			formattedStringS = e.getEventStart().format(formatter);
@@ -380,7 +371,6 @@ public class EventView {
 		// get delete Button
 		HBox all = new HBox();
 		all.setPrefSize(400, 400);
-		
 
 		all.getChildren().addAll(createEditEventWindow(e), window);
 		Scene eventScene = new Scene(all);
@@ -389,36 +379,43 @@ public class EventView {
 
 	}
 
-	/**
-	 * Help method to create a LocalDateTime from the User input if invalid
-	 * input an error alert window will show to the user
-	 * 
-	 * @param year,
-	 *            user input
-	 * @param month,
-	 *            user input
-	 * @param day,
-	 *            user input
-	 * @param hour,
-	 *            user input
-	 * @return LocalDateTime
-	 */
-
 	private VBox createEditEventWindow(Event e) {
-		VBox editeHolder = new VBox(); // i think it is more easy to construct 
-		// as will you forgot to add GridPane and then add the fields inside it ^^
-		e.getEventName();
-		e.getEventDescription();
+		VBox editeHolder = new VBox();
+		
+		name = new TextField(e.getEventName());
+		description = new TextField(e.getEventDescription());
 
-		e.getEventStart().getYear();
-		e.getEventStart().getMonth();
-		e.getEventStart().getDayOfMonth();
-		e.getEventStart().getHour();
+		int strYear = e.getEventStart().getYear();
+		String year1 = Integer.toString(strYear);
+		yearStart = new TextField(year1);
 
-		e.getEventEnd().getYear();
-		e.getEventEnd().getMonth();
-		e.getEventEnd().getDayOfMonth();
-		e.getEventEnd().getHour();
+		int strMonth = e.getEventStart().getMonthValue();
+		String month1 = Integer.toString(strMonth);
+		monthStart = new TextField(month1);
+
+		int strDay = e.getEventStart().getDayOfMonth();
+		String days1 = Integer.toString(strDay);
+		dayStart = new TextField(days1);
+
+		int strHour = e.getEventStart().getHour();
+		String hour1 = Integer.toString(strHour);
+		dayStart = new TextField(hour1);
+
+		int strYearEnd = e.getEventEnd().getYear();
+		String year2 = Integer.toString(strYearEnd);
+		dayStart = new TextField(year2);
+
+		int strMonthEnd = e.getEventEnd().getMonthValue();
+		String month2 = Integer.toString(strMonthEnd);
+		monthStart = new TextField(month2);
+
+		int strDayEnd = e.getEventEnd().getDayOfMonth();
+		String days2 = Integer.toString(strDayEnd);
+		dayStart = new TextField(days2);
+
+		int strHourEnd = e.getEventEnd().getHour();
+		String hour2 = Integer.toString(strHourEnd);
+		dayStart = new TextField(hour2);
 
 		// Change the so event can be edited:
 		name.setDisable(false);
@@ -433,20 +430,18 @@ public class EventView {
 		monthEnd.setDisable(false);
 		dayEnd.setDisable(false);
 		hoursEnd.setDisable(false);
-		HBox h1 = new HBox ();
-		HBox h2 = new HBox ();
-		HBox h3 = new HBox ();
-		h1.getChildren().addAll(yearStart,monthStart, dayStart, hoursStart);
-		h2.getChildren().addAll(yearEnd,monthEnd, dayEnd, hoursEnd);
-		
-		
+		HBox h1 = new HBox();
+		HBox h2 = new HBox();
+		HBox h3 = new HBox();
+		h1.getChildren().addAll(yearStart, monthStart, dayStart, hoursStart);
+		h2.getChildren().addAll(yearEnd, monthEnd, dayEnd, hoursEnd);
 
 		// Buttons initialized
 		ok = new Button();
 		cancel = new Button();
 		h3.getChildren().addAll(cancel, ok);
-		
-		editeHolder.getChildren().addAll(name, description,h1, h2,h3 );
+
+		editeHolder.getChildren().addAll(name, description, h1, h2, h3);
 		return editeHolder;
 
 	}
