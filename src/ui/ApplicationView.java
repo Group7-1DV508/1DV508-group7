@@ -154,24 +154,6 @@ public class ApplicationView implements ChangeListener {
 	}
 
 	/**
-	 * Returns the "Edit Event" Button
-	 * 
-	 * @return Button
-	 */
-	private Button getEditEventButton() {
-		return new Button("Edit Event");
-	}
-
-	/**
-	 * Returns the "Delete Event" Button
-	 * 
-	 * @return Button
-	 */
-	private Button getDeleteEventButton() {
-		return new Button("Delete Event");
-	}
-
-	/**
 	 * Creates the Help Button
 	 */
 	private Button createHelpButton() {
@@ -201,7 +183,7 @@ public class ApplicationView implements ChangeListener {
 		eventButtons.getChildren().clear();
 		eventButtons.setAlignment(Pos.CENTER);
 		eventButtons.setSpacing(20.0);
-		eventButtons.getChildren().addAll(getAddEventButton(), getEditEventButton(), getDeleteEventButton());
+		eventButtons.getChildren().addAll(getAddEventButton());
 		return eventButtons;
 	}
 
