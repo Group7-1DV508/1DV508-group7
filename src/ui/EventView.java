@@ -22,15 +22,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
+import functions.Event;
 public class EventView {
 
 	private EventListener eventListener;
@@ -55,6 +55,9 @@ public class EventView {
 	private Button editEvent;
 	private Button delete;
 	private Text title;
+	private Button close;
+
+
 	/**
 	 * Update the EventListener variable with the EventListener given as input
 	 * 
@@ -70,7 +73,9 @@ public class EventView {
 	 * 
 	 * @return GridPane root
 	 */
+
 public Button getAddEventButton() {
+
 		
 		Button addEvent = new Button("Add Event"); 
 		
@@ -300,6 +305,7 @@ public Button getAddEventButton() {
 		});
 		return editEvent;
 
+
 	}
 
 	/**
@@ -343,10 +349,17 @@ public Button getAddEventButton() {
 		Label dayLabel2 = new Label("Day: ");
 		Label hourLabel2 = new Label("Time of day (hour)");
 
-		// Buttons initialized
-		ok = new Button("OK");
+
+
+
+		//Buttons initialized
+		ok = new Button("Ok");
+		ok.setMaxSize(75, 35);
+		ok.setMinSize(75, 35);
 		cancel = new Button("Cancel");
-		delete = new Button("Delete");
+		cancel.setMaxSize(75, 35);
+		cancel.setMinSize(75, 35);
+    delete = new Button("Delete");
 
 		// Add initialized Nodes to the GridPane
 		pane.add(nameLabel, 0, 1);
@@ -379,6 +392,7 @@ public Button getAddEventButton() {
 	}
 
 	
+
 	public void ViewEventInfo(Event e) {
 		final Stage eventWindow = new Stage();
 
@@ -390,6 +404,7 @@ public Button getAddEventButton() {
 		info.setFont(Font.font("Verdana",20));
 		info.setTextFill(Color.CORNFLOWERBLUE);
 		title = new Text("Title: "+ e.getEventName());
+
 		
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
@@ -427,6 +442,7 @@ public Button getAddEventButton() {
 		eventWindow.show();
 
 	}
+
 
 	public VBox createEditEventWindow(Event e) {
 		VBox editeHolder = new VBox();
