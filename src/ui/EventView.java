@@ -471,7 +471,7 @@ public class EventView {
 		monthStart.setDisable(true);
 		dayStart.setDisable(true);
 		timeStart.setDisable(true);
-		System.out.println(e.getEventEnd());
+
 		if (e.getEventEnd() != null) {
 			int strYearEnd = e.getEventEnd().getYear();
 			String year2 = Integer.toString(strYearEnd);
