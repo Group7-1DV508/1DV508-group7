@@ -2,6 +2,7 @@ package controls;
 
 import java.util.ArrayList;
 
+import functions.Event;
 import functions.Timeline;
 
 public interface ChangeListener {
@@ -27,5 +28,5 @@ public interface ChangeListener {
 	 */
 	void onEditTimeline(Timeline current);									//used when current timeline is edited, either timeline or event
 																			//or when new events are created or deleted
-	
+
 }
