@@ -262,7 +262,7 @@ public Button getAddEventButton() {
 								monthEnd.setDisable(true);
 								dayEnd.setDisable(true);
 								hoursEnd.setDisable(true);
-								ok.setDisable(false);
+								ok.setDisable(true);
 								cancel.setDisable(false);
 							
 							}
@@ -576,6 +576,14 @@ public Button getAddEventButton() {
 		// front.
 		for (int i = 0; i < 4 - year.length(); i++) {
 			year = "0" + year;
+		}
+		//if month is less than 2 digits, zeroes will be added in front
+		for (int i = 0; i < 2 - month.length() ; i++) {
+			month = "0" + month;
+		}
+		//if day is less than 2 digits, zeroes will be added in front
+		for (int i = 0; i < 2 - day.length(); i++ ) {
+			day = "0"+day;
 		}
 		// creates the String format that is needed to create LocalDateTime
 		localDate = year + "-" + month + "-" + day + "T" + hour + ":00:00";
