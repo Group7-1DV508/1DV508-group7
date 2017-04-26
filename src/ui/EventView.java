@@ -361,7 +361,7 @@ public Button getAddEventButton() {
 		cancel = new Button("Cancel");
 		cancel.setMaxSize(75, 35);
 		cancel.setMinSize(75, 35);
-    delete = new Button("Delete");
+		delete = new Button("Delete");
 
 		// Add initialized Nodes to the GridPane
 		pane.add(nameLabel, 0, 1);
@@ -420,9 +420,8 @@ public Button getAddEventButton() {
 	if (e.getEventEnd() == null) {
 				//editEventWindow.close();
 				window.getChildren().addAll(info, title, dateStart, dec, EditButton());
-			
-		
-	}else   {
+	}
+	else   {
 			createEditEventWindow(e);
 			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
 			String formattedStringE = e.getEventEnd().format(formatter2);
