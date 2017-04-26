@@ -32,6 +32,7 @@ public class EventControl implements EventListener {
 
 	@Override
 	public boolean onEditEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
+		setCurrentEvent();
 		if (isCorrectInputDuration(name, description, start, end)) {
 			currentEvent.setEventName(name);
 			currentEvent.setEventDescription(description);
@@ -44,6 +45,7 @@ public class EventControl implements EventListener {
 
 	@Override
 	public boolean onEditEvent(String name, String description, LocalDateTime start) {
+		setCurrentEvent();
 		if (isCorrectInput(name, description, start)) {
 			currentEvent.setEventName(name);
 			currentEvent.setEventDescription(description);
@@ -53,8 +55,8 @@ public class EventControl implements EventListener {
 		return false;
 	}
 	
-	public void setCurrentEvent (Event e) {
-		currentEvent = e;
+	public void setCurrentEvent() {
+		currentEvent = currentApp.getCurrentEvent();
 	}
 	
 	public Event getCurrentEvent (Event e) {

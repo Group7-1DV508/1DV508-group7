@@ -174,7 +174,7 @@ public Button getAddEventButton() {
 
 	}
 
-	public Button EditButton() {
+	public Button EditButton(Event e) {
 
 		
 		editEvent =new Button("Edit");
@@ -214,14 +214,17 @@ public Button getAddEventButton() {
 						 * If the event doesn't have End Date an non duration
 						 * Event is created
 						 */
-						 if (yearEnd == null || monthEnd == null || dayEnd == null ||hoursEnd==null ){
+						 if (!e.isDuration()){
 							
 							 LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
 								      			  dayStart.getText(), hoursStart.getText());
+							 System.out.println(startTime);
 							 String eventname = name.getText();
+							 System.out.println(eventname);
 							 String eventdescrip = description.getText();
+							 System.out.println(eventdescrip);
 							 title = new Text("Title: "+ description.getText());
-						if (eventListener.onAddEvent(eventname, eventdescrip, startTime) ) {
+						if (eventListener.onEditEvent(eventname, eventdescrip, startTime) ) {
 							
 							
 							name.setDisable(true);
@@ -254,7 +257,7 @@ public Button getAddEventButton() {
 							String eventdescrip = description.getText();
 							 
 
-							if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) { 
+							if (eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) { 
 								// it should dispaly an alart if the input is not correct
 								//title = new Text("Title: "+ description.getText());
 								name.setDisable(true);
@@ -419,14 +422,14 @@ public Button getAddEventButton() {
 			
 	if (e.getEventEnd() == null) {
 				//editEventWindow.close();
-				window.getChildren().addAll(info, title, dateStart, dec, EditButton());
+				window.getChildren().addAll(info, title, dateStart, dec, EditButton(e));
 	}
 	else   {
 			createEditEventWindow(e);
 			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
 			String formattedStringE = e.getEventEnd().format(formatter2);
 			Text end = new Text("Event Ends at: " + formattedStringE);
-			window.getChildren().addAll(info, title, dateStart, dec, end, EditButton());
+			window.getChildren().addAll(info, title, dateStart, dec, end, EditButton(e));
 			
 		}
 
