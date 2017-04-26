@@ -1,9 +1,7 @@
 package ui;
 
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 
 import controls.EventListener;
 import functions.Event;
@@ -14,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -23,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 public class EventView {
 
 	private EventListener eventListener;
@@ -47,8 +47,8 @@ public class EventView {
 	private Button editEvent;
 	private Button delete;
 	private Text title;
-	private Button close;
-
+	private ComboBox<String> timeStart;
+	private ComboBox<String> timeEnd;
 
 	/**
 	 * Update the EventListener variable with the EventListener given as input
@@ -66,16 +66,14 @@ public class EventView {
 	 * @return GridPane root
 	 */
 
-public Button getAddEventButton() {
+	public Button getAddEventButton() {
 
-		
-		Button addEvent = new Button("Add Event"); 
-		
+		Button addEvent = new Button("Add Event");
+
 		/*
-		 * when Add Event button is clicked a popup window is created where
-		 * the user can provide information about the Event,
-		 * User has to provide Name, Description and Start Date, End Date
-		 * however is optional.
+		 * when Add Event button is clicked a popup window is created where the
+		 * user can provide information about the Event, User has to provide
+		 * Name, Description and Start Date, End Date however is optional.
 		 */
 		addEvent.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -102,29 +100,37 @@ public Button getAddEventButton() {
 							Alert emptyFieldError = new Alert(Alert.AlertType.ERROR,
 									"Name, Description and Start Date can't be empty.");
 							emptyFieldError.showAndWait();
-							} 
+						}
 						/*
-						 * If the event doesn't have End Date an non duration Event 
-						 * is created
+						 * If the event doesn't have End Date an non duration
+						 * Event is created
 						 */
 						else if (isNotDurationEvent()) {
 							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-									dayStart.getText(), hoursStart.getText());
+									dayStart.getText(),
+									timeStart.getValue()/*
+														 * hoursStart.getText()
+														 */);
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
 
 							if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
 								eventWindow.close();
 							}
-						} 
+						}
 						/*
-						 * If the Event has End Time an Event with duration is created
+						 * If the Event has End Time an Event with duration is
+						 * created
 						 */
 						else {
 							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-									dayStart.getText(), hoursStart.getText());
+									dayStart.getText(),
+									timeStart.getValue() /*
+															 * hoursStart.getText()
+															 */);
 							LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
-									dayEnd.getText(), hoursEnd.getText());
+									dayEnd.getText(),
+									timeEnd.getValue() /* hoursEnd.getText() */);
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
 
@@ -138,8 +144,7 @@ public Button getAddEventButton() {
 				});
 
 				/*
-				 * when cancel button is clicked the popup window
-				 * is closed
+				 * when cancel button is clicked the popup window is closed
 				 */
 				cancel.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -150,8 +155,7 @@ public Button getAddEventButton() {
 				});
 
 				/*
-				 * Creates a Scene and builds the Add Event popup
-				 * window
+				 * Creates a Scene and builds the Add Event popup window
 				 */
 				Scene eventScene = new Scene(textFieldsStart);
 				eventWindow.setScene(eventScene);
@@ -159,15 +163,13 @@ public Button getAddEventButton() {
 
 			}
 		});
-		// return the root created.
 		return addEvent;
 
 	}
 
 	public Button EditButton(Event e) {
 
-		
-		editEvent =new Button("Edit");
+		editEvent = new Button("Edit");
 		editEvent.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
@@ -177,15 +179,14 @@ public Button getAddEventButton() {
 				yearStart.setDisable(false);
 				monthStart.setDisable(false);
 				dayStart.setDisable(false);
-				hoursStart.setDisable(false);
+				timeStart.setDisable(false);
 				yearEnd.setDisable(false);
 				monthEnd.setDisable(false);
 				dayEnd.setDisable(false);
-				hoursEnd.setDisable(false);
+				timeEnd.setDisable(false);
 				ok.setDisable(false);
 				cancel.setDisable(false);
 
-				// GridPane textFieldsEdit = createEditEventWindow();
 
 				ok.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -204,34 +205,28 @@ public Button getAddEventButton() {
 						 * If the event doesn't have End Date an non duration
 						 * Event is created
 						 */
-						 if (!e.isDuration()){
-							
-							 LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-								      			  dayStart.getText(), hoursStart.getText());
-							 System.out.println(startTime);
-							 String eventname = name.getText();
-							 System.out.println(eventname);
-							 String eventdescrip = description.getText();
-							 System.out.println(eventdescrip);
-							 title = new Text("Title: "+ description.getText());
-						if (eventListener.onEditEvent(eventname, eventdescrip, startTime) ) {
-							
-							
-							name.setDisable(true);
-							description.setDisable(true);
+						if (!e.isDuration()) {
 
-							yearStart.setDisable(true);
-							monthStart.setDisable(true);
-							dayStart.setDisable(true);
-							hoursStart.setDisable(true);
+							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
+									dayStart.getText(), timeStart.getValue());
+							String eventname = name.getText();
+							String eventdescrip = description.getText();
+							title = new Text("Title: " + description.getText());
+							if (eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
 
-							yearEnd.setDisable(true);
-							monthEnd.setDisable(true);
-							dayEnd.setDisable(true);
-							hoursEnd.setDisable(true);
-						
-							
-								
+								name.setDisable(true);
+								description.setDisable(true);
+
+								yearStart.setDisable(true);
+								monthStart.setDisable(true);
+								dayStart.setDisable(true);
+								timeStart.setDisable(true);
+
+								yearEnd.setDisable(true);
+								monthEnd.setDisable(true);
+								dayEnd.setDisable(true);
+								timeEnd.setDisable(true);
+
 							}
 						}
 						/*
@@ -240,31 +235,32 @@ public Button getAddEventButton() {
 						 */
 						else {
 							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-									dayStart.getText(), hoursStart.getText());
+									dayStart.getText(), timeStart.getValue());
 							LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
-									dayEnd.getText(), hoursEnd.getText());
+									dayEnd.getText(), timeEnd.getValue());
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
-							 
 
-							if (eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) { 
-								// it should dispaly an alart if the input is not correct
-								//title = new Text("Title: "+ description.getText());
+							if (eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
+								// it should dispaly an alart if the input is
+								// not correct
+								// title = new Text("Title: "+
+								// description.getText());
 								name.setDisable(true);
 								description.setDisable(true);
 
 								yearStart.setDisable(true);
 								monthStart.setDisable(true);
 								dayStart.setDisable(true);
-								hoursStart.setDisable(true);
+								timeStart.setDisable(true);
 
 								yearEnd.setDisable(true);
 								monthEnd.setDisable(true);
 								dayEnd.setDisable(true);
-								hoursEnd.setDisable(true);
+								timeEnd.setDisable(true);
 								ok.setDisable(true);
 								cancel.setDisable(false);
-							
+
 							}
 
 						}
@@ -285,12 +281,12 @@ public Button getAddEventButton() {
 						yearStart.setDisable(true);
 						monthStart.setDisable(true);
 						dayStart.setDisable(true);
-						hoursStart.setDisable(true);
+						timeStart.setDisable(true);
 
 						yearEnd.setDisable(true);
 						monthEnd.setDisable(true);
 						dayEnd.setDisable(true);
-						hoursEnd.setDisable(true);
+						timeEnd.setDisable(true);
 						ok.setDisable(true);
 						cancel.setDisable(true);
 					}
@@ -299,7 +295,6 @@ public Button getAddEventButton() {
 			}
 		});
 		return editEvent;
-
 
 	}
 
@@ -321,12 +316,18 @@ public Button getAddEventButton() {
 		yearStart = new TextField();
 		monthStart = new TextField();
 		dayStart = new TextField();
-		hoursStart = new TextField();
+		timeStart = new ComboBox<String>();
+		timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+				"20:00", "21:00", "22:00", "23:00");
 
 		yearEnd = new TextField();
 		monthEnd = new TextField();
 		dayEnd = new TextField();
-		hoursEnd = new TextField();
+		timeEnd = new ComboBox<String>();
+		timeEnd.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+				"20:00", "21:00", "22:00", "23:00");
 
 		// Labels initialized
 		Label nameLabel = new Label("Name: ");
@@ -337,17 +338,14 @@ public Button getAddEventButton() {
 		Label yearLabel = new Label("Year: ");
 		Label monthLabel = new Label("Month: ");
 		Label dayLabel = new Label("Day: ");
-		Label hourLabel = new Label("Time of day (hour)");
+		Label hourLabel = new Label("Time");
 
 		Label yearLabel2 = new Label("Year: ");
 		Label monthLabel2 = new Label("Month: ");
 		Label dayLabel2 = new Label("Day: ");
-		Label hourLabel2 = new Label("Time of day (hour)");
+		Label hourLabel2 = new Label("Time");
 
-
-
-
-		//Buttons initialized
+		// Buttons initialized
 		ok = new Button("Ok");
 		ok.setMaxSize(75, 35);
 		ok.setMinSize(75, 35);
@@ -369,7 +367,7 @@ public Button getAddEventButton() {
 		pane.add(dayLabel, 2, 4);
 		pane.add(dayStart, 2, 5);
 		pane.add(hourLabel, 3, 4);
-		pane.add(hoursStart, 3, 5);
+		pane.add(timeStart, 3, 5);
 		pane.add(end, 0, 6);
 		pane.add(yearLabel2, 0, 7);
 		pane.add(yearEnd, 0, 8);
@@ -378,15 +376,13 @@ public Button getAddEventButton() {
 		pane.add(dayLabel2, 2, 7);
 		pane.add(dayEnd, 2, 8);
 		pane.add(hourLabel2, 3, 7);
-		pane.add(hoursEnd, 3, 8);
+		pane.add(timeEnd, 3, 8);
 		pane.add(ok, 0, 9);
 		pane.add(cancel, 1, 9);
-		pane.add(delete, 3, 9);
+		
 
 		return pane;
 	}
-
-	
 
 	public void ViewEventInfo(Event e) {
 		final Stage eventWindow = new Stage();
@@ -394,53 +390,45 @@ public Button getAddEventButton() {
 		VBox window = new VBox();
 		window.setSpacing(10);
 		window.setPrefSize(200, 200);
-		
-		Label info = new Label("Information");
-		info.setFont(Font.font("Verdana",20));
-		info.setTextFill(Color.CORNFLOWERBLUE);
-		title = new Text("Title: "+ e.getEventName());
 
-		
-		
+		Label info = new Label("Information");
+		info.setFont(Font.font("Verdana", 20));
+		info.setTextFill(Color.CORNFLOWERBLUE);
+		title = new Text("Title: " + e.getEventName());
+
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
 		String formattedStringS = e.getEventStart().format(formatter);
 
 		Text dateStart = new Text("Event starts at: " + formattedStringS);
-		Text dec = new Text("Description: "+ e.getEventDescription());
+		Text dec = new Text("Description: " + e.getEventDescription());
 		dec.setWrappingWidth(250);
-	
-			
-	if (e.getEventEnd() == null) {
-				//editEventWindow.close();
-				window.getChildren().addAll(info, title, dateStart, dec, EditButton(e));
-	}
-	else   {
+
+		if (e.getEventEnd() == null) {
+			window.getChildren().addAll(info, title, dateStart, dec, EditButton(e));
+		} else {
 			createEditEventWindow(e);
 			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
 			String formattedStringE = e.getEventEnd().format(formatter2);
 			Text end = new Text("Event Ends at: " + formattedStringE);
 			window.getChildren().addAll(info, title, dateStart, dec, end, EditButton(e));
-			
+
 		}
 
-	
-		
 		// get delete Button
 		HBox all = new HBox();
 		all.setPrefSize(550, 190);
-		all.setPadding(new Insets(10,10,10,10));
+		all.setPadding(new Insets(10, 10, 10, 10));
 
-		all.getChildren().addAll(window,createEditEventWindow(e) );
+		all.getChildren().addAll(window, createEditEventWindow(e));
 		Scene eventScene = new Scene(all);
 		eventWindow.setScene(eventScene);
 		eventWindow.show();
 
 	}
 
-
 	public VBox createEditEventWindow(Event e) {
 		VBox editeHolder = new VBox();
-		editeHolder.setPrefSize(300, 300);
+		editeHolder.setPrefSize(400, 400);
 		name = new TextField(e.getEventName());
 		description = new TextField(e.getEventDescription());
 		Label nameL = new Label("Name");
@@ -451,13 +439,10 @@ public Button getAddEventButton() {
 		yearStart = new TextField(year1);
 		Label yearL = new Label("Year");
 
-		
-
 		int strMonth = e.getEventStart().getMonthValue();
 		String month1 = Integer.toString(strMonth);
 		monthStart = new TextField(month1);
 		Label monthL = new Label("Month");
-
 
 		int strDay = e.getEventStart().getDayOfMonth();
 		String days1 = Integer.toString(strDay);
@@ -466,93 +451,92 @@ public Button getAddEventButton() {
 
 		int strHour = e.getEventStart().getHour();
 		String hour1 = Integer.toString(strHour);
-		hoursStart = new TextField(hour1);
-		Label hourL = new Label("Hour");
-		
+		timeStart = new ComboBox<String>();
+		timeStart.setMinSize(100, 25);
+		timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+				"20:00", "21:00", "22:00", "23:00");
+		timeStart.getSelectionModel().clearAndSelect(strHour+1);
+		timeEnd = new ComboBox<String>();
+		timeEnd.setMinSize(100, 25);
+		timeEnd.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+				"20:00", "21:00", "22:00", "23:00");
+		Label hourL = new Label("Time");
+
 		HBox h2 = new HBox();
 		name.setDisable(true);
 		description.setDisable(true);
 		yearStart.setDisable(true);
 		monthStart.setDisable(true);
 		dayStart.setDisable(true);
-		hoursStart.setDisable(true);
+		timeStart.setDisable(true);
+		System.out.println(e.getEventEnd());
+		if (e.getEventEnd() != null) {
+			int strYearEnd = e.getEventEnd().getYear();
+			String year2 = Integer.toString(strYearEnd);
+			yearEnd = new TextField(year2);
 
-	
-		
-		
-		if (e.getEventEnd() != null){
-		int strYearEnd = e.getEventEnd().getYear();
-		String year2 = Integer.toString(strYearEnd);
-		yearEnd = new TextField(year2);
-		
-		int strMonthEnd = e.getEventEnd().getMonthValue();
-		String month2 = Integer.toString(strMonthEnd);
-		monthEnd = new TextField(month2);
+			int strMonthEnd = e.getEventEnd().getMonthValue();
+			String month2 = Integer.toString(strMonthEnd);
+			monthEnd = new TextField(month2);
 
-		int strDayEnd = e.getEventEnd().getDayOfMonth();
-		String days2 = Integer.toString(strDayEnd);
-		dayEnd = new TextField(days2);
+			int strDayEnd = e.getEventEnd().getDayOfMonth();
+			String days2 = Integer.toString(strDayEnd);
+			dayEnd = new TextField(days2);
 
-		int strHourEnd = e.getEventEnd().getHour();
-		String hour2 = Integer.toString(strHourEnd);
-		hoursEnd = new TextField(hour2);
-		// Change the so event can be edited:
-		
-		h2.getChildren().addAll(yearEnd, monthEnd, dayEnd, hoursEnd);
-		
-		}else if (e.getEventEnd() == null){
+			int strHourEnd = e.getEventEnd().getHour();
+			String hour2 = Integer.toString(strHourEnd);
+			timeEnd.getSelectionModel().clearAndSelect(strHour+1);
+			// Change the so event can be edited:
+
+			h2.getChildren().addAll(yearEnd, monthEnd, dayEnd, timeEnd/*hoursEnd*/);
+
+		} else if (e.getEventEnd() == null) {
 			yearEnd = new TextField("");
 			monthEnd = new TextField("");
 			dayEnd = new TextField("");
 			hoursEnd = new TextField("");
 			h2.getChildren().addAll(yearEnd, monthEnd, dayEnd, hoursEnd);
-			
+
 		}
-	
-			yearEnd.setDisable(true);
-			monthEnd.setDisable(true);
-			dayEnd.setDisable(true);
-			hoursEnd.setDisable(true);
-		
-		
+
+		yearEnd.setDisable(true);
+		monthEnd.setDisable(true);
+		dayEnd.setDisable(true);
+		timeEnd.setDisable(true);
+
 		GridPane h1 = new GridPane();
 		Label yearLE = new Label("Year");
 		Label monthLE = new Label("Month");
 		Label dayLE = new Label("Day");
-		Label hourLE = new Label("Hour");
-		
+		Label hourLE = new Label("Time");
+
 		h1.add(nameL, 0, 1);
-		h1.add(name ,0, 2);
-		h1.add(descriptionL,0, 3);
-		h1.add(description,0, 4);
-		h1.add(yearL,0, 5);
-		h1.add(yearStart,0, 6);
-		h1.add(monthL,1, 5);
-		h1.add(monthStart,1, 6);
-		
-		h1.add(dayL,2, 5);
-		h1.add(dayStart,2, 6);
-		h1.add(hourL,3, 5);
-		h1.add(hoursStart,3, 6);
-		
-		
-		
-		h1.add(yearLE,0,7);
-		h1.add(monthLE,1, 7);
-		h1.add(dayLE,2, 7);
-		h1.add(hourLE,3, 7);
+		h1.add(name, 0, 2);
+		h1.add(descriptionL, 0, 3);
+		h1.add(description, 0, 4);
+		h1.add(yearL, 0, 5);
+		h1.add(yearStart, 0, 6);
+		h1.add(monthL, 1, 5);
+		h1.add(monthStart, 1, 6);
 
-		h1.add(yearEnd,0,8);
-		h1.add(monthEnd,1, 8);
-		h1.add(dayEnd,2, 8);
-		h1.add(hoursEnd,3, 8);
-		
-		
-		
+		h1.add(dayL, 2, 5);
+		h1.add(dayStart, 2, 6);
+		h1.add(hourL, 3, 5);
+		h1.add(timeStart, 3, 6);
+
+		h1.add(yearLE, 0, 7);
+		h1.add(monthLE, 1, 7);
+		h1.add(dayLE, 2, 7);
+		h1.add(hourLE, 3, 7);
+
+		h1.add(yearEnd, 0, 8);
+		h1.add(monthEnd, 1, 8);
+		h1.add(dayEnd, 2, 8);
+		h1.add(timeEnd, 3, 8);
+
 		HBox h3 = new HBox();
-		
-
-
 
 		// Buttons initialized
 		ok = new Button("Ok");
@@ -560,14 +544,27 @@ public Button getAddEventButton() {
 		cancel = new Button("Cancel");
 		cancel.setDisable(true);
 		h3.setAlignment(Pos.BASELINE_RIGHT);
-		h3.setPadding(new Insets(10,0,10,10));
+		h3.setPadding(new Insets(10, 0, 10, 10));
 		h3.getChildren().addAll(cancel, ok);
 		h3.setSpacing(10);
-		editeHolder.getChildren().addAll( h1, h3);
+		editeHolder.getChildren().addAll(h1, h3);
 		return editeHolder;
 
 	}
 
+	/**
+	 * help method to create a LocalDateTime from user input
+	 * 
+	 * @param year
+	 *            - String
+	 * @param month
+	 *            - String
+	 * @param day
+	 *            - String
+	 * @param hour
+	 *            - String
+	 * @return LocalDateTime created from user input
+	 */
 	private LocalDateTime createLocalDateTime(String year, String month, String day, String hour) {
 		String localDate;
 		LocalDateTime time = null;
@@ -577,16 +574,16 @@ public Button getAddEventButton() {
 		for (int i = 0; i < 4 - year.length(); i++) {
 			year = "0" + year;
 		}
-		//if month is less than 2 digits, zeroes will be added in front
-		for (int i = 0; i < 2 - month.length() ; i++) {
+		// if month is less than 2 digits, zeroes will be added in front
+		for (int i = 0; i < 2 - month.length(); i++) {
 			month = "0" + month;
 		}
-		//if day is less than 2 digits, zeroes will be added in front
-		for (int i = 0; i < 2 - day.length(); i++ ) {
-			day = "0"+day;
+		// if day is less than 2 digits, zeroes will be added in front
+		for (int i = 0; i < 2 - day.length(); i++) {
+			day = "0" + day;
 		}
 		// creates the String format that is needed to create LocalDateTime
-		localDate = year + "-" + month + "-" + day + "T" + hour + ":00:00";
+		localDate = year + "-" + month + "-" + day + "T" + hour + ":00";
 
 		try {
 			time = LocalDateTime.parse(localDate);
@@ -609,7 +606,7 @@ public Button getAddEventButton() {
 		if (name.getText().isEmpty() || description.getText().isEmpty()) {
 			return true;
 		} else if (yearStart.getText().isEmpty() || monthStart.getText().isEmpty() || dayStart.getText().isEmpty()
-				|| hoursStart.getText().isEmpty()) {
+				|| timeStart.getValue() == null) {
 			return true;
 		} else {
 			return false;
@@ -622,11 +619,10 @@ public Button getAddEventButton() {
 	 * 
 	 * @return boolean, true if it is not a duration event otherwise false
 	 */
-	
-	
+
 	private boolean isNotDurationEvent() {
 		if (yearEnd.getText().isEmpty() || monthEnd.getText().isEmpty() || dayEnd.getText().isEmpty()
-				|| hoursEnd.getText().isEmpty()) {
+				|| timeEnd.getValue() == null) {
 			return true;
 		} else {
 			return false;
