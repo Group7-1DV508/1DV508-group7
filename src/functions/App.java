@@ -93,7 +93,6 @@ public class App {
 	}
 	
 	public void setCurrentEvent(Event e) {
-		System.out.println("Current Event set");
 		currentEvent = e;
 	}
 	public Event getCurrentEvent() {

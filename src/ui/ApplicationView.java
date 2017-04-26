@@ -293,8 +293,8 @@ public class ApplicationView implements ChangeListener {
 				eventShape.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
-						appListener.onNewEventSelected(eventShape.getEvent());
-						eventView.ViewEventInfo(eventShape.getEvent());
+						appListener.onNewEventSelected(((EventShape)event.getSource()).getEvent());
+						eventView.ViewEventInfo(((EventShape)event.getSource()).getEvent());
 
 					}
 
@@ -326,8 +326,8 @@ public class ApplicationView implements ChangeListener {
 
 					@Override
 					public void handle(MouseEvent event) {
-						appListener.onNewEventSelected(eventShape.getEvent());
-						eventView.ViewEventInfo(eventShape.getEvent());
+						appListener.onNewEventSelected(((EventShape)event.getSource()).getEvent());
+						eventView.ViewEventInfo(((EventShape)event.getSource()).getEvent());
 
 					}
 
