@@ -10,6 +10,7 @@ public class App {
 	ChangeListener changeListener;
 	private ArrayList<Timeline> timelines;
 	private Timeline current;
+	private Event currentEvent;
 	
 	/**
 	 * Constructor, initializes and ArrayList<Timeline>
@@ -26,7 +27,7 @@ public class App {
 	 * @param end - LocalDate the end of the timeline
 	 */
 	public void addTimeline(String name, LocalDateTime start, LocalDateTime end) {
-		current = new Timeline(name, start, end);
+		setCurrentTimeline(new Timeline(name, start, end));
 		timelines.add(current);
 		changeListener.onChangedTimeline(timelines, current);
 	}
@@ -87,4 +88,14 @@ public class App {
 		return timelines;
 	}
 	
+	public boolean isEventDuration() {
+		return currentEvent.isDuration();
+	}
+	
+	public void setCurrentEvent(Event e) {
+		currentEvent = e;
+	}
+	public Event getCurrentEvent() {
+		return currentEvent;
+	}
 }

@@ -1,6 +1,5 @@
 package functions;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Event {
@@ -9,6 +8,7 @@ public class Event {
 	private String description;
 	private LocalDateTime dateStart;
 	private LocalDateTime dateEnd;
+	private boolean isDuration;
 
 	/**
 	 * Constructor, created an Event with duration
@@ -22,6 +22,7 @@ public class Event {
 		description = eventDescription;
 		dateStart = start;
 		dateEnd = end;
+		isDuration = true;
 	}
 	/**
 	 * Constructor, created an Event with duration
@@ -34,6 +35,7 @@ public class Event {
 		description = eventDescription;
 		dateStart = start;
 		dateEnd = null;
+		isDuration = false;
 		
 	}
 	
@@ -96,6 +98,13 @@ public class Event {
 	 */
 	public void setEventEnd(LocalDateTime end) {
 		dateEnd = end;
+	}
+	/**
+	 * checks if the current event is an event with duration or not
+	 * @return boolean
+	 */
+	public boolean isDuration() {
+		return isDuration;
 	}
 	
 	

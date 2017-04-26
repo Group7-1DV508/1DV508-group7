@@ -3,6 +3,7 @@ package controls;
 import java.util.ArrayList;
 
 import functions.App;
+import functions.Event;
 import functions.Timeline;
 import io.FileHandler;
 import javafx.scene.text.Text;
@@ -49,6 +50,12 @@ public class ApplicationControl implements ApplicationListener {
 	@Override
 	public void onTimelineSelected(Timeline t) {
 		app.setCurrentTimeline(t);
+		
+	}
+
+	@Override
+	public void onNewEventSelected(Event e) {
+		app.setCurrentEvent(e);
 		
 	}
 	
