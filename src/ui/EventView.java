@@ -70,20 +70,16 @@ public class EventView {
 	 * 
 	 * @return GridPane root
 	 */
-	public GridPane getRoot() {
-		GridPane root = new GridPane();
-		// alignment in the root
-		root.setAlignment(Pos.BOTTOM_CENTER);
-		// button for add event
-		Button addEvent = new Button("Add Event");
-		root.add(addEvent, 0, 1);
-
+public Button getAddEventButton() {
+		
+		Button addEvent = new Button("Add Event"); 
+		
 		/*
-		 * when Add Event button is clicked a popup window is created where the
-		 * user can provide information about the Event, User has to provide
-		 * Name, Description and Start Date, End Date however is optional.
+		 * when Add Event button is clicked a popup window is created where
+		 * the user can provide information about the Event,
+		 * User has to provide Name, Description and Start Date, End Date
+		 * however is optional.
 		 */
-
 		addEvent.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -91,6 +87,12 @@ public class EventView {
 				final Stage eventWindow = new Stage();
 
 				GridPane textFieldsStart = createAddEventWindow();
+
+				/*
+				 * When "Ok" button is clicked, textfields are fetched and
+				 * converted to String and LocalDateTime then application
+				 * listener is calling the onAddEvent-method
+				 */
 				ok.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
@@ -103,10 +105,10 @@ public class EventView {
 							Alert emptyFieldError = new Alert(Alert.AlertType.ERROR,
 									"Name, Description and Start Date can't be empty.");
 							emptyFieldError.showAndWait();
-						}
+							} 
 						/*
-						 * If the event doesn't have End Date an non duration
-						 * Event is created
+						 * If the event doesn't have End Date an non duration Event 
+						 * is created
 						 */
 						else if (isNotDurationEvent()) {
 							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
@@ -117,10 +119,9 @@ public class EventView {
 							if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
 								eventWindow.close();
 							}
-						}
+						} 
 						/*
-						 * If the Event has End Time an Event with duration is
-						 * created
+						 * If the Event has End Time an Event with duration is created
 						 */
 						else {
 							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
@@ -140,7 +141,8 @@ public class EventView {
 				});
 
 				/*
-				 * when cancel button is clicked the popup window is closed
+				 * when cancel button is clicked the popup window
+				 * is closed
 				 */
 				cancel.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -151,24 +153,17 @@ public class EventView {
 				});
 
 				/*
-				 * Creates a Scene and builds the Add Event popup window
+				 * Creates a Scene and builds the Add Event popup
+				 * window
 				 */
-
-				/*
-				 * When "Ok" button is clicked, textfields are fetched and
-				 * converted to String and LocalDateTime then application
-				 * listener is calling the onAddEvent-method
-				 */
-
 				Scene eventScene = new Scene(textFieldsStart);
 				eventWindow.setScene(eventScene);
 				eventWindow.show();
 
 			}
-
 		});
-
-		return root;
+		// return the root created.
+		return addEvent;
 
 	}
 
