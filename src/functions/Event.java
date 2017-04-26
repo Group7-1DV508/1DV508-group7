@@ -33,6 +33,7 @@ public class Event {
 		name = eventName;
 		description = eventDescription;
 		dateStart = start;
+		dateEnd = null;
 		
 	}
 	
