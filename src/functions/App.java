@@ -26,7 +26,7 @@ public class App {
 	 * @param end - LocalDate the end of the timeline
 	 */
 	public void addTimeline(String name, LocalDateTime start, LocalDateTime end) {
-		current = new Timeline(name, start, end);
+		setCurrentTimeline(new Timeline(name, start, end));
 		timelines.add(current);
 		changeListener.onChangedTimeline(timelines, current);
 	}
