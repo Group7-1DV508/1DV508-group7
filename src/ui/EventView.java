@@ -54,7 +54,7 @@ public class EventView {
 	private Button cancel;
 	private Button editEvent;
 	private Button delete;
-
+	private Text title;
 	/**
 	 * Update the EventListener variable with the EventListener given as input
 	 * 
@@ -218,7 +218,7 @@ public class EventView {
 								      			  dayStart.getText(), hoursStart.getText());
 							 String eventname = name.getText();
 							 String eventdescrip = description.getText();
-
+							 title = new Text("Title: "+ description.getText());
 						if (eventListener.onAddEvent(eventname, eventdescrip, startTime) ) {
 							
 							
@@ -250,11 +250,11 @@ public class EventView {
 									dayEnd.getText(), hoursEnd.getText());
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
-
+							 
 
 							if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) { 
 								// it should dispaly an alart if the input is not correct
-							
+								//title = new Text("Title: "+ description.getText());
 								name.setDisable(true);
 								description.setDisable(true);
 
@@ -383,6 +383,7 @@ public class EventView {
 		return pane;
 	}
 
+	
 	public void ViewEventInfo(Event e) {
 		final Stage eventWindow = new Stage();
 
@@ -393,7 +394,7 @@ public class EventView {
 		Label info = new Label("Information");
 		info.setFont(Font.font("Verdana",20));
 		info.setTextFill(Color.CORNFLOWERBLUE);
-		Text title = new Text("Title: "+ e.getEventName());
+		title = new Text("Title: "+ e.getEventName());
 		
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
@@ -437,22 +438,31 @@ public class EventView {
 		editeHolder.setPrefSize(300, 300);
 		name = new TextField(e.getEventName());
 		description = new TextField(e.getEventDescription());
+		Label nameL = new Label("Name");
+		Label descriptionL = new Label("Description");
 
 		int strYear = e.getEventStart().getYear();
 		String year1 = Integer.toString(strYear);
 		yearStart = new TextField(year1);
+		Label yearL = new Label("Year");
+
+		
 
 		int strMonth = e.getEventStart().getMonthValue();
 		String month1 = Integer.toString(strMonth);
 		monthStart = new TextField(month1);
+		Label monthL = new Label("Month");
+
 
 		int strDay = e.getEventStart().getDayOfMonth();
 		String days1 = Integer.toString(strDay);
 		dayStart = new TextField(days1);
+		Label dayL = new Label("Day");
 
 		int strHour = e.getEventStart().getHour();
 		String hour1 = Integer.toString(strHour);
 		hoursStart = new TextField(hour1);
+		Label hourL = new Label("Hour");
 		
 		HBox h2 = new HBox();
 		name.setDisable(true);
@@ -494,15 +504,48 @@ public class EventView {
 			
 		}
 	
-		yearEnd.setDisable(true);
-		monthEnd.setDisable(true);
-		dayEnd.setDisable(true);
-		hoursEnd.setDisable(true);
+			yearEnd.setDisable(true);
+			monthEnd.setDisable(true);
+			dayEnd.setDisable(true);
+			hoursEnd.setDisable(true);
 		
 		
-		HBox h1 = new HBox();
+		GridPane h1 = new GridPane();
+		Label yearLE = new Label("Year");
+		Label monthLE = new Label("Month");
+		Label dayLE = new Label("Day");
+		Label hourLE = new Label("Hour");
+		
+		h1.add(nameL, 0, 1);
+		h1.add(name ,0, 2);
+		h1.add(descriptionL,0, 3);
+		h1.add(description,0, 4);
+		h1.add(yearL,0, 5);
+		h1.add(yearStart,0, 6);
+		h1.add(monthL,1, 5);
+		h1.add(monthStart,1, 6);
+		
+		h1.add(dayL,2, 5);
+		h1.add(dayStart,2, 6);
+		h1.add(hourL,3, 5);
+		h1.add(hoursStart,3, 6);
+		
+		
+		
+		h1.add(yearLE,0,7);
+		h1.add(monthLE,1, 7);
+		h1.add(dayLE,2, 7);
+		h1.add(hourLE,3, 7);
+
+		h1.add(yearEnd,0,8);
+		h1.add(monthEnd,1, 8);
+		h1.add(dayEnd,2, 8);
+		h1.add(hoursEnd,3, 8);
+		
+		
+		
 		HBox h3 = new HBox();
-		h1.getChildren().addAll(yearStart, monthStart, dayStart, hoursStart);
+		
 
 
 
@@ -515,7 +558,7 @@ public class EventView {
 		h3.setPadding(new Insets(10,0,10,10));
 		h3.getChildren().addAll(cancel, ok);
 		h3.setSpacing(10);
-		editeHolder.getChildren().addAll(name, description, h1, h2, h3);
+		editeHolder.getChildren().addAll( h1, h3);
 		return editeHolder;
 
 	}
