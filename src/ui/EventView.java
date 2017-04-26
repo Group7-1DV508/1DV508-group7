@@ -56,13 +56,10 @@ public class EventView {
 	 * method to create and return the add Event button, 
 	 * @return GridPane root
 	 */
-	public GridPane getRoot() {
-		GridPane root = new GridPane();
-		// alignment in the root
-		root.setAlignment(Pos.BOTTOM_CENTER); 
-		// button for add event
+	public Button getAddEventButton() {
+		
 		Button addEvent = new Button("Add Event"); 
-		root.add(addEvent, 0, 1);
+		
 		/*
 		 * when Add Event button is clicked a popup window is created where
 		 * the user can provide information about the Event,
@@ -152,7 +149,7 @@ public class EventView {
 			}
 		});
 		// return the root created.
-		return root;
+		return addEvent;
 
 	}
 
