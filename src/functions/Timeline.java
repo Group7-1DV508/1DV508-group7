@@ -3,19 +3,28 @@ package functions;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name = "Timeline")
-@XmlType(propOrder = {"TimelineName", "TimelineStartDate", "TimelineEndDate"})
+@XmlType(propOrder = {"name", "start", "end", "events"})
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Timeline {
 	
 	@XmlElement(name = "Event")
 	private ArrayList<Event> events;
 	
+	@XmlElement(name = "TimelineName")
 	private String name;
+	@XmlJavaTypeAdapter(value = io.LocalDateTimeXmlAdapter.class)
+	@XmlElement(name = "TimelineStartDate")
 	private LocalDateTime start;
+	@XmlJavaTypeAdapter(value = io.LocalDateTimeXmlAdapter.class)
+	@XmlElement(name = "TimelineEndDate")
 	private LocalDateTime end;
 	
 	
@@ -26,13 +35,14 @@ public class Timeline {
 		this.start = start;
 		this.end = end;
 	}
+	public Timeline() {
+		
+	}
 	
 	// Getters
-	@XmlElement(name = "TimelineName")
 	public String getName() {
 		return name;
 	}
-	
 	public LocalDateTime getStart() {
 		return start;
 	}
@@ -114,24 +124,13 @@ public class Timeline {
 	public void addEvent(String eventName, String eventDescription, LocalDateTime start) {
 		events.add(new Event(eventName, eventDescription, start));
 	}
+	/**
+	 * Method to return the name of the Timeline 
+	 * (is used by the ComboBox where timelines are selected)
+	 */
 	public String toString() {
 		return name;
 	}
-	/**
-	 * returns the date as a String to save in xml file
-	 * @return String - start date
-	 */
-	@XmlElement(name = "TimelineStartDate")
-	public String getStartXml() {
-		return start.toString();
-	}
-	/**
-	 * returns the date as a String to save in xml file
-	 * @return String - end date
-	 */
-	@XmlElement(name = "TimelineEndDate")
-	public String getEndXml() {
-		return end.toString();
-	}
-
+	
+	
 }
