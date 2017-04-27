@@ -1,6 +1,7 @@
 
 import javafx.application.*;
 
+import java.io.File;
 import java.time.LocalDateTime;
 
 import controls.ApplicationControl;
@@ -31,13 +32,15 @@ public class ApplicationMain extends Application {
 		appControl.setUpListeners();
 		
 		app.addTimeline("New Timeline", LocalDateTime.of(2001, 01, 01, 00, 00), LocalDateTime.of(2005, 01, 01, 00, 00));
-		app.addEventToCurrentDuration("jag är Duration", "hi", LocalDateTime.of(2001, 04, 13, 00, 00), LocalDateTime.of(2000, 04, 30, 00, 00));
-		app.addEventToCurrentDuration("duration 2", "hi", LocalDateTime.of(2001, 04, 13, 00, 00), LocalDateTime.of(2000, 04, 30, 00, 00));
-		app.addEventToCurrent("icke duration", "hi", LocalDateTime.of(2001, 04, 11, 00, 00));
-		app.addEventToCurrent("jag vill inte", "hi", LocalDateTime.of(2001, 04, 15, 00, 00));
-		app.addEventToCurrent("utan end", "hi", LocalDateTime.of(2001, 04, 05, 00, 00));
-		app.addEventToCurrent("Hej hopp inget slut", "hi", LocalDateTime.of(2001, 04, 22, 00, 00));
+		app.addEventToCurrentDuration("An Event", "This Event Has Duration", LocalDateTime.of(2001, 04, 13, 00, 00), LocalDateTime.of(2000, 04, 30, 00, 00));
+		app.addEventToCurrentDuration("Party Time", ":D :D :D", LocalDateTime.of(2001, 04, 13, 00, 00), LocalDateTime.of(2000, 04, 30, 00, 00));
+		app.addEventToCurrent("Event", "We Try Some Different Events For The Save Method", LocalDateTime.of(2001, 04, 11, 00, 00));
+		app.addEventToCurrent("Project Day", "We Have Done Awesome Work With Our Project", LocalDateTime.of(2001, 04, 15, 00, 00));
+		app.addEventToCurrent("Event Without Duration", ":)", LocalDateTime.of(2001, 04, 05, 00, 00));
+		app.addEventToCurrent("Last One", "Last Event Test", LocalDateTime.of(2001, 04, 22, 00, 00));
 
+		fileHandler.saveTimeline(app.getCurrentTimeline(), new File(System.getProperty("user.home")+"/Documents/myTimeline.xml"));
+		
 		//Collect Root from ApplicationView and build
 		Scene scene = new Scene(appView.getRoot(), 935, 935);
 		primaryStage.setTitle("Timeline Manager");

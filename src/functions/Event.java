@@ -2,18 +2,32 @@ package functions;
 
 import java.time.LocalDateTime;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import io.LocalDateTimeXmlAdapter;
 
 @XmlRootElement(name="Event")
-@XmlType(propOrder = {"EventName", "EventDescription", "EventStartDate", "EventEndDate"})
+@XmlType(propOrder = {"eventName", "description", "dateStart", "dateEnd"})
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Event {
 
-	private String name;
+	@XmlElement(name = "EventName")
+	private String eventName;
+	@XmlElement(name = "EventDescription")
 	private String description;
+	@XmlJavaTypeAdapter(value = LocalDateTimeXmlAdapter.class)
+	@XmlElement(name = "EventStartDate")
 	private LocalDateTime dateStart;
+	@XmlJavaTypeAdapter(value = LocalDateTimeXmlAdapter.class)
+	@XmlElement(name = "EventEndDate")
 	private LocalDateTime dateEnd;
+	@XmlTransient
 	private boolean isDuration;
 
 	/**
@@ -23,8 +37,8 @@ public class Event {
 	 * @param start, start date of the Event (LocalDateTime)
 	 * @param end, end date of the Event (LocalDateTime)
 	 */
-	public Event(String eventName, String eventDescription, LocalDateTime start, LocalDateTime end) {
-		name = eventName;
+	public Event(String name, String eventDescription, LocalDateTime start, LocalDateTime end) {
+		eventName = name;
 		description = eventDescription;
 		dateStart = start;
 		dateEnd = end;
@@ -36,12 +50,15 @@ public class Event {
 	 * @param eventDescription, description of the Event (String)
 	 * @param start, start date of the Event (LocalDateTime)
 	 */
-	public Event(String eventName, String eventDescription, LocalDateTime start) {
-		name = eventName;
+	public Event(String name, String eventDescription, LocalDateTime start) {
+		eventName = name;
 		description = eventDescription;
 		dateStart = start;
 		dateEnd = null;
 		isDuration = false;
+		
+	}
+	public Event() {
 		
 	}
 	
@@ -49,23 +66,21 @@ public class Event {
 	 * gets the name of the Event
 	 * @return String
 	 */
-	@XmlElement(name = "EventName")
 	public String getEventName() {
-		return name;
+		return eventName;
 	}
 	
 	/**
 	 * change the name of the Event
 	 * @param eventName (String)
 	 */
-	public void setEventName(String eventName) {
-		name = eventName;
+	public void setEventName(String name) {
+		eventName = name;
 	}
 	/**
 	 * gets the description of the Event
 	 * @return String
 	 */
-	@XmlElement(name = "EventDescription")
 	public String getEventDescription() {
 		return description;
 	}
@@ -81,6 +96,7 @@ public class Event {
 	 * gets the start date of the Event
 	 * @return LocalDateTime
 	 */
+	
 	public LocalDateTime getEventStart() {
 		return dateStart;
 	}
@@ -114,22 +130,6 @@ public class Event {
 	 */
 	public boolean isDuration() {
 		return isDuration;
-	}
-	/**
-	 * returns the start date as a String in order to save the date in a xml file
-	 * @return String - the start date
-	 */
-	@XmlElement(name = "EventStartDate")
-	public String getStartXml() {
-		return dateStart.toString();
-	}
-	/**
-	 * returns the end date as a String in order to save the date in a xml file 
-	 * @return String - the end date 
-	 */
-	@XmlElement(name = "EventEndDate")
-	public String getEndXml() {
-		return dateEnd.toString();
 	}
 	
 }
