@@ -3,9 +3,17 @@ package functions;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlRootElement(name = "Timeline")
+@XmlType(propOrder = {"TimelineName", "TimelineStartDate", "TimelineEndDate"})
 public class Timeline {
 	
+	@XmlElement(name = "Event")
 	private ArrayList<Event> events;
+	
 	private String name;
 	private LocalDateTime start;
 	private LocalDateTime end;
@@ -20,6 +28,7 @@ public class Timeline {
 	}
 	
 	// Getters
+	@XmlElement(name = "TimelineName")
 	public String getName() {
 		return name;
 	}
@@ -107,6 +116,22 @@ public class Timeline {
 	}
 	public String toString() {
 		return name;
+	}
+	/**
+	 * returns the date as a String to save in xml file
+	 * @return String - start date
+	 */
+	@XmlElement(name = "TimelineStartDate")
+	public String getStartXml() {
+		return start.toString();
+	}
+	/**
+	 * returns the date as a String to save in xml file
+	 * @return String - end date
+	 */
+	@XmlElement(name = "TimelineEndDate")
+	public String getEndXml() {
+		return end.toString();
 	}
 
 }
