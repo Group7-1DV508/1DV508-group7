@@ -2,6 +2,12 @@ package functions;
 
 import java.time.LocalDateTime;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlRootElement(name="Event")
+@XmlType(propOrder = {"EventName", "EventDescription", "EventStartDate", "EventEndDate"})
 public class Event {
 
 	private String name;
@@ -43,6 +49,7 @@ public class Event {
 	 * gets the name of the Event
 	 * @return String
 	 */
+	@XmlElement(name = "EventName")
 	public String getEventName() {
 		return name;
 	}
@@ -58,6 +65,7 @@ public class Event {
 	 * gets the description of the Event
 	 * @return String
 	 */
+	@XmlElement(name = "EventDescription")
 	public String getEventDescription() {
 		return description;
 	}
@@ -88,6 +96,7 @@ public class Event {
 	 * gets the end date of the Event
 	 * @return LocalDateTime
 	 */
+	
 	public LocalDateTime getEventEnd() {
 		return dateEnd;
 	}
@@ -106,6 +115,21 @@ public class Event {
 	public boolean isDuration() {
 		return isDuration;
 	}
-	
+	/**
+	 * returns the start date as a String in order to save the date in a xml file
+	 * @return String - the start date
+	 */
+	@XmlElement(name = "EventStartDate")
+	public String getStartXml() {
+		return dateStart.toString();
+	}
+	/**
+	 * returns the end date as a String in order to save the date in a xml file 
+	 * @return String - the end date 
+	 */
+	@XmlElement(name = "EventEndDate")
+	public String getEndXml() {
+		return dateEnd.toString();
+	}
 	
 }
