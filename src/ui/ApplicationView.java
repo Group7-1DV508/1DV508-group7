@@ -508,5 +508,11 @@ public class ApplicationView implements ChangeListener {
 
 	}
 
+	@Override
+	public void onEditEvent(Timeline current) {
+		addEventsToTimeline(current);
+		
+	}
+
 
 }
