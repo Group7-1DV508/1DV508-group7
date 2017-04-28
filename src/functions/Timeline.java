@@ -117,12 +117,33 @@ public class Timeline {
 		return Integer.parseInt(sb.toString());
 	}
 	
+	/**
+	 * Adds event with a duration to event list
+	 * @param eventName
+	 * @param eventDescription
+	 * @param start
+	 * @param end
+	 */
 	public void addEventDuration(String eventName, String eventDescription, LocalDateTime start, LocalDateTime end) {
 		events.add(new Event(eventName, eventDescription, start, end));
 	}
 	
+	/**
+	 * Adds event to event list
+	 * @param eventName
+	 * @param eventDescription
+	 * @param start
+	 */
 	public void addEvent(String eventName, String eventDescription, LocalDateTime start) {
 		events.add(new Event(eventName, eventDescription, start));
+	}
+	
+	/**
+	 * Removes event from event list
+	 * @param event
+	 */
+	public void deleteEvent (Event event) {
+		getEvents().remove(event);
 	}
 	/**
 	 * Method to return the name of the Timeline 
