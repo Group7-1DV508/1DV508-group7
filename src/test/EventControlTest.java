@@ -109,7 +109,7 @@ public class EventControlTest {
 	@Test
 	public void testonEditEvent() {
 		app.getCurrentTimeline().addEvent(name2, des2, start2);
-		eventC.setCurrentEvent(app.getCurrentTimeline().getEvents().get(0));
+		app.setCurrentEvent(app.getCurrentTimeline().getEvents().get(0));
 		boolean result = eventC.onEditEvent(name, des, start);
 		assertTrue(result);
 		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventName(), name);
@@ -120,7 +120,7 @@ public class EventControlTest {
 	@Test
 	public void testonEditEventIncorect() {
 		app.getCurrentTimeline().addEvent(name2, des2, start2);
-		eventC.setCurrentEvent(app.getCurrentTimeline().getEvents().get(0));
+		app.setCurrentEvent(app.getCurrentTimeline().getEvents().get(0));
 		boolean result = eventC.onEditEvent(name3, des3, start3);
 		assertFalse(result);
 		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventName(), name2);
@@ -132,7 +132,7 @@ public class EventControlTest {
 	@Test
 	public void testonEditEventDuration() {
 		app.getCurrentTimeline().addEvent(name2, des2, start2);
-		eventC.setCurrentEvent(app.getCurrentTimeline().getEvents().get(0));
+		app.setCurrentEvent(app.getCurrentTimeline().getEvents().get(0));
 		boolean result = eventC.onEditEventDuration(name, des, start, end);
 		assertTrue(result);
 		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventName(), name);
@@ -144,7 +144,7 @@ public class EventControlTest {
 	@Test
 	public void testonEditEventDurationIncorrect() {
 		app.getCurrentTimeline().addEventDuration(name2, des2, start2, end2);
-		eventC.setCurrentEvent(app.getCurrentTimeline().getEvents().get(0));
+		app.setCurrentEvent(app.getCurrentTimeline().getEvents().get(0));
 		boolean result = eventC.onEditEventDuration(name3, des3, start3, end3);
 		assertFalse(result);
 		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventName(), name2);
