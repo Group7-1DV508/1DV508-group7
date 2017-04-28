@@ -6,7 +6,6 @@ import functions.App;
 import functions.Event;
 import functions.Timeline;
 import io.FileHandler;
-import javafx.scene.text.Text;
 import ui.ApplicationView;
 
 public class ApplicationControl implements ApplicationListener {
