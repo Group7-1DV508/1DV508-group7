@@ -56,6 +56,14 @@ public class App {
 	}
 	
 	/**
+	 * Removes selected timeline from timeline list.
+	 * @param timeline to be removed
+	 */
+	public void removeTimeline (Timeline timeline) {
+		getTimelines().remove(timeline);
+	}
+	
+	/**
 	 * Update the ChangeListener variable with the ChangeListener given as input
 	 * @param cl , (ChangeListener)
 	 */

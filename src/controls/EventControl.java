@@ -57,6 +57,18 @@ public class EventControl implements EventListener {
 		return false;
 	}
 	
+	@Override
+	public boolean onDeleteEvent(Event event) {
+		setCurrentEvent();
+		if (currentApp.getCurrentTimeline().getEvents().contains(event)) {
+			currentApp.getCurrentTimeline().deleteEvent(currentEvent);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	public void setCurrentEvent() {
 		currentEvent = currentApp.getCurrentEvent();
 	}
