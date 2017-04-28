@@ -34,19 +34,22 @@ public class EventView {
 	private TextField yearStart;
 	private TextField monthStart;
 	private TextField dayStart;
-	private TextField hoursStart;
+	
 
 	private TextField yearEnd;
 	private TextField monthEnd;
 	private TextField dayEnd;
-	private TextField hoursEnd;
+	
 
 	// Buttons - Add Event Window
 	private Button ok;
 	private Button cancel;
 	private Button editEvent;
 	private Button delete;
-	private Text title;
+	private Text titleText;
+	private Text decText;
+	private Text dateStartText;
+	private Text dateEndText;
 	private ComboBox<String> timeStart;
 	private ComboBox<String> timeEnd;
 
@@ -69,6 +72,7 @@ public class EventView {
 	public Button getAddEventButton() {
 
 		Button addEvent = new Button("Add Event");
+		addEvent.setMinSize(75, 30);
 
 		/*
 		 * when Add Event button is clicked a popup window is created where the
@@ -211,7 +215,17 @@ public class EventView {
 									dayStart.getText(), timeStart.getValue());
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
-							title = new Text("Title: " + description.getText());
+							
+							titleText.setText("Title: " + name.getText());
+							decText.setText("Description: "+description.getText());
+							dateStartText.setText("Event start at: "+ yearStart.getText()+"/"+ monthStart.getText()+"/"+
+													dayStart.getText()+" At "+ timeStart.getValue());
+								 
+							if(yearEnd.getText().length()!= 0){
+						
+						    dateEndText.setText("Event Ends at: "+yearEnd.getText()+"/"+ monthEnd.getText()+"/"+dayEnd.getText()+" At "+timeEnd.getValue());
+								
+							}
 							if (eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
 
 								name.setDisable(true);
@@ -226,7 +240,8 @@ public class EventView {
 								monthEnd.setDisable(true);
 								dayEnd.setDisable(true);
 								timeEnd.setDisable(true);
-
+								ok.setDisable(true);
+								cancel.setDisable(true);
 							}
 						}
 						/*
@@ -240,6 +255,13 @@ public class EventView {
 									dayEnd.getText(), timeEnd.getValue());
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
+							//Update in EventInfoView 
+							titleText.setText("Title: " + name.getText());
+							decText.setText("Description: "+description.getText());
+							dateStartText.setText("Event start at: "+ yearStart.getText()+"/"+ monthStart.getText()+"/"+
+													dayStart.getText()+" At "+ timeStart.getValue());
+								 
+							dateEndText.setText("Event Ends at: "+yearEnd.getText()+"/"+ monthEnd.getText()+"/"+dayEnd.getText()+" At "+ timeEnd.getValue());
 
 							if (eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
 								// it should dispaly an alart if the input is
@@ -259,7 +281,7 @@ public class EventView {
 								dayEnd.setDisable(true);
 								timeEnd.setDisable(true);
 								ok.setDisable(true);
-								cancel.setDisable(false);
+								cancel.setDisable(true);
 
 							}
 
@@ -394,23 +416,24 @@ public class EventView {
 		Label info = new Label("Information");
 		info.setFont(Font.font("Verdana", 20));
 		info.setTextFill(Color.CORNFLOWERBLUE);
-		title = new Text("Title: " + e.getEventName());
+		titleText = new Text("Title: " + e.getEventName());
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
 		String formattedStringS = e.getEventStart().format(formatter);
 
-		Text dateStart = new Text("Event starts at: " + formattedStringS);
-		Text dec = new Text("Description: " + e.getEventDescription());
-		dec.setWrappingWidth(250);
+		dateStartText = new Text("Event starts at: " + formattedStringS);
+		decText = new Text("Description: " + e.getEventDescription());
+		decText.setWrappingWidth(250);
 
 		if (e.getEventEnd() == null) {
-			window.getChildren().addAll(info, title, dateStart, dec, EditButton(e));
+			dateEndText = new Text(" ");
+			window.getChildren().addAll(info, titleText, dateStartText, decText,dateEndText, EditButton(e));
 		} else {
 			createEditEventWindow(e);
 			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
 			String formattedStringE = e.getEventEnd().format(formatter2);
-			Text end = new Text("Event Ends at: " + formattedStringE);
-			window.getChildren().addAll(info, title, dateStart, dec, end, EditButton(e));
+			dateEndText = new Text("Event Ends at: " + formattedStringE);
+			window.getChildren().addAll(info, titleText, dateStartText, decText, dateEndText, EditButton(e));
 
 		}
 
@@ -418,9 +441,9 @@ public class EventView {
 		HBox all = new HBox();
 		all.setPrefSize(550, 190);
 		all.setPadding(new Insets(10, 10, 10, 10));
-
 		all.getChildren().addAll(window, createEditEventWindow(e));
 		Scene eventScene = new Scene(all);
+		eventWindow.setTitle("Event");
 		eventWindow.setScene(eventScene);
 		eventWindow.show();
 
@@ -450,7 +473,6 @@ public class EventView {
 		Label dayL = new Label("Day");
 
 		int strHour = e.getEventStart().getHour();
-		String hour1 = Integer.toString(strHour);
 		timeStart = new ComboBox<String>();
 		timeStart.setMinSize(100, 25);
 		timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
@@ -485,8 +507,7 @@ public class EventView {
 			String days2 = Integer.toString(strDayEnd);
 			dayEnd = new TextField(days2);
 
-			int strHourEnd = e.getEventEnd().getHour();
-			String hour2 = Integer.toString(strHourEnd);
+			
 			timeEnd.getSelectionModel().clearAndSelect(strHour+1);
 			// Change the so event can be edited:
 
@@ -496,8 +517,7 @@ public class EventView {
 			yearEnd = new TextField("");
 			monthEnd = new TextField("");
 			dayEnd = new TextField("");
-			hoursEnd = new TextField("");
-			h2.getChildren().addAll(yearEnd, monthEnd, dayEnd, hoursEnd);
+			h2.getChildren().addAll(yearEnd, monthEnd, dayEnd);
 
 		}
 

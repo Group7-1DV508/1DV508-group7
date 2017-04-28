@@ -98,4 +98,7 @@ public class App {
 	public Event getCurrentEvent() {
 		return currentEvent;
 	}
+	public void eventEdited() {
+		changeListener.onEditEvent(current);
+	}
 }

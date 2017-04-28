@@ -38,6 +38,7 @@ public class EventControl implements EventListener {
 			currentEvent.setEventDescription(description);
 			currentEvent.setEventStart(start);
 			currentEvent.setEventEnd(end);
+			currentApp.eventEdited();
 			return true;
 		}
 		return false;
@@ -50,6 +51,7 @@ public class EventControl implements EventListener {
 			currentEvent.setEventName(name);
 			currentEvent.setEventDescription(description);
 			currentEvent.setEventStart(start);
+			currentApp.eventEdited();
 			return true;
 		}
 		return false;
