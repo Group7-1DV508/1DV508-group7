@@ -62,6 +62,12 @@ public class EventControlTest {
 			public void onEditTimeline(Timeline current) {
 				
 			}
+
+			@Override
+			public void onEditEvent(Timeline current) {
+				// TODO Auto-generated method stub
+				
+			}
 			
 		}
 		app.addListener(new ChangeListenerForTest());
