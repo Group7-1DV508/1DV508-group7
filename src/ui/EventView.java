@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 import controls.EventListener;
 import functions.Event;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,32 +16,34 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class EventView {
 
 	private EventListener eventListener;
+	private final BooleanProperty theFocus = new SimpleBooleanProperty(true);
+
+	// TextArea - Add Event Window
+	private TextArea description;
 
 	// TextFields - Add Event Window
 	private TextField name;
-	private TextField description;
-
 	private TextField yearStart;
 	private TextField monthStart;
 	private TextField dayStart;
-	
-
 	private TextField yearEnd;
 	private TextField monthEnd;
 	private TextField dayEnd;
-	
+
 
 	// Buttons - Add Event Window
 	private Button ok;
@@ -55,7 +59,7 @@ public class EventView {
 
 	/**
 	 * Update the EventListener variable with the EventListener given as input
-	 * 
+	 *
 	 * @param eventList
 	 *            , (EventListener)
 	 */
@@ -65,7 +69,7 @@ public class EventView {
 
 	/**
 	 * method to create and return the add Event button,
-	 * 
+	 *
 	 * @return GridPane root
 	 */
 
@@ -86,6 +90,8 @@ public class EventView {
 				final Stage eventWindow = new Stage();
 
 				GridPane textFieldsStart = createAddEventWindow();
+				eventWindow.setTitle("ADD EVENT WINDOW");
+				eventWindow.setResizable(false);
 
 				/*
 				 * When "Ok" button is clicked, textfields are fetched and
@@ -215,16 +221,16 @@ public class EventView {
 									dayStart.getText(), timeStart.getValue());
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
-							
+
 							titleText.setText("Title: " + name.getText());
 							decText.setText("Description: "+description.getText());
 							dateStartText.setText("Event start at: "+ yearStart.getText()+"/"+ monthStart.getText()+"/"+
 													dayStart.getText()+" At "+ timeStart.getValue());
-								 
+
 							if(yearEnd.getText().length()!= 0){
-						
+
 						    dateEndText.setText("Event Ends at: "+yearEnd.getText()+"/"+ monthEnd.getText()+"/"+dayEnd.getText()+" At "+timeEnd.getValue());
-								
+
 							}
 							if (eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
 
@@ -255,12 +261,12 @@ public class EventView {
 									dayEnd.getText(), timeEnd.getValue());
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
-							//Update in EventInfoView 
+							//Update in EventInfoView
 							titleText.setText("Title: " + name.getText());
 							decText.setText("Description: "+description.getText());
 							dateStartText.setText("Event start at: "+ yearStart.getText()+"/"+ monthStart.getText()+"/"+
 													dayStart.getText()+" At "+ timeStart.getValue());
-								 
+
 							dateEndText.setText("Event Ends at: "+yearEnd.getText()+"/"+ monthEnd.getText()+"/"+dayEnd.getText()+" At "+ timeEnd.getValue());
 
 							if (eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
@@ -323,85 +329,117 @@ public class EventView {
 	/**
 	 * Help method to create popup window, initializes all TextFields, Labels
 	 * and Buttons for the window, and then add it all to the GridPane
-	 * 
+	 *
 	 * @return GridPane
 	 */
 
 	private GridPane createAddEventWindow() {
 
 		GridPane pane = new GridPane();
-
-		// TextFields initialized
+		// TextFields,TextAreas initialized
 		name = new TextField();
-		description = new TextField();
+		name.setPromptText("Event name");
+		name.setFont(new Font("Times new Roman", 20));
+		name.setPrefWidth(446);
+
+		description = new TextArea();
+		description.setPromptText("Event information");
+		description.setFont(Font.font("Times new Roman", 20));
+		description.setPrefSize(446, 200);
+		description.setWrapText(true);
 
 		yearStart = new TextField();
+		yearStart.setPromptText("Start year");
+		yearStart.setFont(Font.font("Times new Roman", 20));
+		yearStart.setMaxWidth(102);
+
 		monthStart = new TextField();
+		monthStart.setPromptText("Start month");
+		monthStart.setFont(Font.font("Times new Roman", 20));
+		monthStart.setMaxWidth(120);
+
 		dayStart = new TextField();
+		dayStart.setPromptText("Start day");
+		dayStart.setFont(Font.font("Times new Roman", 20));
+		dayStart.setMaxWidth(97);
+
 		timeStart = new ComboBox<String>();
 		timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
 				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
 				"20:00", "21:00", "22:00", "23:00");
+		timeStart.setPromptText("Start time");
+		timeStart.setStyle("-fx-font: 16 timesnewroman;");
+		timeStart.setPrefWidth(127);
 
 		yearEnd = new TextField();
+		yearEnd.setPromptText("End year");
+		yearEnd.setFont(Font.font("Times new Roman", 20));
+		yearEnd.setMaxWidth(102);
+
 		monthEnd = new TextField();
+		monthEnd.setPromptText("End month");
+		monthEnd.setFont(Font.font("Times new Roman", 20));
+		monthEnd.setMaxWidth(120);
+
 		dayEnd = new TextField();
+		dayEnd.setPromptText("End day");
+		dayEnd.setFont(Font.font("Times new Roman", 20));
+		dayEnd.setMaxWidth(97);
+
 		timeEnd = new ComboBox<String>();
 		timeEnd.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
 				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
 				"20:00", "21:00", "22:00", "23:00");
-
-		// Labels initialized
-		Label nameLabel = new Label("Name: ");
-		Label descriptionLabel = new Label("Description: ");
-
-		Label start = new Label("Start Date:");
-		Label end = new Label("End Date: ");
-		Label yearLabel = new Label("Year: ");
-		Label monthLabel = new Label("Month: ");
-		Label dayLabel = new Label("Day: ");
-		Label hourLabel = new Label("Time");
-
-		Label yearLabel2 = new Label("Year: ");
-		Label monthLabel2 = new Label("Month: ");
-		Label dayLabel2 = new Label("Day: ");
-		Label hourLabel2 = new Label("Time");
+		timeEnd.setPromptText("End time");
+		timeEnd.setStyle("-fx-font: 16 timesnewroman;");
+		timeEnd.setPrefWidth(127);
 
 		// Buttons initialized
-		ok = new Button("Ok");
-		ok.setMaxSize(75, 35);
-		ok.setMinSize(75, 35);
+		ok = new Button("Finish");
+		ok.setPrefSize(135, 35);
+		ok.setFont(Font.font("Times new Roman",20));
+
 		cancel = new Button("Cancel");
-		cancel.setMaxSize(75, 35);
-		cancel.setMinSize(75, 35);
+		cancel.setPrefSize(135, 35);
+		cancel.setTranslateX(175);
+		cancel.setFont(Font.font("Times new Roman",20));
+
 		delete = new Button("Delete");
 
+		// HBox initialized
+
+		HBox hb = new HBox();
+		HBox hb1 = new HBox();
+		HBox hb2 = new HBox();
+		HBox hb3 = new HBox();
+		HBox hb4 = new HBox();
+
+		hb.getChildren().addAll(yearStart,monthStart,dayStart,timeStart);
+		hb1.getChildren().addAll(yearEnd,monthEnd,dayEnd,timeEnd);
+		hb2.getChildren().addAll(ok,cancel);
+		hb3.getChildren().add(name);
+		hb4.getChildren().add(description);
+
+		hb.setPadding(new Insets(0,0,10,0));
+		hb1.setPadding(new Insets(0,0,30,0));
+		hb3.setPadding(new Insets(0,0,10,0));
+		hb4.setPadding(new Insets(0,0,10,0));
+
 		// Add initialized Nodes to the GridPane
-		pane.add(nameLabel, 0, 1);
-		pane.add(name, 1, 1);
-		pane.add(descriptionLabel, 0, 2);
-		pane.add(description, 1, 2);
-		pane.add(start, 0, 3);
-		pane.add(yearLabel, 0, 4);
-		pane.add(yearStart, 0, 5);
-		pane.add(monthLabel, 1, 4);
-		pane.add(monthStart, 1, 5);
-		pane.add(dayLabel, 2, 4);
-		pane.add(dayStart, 2, 5);
-		pane.add(hourLabel, 3, 4);
-		pane.add(timeStart, 3, 5);
-		pane.add(end, 0, 6);
-		pane.add(yearLabel2, 0, 7);
-		pane.add(yearEnd, 0, 8);
-		pane.add(monthLabel2, 1, 7);
-		pane.add(monthEnd, 1, 8);
-		pane.add(dayLabel2, 2, 7);
-		pane.add(dayEnd, 2, 8);
-		pane.add(hourLabel2, 3, 7);
-		pane.add(timeEnd, 3, 8);
-		pane.add(ok, 0, 9);
-		pane.add(cancel, 1, 9);
-		
+		pane.setPadding(new Insets(20));
+		pane.add(hb3, 0, 0);
+		pane.add(hb4, 0, 1);
+		pane.add(hb, 0, 2);
+		pane.add(hb1, 0, 3);
+		pane.add(hb2, 0, 4);
+
+		// Change focus
+		name.focusedProperty().addListener((obsV, oldV, newV) -> {
+			if (newV && theFocus.get()) {
+				pane.requestFocus();
+				theFocus.setValue(false);
+			}
+		});
 
 		return pane;
 	}
@@ -453,7 +491,7 @@ public class EventView {
 		VBox editeHolder = new VBox();
 		editeHolder.setPrefSize(400, 400);
 		name = new TextField(e.getEventName());
-		description = new TextField(e.getEventDescription());
+		description = new TextArea(e.getEventDescription());
 		Label nameL = new Label("Name");
 		Label descriptionL = new Label("Description");
 
@@ -507,7 +545,7 @@ public class EventView {
 			String days2 = Integer.toString(strDayEnd);
 			dayEnd = new TextField(days2);
 
-			
+
 			timeEnd.getSelectionModel().clearAndSelect(strHour+1);
 			// Change the so event can be edited:
 
@@ -574,7 +612,7 @@ public class EventView {
 
 	/**
 	 * help method to create a LocalDateTime from user input
-	 * 
+	 *
 	 * @param year
 	 *            - String
 	 * @param month
@@ -619,7 +657,7 @@ public class EventView {
 	/**
 	 * help method to check if any fields that are needed to create an Event is
 	 * empty (Name, Description, Year, Month, Day and Hour)
-	 * 
+	 *
 	 * @return boolean, true if needed fields are empty otherwise false
 	 */
 	private boolean isNeededFieldEmpty() {
@@ -636,7 +674,7 @@ public class EventView {
 	/**
 	 * help method to check if the Event to be created is a duration event or
 	 * not
-	 * 
+	 *
 	 * @return boolean, true if it is not a duration event otherwise false
 	 */
 
