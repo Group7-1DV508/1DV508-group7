@@ -1,5 +1,6 @@
 package controls;
 
+import functions.Event;
 import functions.Timeline;
 
 public interface ApplicationListener {
@@ -10,4 +11,5 @@ public interface ApplicationListener {
 	 */
 	void onTimelineSelected(Timeline t);
 
+	void onNewEventSelected(Event e);
 }
