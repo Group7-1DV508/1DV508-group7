@@ -3,6 +3,7 @@ package controls;
 import java.time.LocalDateTime;
 
 import functions.App;
+import functions.Timeline;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
@@ -16,6 +17,17 @@ public class TimelineControl implements TimelineListener {
 			currentApp.addTimeline(name, start, end);
 			return true;
 		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean onDeleteTimeline(Timeline timeline) {
+		if (currentApp.getTimelines().contains(timeline)) {	
+			currentApp.removeTimeline(timeline);
+			return true;
+		}
+		else {
 			return false;
 		}
 	}

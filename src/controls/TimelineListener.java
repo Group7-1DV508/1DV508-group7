@@ -2,6 +2,8 @@ package controls;
 
 import java.time.LocalDateTime;
 
+import functions.Timeline;
+
 public interface TimelineListener {
 	
 	/**
@@ -13,6 +15,13 @@ public interface TimelineListener {
 	 */
 	boolean onAddTimeline(String name, LocalDateTime start, LocalDateTime end);
 	
+	
+	/**
+	 * Deletes specified timeline from timeline list
+	 * @param timeline
+	 * @return true if timeline was deleted successfully
+	 */
+	boolean onDeleteTimeline (Timeline timeline);
 
 
 }
