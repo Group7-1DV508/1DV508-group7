@@ -3,9 +3,9 @@ package controls;
 import java.util.ArrayList;
 
 import functions.App;
+import functions.Event;
 import functions.Timeline;
 import io.FileHandler;
-import javafx.scene.text.Text;
 import ui.ApplicationView;
 
 public class ApplicationControl implements ApplicationListener {
@@ -49,6 +49,12 @@ public class ApplicationControl implements ApplicationListener {
 	@Override
 	public void onTimelineSelected(Timeline t) {
 		app.setCurrentTimeline(t);
+		
+	}
+
+	@Override
+	public void onNewEventSelected(Event e) {
+		app.setCurrentEvent(e);
 		
 	}
 	

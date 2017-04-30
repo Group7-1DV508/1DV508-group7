@@ -10,6 +10,7 @@ public class App {
 	ChangeListener changeListener;
 	private ArrayList<Timeline> timelines;
 	private Timeline current;
+	private Event currentEvent;
 	
 	/**
 	 * Constructor, initializes and ArrayList<Timeline>
@@ -55,6 +56,14 @@ public class App {
 	}
 	
 	/**
+	 * Removes selected timeline from timeline list.
+	 * @param timeline to be removed
+	 */
+	public void removeTimeline (Timeline timeline) {
+		getTimelines().remove(timeline);
+	}
+	
+	/**
 	 * Update the ChangeListener variable with the ChangeListener given as input
 	 * @param cl , (ChangeListener)
 	 */
@@ -87,4 +96,17 @@ public class App {
 		return timelines;
 	}
 	
+	public boolean isEventDuration() {
+		return currentEvent.isDuration();
+	}
+	
+	public void setCurrentEvent(Event e) {
+		currentEvent = e;
+	}
+	public Event getCurrentEvent() {
+		return currentEvent;
+	}
+	public void eventEdited() {
+		changeListener.onEditEvent(current);
+	}
 }

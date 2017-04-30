@@ -43,6 +43,11 @@ public class ApplicationTest {
 			public void onEditTimeline(Timeline current) {
 				
 			}
+
+			@Override
+			public void onEditEvent(Timeline current) {
+				
+			}
 			
 		}
 		app.addListener(new ChangeListenerForTest());
