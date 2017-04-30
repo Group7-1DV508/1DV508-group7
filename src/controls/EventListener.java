@@ -1,7 +1,8 @@
 package controls;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import functions.Event;
 
 public interface EventListener {
 	
@@ -46,4 +47,10 @@ public interface EventListener {
 	 * false if input wasn't valid and the event could not be Edited
 	 */
 	boolean onEditEvent(String name, String description, LocalDateTime start);
+	
+	/**
+	 * Requests to delete existing event.
+	 * @return true if event was deleted successfully
+	 */
+	boolean onDeleteEvent(Event event);
 }
