@@ -498,16 +498,19 @@ public class EventView {
 		int strYear = e.getEventStart().getYear();
 		String year1 = Integer.toString(strYear);
 		yearStart = new TextField(year1);
+		yearStart.setMaxWidth(80);
 		Label yearL = new Label("Year");
 
 		int strMonth = e.getEventStart().getMonthValue();
 		String month1 = Integer.toString(strMonth);
 		monthStart = new TextField(month1);
+		monthStart.setMinWidth(50);
 		Label monthL = new Label("Month");
 
 		int strDay = e.getEventStart().getDayOfMonth();
 		String days1 = Integer.toString(strDay);
 		dayStart = new TextField(days1);
+		dayStart.setMinWidth(50);
 		Label dayL = new Label("Day");
 
 		int strHour = e.getEventStart().getHour();
