@@ -128,7 +128,7 @@ public class EventView {
 						}
 						/*
 						 * If the Event has End Time an Event with duration is
-						 * created
+						 * created6
 						 */
 						else {
 							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
@@ -219,16 +219,17 @@ public class EventView {
 									dayStart.getText(), timeStart.getValue());
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
-							
-							titleText.setText("Title: " + name.getText());
-							decText.setText("Description: "+description.getText());
-							dateStartText.setText("Event start at: "+ yearStart.getText()+"/"+ monthStart.getText()+"/"+
+							Alerts alert = new Alerts();
+						   if( alert.Checkname(eventname, eventdescrip)){
+							titleText.setText( name.getText());
+							decText.setText(description.getText());
+							dateStartText.setText( yearStart.getText()+"/"+ monthStart.getText()+"/"+
 													dayStart.getText()+" At "+ timeStart.getValue());
 								 
 							if(yearEnd.getText().length()!= 0){
 						
-						    dateEndText.setText("Event Ends at: "+yearEnd.getText()+"/"+ monthEnd.getText()+"/"+dayEnd.getText()+" At "+timeEnd.getValue());
-								
+						    dateEndText.setText(yearEnd.getText()+"/"+ monthEnd.getText()+"/"+dayEnd.getText()+" At "+timeEnd.getValue());
+						    
 							}
 							if (eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
 
@@ -248,6 +249,7 @@ public class EventView {
 								cancel.setDisable(true);
 							}
 						}
+						}
 						/*
 						 * If the Event has End Time an Event with duration is
 						 * created
@@ -260,12 +262,12 @@ public class EventView {
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
 							//Update in EventInfoView 
-							titleText.setText("Title: " + name.getText());
-							decText.setText("Description: "+description.getText());
-							dateStartText.setText("Event start at: "+ yearStart.getText()+"/"+ monthStart.getText()+"/"+
+							titleText.setText( name.getText());
+							decText.setText(description.getText());
+							dateStartText.setText(yearStart.getText()+"/"+ monthStart.getText()+"/"+
 													dayStart.getText()+" At "+ timeStart.getValue());
 								 
-							dateEndText.setText("Event Ends at: "+yearEnd.getText()+"/"+ monthEnd.getText()+"/"+dayEnd.getText()+" At "+ timeEnd.getValue());
+							dateEndText.setText(yearEnd.getText()+"/"+ monthEnd.getText()+"/"+dayEnd.getText()+" At "+ timeEnd.getValue());
 
 							if (eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
 								// it should dispaly an alart if the input is
@@ -421,26 +423,44 @@ public class EventView {
 		Label info = new Label("Information");
 			  info.setFont(Font.font("Verdana", 20));
 			  info.setTextFill(Color.CORNFLOWERBLUE);
-		titleText = new Text("Title: " + e.getEventName());
+		Label	Title	= new Label("Title" );
+				Title.setFont(Font.font("Verdana", 15));
+				Title.setTextFill(Color.CORNFLOWERBLUE);
+				Title.setUnderline(true);
+
+		Label	Description		= new Label("Description"  );
+				Description.setFont(Font.font("Verdana", 15));
+				Description.setTextFill(Color.CORNFLOWERBLUE);
+				Description.setUnderline(true);
+		Label	start		= new Label("Event starts at" );
+				start.setFont(Font.font("Verdana", 15));
+				start.setTextFill(Color.CORNFLOWERBLUE);
+				start.setUnderline(true);
+		Label	end		= new Label("Event Ends at" );
+				end.setFont(Font.font("Verdana", 15));
+				end.setTextFill(Color.CORNFLOWERBLUE);
+				end.setUnderline(true);
+				
+		titleText = new Text(e.getEventName());
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
 		String formattedStringS = e.getEventStart().format(formatter);
 
-		dateStartText = new Text("Event starts at: " + formattedStringS);
-		decText = new Text("Description: " + e.getEventDescription());
+		dateStartText = new Text( formattedStringS);
+		decText = new Text( e.getEventDescription());
 		decText.setWrappingWidth(250);
 
 		if (e.getEventEnd() == null) {
 			dateEndText = new Text(" ");
-			window.getChildren().addAll(info, titleText, dateStartText, decText,dateEndText,EditButton(e),  DeletEvent( e));
+			window.getChildren().addAll(info,Title, titleText,Description, decText,start,dateStartText,end,dateEndText,EditButton(e),  DeletEvent( e));
 		
 		
 		} else {
 			createEditEventWindow(e);
 			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
 			String formattedStringE = e.getEventEnd().format(formatter2);
-			dateEndText = new Text("Event Ends at: " + formattedStringE);
-			window.getChildren().addAll(info, titleText, dateStartText, decText, dateEndText,EditButton(e),DeletEvent( e));
+			dateEndText = new Text(  formattedStringE);
+			window.getChildren().addAll(info,Title, titleText,Description, decText,start,dateStartText,end,dateEndText,EditButton(e),  DeletEvent( e));
 			
 
 		}
