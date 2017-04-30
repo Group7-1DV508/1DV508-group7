@@ -335,6 +335,7 @@ public class EventView {
 
 		GridPane pane = new GridPane();
 		pane.setPadding(new Insets(10,10,10,10));
+		
 		// TextFields initialized
 		name = new TextField();
 		description = new TextField();
