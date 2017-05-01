@@ -126,8 +126,7 @@ public class EventControl implements EventListener {
 	 * @return boolean, true if start date is valid otherwise false
 	 */
 	private boolean isStartCorrect(LocalDateTime start) {
-		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
-		if (start.equals(temp) || start == null) {
+		if (start == null) {
 			return false;
 		} else {
 			return true;
@@ -143,8 +142,7 @@ public class EventControl implements EventListener {
 	 * @return boolean, true if end date is valid otherwise false
 	 */
 	private boolean isEndCorrect(LocalDateTime end) {
-		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
-		if (end.equals(temp) || end == null) {
+		if (end == null) {
 			return false;
 		} else {
 			return true;
