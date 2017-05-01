@@ -1,28 +1,37 @@
 package controls;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import functions.App;
 import functions.Event;
 import functions.Timeline;
 import io.FileHandler;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.stage.FileChooser;
 import ui.ApplicationView;
 
 public class ApplicationControl implements ApplicationListener {
-	
+
 	private ApplicationView appView;
 	private App app;
 	private FileHandler fileHandler;
 	private TimelineControl timelineControl;
 	private EventControl eventControl;
-	
+
 	/**
-	 * Constructor, Creates an ApplicationControl and sets variables for 
-	 * ApplicationView, App, FileHandler. Also creates a new TimelineControl and 
-	 * an EventControl. 
-	 * @param av , ApplicationView
-	 * @param app , App
-	 * @param fh , FileHandler
+	 * Constructor, Creates an ApplicationControl and sets variables for
+	 * ApplicationView, App, FileHandler. Also creates a new TimelineControl and
+	 * an EventControl.
+	 * 
+	 * @param av
+	 *            , ApplicationView
+	 * @param app
+	 *            , App
+	 * @param fh
+	 *            , FileHandler
 	 */
 	public ApplicationControl(ApplicationView av, App app, FileHandler fh) {
 		appView = av;
@@ -33,10 +42,10 @@ public class ApplicationControl implements ApplicationListener {
 		eventControl.setApp(app);
 		timelineControl.setApp(app);
 	}
-	
+
 	/**
-	 * Connects the View and Control through the Listener
-	 * Also connects ApplicationView to App through the Listener 
+	 * Connects the View and Control through the Listener Also connects
+	 * ApplicationView to App through the Listener
 	 */
 	public void setUpListeners() {
 		appView.getTimelineView().addListener(timelineControl);
@@ -44,19 +53,17 @@ public class ApplicationControl implements ApplicationListener {
 		appView.addListener(this);
 		app.addListener(appView);
 	}
-	
 
 	@Override
 	public void onTimelineSelected(Timeline t) {
 		app.setCurrentTimeline(t);
-		
+
 	}
 
 	@Override
 	public void onNewEventSelected(Event e) {
 		app.setCurrentEvent(e);
-		
+
 	}
-	
 
 }
