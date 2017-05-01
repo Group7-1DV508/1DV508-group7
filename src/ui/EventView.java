@@ -370,7 +370,7 @@ public class EventView {
 				// if user chose ok, event is deleted, information
 				// window is closed as it is not needed
 				if (result.get() == ButtonType.OK){
-				    if (eventListener.onDeleteEvent(e)) {
+				    if (eventListener.onDeleteEvent()) {
 				    	confirmation.close();
 				    	s.close();
 				    }
