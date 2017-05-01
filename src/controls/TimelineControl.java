@@ -61,8 +61,7 @@ public class TimelineControl implements TimelineListener {
 	 * @return true if start date is not temp date
 	 */
 	private boolean isStartCorrect(LocalDateTime start) {
-		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
-		if (start.equals(temp) || start == null) {
+		if (start == null) {
 			return false;
 		} else {
 			return true;
@@ -77,8 +76,7 @@ public class TimelineControl implements TimelineListener {
 	 * @return true if end date is not temp date
 	 */
 	private boolean isEndCorrect(LocalDateTime end) {
-		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
-		if (end.equals(temp) || end == null) {
+		if (end == null) {
 			return false;
 		} else {
 			return true;

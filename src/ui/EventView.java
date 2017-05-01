@@ -205,7 +205,7 @@ public class EventView {
 						 */
 						if (isNeededFieldEmpty()) {
 							Alert emptyFieldError = new Alert(Alert.AlertType.ERROR,
-									"Name, Description and Start Date can't be empty.");
+									"Name, Description and date fields can't be empty.");
 							emptyFieldError.showAndWait();
 						}
 						else {
@@ -214,24 +214,15 @@ public class EventView {
 							 * Event is created
 							 */
 							if (!e.isDuration()) {
-	
 								LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
 										dayStart.getText(), timeStart.getValue());
 								String eventname = name.getText();
 								String eventdescrip = description.getText();
-								
-								titleText.setText("Title: " + name.getText());
-								decText.setText("Description: "+description.getText());
-								dateStartText.setText("Event start at: "+ yearStart.getText()+"/"+ monthStart.getText()+"/"+
-														dayStart.getText()+" At "+ timeStart.getValue());
-									 
-								if(yearEnd.getText().length()!= 0){
-							
-							    dateEndText.setText("Event Ends at: "+yearEnd.getText()+"/"+ monthEnd.getText()+"/"+dayEnd.getText()+" At "+timeEnd.getValue());
-									
-								}
-								if (eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
-	
+								if (yearEnd != null && monthEnd != null && dayEnd != null && timeEnd != null) {
+									LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
+											dayEnd.getText(), timeEnd.getValue());
+									eventListener.onDeleteEvent(e);
+									eventListener.onAddEventDuration(name.getText(), description.getText(), startTime, endTime);
 									name.setDisable(true);
 									description.setDisable(true);
 	
@@ -246,6 +237,39 @@ public class EventView {
 									timeEnd.setDisable(true);
 									ok.setDisable(true);
 									cancel.setDisable(true);
+								}
+								
+								
+								else { 
+									if (eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
+									
+									name.setDisable(true);
+									description.setDisable(true);
+	
+									yearStart.setDisable(true);
+									monthStart.setDisable(true);
+									dayStart.setDisable(true);
+									timeStart.setDisable(true);
+	
+									yearEnd.setDisable(true);
+									monthEnd.setDisable(true);
+									dayEnd.setDisable(true);
+									timeEnd.setDisable(true);
+									ok.setDisable(true);
+									cancel.setDisable(true);
+									
+									}
+								}
+								
+								titleText.setText("Title: " + name.getText());
+								decText.setText("Description: "+description.getText());
+								dateStartText.setText("Event start at: "+ yearStart.getText()+"/"+ monthStart.getText()+"/"+
+														dayStart.getText()+" At "+ timeStart.getValue());
+									 
+								if(yearEnd.getText().length()!= 0){
+							
+							    dateEndText.setText("Event Ends at: "+yearEnd.getText()+"/"+ monthEnd.getText()+"/"+dayEnd.getText()+" At "+timeEnd.getValue());
+									
 								}
 							}
 							/*
