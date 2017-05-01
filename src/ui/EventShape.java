@@ -114,13 +114,14 @@ class EventShape extends Circle {
 	 * then add 5 multiplied by total number of months (this is due to spacing at 5.0 between months)
 	 */
 	private void setValueX() {
-		int year = yearStart - timelineStart;
-		if (yearEnd == 0) {
-			startX = (((year) * 12) + (monthStart-1)) *100 + (100/30 * dayStart) + (5 * (12 *year + monthStart));;
+		int YEAR_START = yearStart - timelineStart;
+		int YEAR_END = yearEnd - timelineStart;
+		if (YEAR_END <= 0) {
+			startX = (((YEAR_START) * 12) + (monthStart-1)) *100 + (100/30 * dayStart) + (5 * (12 *YEAR_START + monthStart));;
 		}
 		else {
-			startX = (((year) * 12) + (monthStart-1)) *100 + (100/30 * dayStart) + (5 * (12 *year + monthStart));;
-			endX = (((year) * 12) + (monthEnd-1)) *100 + (100/30 * dayEnd) + (5 * (12 *year + monthEnd));;
+			startX = (((YEAR_START) * 12) + (monthStart-1)) *100 + (100/30 * dayStart) + (5 * (12 *YEAR_START + monthStart));;
+			endX = (((YEAR_END) * 12) + (monthEnd-1)) *100 + (100/30 * dayEnd) + (5 * (12 *YEAR_END + monthEnd));;
 
 		}
 		
