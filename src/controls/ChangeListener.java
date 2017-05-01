@@ -35,16 +35,4 @@ public interface ChangeListener {
 	 */
 	void onEditEvent(Timeline current);
 	
-	/**
-	 * Called to inform ApplicationView that a Timeline has been modified
-	 * @param current Timeline
-	 */
-	void onTimelineDelete(Timeline current);
-	
-	/**
-	 * Called to inform the ApplicationView that an Event has been delete 
-	 * in certain Timeline, therefore Timeline view has to change
-	 * @param current
-	 */
-	void onDeleteEvent (Timeline current);
-}
+	}
