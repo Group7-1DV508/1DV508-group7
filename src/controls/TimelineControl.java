@@ -30,7 +30,7 @@ public class TimelineControl implements TimelineListener {
 	@Override
 	public boolean onDeleteTimeline() {
 		if (currentApp.getTimelines().contains(currentApp.getCurrentTimeline())) {	
-			currentApp.removeTimeline(currentApp.getCurrentTimeline());
+			currentApp.removeTimeline();
 			return true;
 		}
 		else {

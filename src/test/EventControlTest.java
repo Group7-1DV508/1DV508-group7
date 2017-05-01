@@ -49,8 +49,7 @@ public class EventControlTest implements ChangeListener {
 	private boolean newTimeline;
 	private boolean editTimeline;
 	private boolean editEvent;
-	private boolean deleteTimeline;
-	private boolean deleteEvent;
+	
 	
 	@BeforeClass
 	public static void beforeAllTests() {
@@ -74,8 +73,7 @@ public class EventControlTest implements ChangeListener {
 		changeTimeline = false;
 		editTimeline = false;
 		editEvent = false;
-		deleteTimeline = false;
-		deleteEvent = false;
+		
 	}
 	
 	@Test 
@@ -197,8 +195,8 @@ public class EventControlTest implements ChangeListener {
 		//delete event
 		assertTrue(eventC.onDeleteEvent());
 		//assure that changelistener was called
-		assertTrue(deleteEvent);
-		deleteEvent = false;
+		assertTrue(editTimeline);
+		editTimeline = false;
 		//make sure event list is -1
 		assertEquals(app.getCurrentTimeline().getEvents().size(), 1);
 		
@@ -212,15 +210,15 @@ public class EventControlTest implements ChangeListener {
 		//delete event
 		assertTrue(eventC.onDeleteEvent());
 		//assure changelistener was called
-		assertTrue(deleteEvent);
-		deleteEvent = false;
+		assertTrue(editTimeline);
+		editTimeline = false;
 		//assure that the ArrayList of events now is empty
 		assertEquals(app.getCurrentTimeline().getEvents().size(), 0);
 		
 		//try to remove non existing event
 		assertFalse(eventC.onDeleteEvent());
 		//assure that changelistener wasn't called
-		assertFalse(deleteEvent);
+		assertFalse(editTimeline);
 	}
 	
 
@@ -248,15 +246,5 @@ public class EventControlTest implements ChangeListener {
 		
 	}
 
-	@Override
-	public void onTimelineDelete(Timeline current) {
-		deleteTimeline = true;
-		
-	}
-
-	@Override
-	public void onDeleteEvent(Timeline current) {
-		deleteEvent = true;
-		
-	}
+	
 }
