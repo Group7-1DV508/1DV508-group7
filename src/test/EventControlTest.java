@@ -65,8 +65,17 @@ public class EventControlTest {
 
 			@Override
 			public void onEditEvent(Timeline current) {
-				// TODO Auto-generated method stub
 				
+			}
+
+			@Override
+			public void onTimelineDelete(Timeline current) {
+				
+			}
+
+			@Override
+			public void onDeleteEvent(Timeline current) {
+
 			}
 			
 		}

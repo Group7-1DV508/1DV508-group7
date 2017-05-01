@@ -50,7 +50,7 @@ public class ApplicationView implements ChangeListener {
 	// comboBox to choose timeline
 	private final ComboBox<Timeline> chooseTimeline = new ComboBox<Timeline>();
 	// contains all created events for the current timeline
-	private final ArrayList<EventShape> eventShapes = new ArrayList<EventShape>();
+	private ArrayList<EventShape> eventShapes = new ArrayList<EventShape>();
 	// contains all months/years for the current timeline
 	private final GridPane currentTimeline = new GridPane();
 	// list of months, used to divide the month names to the month boxes
@@ -141,7 +141,7 @@ public class ApplicationView implements ChangeListener {
 	 * @return Button
 	 */
 	private Button getDeleteTimelineButton() {
-		return new Button("Delete Timeline");
+		return timelineView.getDeleteTimelineButton();
 	}
 
 	/**
@@ -368,6 +368,34 @@ public class ApplicationView implements ChangeListener {
 		eventBox.setMaxSize(boxLength, 250);
 		eventBox.setMinSize(boxLength, 250);
 	}
+	
+	private void deleteTimeline(Timeline current) {
+		int position = 0;
+		for (int i = 0; i < appListener.getTimelines().size(); i++) {
+			if (appListener.getTimelines().get(i).equals(current)) {
+				position = i;
+				break;
+			}
+		}
+		// Remove timeline from combobox
+		chooseTimeline.getItems().remove(current);
+		// Set to either previous timeline or last timeline
+		// in timeline arraylist, or to text saying there
+		// are not timelines loaded
+		if (appListener.getTimelines().size() == 0) {
+			clearTimelineBox();
+		}
+		else {
+			if (position > 0) {
+				current = appListener.getTimelines().get(position -1);
+			}
+			else {
+				current = appListener.getTimelines().get(appListener.getTimelines().size()-1);
+			}
+				// Set current
+				appListener.onTimelineSelected(current);
+		}
+	}
 
 	/**
 	 * if Event shapes collide event gets a lower alignment
@@ -486,6 +514,16 @@ public class ApplicationView implements ChangeListener {
 		monthTexts.add(december);
 
 	}
+	
+	private void clearTimelineBox() {
+		currentTimeline.getChildren().clear();
+		eventBox.getChildren().clear();
+		showYearBox.getChildren().clear();
+		Text noTimelines = new Text("There are no new timelines currently selected");
+		noTimelines.setFont(new Font("Times new Roman", 20));
+		noTimelines.setFill(Color.BLACK);
+		//currentTimeline.add(noTimelines, 0, 1);
+	}
 
 	@Override
 	public void onChangedTimeline(ArrayList<Timeline> timelines, Timeline current) {
@@ -510,6 +548,17 @@ public class ApplicationView implements ChangeListener {
 
 	@Override
 	public void onEditEvent(Timeline current) {
+		addEventsToTimeline(current);
+		
+	}
+
+	@Override
+	public void onTimelineDelete(Timeline current) {
+		deleteTimeline(current);
+	}
+
+	@Override
+	public void onDeleteEvent(Timeline current) {
 		addEventsToTimeline(current);
 		
 	}
