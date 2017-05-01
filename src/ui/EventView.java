@@ -221,7 +221,7 @@ public class EventView {
 								if (yearEnd != null && monthEnd != null && dayEnd != null && timeEnd != null) {
 									LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
 											dayEnd.getText(), timeEnd.getValue());
-									eventListener.onDeleteEvent(e);
+									eventListener.onDeleteEvent();
 									eventListener.onAddEventDuration(name.getText(), description.getText(), startTime, endTime);
 									name.setDisable(true);
 									description.setDisable(true);

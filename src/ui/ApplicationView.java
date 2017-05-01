@@ -552,16 +552,6 @@ public class ApplicationView implements ChangeListener {
 		
 	}
 
-	@Override
-	public void onTimelineDelete(Timeline current) {
-		deleteTimeline(current);
-	}
-
-	@Override
-	public void onDeleteEvent(Timeline current) {
-		addEventsToTimeline(current);
-		
-	}
-
+	
 
 }
