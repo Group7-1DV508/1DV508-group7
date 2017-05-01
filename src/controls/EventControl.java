@@ -62,6 +62,7 @@ public class EventControl implements EventListener {
 		setCurrentEvent();
 		if (currentApp.getCurrentTimeline().getEvents().contains(event)) {
 			currentApp.getCurrentTimeline().deleteEvent(currentEvent);
+			currentApp.deletedEvent();
 			return true;
 		}
 		else {
@@ -126,12 +127,7 @@ public class EventControl implements EventListener {
 	 */
 	private boolean isStartCorrect(LocalDateTime start) {
 		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
-		if (start.equals(temp)) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error in timeline start date");
-			alert.setHeaderText("Please choose a start date for your timeline");
-			alert.setContentText("Start year must be 4 numbers long. (Ex. 0001,0002...2016,2017)");
-			alert.show();
+		if (start.equals(temp) || start == null) {
 			return false;
 		} else {
 			return true;
@@ -148,12 +144,7 @@ public class EventControl implements EventListener {
 	 */
 	private boolean isEndCorrect(LocalDateTime end) {
 		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
-		if (end.equals(temp)) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error in timeline end date");
-			alert.setHeaderText("Please choose an end date for your timeline.");
-			alert.setContentText("End year must be 4 numbers long. (Ex. 0001,0002...2016,2017)");
-			alert.show();
+		if (end.equals(temp) || end == null) {
 			return false;
 		} else {
 			return true;

@@ -55,7 +55,6 @@ public class EventControlTest implements ChangeListener {
 		app = new App();
 		eventC = new EventControl();
 		eventC.setApp(app);
-		
 	}
 	
 	@AfterClass
