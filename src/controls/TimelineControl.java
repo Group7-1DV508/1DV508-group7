@@ -11,8 +11,16 @@ public class TimelineControl implements TimelineListener {
 	@Override
 	public boolean onAddTimeline(String name, LocalDateTime start, LocalDateTime end) {
 		if (isCorrectInput(name, start, end) && 
-				(Integer.parseInt(start.toString().substring(0, 4)) < Integer.parseInt(end.toString().substring(0, 4)))) {
-			currentApp.addTimeline(name, start, end);
+				(Integer.parseInt(start.toString().substring(0, 4)) <= Integer.parseInt(end.toString().substring(0, 4)))) {
+			// If start and end dates are same, increase end date by one year, since
+			// this was an intention by user anyway
+			if (Integer.parseInt(start.toString().substring(0, 4)) == Integer.parseInt(end.toString().substring(0, 4))) {
+				end = end.plusYears(1);
+				currentApp.addTimeline(name, start, end);
+			}
+			else {
+				currentApp.addTimeline(name, start, end);
+			}
 			return true;
 		} else {
 			return false;
