@@ -2,6 +2,7 @@ package controls;
 
 import functions.Event;
 import functions.Timeline;
+import javafx.scene.control.Button;
 
 public interface ApplicationListener {
 	
@@ -12,4 +13,5 @@ public interface ApplicationListener {
 	void onTimelineSelected(Timeline t);
 
 	void onNewEventSelected(Event e);
+
 }

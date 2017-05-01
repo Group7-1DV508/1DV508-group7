@@ -2,11 +2,17 @@ package ui;
 
 import controls.ApplicationListener;
 import controls.ChangeListener;
+import io.FileHandler;
+import controls.ApplicationControl;
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import io.FileHandler;
+import functions.App;
 import functions.Event;
 import functions.Timeline;
 import javafx.event.ActionEvent;
@@ -26,9 +32,14 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class ApplicationView implements ChangeListener {
 
+	private App app;
+	private FileHandler fileHandler;
+	private ApplicationControl appControl;
 	private EventView eventView;
 	private TimelineView timelineView;
 	private ApplicationListener appListener;
@@ -141,7 +152,9 @@ public class ApplicationView implements ChangeListener {
 	 * @return Button
 	 */
 	private Button getDeleteTimelineButton() {
-		return new Button("Delete Timeline");
+		Button delete = new Button("Delete Timeline");
+		delete.setMaxSize(150, 30);
+		return delete;
 	}
 
 	/**
@@ -150,6 +163,8 @@ public class ApplicationView implements ChangeListener {
 	 * @return Button
 	 */
 	private Button getAddEventButton() {
+		Button addEvent = eventView.getAddEventButton();
+		addEvent.relocate(200, 700);
 		return eventView.getAddEventButton();
 	}
 
@@ -157,7 +172,44 @@ public class ApplicationView implements ChangeListener {
 	 * Creates the Help Button
 	 */
 	private Button createHelpButton() {
-		return new Button("Help");
+		Button helpButton = new Button("?");
+		helpButton.setStyle("-fx-background-radius: 5em; " + "-fx-min-width: 30px; " + "-fx-min-height: 30px; " + "-fx-max-width: 30px; " + 
+		"-fx-max-height: 30px;");
+		
+		helpButton.setOnAction(new EventHandler<ActionEvent>(){
+			  
+			@Override public void handle(ActionEvent e) {
+		        Stage stage = new Stage();
+		        //Fill stage with content
+		        stage.show();
+			}
+		});
+		return helpButton;
+	}
+	
+	private Button saveTimelineButton() {
+		Button savey = new Button("Save Timeline");
+		savey.setPrefSize(120, 30);
+		
+		savey.setOnAction(ActionEvent  -> {
+			
+			FileChooser chooseFile = new FileChooser();
+
+			// Set extension filter
+			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+			chooseFile.getExtensionFilters().add(extFilter);
+
+			// Show save file dialog
+			File file = chooseFile.showSaveDialog(getRoot().getScene().getWindow());
+	       
+			try {
+				fileHandler.saveTimeline(app.getCurrentTimeline(), file);
+			} catch (Exception saver) {
+				saver.printStackTrace();
+			}
+			
+		});
+		return savey;
 	}
 
 	/**
@@ -170,7 +222,7 @@ public class ApplicationView implements ChangeListener {
 		timelineButtons.setAlignment(Pos.CENTER);
 		timelineButtons.setSpacing(20.0);
 		timelineButtons.getChildren().addAll(chooseTimeline, getAddTimelineButton(), getDeleteTimelineButton(),
-				createHelpButton());
+				createHelpButton(), saveTimelineButton());
 		return timelineButtons;
 	}
 
