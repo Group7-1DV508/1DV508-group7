@@ -5,14 +5,12 @@ import controls.ChangeListener;
 import io.FileHandler;
 import controls.ApplicationControl;
 
-import java.io.File;
-import java.io.PrintWriter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import io.FileHandler;
-import functions.App;
+
 import functions.Event;
 import functions.Timeline;
 import javafx.event.ActionEvent;
@@ -32,13 +30,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class ApplicationView implements ChangeListener {
 
-	private App app;
-	private FileHandler fileHandler;
 	private ApplicationControl appControl;
 	private EventView eventView;
 	private TimelineView timelineView;
@@ -153,7 +148,7 @@ public class ApplicationView implements ChangeListener {
 	 */
 	private Button getDeleteTimelineButton() {
 		Button delete = new Button("Delete Timeline");
-		delete.setMaxSize(150, 30);
+		delete.setPrefSize(130, 30);
 		return delete;
 	}
 
@@ -193,7 +188,7 @@ public class ApplicationView implements ChangeListener {
 		
 		savey.setOnAction(ActionEvent  -> {
 		
-			appControl.onTimelineSaved();
+			appListener.onTimelineSaved();
 		});
 		return savey;
 	}
@@ -208,7 +203,7 @@ public class ApplicationView implements ChangeListener {
 		timelineButtons.setAlignment(Pos.CENTER);
 		timelineButtons.setSpacing(20.0);
 		timelineButtons.getChildren().addAll(chooseTimeline, getAddTimelineButton(), getDeleteTimelineButton(),
-				createHelpButton(), saveTimelineButton());
+				createHelpButton());
 		return timelineButtons;
 	}
 
@@ -221,7 +216,7 @@ public class ApplicationView implements ChangeListener {
 		eventButtons.getChildren().clear();
 		eventButtons.setAlignment(Pos.CENTER);
 		eventButtons.setSpacing(20.0);
-		eventButtons.getChildren().addAll(getAddEventButton());
+		eventButtons.getChildren().addAll(getAddEventButton(), saveTimelineButton());
 		return eventButtons;
 	}
 
