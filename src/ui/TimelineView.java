@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import controls.TimelineListener;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -70,6 +71,7 @@ public class TimelineView {
 	 */
 	private void addTimelineWindow() {
 		addTimelineButton.getChildren().add(addTimeline);
+		addTimelineButton.setPadding(new Insets(5));
 		addTimeline.setPadding(new Insets(5));
 		addTimeline.setOnAction(new TimelineHandler());
 	}
@@ -222,6 +224,22 @@ public class TimelineView {
 				
 			}
 			
+			int difference  = Integer.parseInt(endDate.substring(0, 4)) - Integer.parseInt(startDate.substring(0, 4));
+			
+			if (difference > 10) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error in timeline length");
+				alert.setHeaderText("Please choose timeline that is less than 10 years long");
+				alert.show();
+			}
+			
+			if (Integer.parseInt(endDate.substring(0, 4)) < Integer.parseInt(startDate.substring(0, 4))) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error in timeline dates");
+				alert.setHeaderText("Start date has to be earlier than end date!");
+				alert.show();
+			}
+			
 			// Parses temporary values if user input is wrong, to avoid
 			// exception
 			LocalDateTime start = LocalDateTime.parse("0000-01-01T03:00:01");
@@ -235,25 +253,13 @@ public class TimelineView {
 			if (endDate.length() == 4 && endDate.matches("[0-9]+")) {
 				end = LocalDateTime.parse(endDate + "-01-01T03:00:00");
 			}
-			
-			int difference  = Integer.parseInt(endDate.substring(0, 3)) - Integer.parseInt(startDate.substring(0, 3));
-			if (difference > 10) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error in timeline length");
-				alert.setHeaderText("Please choose timeline that is less than 10 years long");
-				alert.show();
-			}
-			
-			if (Integer.parseInt(endDate.substring(0, 3)) > Integer.parseInt(startDate.substring(0, 3))) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error in timeline dates");
-				alert.setHeaderText("Start date has to be earlier than end date!");
-				alert.show();
-			}
 
 			// If timeline was added successfully, closes the window
 			if (timelineListener.onAddTimeline(name, start, end)) {
 				addTimelineWindow.close();
+				timelineName.clear();
+				timelineStart.clear();
+				timelineEnd.clear();
 			}
 
 		}
