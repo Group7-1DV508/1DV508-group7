@@ -48,6 +48,16 @@ public class ApplicationTest {
 			public void onEditEvent(Timeline current) {
 				
 			}
+
+			@Override
+			public void onTimelineDelete(Timeline current) {
+				
+			}
+
+			@Override
+			public void onDeleteEvent(Timeline current) {
+
+			}
 			
 		}
 		app.addListener(new ChangeListenerForTest());

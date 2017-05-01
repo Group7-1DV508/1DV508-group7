@@ -3,9 +3,6 @@ package controls;
 import java.time.LocalDateTime;
 
 import functions.App;
-import functions.Timeline;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 public class TimelineControl implements TimelineListener {
 
@@ -13,7 +10,8 @@ public class TimelineControl implements TimelineListener {
 
 	@Override
 	public boolean onAddTimeline(String name, LocalDateTime start, LocalDateTime end) {
-		if (isCorrectInput(name, start, end)) {
+		if (isCorrectInput(name, start, end) && 
+				(Integer.parseInt(start.toString().substring(0, 4)) < Integer.parseInt(end.toString().substring(0, 4)))) {
 			currentApp.addTimeline(name, start, end);
 			return true;
 		} else {
@@ -22,9 +20,9 @@ public class TimelineControl implements TimelineListener {
 	}
 	
 	@Override
-	public boolean onDeleteTimeline(Timeline timeline) {
-		if (currentApp.getTimelines().contains(timeline)) {	
-			currentApp.removeTimeline(timeline);
+	public boolean onDeleteTimeline() {
+		if (currentApp.getTimelines().contains(currentApp.getCurrentTimeline())) {	
+			currentApp.removeTimeline(currentApp.getCurrentTimeline());
 			return true;
 		}
 		else {
@@ -41,10 +39,6 @@ public class TimelineControl implements TimelineListener {
 	 */
 	private boolean isNameCorrect(String name) {
 		if (name.length() == 0) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error in timeline name");
-			alert.setHeaderText("Please choose a name for your timeline");
-			alert.show();
 			return false;
 		} else {
 			return true;
@@ -60,12 +54,7 @@ public class TimelineControl implements TimelineListener {
 	 */
 	private boolean isStartCorrect(LocalDateTime start) {
 		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
-		if (start.equals(temp)) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error in timeline start date");
-			alert.setHeaderText("Please choose a start date for your timeline");
-			alert.setContentText("Start year must be 4 numbers long. (Ex. 0001,0002...2016,2017)");
-			alert.show();
+		if (start.equals(temp) || start == null) {
 			return false;
 		} else {
 			return true;
@@ -81,12 +70,7 @@ public class TimelineControl implements TimelineListener {
 	 */
 	private boolean isEndCorrect(LocalDateTime end) {
 		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
-		if (end.equals(temp)) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error in timeline end date");
-			alert.setHeaderText("Please choose an end date for your timeline.");
-			alert.setContentText("End year must be 4 numbers long. (Ex. 0001,0002...2016,2017)");
-			alert.show();
+		if (end.equals(temp) || end == null) {
 			return false;
 		} else {
 			return true;
