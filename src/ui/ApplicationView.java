@@ -192,22 +192,8 @@ public class ApplicationView implements ChangeListener {
 		savey.setPrefSize(120, 30);
 		
 		savey.setOnAction(ActionEvent  -> {
-			
-			FileChooser chooseFile = new FileChooser();
-
-			// Set extension filter
-			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
-			chooseFile.getExtensionFilters().add(extFilter);
-
-			// Show save file dialog
-			File file = chooseFile.showSaveDialog(getRoot().getScene().getWindow());
-	       
-			try {
-				fileHandler.saveTimeline(app.getCurrentTimeline(), file);
-			} catch (Exception saver) {
-				saver.printStackTrace();
-			}
-			
+		
+			appControl.onTimelineSaved();
 		});
 		return savey;
 	}
