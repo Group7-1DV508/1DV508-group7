@@ -8,10 +8,9 @@ public class Alerts {
 	
 	Alert alert = new Alert(AlertType.ERROR);
 	
-public boolean Checkname ( String name, String description){
+public boolean Checkname ( String name, String description , String year, String month){
 	
-	
-	
+	 
 	
 	if (name.length() > 30){
 		
@@ -19,12 +18,21 @@ public boolean Checkname ( String name, String description){
 		alert.setContentText("Plase, ");
 		alert.showAndWait();
 		return false;}	
-	else if ( description.length() > 40){
+	else if ( description.length() > 500){
 		alert.setTitle("Error");
 		alert.setContentText("Plase, dec");
 		alert.showAndWait();
 		return false;
-	}else{
+	}else if (year.length() != 4 ){
+		alert.setTitle("Error");
+		alert.setContentText("Plase, dec");
+		alert.showAndWait();
+		return false;
+	}
+	
+	
+	
+	else{
 		return true;
 	}
 	
