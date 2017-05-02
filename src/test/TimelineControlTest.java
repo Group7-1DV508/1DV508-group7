@@ -36,9 +36,6 @@ public class TimelineControlTest implements ChangeListener {
 	private final LocalDateTime EXPECTED_TIMELINE_START3 = null;
 	private final LocalDateTime EXPECTED_TIMELINE_END3 = null;
 	
-	private final Timeline timeline_1 = new Timeline("Timeline Test 1", LocalDateTime.of(2001, 01, 01, 00, 00), LocalDateTime.of(2002, 01, 01, 00, 00));
-	private final Timeline timeline_2 = new Timeline("Timeline Test 2", LocalDateTime.of(2000, 01, 01, 00, 00), LocalDateTime.of(2010, 01, 01, 00, 00));
-	private final Timeline timeline_3 = new Timeline("", null, null);
 	
 	private boolean changeTimeline;
 	private boolean newTimeline;
