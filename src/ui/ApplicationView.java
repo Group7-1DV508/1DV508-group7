@@ -519,6 +519,7 @@ public class ApplicationView implements ChangeListener {
 		currentTimeline.getChildren().clear();
 		eventBox.getChildren().clear();
 		showYearBox.getChildren().clear();
+		chooseTimeline.getItems().clear();
 		Text noTimelines = new Text("There are no new timelines currently selected");
 		noTimelines.setFont(new Font("Times new Roman", 20));
 		noTimelines.setFill(Color.BLACK);
@@ -527,10 +528,16 @@ public class ApplicationView implements ChangeListener {
 
 	@Override
 	public void onChangedTimeline(ArrayList<Timeline> timelines, Timeline current) {
-		chooseTimeline(timelines, current);
-		showYear(current);
-		currentTimeline(current);
-		addEventsToTimeline(current);
+		if (!(current == null)) {
+			chooseTimeline(timelines, current);
+			showYear(current);
+			currentTimeline(current);
+			addEventsToTimeline(current);
+		}
+		else {
+			clearTimelineBox();
+		}
+		
 	}
 
 	@Override
