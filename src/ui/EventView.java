@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 public class EventView {
 
 	private EventListener eventListener;
-
+	private final Stage eventWindow = new Stage();
 	// TextFields - Add Event Window
 	private TextField name;
 	private TextField description;
@@ -220,7 +220,7 @@ public class EventView {
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
 							Alerts alert = new Alerts();
-						   if( alert.Checkname(eventname, eventdescrip)){
+						 //  if( alert.Checkname(eventname, eventdescrip)){
 							titleText.setText( name.getText());
 							decText.setText(description.getText());
 							dateStartText.setText( yearStart.getText()+"/"+ monthStart.getText()+"/"+
@@ -249,7 +249,7 @@ public class EventView {
 								cancel.setDisable(true);
 							}
 						}
-						}
+						
 						/*
 						 * If the Event has End Time an Event with duration is
 						 * created
@@ -414,7 +414,7 @@ public class EventView {
 	}
 
 	public void ViewEventInfo(Event e) {
-		final Stage eventWindow = new Stage();
+		//final Stage eventWindow = new Stage();
 
 		VBox window = new VBox();
 			 window.setSpacing(10);
@@ -622,7 +622,7 @@ public class EventView {
 					if (result.get() == ButtonType.OK){
 						if(eventListener.onDeleteEvent(e)){
 							
-							
+							eventWindow.close();
 						}
 					} else {
 						alert.close();
@@ -713,4 +713,4 @@ public class EventView {
 		}
 	}
 
-}
+} 
