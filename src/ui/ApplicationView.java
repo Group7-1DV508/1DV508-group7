@@ -2,10 +2,14 @@ package ui;
 
 import controls.ApplicationListener;
 import controls.ChangeListener;
+import io.FileHandler;
+import controls.ApplicationControl;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
 
 import functions.Event;
 import functions.Timeline;
@@ -27,6 +31,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class ApplicationView implements ChangeListener {
 
@@ -51,7 +56,7 @@ public class ApplicationView implements ChangeListener {
 	// comboBox to choose timeline
 	private final ComboBox<Timeline> chooseTimeline = new ComboBox<Timeline>();
 	// contains all created events for the current timeline
-	private ArrayList<EventShape> eventShapes = new ArrayList<EventShape>();
+	private final ArrayList<EventShape> eventShapes = new ArrayList<EventShape>();
 	// contains all months/years for the current timeline
 	private final GridPane currentTimeline = new GridPane();
 	// list of months, used to divide the month names to the month boxes
@@ -66,7 +71,7 @@ public class ApplicationView implements ChangeListener {
 
 	// size of the month boxes
 	final int MONTH_BOX_HEIGHT = 50;
-	final int MONTH_BOX_LENGTH = 103;
+	final int MONTH_BOX_LENGTH = 100;
 
 	/**
 	 * Constructor, creates and initialize EventView and TimelineView
@@ -79,7 +84,7 @@ public class ApplicationView implements ChangeListener {
 	/**
 	 * Update the ApplicationListener variable with the ApplicationListener
 	 * given as input
-	 *
+	 * 
 	 * @param appList
 	 *            , (ApplicationListener)
 	 */
@@ -89,7 +94,7 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * Returns the EventView currently used
-	 *
+	 * 
 	 * @return EventView
 	 */
 	public EventView getEventView() {
@@ -98,7 +103,7 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * Returns the TimelineView currently used
-	 *
+	 * 
 	 * @return TimelineView
 	 */
 	public TimelineView getTimelineView() {
@@ -107,7 +112,7 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * Returns the root of the Application Window
-	 *
+	 * 
 	 * @return GridPane
 	 */
 	public VBox getRoot() {
@@ -121,7 +126,7 @@ public class ApplicationView implements ChangeListener {
 	 */
 	private VBox root() {
 		view.getChildren().clear();
-		view.setSpacing(10);
+		view.setSpacing(20);
 		view.setAlignment(Pos.CENTER);
 		view.getChildren().addAll(timelineButtonsBox(), timelineMainBox());
 		return view;
@@ -129,7 +134,7 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * Return "Add Timeline" Button
-	 *
+	 * 
 	 * @return Button
 	 */
 	private Button getAddTimelineButton() {
@@ -138,19 +143,23 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * Returns the "Delete Timeline" Button
-	 *
+	 * 
 	 * @return Button
 	 */
 	private Button getDeleteTimelineButton() {
-		return timelineView.getDeleteTimelineButton();
+		Button delete = new Button("Delete Timeline");
+		delete.setPrefSize(130, 30);
+		return delete;
 	}
 
 	/**
 	 * Returns the "Add Event" Button
-	 *
+	 * 
 	 * @return Button
 	 */
 	private Button getAddEventButton() {
+		Button addEvent = eventView.getAddEventButton();
+		addEvent.relocate(200, 700);
 		return eventView.getAddEventButton();
 	}
 
@@ -158,14 +167,48 @@ public class ApplicationView implements ChangeListener {
 	 * Creates the Help Button
 	 */
 	private Button createHelpButton() {
-		Button help = new Button("Help");
-		help.setPadding(new Insets(5));
-		return help;
+		Button helpButton = new Button("?");
+		helpButton.setStyle("-fx-background-radius: 5em; " + "-fx-min-width: 30px; " + "-fx-min-height: 30px; " + "-fx-max-width: 30px; " + 
+		"-fx-max-height: 30px;");
+		
+		helpButton.setOnAction(new EventHandler<ActionEvent>(){
+			  
+			@Override public void handle(ActionEvent e) {
+		        Stage stage = new Stage();
+		        //Fill stage with content
+		        stage.show();
+			}
+		});
+		return helpButton;
+	}
+	/* Creates a button which saves a given
+	 * timeline to a file path chosen by
+	   the user through the fileChooser.*/
+	
+	private Button saveTimelineButton() {
+		Button savey = new Button("Save Timeline");
+		savey.setPrefSize(120, 30);
+		
+		savey.setOnAction(ActionEvent  -> {
+		
+			appListener.onTimelineSaved();
+		});
+		return savey;
+	}
+	
+	private Button loadTimelineButton() {
+		Button loaded = new Button("Load Timeline");
+		loaded.setPrefSize(120, 30);
+		
+		loaded.setOnAction(ActionEvent -> {
+			appListener.onTimelineLoaded();
+		});
+		return loaded;
 	}
 
 	/**
 	 * collects and return all buttons associated with timeline
-	 *
+	 * 
 	 * @return HBox
 	 */
 	private HBox timelineButtonsBox() {
@@ -179,21 +222,21 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * collects and return all buttons associated with event
-	 *
+	 * 
 	 * @return HBox
 	 */
 	private HBox eventButtonsBox() {
 		eventButtons.getChildren().clear();
 		eventButtons.setAlignment(Pos.CENTER);
 		eventButtons.setSpacing(20.0);
-		eventButtons.getChildren().addAll(getAddEventButton());
+		eventButtons.getChildren().addAll(getAddEventButton(), saveTimelineButton(), loadTimelineButton());
 		return eventButtons;
 	}
 
 	/**
 	 * creates a combo box where loaded timelines can be chosen from also calls
 	 * method to create the current timeline and add events to it
-	 *
+	 * 
 	 * @param timelines
 	 *            , the timelines available
 	 * @param current
@@ -235,7 +278,7 @@ public class ApplicationView implements ChangeListener {
 	 */
 	private ScrollPane timelineScrollBox() {
 		VBox content = new VBox();
-		scrollTimeline.setPrefSize(400, 300);
+		scrollTimeline.setPrefSize(400, 200);
 		content.getChildren().addAll(showYearBox, currentTimeline, eventBox);
 		scrollTimeline.setContent(content);
 
@@ -244,14 +287,14 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * fetch months for the current timeline and adds them to the timeline pane
-	 *
+	 * 
 	 * @param current
 	 *            , the currently open timeline
 	 */
 	private void currentTimeline(Timeline current) {
 		currentTimeline.getChildren().clear();
-		currentTimeline.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
-		currentTimeline.setHgap(2.0);
+		currentTimeline.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+		currentTimeline.setHgap(5.0);
 		int yearStart = current.getYear(current.getStart());
 		int yearEnd = current.getYear(current.getEnd());
 
@@ -273,14 +316,14 @@ public class ApplicationView implements ChangeListener {
 		timelineMonth.setMaxSize(MONTH_BOX_LENGTH, MONTH_BOX_HEIGHT);
 		timelineMonth.setMinSize(MONTH_BOX_LENGTH, MONTH_BOX_HEIGHT);
 		timelineMonth.setAlignment(Pos.CENTER);
-		timelineMonth.setBackground(new Background(new BackgroundFill(Color.BLUEVIOLET, null, null)));
+		timelineMonth.setBackground(new Background(new BackgroundFill(Color.LIGHTSKYBLUE, null, null)));
 	}
 
 	/**
 	 * Collects event information (start/end) and calls method to create an
 	 * event shape with the correct allignment at the timeline also creates a
 	 * line to connect the shape to the timeline
-	 *
+	 * 
 	 * @param current
 	 *            , current Timeline
 	 */
@@ -360,7 +403,7 @@ public class ApplicationView implements ChangeListener {
 	/**
 	 * Creates a pane with the same length as the timeline where Events are
 	 * added
-	 *
+	 * 
 	 * @param current
 	 */
 	private void createEventBox(Timeline current) {
@@ -374,7 +417,7 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * if Event shapes collide event gets a lower alignment
-	 *
+	 * 
 	 * @param events
 	 *            , ArrayList<Circle>
 	 */
@@ -395,7 +438,7 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * compare Alignment of the Circles and sort the ArrayList according to that
-	 *
+	 * 
 	 * @param events
 	 *            ArrayList<Circle>
 	 */
@@ -432,7 +475,7 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * creates box to show years on top of the Timeline
-	 *
+	 * 
 	 * @param current
 	 *            , current timeline
 	 */
@@ -475,32 +518,6 @@ public class ApplicationView implements ChangeListener {
 		Text november = new Text("Nov");
 		Text december = new Text("Dec");
 
-		january.setFill(Color.WHITE);
-		february.setFill(Color.WHITE);
-		march.setFill(Color.WHITE);
-		april.setFill(Color.WHITE);
-		may.setFill(Color.WHITE);
-		june.setFill(Color.WHITE);
-		july.setFill(Color.WHITE);
-		august.setFill(Color.WHITE);
-		september.setFill(Color.WHITE);
-		october.setFill(Color.WHITE);
-		november.setFill(Color.WHITE);
-		december.setFill(Color.WHITE);
-
-		january.setFont(Font.font ("Times New Roman", 22));
-		february.setFont(Font.font ("Times New Roman", 22));
-		march.setFont(Font.font ("Times New Roman", 22));
-		april.setFont(Font.font ("Times New Roman", 22));
-		may.setFont(Font.font ("Times New Roman", 22));
-		june.setFont(Font.font ("Times New Roman", 22));
-		july.setFont(Font.font ("Times New Roman", 22));
-		august.setFont(Font.font ("Times New Roman", 22));
-		september.setFont(Font.font ("Times New Roman", 22));
-		october.setFont(Font.font ("Times New Roman", 22));
-		november.setFont(Font.font ("Times New Roman", 22));
-		december.setFont(Font.font ("Times New Roman", 22));
-
 		monthTexts.add(january);
 		monthTexts.add(february);
 		monthTexts.add(march);
@@ -514,17 +531,6 @@ public class ApplicationView implements ChangeListener {
 		monthTexts.add(november);
 		monthTexts.add(december);
 
-	}
-	
-	private void clearTimelineBox() {
-		currentTimeline.getChildren().clear();
-		eventBox.getChildren().clear();
-		showYearBox.getChildren().clear();
-		chooseTimeline.getItems().clear();
-		Text noTimelines = new Text("There are no new timelines currently selected");
-		noTimelines.setFont(new Font("Times new Roman", 20));
-		noTimelines.setFill(Color.BLACK);
-		//currentTimeline.add(noTimelines, 0, 1);
 	}
 
 	@Override
@@ -542,7 +548,6 @@ public class ApplicationView implements ChangeListener {
 			getDeleteTimelineButton().setDisable(true);
 			eventView.setDisable(true);
 		}
-		
 	}
 
 	@Override
@@ -561,9 +566,8 @@ public class ApplicationView implements ChangeListener {
 	@Override
 	public void onEditEvent(Timeline current) {
 		addEventsToTimeline(current);
-
+		
 	}
 
-	
 
 }

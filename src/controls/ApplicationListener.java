@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import functions.Event;
 import functions.Timeline;
 
+
 public interface ApplicationListener {
 	
 	/**
@@ -14,9 +15,10 @@ public interface ApplicationListener {
 	void onTimelineSelected(Timeline t);
 
 	void onNewEventSelected(Event e);
-	/**
-	 * Returns a list of currently loaded timeline
-	 * @return arraylist containing timelines
-	 */
+	
+	void onTimelineSaved();
+	
+	void onTimelineLoaded();
+
 	ArrayList<Timeline> getTimelines();
 }

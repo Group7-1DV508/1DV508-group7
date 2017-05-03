@@ -79,6 +79,12 @@ public class App {
 		changeListener.onEditTimeline(current);
 	}
 	
+	public void addTimelineToList(Timeline t) {
+		timelines.add(t);
+		current = t;
+		changeListener.onChangedTimeline(timelines, current);
+	}
+	
 	/**
 	 * Update the ChangeListener variable with the ChangeListener given as input
 	 * @param cl , (ChangeListener)
@@ -125,5 +131,12 @@ public class App {
 	public void eventEdited() {
 		changeListener.onEditEvent(current);
 	}
+	public void addEvents(ArrayList<Event> events){
+        for (Event eve: events) {
+            current.addEventDuration(eve.getEventName(), eve.getEventDescription(), eve.getEventStart(),
+                    eve.getEventEnd());
+            changeListener.onEditTimeline(current);
+        }
+    }
 	
 }

@@ -1,28 +1,40 @@
 package controls;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import functions.App;
 import functions.Event;
 import functions.Timeline;
 import io.FileHandler;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.stage.FileChooser;
 import ui.ApplicationView;
+import ui.TimelineView;
 
 public class ApplicationControl implements ApplicationListener {
-	
+
 	private ApplicationView appView;
 	private App app;
 	private FileHandler fileHandler;
 	private TimelineControl timelineControl;
 	private EventControl eventControl;
-	
+	private TimelineView timelineView;
+
 	/**
-	 * Constructor, Creates an ApplicationControl and sets variables for 
-	 * ApplicationView, App, FileHandler. Also creates a new TimelineControl and 
-	 * an EventControl. 
-	 * @param av , ApplicationView
-	 * @param app , App
-	 * @param fh , FileHandler
+	 * Constructor, Creates an ApplicationControl and sets variables for
+	 * ApplicationView, App, FileHandler. Also creates a new TimelineControl and
+	 * an EventControl.
+	 * 
+	 * @param av
+	 *            , ApplicationView
+	 * @param app
+	 *            , App
+	 * @param fh
+	 *            , FileHandler
 	 */
 	public ApplicationControl(ApplicationView av, App app, FileHandler fh) {
 		appView = av;
@@ -33,10 +45,10 @@ public class ApplicationControl implements ApplicationListener {
 		eventControl.setApp(app);
 		timelineControl.setApp(app);
 	}
-	
+
 	/**
-	 * Connects the View and Control through the Listener
-	 * Also connects ApplicationView to App through the Listener 
+	 * Connects the View and Control through the Listener Also connects
+	 * ApplicationView to App through the Listener
 	 */
 	public void setUpListeners() {
 		appView.getTimelineView().addListener(timelineControl);
@@ -44,24 +56,67 @@ public class ApplicationControl implements ApplicationListener {
 		appView.addListener(this);
 		app.addListener(appView);
 	}
-	
 
 	@Override
 	public void onTimelineSelected(Timeline t) {
 		app.setCurrentTimeline(t);
-		
+
 	}
 
 	@Override
 	public void onNewEventSelected(Event e) {
 		app.setCurrentEvent(e);
-		
+
+	}
+
+	@Override
+	public void onTimelineSaved() {
+		FileChooser chooseFile = new FileChooser();
+
+		// Set extension filter
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+		chooseFile.getExtensionFilters().add(extFilter);
+
+		// Show save file dialog
+		File file = chooseFile.showSaveDialog(appView.getRoot().getScene().getWindow());
+
+		try {
+			fileHandler.saveTimeline(app.getCurrentTimeline(), file);
+		} catch (Exception saver) {
+			// if cancel is pressed, show error (popup window) message.
+			Alert fieldError = new Alert(Alert.AlertType.ERROR, "Error, cancelling save process.");
+			fieldError.showAndWait();
+		}
+	}
+
+	@Override
+	public void onTimelineLoaded() {
+		FileChooser fileChooser = new FileChooser();
+
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show open file dialog
+        File file = fileChooser.showOpenDialog(appView.getRoot().getScene().getWindow());
+        
+        try {
+        	Timeline t = fileHandler.loadTimeline(file);
+        	app.addTimelineToList(t);
+        }
+        catch (Exception loader) {
+        	// if cancel is pressed, show error(popup message) message.
+        	Alert fieldError = new Alert(Alert.AlertType.ERROR, "Error, cancelling load process");
+        	fieldError.showAndWait();
+        }
+        
+
 	}
 
 	@Override
 	public ArrayList<Timeline> getTimelines() {
+		// TODO Auto-generated method stub
 		return app.getTimelines();
 	}
-	
-
 }

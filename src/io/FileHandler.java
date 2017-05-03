@@ -30,7 +30,7 @@ public class FileHandler {
 	 * @throws Exception
 	 */
 	public Timeline loadTimeline(File file) throws Exception {
-
+		
 		JAXBContext context = JAXBContext.newInstance(Timeline.class);
 		Unmarshaller unMarshaller = context.createUnmarshaller();
 

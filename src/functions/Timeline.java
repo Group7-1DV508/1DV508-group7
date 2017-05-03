@@ -152,6 +152,9 @@ public class Timeline {
 	public String toString() {
 		return name;
 	}
+	public void setEvents(ArrayList<Event> events) {
+		this.events = events;
+	}
 	
 	
 }
