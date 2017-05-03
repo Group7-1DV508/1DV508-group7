@@ -1,5 +1,6 @@
 package ui;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import controls.EventListener;
 import functions.Event;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -16,6 +18,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
@@ -56,6 +59,8 @@ public class EventView {
 	private Text dateEndText;
 	private ComboBox<String> timeStart;
 	private ComboBox<String> timeEnd;
+	private DatePicker checkInDatePickerStart;
+	private DatePicker checkInDatePickerEnd;
 
 	/**
 	 * Update the EventListener variable with the EventListener given as input
@@ -73,108 +78,150 @@ public class EventView {
 	 * @return GridPane root
 	 */
 
-	public Button getAddEventButton() {
+	
+	
+	
+	public Button getAddEventButton(){
+        
+        
+        
+	      Button addEvent = new Button("Add Event");
+	 		     addEvent.setMinSize(75, 30);
+	 		     checkInDatePickerStart = new DatePicker();
+	 		     checkInDatePickerEnd = new DatePicker();
+	 		     ok = new Button("Ok");
+	 		    cancel = new Button("Cancel"); 
+	 		    addEvent.setOnAction(new EventHandler<ActionEvent>() {
+	 		
+	 		
+	       	final Stage eventWindow = new Stage();
+	       		   VBox vbox = new VBox();
+	       		
+	       	
+		       	 
+	       		
+	 			@Override
+	 			public void handle(ActionEvent event) {
+	 				vbox.setPrefSize(300, 300);
+	 		        vbox.setStyle("-fx-padding: 10;");
+	 		        name = new TextField();
+	 				description = new TextField();
+	 				Label nameL = new Label("Name");
+	 				Label descriptionL = new Label("Description");
+	 				timeStart = new ComboBox<String>();
+	 				timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+	 						"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+	 						"20:00", "21:00", "22:00", "23:00");
+	 				
+	 				timeEnd = new ComboBox<String>();
+	 				timeEnd.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+	 						"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+	 						"20:00", "21:00", "22:00", "23:00");
 
-		Button addEvent = new Button("Add Event");
-		addEvent.setMinSize(75, 30);
+	 		       	  //checkInDatePickerStart = new DatePicker();
+	 				
+	 				
+	 				
+							
+						
+			 				ok.setOnAction(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								
+							if (checkInDatePickerEnd.getValue() == null){
+								String eventname = name.getText();
+								String eventdescrip = description.getText();
 
-		/*
-		 * when Add Event button is clicked a popup window is created where the
-		 * user can provide information about the Event, User has to provide
-		 * Name, Description and Start Date, End Date however is optional.
-		 */
-		addEvent.setOnAction(new EventHandler<ActionEvent>() {
+								 LocalDate date = checkInDatePickerStart.getValue()  ;
+						         System.out.println("Selected date: " +  date.getYear() +date.getMonthValue() +date.getDayOfMonth());
+								
+								
+						         int  year =  date.getYear() ;
+						         String year1 = Integer.toString(year);
+						         int  month =  date.getMonthValue();
+						         String month1 = Integer.toString(month);
+						         int  day =  date.getDayOfMonth() ;
+						         String day1 = Integer.toString(day);
+						         
+						         LocalDateTime startTime = createLocalDateTime( year1 ,month1 ,day1, timeStart.getValue() );
+							     	
+						         if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
+										eventWindow.close();
+									}
+						         
+								}else{
+									String eventname = name.getText();
+									String eventdescrip = description.getText();
+									
+									LocalDate date = checkInDatePickerStart.getValue();
+							         System.out.println("Selected date: " +  date.getYear() +date.getMonthValue() +date.getDayOfMonth());
+									
+							         int  year =  date.getYear() ;
+							         String year1 = Integer.toString(year);
+							         int  month =  date.getMonthValue();
+							         String month1 = Integer.toString(month);
+							         int  day =  date.getDayOfMonth() ;
+							         String day1 = Integer.toString(day);
+							         
+							         
+							         LocalDateTime startTime = createLocalDateTime( year1 ,month1 ,day1, timeStart.getValue() );
+									
+									
+									
+							         LocalDate date2= checkInDatePickerEnd.getValue();
+							         int  yearEnd =  date2.getYear() ;
+							         String yearEnd1 = Integer.toString(yearEnd);
+							         int  monthEnd =  date2.getMonthValue();
+							         String monthEnd1 = Integer.toString(monthEnd);
+							         int  dayEnd =   date2.getDayOfMonth() ;
+							         String dayEnd1 = Integer.toString(dayEnd);
+							       
+							         LocalDateTime endTime = createLocalDateTime(yearEnd1, monthEnd1,dayEnd1, timeEnd.getValue());
+										
 
-			@Override
-			public void handle(ActionEvent event) {
-				final Stage eventWindow = new Stage();
+										if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
+											eventWindow.close();
+									}
 
-				GridPane textFieldsStart = createAddEventWindow();
-
-				/*
-				 * When "Ok" button is clicked, textfields are fetched and
-				 * converted to String and LocalDateTime then application
-				 * listener is calling the onAddEvent-method
-				 */
-				ok.setOnAction(new EventHandler<ActionEvent>() {
-
-					@Override
-					public void handle(ActionEvent event) {
-						/*
-						 * If Name, Description or Start Date fields are empty
-						 * an Error alert shows to the user
-						 */
-						if (isNeededFieldEmpty()) {
-							Alert emptyFieldError = new Alert(Alert.AlertType.ERROR,
-									"Name, Description and Start Date can't be empty.");
-							emptyFieldError.showAndWait();
-						}
-						/*
-						 * If the event doesn't have End Date an non duration
-						 * Event is created
-						 */
-						else if (isNotDurationEvent()) {
-							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-									dayStart.getText(),
-									timeStart.getValue()/*
-														 * hoursStart.getText()
-														 */);
-							String eventname = name.getText();
-							String eventdescrip = description.getText();
-
-							if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
-								eventWindow.close();
+									
+									
+								}
+								
 							}
-						}
-						/*
-						 * If the Event has End Time an Event with duration is
-						 * created6
-						 */
-						else {
-							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-									dayStart.getText(),
-									timeStart.getValue() /*
-															 * hoursStart.getText()
-															 */);
-							LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
-									dayEnd.getText(),
-									timeEnd.getValue() /* hoursEnd.getText() */);
-							String eventname = name.getText();
-							String eventdescrip = description.getText();
+			 			});
+							
+							
+			 				cancel.setOnAction(new EventHandler<ActionEvent>() {
 
-							if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
-								eventWindow.close();
-							}
+								@Override
+								public void handle(ActionEvent event) {
+									eventWindow.close();
+								}
+							});
+							
+						
+	 				
+	 				
+	 				 
+	 				vbox.getChildren( ).addAll(nameL, name, descriptionL,description,timeStart,timeEnd,checkInDatePickerStart,checkInDatePickerEnd, ok ,cancel);
+	 				Scene eventScene = new Scene(vbox);
+					eventWindow.setScene(eventScene);
+					eventWindow.show();
 
-						}
-
-					}
-				});
-
-				/*
-				 * when cancel button is clicked the popup window is closed
-				 */
-				cancel.setOnAction(new EventHandler<ActionEvent>() {
-
-					@Override
-					public void handle(ActionEvent event) {
-						eventWindow.close();
-					}
-				});
-
-				/*
-				 * Creates a Scene and builds the Add Event popup window
-				 */
-				Scene eventScene = new Scene(textFieldsStart);
-				eventWindow.setScene(eventScene);
-				eventWindow.show();
-
-			}
-		});
-		return addEvent;
-
+	 		}
+	 	});
+	         
+	    
+	        
+		
+	 	return addEvent;
 	}
-
+	
+	
+	
+	
+	
+	
 	public Button EditButton(Event e) {
 
 		editEvent = new Button("Edit");
@@ -219,7 +266,7 @@ public class EventView {
 									dayStart.getText(), timeStart.getValue());
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
-							Alerts alert = new Alerts();
+							
 						 //  if( alert.Checkname(eventname, eventdescrip)){
 							titleText.setText( name.getText());
 							decText.setText(description.getText());
@@ -333,86 +380,7 @@ public class EventView {
 	 * @return GridPane
 	 */
 
-	private GridPane createAddEventWindow() {
-
-		GridPane pane = new GridPane();
-		pane.setPadding(new Insets(10,10,10,10));
-		
-		// TextFields initialized
-		name = new TextField();
-		description = new TextField();
-
-		yearStart = new TextField();
-		monthStart = new TextField();
-		dayStart = new TextField();
-		timeStart = new ComboBox<String>();
-		timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
-				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
-				"20:00", "21:00", "22:00", "23:00");
-
-		yearEnd = new TextField();
-		monthEnd = new TextField();
-		dayEnd = new TextField();
-		timeEnd = new ComboBox<String>();
-		timeEnd.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
-				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
-				"20:00", "21:00", "22:00", "23:00");
-
-		// Labels initialized
-		Label nameLabel = new Label("Name: ");
-		Label descriptionLabel = new Label("Description: ");
-
-		Label start = new Label("Start Date:");
-		Label end = new Label("End Date: ");
-		Label yearLabel = new Label("Year: ");
-		Label monthLabel = new Label("Month: ");
-		Label dayLabel = new Label("Day: ");
-		Label hourLabel = new Label("Time");
-
-		Label yearLabel2 = new Label("Year: ");
-		Label monthLabel2 = new Label("Month: ");
-		Label dayLabel2 = new Label("Day: ");
-		Label hourLabel2 = new Label("Time");
-
-		// Buttons initialized
-		ok = new Button("Ok");
-		ok.setMaxSize(75, 35);
-		ok.setMinSize(75, 35);
-		cancel = new Button("Cancel");
-		cancel.setMaxSize(75, 35);
-		cancel.setMinSize(75, 35);
-		delete = new Button("Delete");
-
-		// Add initialized Nodes to the GridPane
-		pane.add(nameLabel, 0, 1);
-		pane.add(name, 1, 1);
-		pane.add(descriptionLabel, 0, 2);
-		pane.add(description, 1, 2);
-		pane.add(start, 0, 3);
-		pane.add(yearLabel, 0, 4);
-		pane.add(yearStart, 0, 5);
-		pane.add(monthLabel, 1, 4);
-		pane.add(monthStart, 1, 5);
-		pane.add(dayLabel, 2, 4);
-		pane.add(dayStart, 2, 5);
-		pane.add(hourLabel, 3, 4);
-		pane.add(timeStart, 3, 5);
-		pane.add(end, 0, 6);
-		pane.add(yearLabel2, 0, 7);
-		pane.add(yearEnd, 0, 8);
-		pane.add(monthLabel2, 1, 7);
-		pane.add(monthEnd, 1, 8);
-		pane.add(dayLabel2, 2, 7);
-		pane.add(dayEnd, 2, 8);
-		pane.add(hourLabel2, 3, 7);
-		pane.add(timeEnd, 3, 8);
-		pane.add(ok, 0, 9);
-		pane.add(cancel, 1, 9);
-		
-
-		return pane;
-	}
-
+	
 	public void ViewEventInfo(Event e) {
 		//final Stage eventWindow = new Stage();
 
