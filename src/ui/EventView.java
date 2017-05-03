@@ -46,7 +46,8 @@ public class EventView {
 	private TextField dayEnd;
 
 
-	// Buttons - Add Event Window
+	// Buttons
+	private Button addEvent;
 	private Button ok;
 	private Button cancel;
 	private Button editEvent;
@@ -83,9 +84,7 @@ public class EventView {
 	 */
 
 	public Button getAddEventButton() {
-
-		Button addEvent = new Button("Add Event");
-		addEvent.setMinSize(75, 30);
+		addEvent.setPadding(new Insets(5));
 
 		/*
 		 * when Add Event button is clicked a popup window is created where the
@@ -121,43 +120,64 @@ public class EventView {
 									"Name, Description and Start Date can't be empty.");
 							emptyFieldError.showAndWait();
 						}
-						/*
-						 * If the event doesn't have End Date an non duration
-						 * Event is created
-						 */
-						else if (isNotDurationEvent()) {
-							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-									dayStart.getText(),
-									timeStart.getValue()/*
-														 * hoursStart.getText()
-														 */);
-							String eventname = name.getText();
-							String eventdescrip = description.getText();
-
-							if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
-								eventWindow.close();
-							}
-						}
-						/*
-						 * If the Event has End Time an Event with duration is
-						 * created
-						 */
 						else {
-							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-									dayStart.getText(),
-									timeStart.getValue() /*
+							/*
+							 * If the event doesn't have End Date an non duration
+							 * Event is created
+							 */
+							if (isNotDurationEvent()) {
+								LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
+										dayStart.getText(),
+										timeStart.getValue()/*
 															 * hoursStart.getText()
 															 */);
-							LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
-									dayEnd.getText(),
-									timeEnd.getValue() /* hoursEnd.getText() */);
-							String eventname = name.getText();
-							String eventdescrip = description.getText();
-
-							if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
-								eventWindow.close();
+								String eventname = name.getText();
+								String eventdescrip = description.getText();
+								if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
+									eventWindow.close();
+								}
+								else {
+									Alert alert = new Alert(AlertType.ERROR);
+									alert.setTitle("Error in chosing time");
+									alert.setHeaderText("It appears your are trying to create an event outside of timeline!");
+									alert.show();
+								}
 							}
-
+							/*
+							 * If the Event has End Time an Event with duration is
+							 * created
+							 */
+							else {
+								LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
+										dayStart.getText(),
+										timeStart.getValue() /*
+																 * hoursStart.getText()
+																 */);
+								LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
+										dayEnd.getText(),
+										timeEnd.getValue() /* hoursEnd.getText() */);
+								String eventname = name.getText();
+								String eventdescrip = description.getText();
+								if (startTime.compareTo(endTime) > 0) {
+									Alert alert = new Alert(AlertType.ERROR);
+									alert.setTitle("Error in event dates");
+									alert.setHeaderText("Start date has to be earlier than end date!");
+									alert.show();
+								}
+								
+								else  {
+									if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
+									eventWindow.close();
+									}
+									else {
+										Alert alert = new Alert(AlertType.ERROR);
+										alert.setTitle("Error in chosing time");
+										alert.setHeaderText("It appears your are trying to create an event outside of timeline!");
+										alert.show();
+									}
+								}
+	
+							}
 						}
 
 					}
@@ -187,9 +207,12 @@ public class EventView {
 		return addEvent;
 
 	}
+	
+	public void setDisable (boolean notShown) {
+		addEvent.setDisable(notShown);
+	}
 
 	public Button EditButton(Event e) {
-
 		editEvent = new Button("Edit Info");
 		editEvent.setMinSize(80, 30);
 		editEvent.setFont(Font.font("Verdana", 15));
@@ -231,86 +254,98 @@ public class EventView {
 						 * If the event doesn't have End Date an non duration
 						 * Event is created
 						 */
-						if (!e.isDuration()) {
-
-							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-									dayStart.getText(), timeStart.getValue());
-							String eventname = name.getText();
-							String eventdescrip = description.getText();
-
-							titleText.setText("  " + name.getText());
-							decText.setText(description.getText());
-							dateStartText.setText(startTime.format(format));
-
-
-							if(yearEnd.getText().length()!= 0){
-								LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
-										dayEnd.getText(),
-										timeEnd.getValue());
-						    dateEndText.setText(endTime.format(format));
-
-							}
-							if (eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
-
-								name.setDisable(true);
-								description.setDisable(true);
-
-								yearStart.setDisable(true);
-								monthStart.setDisable(true);
-								dayStart.setDisable(true);
-								timeStart.setDisable(true);
-
-								yearEnd.setDisable(true);
-								monthEnd.setDisable(true);
-								dayEnd.setDisable(true);
-								timeEnd.setDisable(true);
-								ok.setDisable(true);
-								cancel.setDisable(true);
-							}
-						}
-						/*
-						 * If the Event has End Time an Event with duration is
-						 * created
-						 */
 						else {
-							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-									dayStart.getText(), timeStart.getValue());
-							LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
-									dayEnd.getText(), timeEnd.getValue());
-							String eventname = name.getText();
-							String eventdescrip = description.getText();
-							//Update in EventInfoView
-							titleText.setText("  "+name.getText());
-							decText.setText(description.getText());
-							dateStartText.setText(startTime.format(format));
+              if (!e.isDuration()) {
 
-							dateEndText.setText(endTime.format(format));
+                LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
+                    dayStart.getText(), timeStart.getValue());
+                String eventname = name.getText();
+                String eventdescrip = description.getText();
 
-							if (eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
-								// it should dispaly an alert if the input is
-								// not correct
-								// title = new Text("Title: "+
-								// description.getText());
-								name.setDisable(true);
-								description.setDisable(true);
+                titleText.setText("  " + name.getText());
+                decText.setText(description.getText());
+                dateStartText.setText(startTime.format(format));
 
-								yearStart.setDisable(true);
-								monthStart.setDisable(true);
-								dayStart.setDisable(true);
-								timeStart.setDisable(true);
+                if (eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
 
-								yearEnd.setDisable(true);
-								monthEnd.setDisable(true);
-								dayEnd.setDisable(true);
-								timeEnd.setDisable(true);
-								ok.setDisable(true);
-								cancel.setDisable(true);
+                  name.setDisable(true);
+                  description.setDisable(true);
 
+                  yearStart.setDisable(true);
+                  monthStart.setDisable(true);
+                  dayStart.setDisable(true);
+                  timeStart.setDisable(true);
 
-							}
-						}
+                  yearEnd.setDisable(true);
+                  monthEnd.setDisable(true);
+                  dayEnd.setDisable(true);
+                  timeEnd.setDisable(true);
+                  ok.setDisable(true);
+                  cancel.setDisable(true);
+                }
+                else {
+                  Alert alert = new Alert(AlertType.ERROR);
+                  alert.setTitle("Error in chosing time");
+                  alert.setHeaderText("It appears your are trying to create an event outside of timeline!");
+                  alert.show();
+								}
+              }
+              /*
+               * If the Event has End Time an Event with duration is
+               * created
+               */
+              else {
+                LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
+                    dayStart.getText(), timeStart.getValue());
+                LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
+                    dayEnd.getText(), timeEnd.getValue());
+                String eventname = name.getText();
+                String eventdescrip = description.getText();
+                //Update in EventInfoView
+                titleText.setText("  "+name.getText());
+                decText.setText(description.getText());
+                dateStartText.setText(startTime.format(format));
 
-					}
+                dateEndText.setText(endTime.format(format));
+
+                if (startTime.compareTo(endTime) > 0) {
+                  Alert alert = new Alert(AlertType.ERROR);
+                  alert.setTitle("Error in event dates");
+                  alert.setHeaderText("Start date has to be earlier than end date!");
+                  alert.show();
+                }
+
+                else {
+                   if(eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
+                      // it should dispaly an alert if the input is
+                      // not correct
+                      // title = new Text("Title: "+
+                      // description.getText());
+                      name.setDisable(true);
+                      description.setDisable(true);
+
+                      yearStart.setDisable(true);
+                      monthStart.setDisable(true);
+                      dayStart.setDisable(true);
+                      timeStart.setDisable(true);
+
+                      yearEnd.setDisable(true);
+                      monthEnd.setDisable(true);
+                      dayEnd.setDisable(true);
+                      timeEnd.setDisable(true);
+                      ok.setDisable(true);
+                      cancel.setDisable(true);
+                    }
+                  else {
+                      Alert alert = new Alert(AlertType.ERROR);
+                      alert.setTitle("Error in chosing time");
+                      alert.setHeaderText("It appears your are trying to create an event outside of timeline!");
+                      alert.show();
+									}
+                }
+              }
+            }
+          }
 				});
 
 				/*
