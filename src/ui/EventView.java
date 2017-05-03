@@ -46,7 +46,7 @@ public class EventView {
 
 
 	// Buttons
-	private Button addEvent;
+	private Button addEvent = new Button("Add Event");
 	private Button ok;
 	private Button cancel;
 	private Button editEvent;
