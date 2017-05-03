@@ -66,7 +66,7 @@ public class ApplicationControl implements ApplicationListener {
 		app.setCurrentEvent(e);
 
 	}
-	
+
 	@Override
 	public void onTimelineSaved() {
 		FileChooser chooseFile = new FileChooser();
@@ -77,17 +77,36 @@ public class ApplicationControl implements ApplicationListener {
 
 		// Show save file dialog
 		File file = chooseFile.showSaveDialog(appView.getRoot().getScene().getWindow());
-       
+
 		try {
 			fileHandler.saveTimeline(app.getCurrentTimeline(), file);
 		} catch (Exception saver) {
-			// if input is wrong, show error (popup window) message.
-						Alert fieldError = new Alert(Alert.AlertType.ERROR, "File not specified");
-						fieldError.showAndWait();
-					}
+			// if cancel is pressed, show error (popup window) message.
+			Alert fieldError = new Alert(Alert.AlertType.ERROR, "Error, cancelling save process.");
+			fieldError.showAndWait();
 		}
 	}
 
+	@Override
+	public void onTimelineLoaded() {
+		FileChooser fileChooser = new FileChooser();
 
-	
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
 
+        // Show open file dialog
+        File file = fileChooser.showOpenDialog(appView.getRoot().getScene().getWindow());
+        
+        try {
+        	fileHandler.loadTimeline(file);
+        }
+        catch (Exception loader) {
+        	// if cancel is pressed, show error(popup message) message.
+        	Alert fieldError = new Alert(Alert.AlertType.ERROR, "Error, cancelling load process");
+        	fieldError.showAndWait();
+        }
+
+	}
+}
