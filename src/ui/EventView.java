@@ -57,6 +57,13 @@ public class EventView {
 	private ComboBox<String> timeStart;
 	private ComboBox<String> timeEnd;
 
+	//Labels - View Event Window
+	private Label title = new Label("Title:");
+	private Label eventStart = new Label("Event start:");
+	private Label eventEnd = new Label("Event end:");
+	private Label des = new Label("Description:");
+
+
 	/**
 	 * Update the EventListener variable with the EventListener given as input
 	 *
@@ -179,7 +186,11 @@ public class EventView {
 
 	public Button EditButton(Event e) {
 
-		editEvent = new Button("Edit");
+		editEvent = new Button("Edit Info");
+		editEvent.setMinSize(80, 30);
+		editEvent.setFont(Font.font("Verdana", 15));
+		editEvent.setTranslateX(60);
+		editEvent.setTranslateY(-30);
 		editEvent.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
@@ -222,10 +233,10 @@ public class EventView {
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
 
-							titleText.setText("Title: " + name.getText());
-							decText.setText("Description: "+description.getText());
-							dateStartText.setText("Event start at: "+ yearStart.getText()+"/"+ monthStart.getText()+"/"+
-													dayStart.getText()+" At "+ timeStart.getValue());
+							titleText.setText("  " + name.getText());
+							decText.setText(description.getText());
+							dateStartText.setText(monthStart.getText()+" " + dayStart.getText()+ " " + yearStart.getText()+
+									" " + timeStart.getValue());
 
 							if(yearEnd.getText().length()!= 0){
 
@@ -262,15 +273,15 @@ public class EventView {
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
 							//Update in EventInfoView
-							titleText.setText("Title: " + name.getText());
-							decText.setText("Description: "+description.getText());
-							dateStartText.setText("Event start at: "+ yearStart.getText()+"/"+ monthStart.getText()+"/"+
+							titleText.setText(name.getText());
+							decText.setText(description.getText());
+							dateStartText.setText(yearStart.getText()+"/"+ monthStart.getText()+"/"+
 													dayStart.getText()+" At "+ timeStart.getValue());
 
 							dateEndText.setText("Event Ends at: "+yearEnd.getText()+"/"+ monthEnd.getText()+"/"+dayEnd.getText()+" At "+ timeEnd.getValue());
 
 							if (eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
-								// it should dispaly an alart if the input is
+								// it should dispaly an alert if the input is
 								// not correct
 								// title = new Text("Title: "+
 								// description.getText());
@@ -448,30 +459,62 @@ public class EventView {
 		final Stage eventWindow = new Stage();
 
 		VBox window = new VBox();
-		window.setSpacing(10);
+		window.setSpacing(20);
 		window.setPrefSize(200, 200);
 
 		Label info = new Label("Information");
-		info.setFont(Font.font("Verdana", 20));
-		info.setTextFill(Color.CORNFLOWERBLUE);
-		titleText = new Text("Title: " + e.getEventName());
+		info.setFont(Font.font("Verdana", 25));
+		info.setUnderline(true);
+		info.setTextFill(Color.BLACK);
+		info.setAlignment(Pos.CENTER);
+
+		title.setFont(Font.font ("Verdana", FontWeight.BOLD, 17));
+		title.setTranslateX(8);
+		titleText = new Text("  " + e.getEventName());
+		titleText.setFont(Font.font ("Verdana", 15));
+		titleText.setWrappingWidth(250);
+		titleText.setTranslateY(-13);
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
 		String formattedStringS = e.getEventStart().format(formatter);
 
-		dateStartText = new Text("Event starts at: " + formattedStringS);
-		decText = new Text("Description: " + e.getEventDescription());
+		eventStart.setFont(Font.font ("Verdana", FontWeight.BOLD, 17));
+		eventStart.setTranslateX(8);
+		eventStart.setTranslateY(-20);
+
+		dateStartText = new Text(formattedStringS);
+		dateStartText.setFont(Font.font("Verdana", 15));;
+		dateStartText.setWrappingWidth(250);
+		dateStartText.setTranslateY(-33);
+		dateStartText.setTranslateX(8);
+
+		des.setFont(Font.font ("Verdana", FontWeight.BOLD, 17));
+		des.setTranslateX(8);
+		des.setTranslateY(-40);
+
+		decText = new Text(e.getEventDescription());
 		decText.setWrappingWidth(250);
+		decText.setFont(Font.font("Verdana", 15));;
+		decText.setTranslateX(8);
+		decText.setTranslateY(-53);
 
 		if (e.getEventEnd() == null) {
 			dateEndText = new Text(" ");
-			window.getChildren().addAll(info, titleText, dateStartText, decText,dateEndText, EditButton(e));
+			window.getChildren().addAll(info, title, titleText, eventStart, dateStartText, des, decText, EditButton(e));
 		} else {
 			createEditEventWindow(e);
 			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
 			String formattedStringE = e.getEventEnd().format(formatter2);
-			dateEndText = new Text("Event Ends at: " + formattedStringE);
-			window.getChildren().addAll(info, titleText, dateStartText, decText, dateEndText, EditButton(e));
+
+			eventEnd.setFont(Font.font ("Verdana", FontWeight.BOLD, 17));
+			eventEnd.setTranslateX(8);
+			eventEnd.setTranslateY(-35);
+
+			dateEndText = new Text(formattedStringE);
+			dateEndText.setFont(Font.font("Verdana", 15));;
+			dateEndText.setTranslateY(-48);
+			dateEndText.setTranslateX(8);
+			window.getChildren().addAll(info, title, titleText, eventStart, dateStartText, eventEnd, dateEndText, des, decText, EditButton(e));
 
 		}
 
@@ -490,6 +533,7 @@ public class EventView {
 	public VBox createEditEventWindow(Event e) {
 		VBox editeHolder = new VBox();
 		editeHolder.setPrefSize(400, 400);
+		editeHolder.setTranslateX(50);
 		name = new TextField(e.getEventName());
 		description = new TextArea(e.getEventDescription());
 		Label nameL = new Label("Name");
@@ -498,34 +542,34 @@ public class EventView {
 		int strYear = e.getEventStart().getYear();
 		String year1 = Integer.toString(strYear);
 		yearStart = new TextField(year1);
-		yearStart.setMaxWidth(80);
-		Label yearL = new Label("Year");
+		yearStart.setMaxWidth(100);
+		Label yearL = new Label("Start Year");
 
 		int strMonth = e.getEventStart().getMonthValue();
 		String month1 = Integer.toString(strMonth);
 		monthStart = new TextField(month1);
-		monthStart.setMinWidth(50);
-		Label monthL = new Label("Month");
+		monthStart.setMaxWidth(100);
+		Label monthL = new Label("Start Month");
 
 		int strDay = e.getEventStart().getDayOfMonth();
 		String days1 = Integer.toString(strDay);
 		dayStart = new TextField(days1);
-		dayStart.setMinWidth(50);
-		Label dayL = new Label("Day");
+		dayStart.setMaxWidth(100);
+		Label dayL = new Label("Start Day");
 
 		int strHour = e.getEventStart().getHour();
 		timeStart = new ComboBox<String>();
-		timeStart.setMinSize(100, 25);
+		timeStart.setMaxSize(100, 25);
 		timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
 				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
 				"20:00", "21:00", "22:00", "23:00");
 		timeStart.getSelectionModel().clearAndSelect(strHour+1);
 		timeEnd = new ComboBox<String>();
-		timeEnd.setMinSize(100, 25);
+		timeEnd.setMaxSize(100, 25);
 		timeEnd.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
 				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
 				"20:00", "21:00", "22:00", "23:00");
-		Label hourL = new Label("Time");
+		Label hourL = new Label("Start Time");
 
 		HBox h2 = new HBox();
 		name.setDisable(true);
@@ -539,25 +583,32 @@ public class EventView {
 			int strYearEnd = e.getEventEnd().getYear();
 			String year2 = Integer.toString(strYearEnd);
 			yearEnd = new TextField(year2);
+			yearEnd.setMaxWidth(100);
 
 			int strMonthEnd = e.getEventEnd().getMonthValue();
 			String month2 = Integer.toString(strMonthEnd);
 			monthEnd = new TextField(month2);
+			monthEnd.setMaxWidth(100);
 
 			int strDayEnd = e.getEventEnd().getDayOfMonth();
 			String days2 = Integer.toString(strDayEnd);
 			dayEnd = new TextField(days2);
+			dayEnd.setMaxWidth(100);
 
 
 			timeEnd.getSelectionModel().clearAndSelect(strHour+1);
+			timeEnd.setMaxSize(100, 25);
 			// Change the so event can be edited:
 
 			h2.getChildren().addAll(yearEnd, monthEnd, dayEnd, timeEnd/*hoursEnd*/);
 
 		} else if (e.getEventEnd() == null) {
 			yearEnd = new TextField("");
+			yearEnd.setMaxWidth(100);
 			monthEnd = new TextField("");
+			monthEnd.setMaxWidth(100);
 			dayEnd = new TextField("");
+			dayEnd.setMaxWidth(100);
 			h2.getChildren().addAll(yearEnd, monthEnd, dayEnd);
 
 		}
@@ -568,47 +619,96 @@ public class EventView {
 		timeEnd.setDisable(true);
 
 		GridPane h1 = new GridPane();
-		Label yearLE = new Label("Year");
-		Label monthLE = new Label("Month");
-		Label dayLE = new Label("Day");
-		Label hourLE = new Label("Time");
+		Label yearLE = new Label("End Year");
+		yearLE.setFont(Font.font("Verdana", 13));
+		Label monthLE = new Label("End Month");
+		monthLE.setFont(Font.font("Verdana", 13));
+		Label dayLE = new Label("End Day");
+		dayLE.setFont(Font.font("Verdana", 13));
+		Label hourLE = new Label("End Time");
+		hourLE.setFont(Font.font("Verdana", 13));
 
-		h1.add(nameL, 0, 1);
-		h1.add(name, 0, 2);
-		h1.add(descriptionL, 0, 3);
-		h1.add(description, 0, 4);
-		h1.add(yearL, 0, 5);
-		h1.add(yearStart, 0, 6);
-		h1.add(monthL, 1, 5);
-		h1.add(monthStart, 1, 6);
+		nameL.setFont(Font.font("Verdana", 17));
+		descriptionL.setFont(Font.font("Verdana", 17));
+		yearL.setFont(Font.font("Verdana", 13));
+		monthL.setFont(Font.font("Verdana", 13));
+		dayL.setFont(Font.font("Verdana", 13));
+		hourL.setFont(Font.font("Verdana", 13));
 
-		h1.add(dayL, 2, 5);
-		h1.add(dayStart, 2, 6);
-		h1.add(hourL, 3, 5);
-		h1.add(timeStart, 3, 6);
 
-		h1.add(yearLE, 0, 7);
-		h1.add(monthLE, 1, 7);
-		h1.add(dayLE, 2, 7);
-		h1.add(hourLE, 3, 7);
+		VBox vb1 = new VBox();
+		VBox vb2 = new VBox();
+		VBox vb3 = new VBox();
+		VBox vb4 = new VBox();
+		VBox vb5 = new VBox();
+		VBox vb6 = new VBox();
+		VBox vb7 = new VBox();
+		VBox vb8 = new VBox();
+		VBox vb9 = new VBox();
+		VBox vb10 = new VBox();
 
-		h1.add(yearEnd, 0, 8);
-		h1.add(monthEnd, 1, 8);
-		h1.add(dayEnd, 2, 8);
-		h1.add(timeEnd, 3, 8);
+		HBox hb1 = new HBox();
+		HBox hb2 = new HBox();
+		HBox hb3 = new HBox();
 
-		HBox h3 = new HBox();
+		vb1.getChildren().addAll(nameL,name);
+		vb1.setPadding(new Insets(10,10,10,10));
+
+		vb2.getChildren().addAll(descriptionL,description);
+		vb2.setPadding(new Insets(10,10,10,10));
+
+		vb3.getChildren().addAll(yearL,yearStart);
+		vb3.setPadding(new Insets(0,5,0,0));
+
+		vb4.getChildren().addAll(monthL,monthStart);
+		vb4.setPadding(new Insets(0,5,0,0));
+
+		vb5.getChildren().addAll(dayL,dayStart);
+		vb5.setPadding(new Insets(0,5,0,0));
+
+		vb6.getChildren().addAll(hourL,timeStart);
+		vb6.setPadding(new Insets(0,5,0,0));
+
+		vb7.getChildren().addAll(yearLE,yearEnd);
+		vb7.setPadding(new Insets(0,5,0,0));
+
+		vb8.getChildren().addAll(monthLE,monthEnd);
+		vb8.setPadding(new Insets(0,5,0,0));
+
+		vb9.getChildren().addAll(dayLE,dayEnd);
+		vb9.setPadding(new Insets(0,5,0,0));
+
+		vb10.getChildren().addAll(hourLE,timeEnd);
+		vb10.setPadding(new Insets(0,5,0,0));
+
+		hb1.getChildren().addAll(vb3,vb4,vb5,vb6);
+		hb1.setPadding(new Insets(5,5,5,10));
+
+		hb2.getChildren().addAll(vb7,vb8,vb9,vb10);
+		hb2.setPadding(new Insets(5,5,5,10));
+
+		h1.add(vb1, 0, 1);
+		h1.add(vb2, 0, 2);
+		h1.add(hb1, 0, 3);
+		h1.add(hb2, 0, 4);
+
 
 		// Buttons initialized
-		ok = new Button("Ok");
+		ok = new Button("Finish");
 		ok.setDisable(true);
+		ok.setMinSize(80, 30);
+		ok.setFont(Font.font("Verdana", 15));
 		cancel = new Button("Cancel");
 		cancel.setDisable(true);
-		h3.setAlignment(Pos.BASELINE_RIGHT);
-		h3.setPadding(new Insets(10, 0, 10, 10));
-		h3.getChildren().addAll(cancel, ok);
-		h3.setSpacing(10);
-		editeHolder.getChildren().addAll(h1, h3);
+		cancel.setMinSize(80, 30);
+		cancel.setFont(Font.font("Verdana", 15));
+
+		hb3.setPadding(new Insets(10, 0, 10, 10));
+		hb3.getChildren().addAll(ok, cancel);
+		hb3.setSpacing(10);
+		hb3.setTranslateY(20);
+		editeHolder.getChildren().addAll(h1, hb3);
+		editeHolder.setMinSize(570, 500);
 		return editeHolder;
 
 	}

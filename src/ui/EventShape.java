@@ -10,31 +10,31 @@ import javafx.scene.shape.Line;
 /**
  * protected class, only classes in package ui got access.
  * creates an circle (EventShape) that holds variables to the duration bar
- * and the Event it represents, also holds variable to the Timeline the 
- * Event belongs to 
+ * and the Event it represents, also holds variable to the Timeline the
+ * Event belongs to
  * @author carolinenilsson
  *
  */
 class EventShape extends Circle {
-	
+
 	private final Event event;
 	private final Timeline timeline;
 	private final int timelineStart;
-	
+
 	private int yearStart;
 	private int monthStart;
 	private int dayStart;
 	private int yearEnd;
 	private int monthEnd;
 	private int dayEnd;
-	
+
 	private final Line bar;
 	private int startX;
 	private int endX;
-	
+
 	/**
-	 * Constructor, creates an EventShape for Event without duration 
-	 * @param current - the Timeline the Event belongs to 
+	 * Constructor, creates an EventShape for Event without duration
+	 * @param current - the Timeline the Event belongs to
 	 * @param e - Event
 	 * @param start - LocalDateTime of the Event start
 	 */
@@ -52,10 +52,10 @@ class EventShape extends Circle {
 		setValueX();
 		createEventShape();
 	}
-	
+
 	/**
 	 * Constructor, creates an EventShape and a duration bar for Event with duration
-	 * @param current - the Timeline the Event belongs to 
+	 * @param current - the Timeline the Event belongs to
 	 * @param e - Event
 	 * @param start - LocalDateTime of the Event start
 	 * @param end - LocalDateTime of the Event end
@@ -72,18 +72,30 @@ class EventShape extends Circle {
 		dayEnd = current.getDay(end);
 		bar = new Line();
 		setValueX();
-		createEventShape();
+		createEventDurationShape();
 		createDurationBar();
 	}
-	
+
 	/**
-	 * create a circle shape that is visuals for the Event
+	 * create a circle shape that is visuals for the Event without duration
 	 */
 	private void createEventShape() {
 		setValueX();
 		setRadius(12.5);
 		setStroke(Color.BLACK);
-		setFill(Color.MEDIUMSEAGREEN);
+		setFill(Color.DEEPSKYBLUE);
+		setCenterX(startX);
+		setCenterY(25);
+		setManaged(false);
+	}
+	/**
+	 * create a circle shape that is visuals for the Event with duration
+	 */
+	private void createEventDurationShape() {
+		setValueX();
+		setRadius(12.5);
+		setStroke(Color.BLACK);
+		setFill(Color.LAWNGREEN);
 		setCenterX(startX);
 		setCenterY(25);
 		setManaged(false);
@@ -104,11 +116,11 @@ class EventShape extends Circle {
 		bar.setVisible(false);
 		bar.setManaged(false);
 	}
-	
+
 	/**
 	 * initializes the x-coordinate and y-coordinate value math explained below:
-	 * year (into the timeline) multiplied by 12 
-	 * then add month date (ex. 05 for may) subtracted by 1 
+	 * year (into the timeline) multiplied by 12
+	 * then add month date (ex. 05 for may) subtracted by 1
 	 * (correct amount of months) multiplied by 100 (length of the monthBox)
 	 * add (monthBox length divided by 30 (generaly days / month) 100/30 multiplied by days date)
 	 * then add 5 multiplied by total number of months (this is due to spacing at 5.0 between months)
@@ -123,7 +135,7 @@ class EventShape extends Circle {
 			endX = (((year) * 12) + (monthEnd-1)) *100 + (100/30 * dayEnd) + (5 * (12 *year + monthEnd));;
 
 		}
-		
+
 	}
 	/**
 	 * Sets new x-corrdiante and y-coordinates for start and end on bar
@@ -136,7 +148,7 @@ class EventShape extends Circle {
 	}
 	/**
 	 * sets visibility, Boolean condition on duration bar
-	 * (bar only shows when mouse hover the EventShape) 
+	 * (bar only shows when mouse hover the EventShape)
 	 * @param b Boolean
 	 */
 	public void setBarVisibility(boolean b) {
@@ -152,7 +164,7 @@ class EventShape extends Circle {
 		dayStart = timeline.getDay(start);
 		setValueX();
 		updateEventShape();
-		
+
 	}
 	/**
 	 * sets new date for duration Event
@@ -166,7 +178,7 @@ class EventShape extends Circle {
 		yearEnd = timeline.getYear(end);
 		monthEnd = timeline.getMonth(end);
 		dayEnd = timeline.getDay(end);
-		
+
 		setValueX();
 		updateEventShape();
 		updateBar();
