@@ -344,7 +344,7 @@ public class EventView {
 
 	}
 	/**
-	 * Setting Id's to months to get the in text form in Event View Window
+	 * Setting Id's to months to get them in text form in Event View Window
 	 */
 
 	private void ids (){
