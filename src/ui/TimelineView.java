@@ -132,7 +132,7 @@ public class TimelineView {
 		});
 		return addTimelineRoot;
 	}
-  
+
 	/**
 	 * Private class of EventHandler that runs a method to open add timeline
 	 * window when "Add Timeline" button is pressed
