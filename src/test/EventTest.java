@@ -10,77 +10,97 @@ import org.junit.Test;
 import functions.Event;
 
 public class EventTest {
-	
-	String name;
-	String description;
-	LocalDateTime start;
-	LocalDateTime end;
+
 	Event event;
+	Event eventDur;
 	
+	// Event without duration input
+	private final String EXPECTED_EVENT_NAME1 = "Event Test 1";
+	private final String EXPECTED_EVENT_DESCR1 = "This is first event";
+	private final LocalDateTime EXPECTED_EVENT_START1 = LocalDateTime.of(2001, 03, 12, 05, 00);
+
+	private final String EXPECTED_EVENT_NAME2 = "Event Test 2";
+	private final String EXPECTED_EVENT_DESCR2 = "This is second event";
+	private final LocalDateTime EXPECTED_EVENT_START2 = LocalDateTime.of(2001, 04, 25, 05, 00);
+
+	// Event with duration input
+	private final String EXPECTED_EVENT_DUR_NAME1 = "Event Test Duration1";
+	private final String EXPECTED_EVENT_DUR_DESCR1 = "This is first duration Event";
+	private final LocalDateTime EXPECTED_EVENT_DUR_START1 = LocalDateTime.of(2001, 04, 12, 05, 00);
+	private final LocalDateTime EXPECTED_EVENT_DUR_END1 = LocalDateTime.of(2001, 05, 12, 05, 00);
+
+	private final String EXPECTED_EVENT_DUR_NAME2 = "Event Test Duration2";
+	private final String EXPECTED_EVENT_DUR_DESCR2 = "This is second duration Event";
+	private final LocalDateTime EXPECTED_EVENT_DUR_START2 = LocalDateTime.of(2001, 06, 12, 05, 00);
+	private final LocalDateTime EXPECTED_EVENT_DUR_END2 = LocalDateTime.of(2001, 07, 12, 05, 00);
+
 	@Before
 	public void setUp() {
-		name = "Smoke";
-		description = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-		start = LocalDateTime.now();
-		end = start.plusDays(2);
-		event = new Event(name, description, start, end);
-	}
-	
-	@Test
-	public void testEventConstructor() {
-		assertEquals(event.getEventName(), name);
-		assertEquals(event.getEventDescription(), description);
-		assertEquals(event.getEventStart(), start);
-		assertEquals(event.getEventEnd(), end);
-
+		//create event without duration
+		event = new Event(EXPECTED_EVENT_NAME1, EXPECTED_EVENT_DESCR1, EXPECTED_EVENT_START1);
+		//create event with duration
+		eventDur = new Event(EXPECTED_EVENT_DUR_NAME1, EXPECTED_EVENT_DUR_DESCR1, EXPECTED_EVENT_DUR_START1, EXPECTED_EVENT_DUR_END1);
+		
 	}
 
 	@Test
-	public void testGetEventName() {
-		assertEquals(event.getEventName(), name);
+	public void testEvent() {
+		//check if event got correct input while created with constructor (non-duration)
+		assertEquals(event.getEventName(), EXPECTED_EVENT_NAME1);
+		assertEquals(event.getEventDescription(), EXPECTED_EVENT_DESCR1);
+		assertEquals(event.getEventStart(), EXPECTED_EVENT_START1);
+
+		//check if event got correct input while created with constructor (duration)
+		assertEquals(eventDur.getEventName(), EXPECTED_EVENT_DUR_NAME1);
+		assertEquals(eventDur.getEventDescription(), EXPECTED_EVENT_DUR_DESCR1);
+		assertEquals(eventDur.getEventStart(), EXPECTED_EVENT_DUR_START1);
+		assertEquals(eventDur.getEventEnd(), EXPECTED_EVENT_DUR_END1);
+
 	}
+
 
 	@Test
 	public void testSetEventName() {
-		String newName = "Anything";
-		event.setEventName(newName);
-	    assertEquals(newName, event.getEventName());
+		//test to change event name for both duration and non-duration event
+		event.setEventName(EXPECTED_EVENT_NAME2);
+		assertEquals(event.getEventName(), EXPECTED_EVENT_NAME2);
+		
+		eventDur.setEventName(EXPECTED_EVENT_DUR_NAME2);
+		assertEquals(eventDur.getEventName(), EXPECTED_EVENT_DUR_NAME2);
+
 	}
 
-	@Test
-	public void testGetEventDescription() {
-		assertEquals(event.getEventDescription(), description);
-	}
 
 	@Test
 	public void testSetEventDescription() {
-		String newDescription = "";
-		event.setEventDescription(newDescription);
-		assertEquals(newDescription, event.getEventDescription());
+		//test to change event description for both duration and non-duration event
+		event.setEventDescription(EXPECTED_EVENT_DESCR2);
+		assertEquals(event.getEventDescription(), EXPECTED_EVENT_DESCR2);
+
+		eventDur.setEventDescription(EXPECTED_EVENT_DUR_DESCR2);
+		assertEquals(eventDur.getEventDescription(), EXPECTED_EVENT_DUR_DESCR2);
+
 	}
 
-	@Test
-	public void testGetEventStart() {
-		 assertEquals(event.getEventStart(), start);
-	}
 
 	@Test
 	public void testSetEventStart() {
-		LocalDateTime yesterday = start.minusDays(-1);
-		event.setEventStart(yesterday);
-		assertEquals(yesterday, event.getEventStart());
+		//test to change event start for both duration and non-duration event
+		event.setEventStart(EXPECTED_EVENT_START2);
+		assertEquals(event.getEventStart(), EXPECTED_EVENT_START2);
+
+		eventDur.setEventStart(EXPECTED_EVENT_DUR_START2);
+		assertEquals(eventDur.getEventStart(), EXPECTED_EVENT_DUR_START2);
+
 	}
 
-	@Test
-	public void testGetEventEnd() {
-		assertEquals(event.getEventEnd(), end);
-	}
 
 	@Test
 	public void testSetEventEnd() {
-		LocalDateTime aYearfromNow = start.plusDays(365);
-		event.setEventEnd(aYearfromNow);
-		assertEquals(aYearfromNow, event.getEventEnd());
+		//test to change event end (for duration)
+		eventDur.setEventEnd(EXPECTED_EVENT_DUR_END2);
+		assertEquals(eventDur.getEventEnd(), EXPECTED_EVENT_DUR_END2);
+
 	}
 
 }
