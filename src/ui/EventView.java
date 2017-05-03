@@ -5,8 +5,6 @@ import java.time.format.DateTimeFormatter;
 
 import controls.EventListener;
 import functions.Event;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -30,7 +28,6 @@ import javafx.stage.Stage;
 public class EventView {
 
 	private EventListener eventListener;
-	private final BooleanProperty theFocus = new SimpleBooleanProperty(true);
 
 	// TextArea - Add Event Window
 	private TextArea description;
@@ -99,6 +96,7 @@ public class EventView {
 				GridPane textFieldsStart = createAddEventWindow();
 				eventWindow.setTitle("ADD EVENT WINDOW");
 				eventWindow.setResizable(false);
+
 
 				/*
 				 * When "Ok" button is clicked, textfields are fetched and
@@ -177,6 +175,7 @@ public class EventView {
 				Scene eventScene = new Scene(textFieldsStart);
 				eventWindow.setScene(eventScene);
 				eventWindow.show();
+				textFieldsStart.requestFocus();
 
 			}
 		});
@@ -214,6 +213,11 @@ public class EventView {
 					@Override
 					public void handle(ActionEvent event) {
 						/*
+						 * Setting id's to Months, to get them as text
+						 */
+						ids();
+
+						/*
 						 * If Name, Description or Start Date fields are empty
 						 * an Error alert shows to the user
 						 */
@@ -235,12 +239,14 @@ public class EventView {
 
 							titleText.setText("  " + name.getText());
 							decText.setText(description.getText());
-							dateStartText.setText(monthStart.getText()+" " + dayStart.getText()+ " " + yearStart.getText()+
-									" " + timeStart.getValue());
+							dateStartText.setText(monthStart.getId()+" " + dayStart.getText()+ " " + yearStart.getText()+
+							" " + timeStart.getValue());
+
 
 							if(yearEnd.getText().length()!= 0){
 
-						    dateEndText.setText("Event Ends at: "+yearEnd.getText()+"/"+ monthEnd.getText()+"/"+dayEnd.getText()+" At "+timeEnd.getValue());
+						    dateEndText.setText(monthEnd.getId()+" " + dayEnd.getText()+ " " + yearEnd.getText()+
+									" " + timeEnd.getValue());
 
 							}
 							if (eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
@@ -273,12 +279,13 @@ public class EventView {
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
 							//Update in EventInfoView
-							titleText.setText(name.getText());
+							titleText.setText("  "+name.getText());
 							decText.setText(description.getText());
-							dateStartText.setText(yearStart.getText()+"/"+ monthStart.getText()+"/"+
-													dayStart.getText()+" At "+ timeStart.getValue());
+							dateStartText.setText(monthStart.getId()+" " + dayStart.getText()+ " " + yearStart.getText()+
+									" " + timeStart.getValue());
 
-							dateEndText.setText("Event Ends at: "+yearEnd.getText()+"/"+ monthEnd.getText()+"/"+dayEnd.getText()+" At "+ timeEnd.getValue());
+							dateEndText.setText(monthEnd.getId()+" " + dayEnd.getText()+ " " + yearEnd.getText()+
+									" " + timeEnd.getValue());
 
 							if (eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
 								// it should dispaly an alert if the input is
@@ -336,6 +343,64 @@ public class EventView {
 		return editEvent;
 
 	}
+	/**
+	 * Setting Id's to months to get the in text form in Event View Window
+	 */
+
+	private void ids (){
+		if(monthStart.getText().equals("1")){
+			monthStart.setId("Jan");
+		}else if(monthStart.getText().equals("2")){
+			monthStart.setId("Feb");
+		}else if(monthStart.getText().equals("3")){
+			monthStart.setId("Mar");
+		}else if(monthStart.getText().equals("4")){
+			monthStart.setId("April");
+		}else if(monthStart.getText().equals("5")){
+			monthStart.setId("May");
+		}else if(monthStart.getText().equals("6")){
+			monthStart.setId("Jun");
+		}else if(monthStart.getText().equals("7")){
+			monthStart.setId("Jul");
+		}else if(monthStart.getText().equals("8")){
+			monthStart.setId("Aug");
+		}else if(monthStart.getText().equals("9")){
+			monthStart.setId("Sep");
+		}else if(monthStart.getText().equals("10")){
+			monthStart.setId("Oct");
+		}else if(monthStart.getText().equals("11")){
+			monthStart.setId("Nov");
+		}else if(monthStart.getText().equals("12")){
+			monthStart.setId("Dec");
+		}
+
+		if(monthEnd.getText().equals("1")){
+			monthEnd.setId("Jan");
+		}else if(monthEnd.getText().equals("2")){
+			monthEnd.setId("Feb");
+		}else if(monthEnd.getText().equals("3")){
+			monthEnd.setId("Mar");
+		}else if(monthEnd.getText().equals("4")){
+			monthEnd.setId("April");
+		}else if(monthEnd.getText().equals("5")){
+			monthEnd.setId("May");
+		}else if(monthEnd.getText().equals("6")){
+			monthEnd.setId("Jun");
+		}else if(monthEnd.getText().equals("7")){
+			monthEnd.setId("Jul");
+		}else if(monthEnd.getText().equals("8")){
+			monthEnd.setId("Aug");
+		}else if(monthEnd.getText().equals("9")){
+			monthEnd.setId("Sep");
+		}else if(monthEnd.getText().equals("10")){
+			monthEnd.setId("Oct");
+		}else if(monthEnd.getText().equals("11")){
+			monthEnd.setId("Nov");
+		}else if(monthEnd.getText().equals("12")){
+			monthEnd.setId("Dec");
+		}
+		}
+
 
 	/**
 	 * Help method to create popup window, initializes all TextFields, Labels
@@ -443,14 +508,6 @@ public class EventView {
 		pane.add(hb, 0, 2);
 		pane.add(hb1, 0, 3);
 		pane.add(hb2, 0, 4);
-
-		// Change focus
-		name.focusedProperty().addListener((obsV, oldV, newV) -> {
-			if (newV && theFocus.get()) {
-				pane.requestFocus();
-				theFocus.setValue(false);
-			}
-		});
 
 		return pane;
 	}
@@ -708,7 +765,7 @@ public class EventView {
 		hb3.setSpacing(10);
 		hb3.setTranslateY(20);
 		editeHolder.getChildren().addAll(h1, hb3);
-		editeHolder.setMinSize(570, 500);
+		editeHolder.setMinSize(700, 500);
 		return editeHolder;
 
 	}
