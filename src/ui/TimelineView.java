@@ -34,7 +34,6 @@ public class TimelineView {
 	private final TextField timelineName = new TextField();
 	private final TextField timelineStart = new TextField();
 	private final TextField timelineEnd = new TextField();
-	private final BooleanProperty theFocus = new SimpleBooleanProperty(true);
 	private TimelineListener timelineListener;
 
 	/**
@@ -87,6 +86,7 @@ public class TimelineView {
 		addTimelineWindow.setScene(new Scene(addTimelineRoot, 600, 300));
 		addTimelineWindow.setResizable(false);
 		addTimelineWindow.show();
+		addTimelineRoot.requestFocus();
 	}
 
 	/**
@@ -128,19 +128,9 @@ public class TimelineView {
 		addTimelineRoot.add(confirmTimelineButton, 0, 3);
 		addTimelineRoot.setAlignment(Pos.CENTER);
 
-		/*
-		 * The textfield timelineName was already focused(clicked) once the user
-		 * enters the add timeline window. Using BooleanProperty we change the
-		 * focus to the root and the promptText from the TextField is displayed.
-		 */
-		timelineName.focusedProperty().addListener((obsV, oldV, newV) -> {
-			if (newV && theFocus.get()) {
-				addTimelineRoot.requestFocus();
-				theFocus.setValue(false);
-			}
-		});
 		return addTimelineRoot;
 	}
+
 	/**
 	 * Opens an alert window of type confirmation, asks user if they
 	 * really want to delete selected timeline. If ok is pressed, timeline
@@ -168,6 +158,7 @@ public class TimelineView {
 		
 	}
   
+
 	/**
 	 * Private class of EventHandler that runs a method to open add timeline
 	 * window when "Add Timeline" button is pressed
@@ -256,10 +247,15 @@ public class TimelineView {
 
 			// If timeline was added successfully, closes the window
 			if (timelineListener.onAddTimeline(name, start, end)) {
-				addTimelineWindow.close();
 				timelineName.clear();
 				timelineStart.clear();
 				timelineEnd.clear();
+				addTimelineWindow.close();
+
+				timelineName.clear();
+				timelineStart.clear();
+				timelineEnd.clear();
+
 			}
 
 		}
