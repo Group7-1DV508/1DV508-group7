@@ -264,6 +264,7 @@ public class EventView {
 	 				
 	 				Scene eventScene = new Scene(textFieldsStart);
 					eventWindow.setScene(eventScene);
+					eventWindow.setTitle("Add Event");
 					eventWindow.show();
 
 	 		} 
@@ -445,6 +446,8 @@ public class EventView {
 		VBox window = new VBox();
 			 window.setSpacing(10);
 			 window.setPrefSize(300, 300);
+		HBox buttonHolder = new HBox ();
+		buttonHolder.setSpacing(10);
 
 		Label info = new Label("Information");
 			  info.setFont(Font.font("Verdana", 20));
@@ -467,6 +470,8 @@ public class EventView {
 				end.setTextFill(Color.CORNFLOWERBLUE);
 				end.setUnderline(true);
 				
+			
+				
 		titleText = new Text(e.getEventName());
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
@@ -478,7 +483,9 @@ public class EventView {
 
 		if (e.getEventEnd() == null) {
 			dateEndText = new Text(" ");
-			window.getChildren().addAll(info,Title, titleText,Description, decText,start,dateStartText,end,dateEndText,EditButton(e),  DeletEvent( e));
+			buttonHolder.getChildren().addAll(	EditButton(e),  DeletEvent( e));
+			window.getChildren().addAll(info,Title, titleText,Description, decText,start,dateStartText,end,dateEndText,buttonHolder);
+					
 		
 		
 		} else {
@@ -486,7 +493,8 @@ public class EventView {
 			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
 			String formattedStringE = e.getEventEnd().format(formatter2);
 			dateEndText = new Text(  formattedStringE);
-			window.getChildren().addAll(info,Title, titleText,Description, decText,start,dateStartText,end,dateEndText,EditButton(e),  DeletEvent( e));
+			buttonHolder.getChildren().addAll(	EditButton(e),  DeletEvent( e));
+			window.getChildren().addAll(info,Title, titleText,Description, decText,start,dateStartText,end,dateEndText, buttonHolder);
 			
 
 		}
