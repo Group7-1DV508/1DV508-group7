@@ -177,7 +177,8 @@ public class EventView {
 	       				final Stage eventWindow = new Stage();
 	 				
 	       				VBox textFieldsStart = createAddEventWindow();
-	 		       	 
+	       				checkInDatePickerStart.getEditor().clear();
+	       				checkInDatePickerEnd.getEditor().clear();
 	 						
 						
 			 ok.setOnAction(new EventHandler<ActionEvent>() {
