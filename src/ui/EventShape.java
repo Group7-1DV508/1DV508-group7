@@ -116,7 +116,7 @@ class EventShape extends Circle {
 	private void setValueX() {
 		int YEAR_START = yearStart - timelineStart;
 		int YEAR_END = yearEnd - timelineStart;
-		if (YEAR_END <= 0) {
+		if (YEAR_END < 0) {
 			startX = (((YEAR_START) * 12) + (monthStart-1)) *100 + (100/30 * dayStart) + (5 * (12 *YEAR_START + monthStart));;
 		}
 		else {
