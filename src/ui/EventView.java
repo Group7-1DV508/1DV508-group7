@@ -3,6 +3,7 @@ package ui;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Optional;
 
 import controls.EventListener;
 import functions.Event;
@@ -13,10 +14,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -220,9 +223,10 @@ public class EventView {
 						 */
 						if (isNeededFieldEmpty()) {
 							Alert emptyFieldError = new Alert(Alert.AlertType.ERROR,
-									"Name, Description and Start Date can't be empty.");
+									"Name, Description and date fields can't be empty.");
 							emptyFieldError.showAndWait();
 						}
+
 						/*
 						 * If the event doesn't have End Date an non duration
 						 * Event is created
@@ -302,8 +306,8 @@ public class EventView {
 								ok.setDisable(true);
 								cancel.setDisable(true);
 
-							}
 
+							}
 						}
 
 					}
@@ -336,6 +340,43 @@ public class EventView {
 			}
 		});
 		return editEvent;
+	}
+	
+	/**
+	 * Delete button responsible for delete selected event
+	 * @param e event to be deleted
+	 * @param s closes event information window of delete event
+	 * @return button with set action on it.
+	 */
+	public Button getDeleteButton(Event e, Stage s) {
+		delete = new Button("Delete event");
+		delete.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// Opens alert to ask if user really wants to delete
+				// the event
+				Alert confirmation = new Alert(AlertType.CONFIRMATION);
+				confirmation.setTitle("Deleting event");
+				confirmation.setContentText("Are you sure you want to delete this event?");
+				Optional<ButtonType> result = confirmation.showAndWait();
+				// if user chose ok, event is deleted, information
+				// window is closed as it is not needed
+				if (result.get() == ButtonType.OK){
+				    if (eventListener.onDeleteEvent()) {
+				    	confirmation.close();
+				    	s.close();
+				    }
+				} 
+				// user chose cancel, so alert window is closed
+				else {
+					confirmation.close();
+				}
+				
+			}
+			
+		});
+		return delete;
 	}
 
 
@@ -494,11 +535,15 @@ public class EventView {
 
 		if (e.getEventEnd() == null) {
 			dateEndText = new Text(" ");
-			window.getChildren().addAll(info, title, titleText, eventStart, dateStartText, des, decText, EditButton(e));
+
+		  window.getChildren().addAll(info, titleText, dateStartText, decText,dateEndText, EditButton(e));
+			window.getChildren().add(getDeleteButton(e, eventWindow));
+
 		} else {
 			createEditEventWindow(e);
 			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMM d yyyy  HH:mm");
 			String formattedStringE = e.getEventEnd().format(formatter2);
+
 
 			eventEnd.setFont(Font.font ("Verdana", FontWeight.BOLD, 17));
 			eventEnd.setTranslateX(8);
@@ -509,6 +554,7 @@ public class EventView {
 			dateEndText.setTranslateY(-48);
 			dateEndText.setTranslateX(8);
 			window.getChildren().addAll(info, title, titleText, eventStart, dateStartText, eventEnd, dateEndText, des, decText, EditButton(e));
+
 
 		}
 

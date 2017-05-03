@@ -57,6 +57,11 @@ public class ApplicationControl implements ApplicationListener {
 		app.setCurrentEvent(e);
 		
 	}
+
+	@Override
+	public ArrayList<Timeline> getTimelines() {
+		return app.getTimelines();
+	}
 	
 
 }

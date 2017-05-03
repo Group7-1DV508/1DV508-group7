@@ -59,8 +59,24 @@ public class App {
 	 * Removes selected timeline from timeline list.
 	 * @param timeline to be removed
 	 */
-	public void removeTimeline (Timeline timeline) {
-		getTimelines().remove(timeline);
+	public void removeTimeline() {
+		getTimelines().remove(current);
+		if (timelines.size() > 0) {
+			current = timelines.get(0);
+		}
+		else {
+			current = null;
+		}
+		changeListener.onChangedTimeline(timelines, current);
+	}
+	
+	/**
+	 * Removes selected event from timeline
+	 * @param event to be removed
+	 */
+	public void removeEvent() {
+		current.deleteEvent(currentEvent);
+		changeListener.onEditTimeline(current);
 	}
 	
 	/**
@@ -109,4 +125,5 @@ public class App {
 	public void eventEdited() {
 		changeListener.onEditEvent(current);
 	}
+	
 }
