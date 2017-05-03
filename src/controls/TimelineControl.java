@@ -10,8 +10,7 @@ public class TimelineControl implements TimelineListener {
 
 	@Override
 	public boolean onAddTimeline(String name, LocalDateTime start, LocalDateTime end) {
-		if (isCorrectInput(name, start, end) && 
-				(Integer.parseInt(start.toString().substring(0, 4)) <= Integer.parseInt(end.toString().substring(0, 4)))) {
+		if (isCorrectInput(name, start, end)) {
 			// If start and end dates are same, increase end date by one year, since
 			// this was an intention by user anyway
 			if (Integer.parseInt(start.toString().substring(0, 4)) == Integer.parseInt(end.toString().substring(0, 4))) {
@@ -36,6 +35,10 @@ public class TimelineControl implements TimelineListener {
 		else {
 			return false;
 		}
+	}
+	
+	private boolean areDatesCorrect (LocalDateTime start, LocalDateTime end) {
+		return start.compareTo(end) <= 0;
 	}
 
 	/**
@@ -95,7 +98,7 @@ public class TimelineControl implements TimelineListener {
 	 * @return
 	 */
 	private boolean isCorrectInput(String name, LocalDateTime start, LocalDateTime end) {
-		if (isNameCorrect(name) && isStartCorrect(start) && isEndCorrect(end)) {
+		if (isNameCorrect(name) && isStartCorrect(start) && isEndCorrect(end) && areDatesCorrect(start, end)) {
 			return true;
 		} else {
 			return false;
