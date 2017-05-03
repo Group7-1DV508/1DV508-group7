@@ -2,7 +2,6 @@ package ui;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Optional;
 
 import controls.EventListener;
@@ -64,7 +63,7 @@ public class EventView {
 	private Label eventStart = new Label("Event start:");
 	private Label eventEnd = new Label("Event end:");
 	private Label des = new Label("Description:");
-	private DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm a");
+	private DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d yyyy  HH:mm");
 
 
 	/**
@@ -550,8 +549,7 @@ public class EventView {
 		titleText.setWrappingWidth(250);
 		titleText.setTranslateY(-13);
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  HH:mm");
-		String formattedStringS = e.getEventStart().format(formatter);
+		String formattedStringS = e.getEventStart().format(format);
 
 		eventStart.setFont(Font.font ("Verdana", FontWeight.BOLD, 17));
 		eventStart.setTranslateX(8);
@@ -580,8 +578,7 @@ public class EventView {
 
 		} else {
 			createEditEventWindow(e);
-			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMM d yyyy  HH:mm");
-			String formattedStringE = e.getEventEnd().format(formatter2);
+			String formattedStringE = e.getEventEnd().format(format);
 
 
 			eventEnd.setFont(Font.font ("Verdana", FontWeight.BOLD, 17));
