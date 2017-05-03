@@ -32,7 +32,6 @@ public class TimelineView {
 	private final TextField timelineName = new TextField();
 	private final TextField timelineStart = new TextField();
 	private final TextField timelineEnd = new TextField();
-	private final BooleanProperty theFocus = new SimpleBooleanProperty(true);
 	private TimelineListener timelineListener;
 
 	/**
@@ -78,6 +77,7 @@ public class TimelineView {
 		addTimelineWindow.setScene(new Scene(addTimelineRoot, 600, 300));
 		addTimelineWindow.setResizable(false);
 		addTimelineWindow.show();
+		addTimelineRoot.requestFocus();
 	}
 
 	/**
@@ -119,17 +119,6 @@ public class TimelineView {
 		addTimelineRoot.add(confirmTimelineButton, 0, 3);
 		addTimelineRoot.setAlignment(Pos.CENTER);
 
-		/*
-		 * The textfield timelineName was already focused(clicked) once the user
-		 * enters the add timeline window. Using BooleanProperty we change the
-		 * focus to the root and the promptText from the TextField is displayed.
-		 */
-		timelineName.focusedProperty().addListener((obsV, oldV, newV) -> {
-			if (newV && theFocus.get()) {
-				addTimelineRoot.requestFocus();
-				theFocus.setValue(false);
-			}
-		});
 		return addTimelineRoot;
 	}
 
@@ -182,7 +171,11 @@ public class TimelineView {
 
 			// If timeline was added successfully, closes the window
 			if (timelineListener.onAddTimeline(name, start, end)) {
+				timelineName.clear();
+				timelineStart.clear();
+				timelineEnd.clear();
 				addTimelineWindow.close();
+
 			}
 
 		}

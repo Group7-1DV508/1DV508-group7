@@ -111,8 +111,8 @@ class EventShape extends Circle {
 	 */
 	private void createDurationBar() {
 		updateBar();
-		bar.setStrokeWidth(5.0);
-		bar.setStroke(Color.BLACK);
+		bar.setStrokeWidth(6.0);
+		bar.setStroke(Color.LAWNGREEN);
 		bar.setVisible(false);
 		bar.setManaged(false);
 	}
