@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import functions.App;
 import functions.Event;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 public class EventControl implements EventListener {
 
@@ -67,6 +65,10 @@ public class EventControl implements EventListener {
 		else {
 			return false;
 		}
+	}
+	
+	private boolean areDatesCorrect (LocalDateTime start, LocalDateTime end) {
+		return start.compareTo(end) < 0;
 	}
 	
 	public void setCurrentEvent() {
@@ -181,7 +183,7 @@ public class EventControl implements EventListener {
 	 * @return boolean, true if all inputs are valid otherwise false
 	 */
 	private boolean isCorrectInputDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
-		if (isNameCorrect(name) && isStartCorrect(start) && isEndCorrect(end) && isDescriptionCorrect(description)) {
+		if (isNameCorrect(name) && isStartCorrect(start) && isEndCorrect(end) && isDescriptionCorrect(description) && areDatesCorrect(start, end)) {
 			return true;
 		} else {
 			return false;

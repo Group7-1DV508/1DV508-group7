@@ -368,34 +368,6 @@ public class ApplicationView implements ChangeListener {
 		eventBox.setMaxSize(boxLength, 250);
 		eventBox.setMinSize(boxLength, 250);
 	}
-	
-	private void deleteTimeline(Timeline current) {
-		int position = 0;
-		for (int i = 0; i < appListener.getTimelines().size(); i++) {
-			if (appListener.getTimelines().get(i).equals(current)) {
-				position = i;
-				break;
-			}
-		}
-		// Remove timeline from combobox
-		chooseTimeline.getItems().remove(current);
-		// Set to either previous timeline or last timeline
-		// in timeline arraylist, or to text saying there
-		// are not timelines loaded
-		if (appListener.getTimelines().size() == 0) {
-			clearTimelineBox();
-		}
-		else {
-			if (position > 0) {
-				current = appListener.getTimelines().get(position -1);
-			}
-			else {
-				current = appListener.getTimelines().get(appListener.getTimelines().size()-1);
-			}
-				// Set current
-				appListener.onTimelineSelected(current);
-		}
-	}
 
 	/**
 	 * if Event shapes collide event gets a lower alignment
@@ -533,9 +505,13 @@ public class ApplicationView implements ChangeListener {
 			showYear(current);
 			currentTimeline(current);
 			addEventsToTimeline(current);
+			getDeleteTimelineButton().setDisable(false);
+			eventView.setDisable(false);
 		}
 		else {
 			clearTimelineBox();
+			getDeleteTimelineButton().setDisable(true);
+			eventView.setDisable(true);
 		}
 		
 	}
