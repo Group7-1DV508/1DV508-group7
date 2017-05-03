@@ -112,6 +112,12 @@ public class App {
 		return timelines;
 	}
 	
+	public void addTimelineToList(Timeline t) {
+		timelines.add(t);
+		current = t;
+		changeListener.onChangedTimeline(timelines, current);
+	}
+	
 	public boolean isEventDuration() {
 		return currentEvent.isDuration();
 	}
