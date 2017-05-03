@@ -355,7 +355,7 @@ public class EventView {
 		}else if(monthStart.getText().equals("3")){
 			monthStart.setId("Mar");
 		}else if(monthStart.getText().equals("4")){
-			monthStart.setId("April");
+			monthStart.setId("Apr");
 		}else if(monthStart.getText().equals("5")){
 			monthStart.setId("May");
 		}else if(monthStart.getText().equals("6")){
@@ -381,7 +381,7 @@ public class EventView {
 		}else if(monthEnd.getText().equals("3")){
 			monthEnd.setId("Mar");
 		}else if(monthEnd.getText().equals("4")){
-			monthEnd.setId("April");
+			monthEnd.setId("Apr");
 		}else if(monthEnd.getText().equals("5")){
 			monthEnd.setId("May");
 		}else if(monthEnd.getText().equals("6")){
