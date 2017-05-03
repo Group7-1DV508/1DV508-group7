@@ -58,10 +58,10 @@ public class EventControl implements EventListener {
 	}
 	
 	@Override
-	public boolean onDeleteEvent(Event event) {
+	public boolean onDeleteEvent() {
 		setCurrentEvent();
-		if (currentApp.getCurrentTimeline().getEvents().contains(event)) {
-			currentApp.getCurrentTimeline().deleteEvent(currentEvent);
+		if (currentApp.getCurrentTimeline().getEvents().contains(currentEvent)) {
+			currentApp.removeEvent();
 			return true;
 		}
 		else {
@@ -125,13 +125,7 @@ public class EventControl implements EventListener {
 	 * @return boolean, true if start date is valid otherwise false
 	 */
 	private boolean isStartCorrect(LocalDateTime start) {
-		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
-		if (start.equals(temp)) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error in timeline start date");
-			alert.setHeaderText("Please choose a start date for your timeline");
-			alert.setContentText("Start year must be 4 numbers long. (Ex. 0001,0002...2016,2017)");
-			alert.show();
+		if (start == null) {
 			return false;
 		} else {
 			return true;
@@ -147,13 +141,7 @@ public class EventControl implements EventListener {
 	 * @return boolean, true if end date is valid otherwise false
 	 */
 	private boolean isEndCorrect(LocalDateTime end) {
-		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
-		if (end.equals(temp)) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error in timeline end date");
-			alert.setHeaderText("Please choose an end date for your timeline.");
-			alert.setContentText("End year must be 4 numbers long. (Ex. 0001,0002...2016,2017)");
-			alert.show();
+		if (end == null) {
 			return false;
 		} else {
 			return true;
