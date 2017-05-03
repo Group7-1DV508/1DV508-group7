@@ -20,7 +20,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -37,6 +39,7 @@ public class EventView {
 	// TextFields - Add Event Window
 	private TextField name;
 	private TextField description;
+	private TextArea  descriptionArea;
 
 	private TextField yearStart;
 	private TextField monthStart;
@@ -81,6 +84,75 @@ public class EventView {
 	
 	
 	
+	public VBox createAddEventWindow(){
+		
+		VBox vbox = new VBox();
+			 vbox.setSpacing(10);
+			 vbox.setPrefSize(400, 400);
+			 vbox.setStyle("-fx-padding: 10;");
+			 
+		GridPane pane = new GridPane ();
+	
+	    
+	     	name = new TextField();
+	     	
+	     	descriptionArea = new TextArea();
+	     	descriptionArea.setPrefSize(200, 200);
+	     	descriptionArea.setWrapText(true);
+	     	
+	     
+	     Label nameL = new Label("Name");
+	     Label descriptionL = new Label("Description");
+	     Label EventStart = new Label("Event Start");
+	     Label EventEnd = new Label("Event End");
+	     
+	     timeStart = new ComboBox<String>();
+		 timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+				"20:00", "21:00", "22:00", "23:00");
+		
+		 timeEnd = new ComboBox<String>();
+		 timeEnd.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+				"20:00", "21:00", "22:00", "23:00");
+		 
+		 
+		 pane.add(nameL, 0, 1);
+		 pane.add(name , 0, 2);
+		 
+		 
+		 pane.add(EventStart, 0, 3);
+		 pane.add(checkInDatePickerStart, 0, 4);
+		 pane.add(timeStart, 1, 4);
+		 
+		 pane.add(EventEnd, 0, 5);
+		 pane.add(checkInDatePickerEnd, 0, 6);
+		 pane.add(timeEnd, 1, 6);
+		 
+		
+		 
+
+		 HBox buttonHolder = new HBox();
+		 	  buttonHolder.getChildren().addAll(ok ,cancel);
+		 	  buttonHolder.setSpacing(20);
+		 	  buttonHolder.setPadding(new Insets(10,10,10,10));
+		 	 
+		 vbox.getChildren( ).addAll(pane, descriptionL,descriptionArea,buttonHolder);
+		 
+		 
+		return vbox;
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
 	public Button getAddEventButton(){
         
         
@@ -90,47 +162,31 @@ public class EventView {
 	 		     checkInDatePickerStart = new DatePicker();
 	 		     checkInDatePickerEnd = new DatePicker();
 	 		     ok = new Button("Ok");
-	 		    cancel = new Button("Cancel"); 
-	 		    addEvent.setOnAction(new EventHandler<ActionEvent>() {
-	 		
-	 		
-	       	final Stage eventWindow = new Stage();
-	       		   VBox vbox = new VBox();
-	       		
-	       	
-		       	 
-	       		
-	 			@Override
-	 			public void handle(ActionEvent event) {
-	 				vbox.setPrefSize(300, 300);
-	 		        vbox.setStyle("-fx-padding: 10;");
-	 		        name = new TextField();
-	 				description = new TextField();
-	 				Label nameL = new Label("Name");
-	 				Label descriptionL = new Label("Description");
-	 				timeStart = new ComboBox<String>();
-	 				timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
-	 						"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
-	 						"20:00", "21:00", "22:00", "23:00");
-	 				
-	 				timeEnd = new ComboBox<String>();
-	 				timeEnd.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
-	 						"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
-	 						"20:00", "21:00", "22:00", "23:00");
+	 		   	 cancel = new Button("Cancel"); 
+	 		     
 
+	 		     
+	 	  addEvent.setOnAction(new EventHandler<ActionEvent>() {
+	 		       
+	 		    		  
+	       			@Override
+	 			  public void handle(ActionEvent event) {
+	       				final Stage eventWindow = new Stage();
+	 				
+	       				VBox textFieldsStart = createAddEventWindow();
 	 		       	  //checkInDatePickerStart = new DatePicker();
 	 				
 	 				
 	 				
 							
 						
-			 				ok.setOnAction(new EventHandler<ActionEvent>() {
+			 ok.setOnAction(new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent event) {
 								
 							if (checkInDatePickerEnd.getValue() == null){
 								String eventname = name.getText();
-								String eventdescrip = description.getText();
+								String eventdescrip = descriptionArea.getText();
 
 								 LocalDate date = checkInDatePickerStart.getValue()  ;
 						         System.out.println("Selected date: " +  date.getYear() +date.getMonthValue() +date.getDayOfMonth());
@@ -151,7 +207,7 @@ public class EventView {
 						         
 								}else{
 									String eventname = name.getText();
-									String eventdescrip = description.getText();
+									String eventdescrip = descriptionArea.getText();
 									
 									LocalDate date = checkInDatePickerStart.getValue();
 							         System.out.println("Selected date: " +  date.getYear() +date.getMonthValue() +date.getDayOfMonth());
@@ -203,12 +259,12 @@ public class EventView {
 	 				
 	 				
 	 				 
-	 				vbox.getChildren( ).addAll(nameL, name, descriptionL,description,timeStart,timeEnd,checkInDatePickerStart,checkInDatePickerEnd, ok ,cancel);
-	 				Scene eventScene = new Scene(vbox);
+	 				
+	 				Scene eventScene = new Scene(textFieldsStart);
 					eventWindow.setScene(eventScene);
 					eventWindow.show();
 
-	 		}
+	 		} 
 	 	});
 	         
 	    
@@ -655,7 +711,7 @@ public class EventView {
 	 * @return boolean, true if needed fields are empty otherwise false
 	 */
 	private boolean isNeededFieldEmpty() {
-		if (name.getText().isEmpty() || description.getText().isEmpty()) {
+		if (name.getText().isEmpty() || descriptionArea.getText().isEmpty()) {
 			return true;
 		} else if (yearStart.getText().isEmpty() || monthStart.getText().isEmpty() || dayStart.getText().isEmpty()
 				|| timeStart.getValue() == null) {
