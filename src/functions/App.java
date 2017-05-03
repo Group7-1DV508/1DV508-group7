@@ -125,5 +125,12 @@ public class App {
 	public void eventEdited() {
 		changeListener.onEditEvent(current);
 	}
+	public void addEvents(ArrayList<Event> events){
+        for (Event eve: events) {
+            current.addEventDuration(eve.getEventName(), eve.getEventDescription(), eve.getEventStart(),
+                    eve.getEventEnd());
+            changeListener.onEditTimeline(current);
+        }
+    }
 	
 }

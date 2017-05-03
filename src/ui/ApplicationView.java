@@ -34,7 +34,6 @@ import javafx.stage.Stage;
 
 public class ApplicationView implements ChangeListener {
 
-	private ApplicationControl appControl;
 	private EventView eventView;
 	private TimelineView timelineView;
 	private ApplicationListener appListener;
