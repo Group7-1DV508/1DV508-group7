@@ -540,7 +540,7 @@ public class EventView {
 		titleText.setWrappingWidth(250);
 		titleText.setTranslateY(-13);
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy  HH:mm");
 		String formattedStringS = e.getEventStart().format(formatter);
 
 		eventStart.setFont(Font.font ("Verdana", FontWeight.BOLD, 17));
@@ -568,7 +568,7 @@ public class EventView {
 			window.getChildren().addAll(info, title, titleText, eventStart, dateStartText, des, decText, EditButton(e));
 		} else {
 			createEditEventWindow(e);
-			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm");
+			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMM d yyyy  HH:mm");
 			String formattedStringE = e.getEventEnd().format(formatter2);
 
 			eventEnd.setFont(Font.font ("Verdana", FontWeight.BOLD, 17));
@@ -628,7 +628,7 @@ public class EventView {
 		timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
 				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
 				"20:00", "21:00", "22:00", "23:00");
-		timeStart.getSelectionModel().clearAndSelect(strHour+1);
+		timeStart.getSelectionModel().clearAndSelect(strHour);
 		timeEnd = new ComboBox<String>();
 		timeEnd.setMaxSize(100, 25);
 		timeEnd.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
@@ -660,8 +660,9 @@ public class EventView {
 			dayEnd = new TextField(days2);
 			dayEnd.setMaxWidth(100);
 
+			int strHourEnd = e.getEventEnd().getHour();
 
-			timeEnd.getSelectionModel().clearAndSelect(strHour+1);
+			timeEnd.getSelectionModel().clearAndSelect(strHourEnd);
 			timeEnd.setMaxSize(100, 25);
 			// Change the so event can be edited:
 
