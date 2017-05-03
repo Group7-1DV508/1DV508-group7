@@ -120,9 +120,14 @@ public class EventView {
 															 */);
 								String eventname = name.getText();
 								String eventdescrip = description.getText();
-	
 								if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
 									eventWindow.close();
+								}
+								else {
+									Alert alert = new Alert(AlertType.ERROR);
+									alert.setTitle("Error in chosing time");
+									alert.setHeaderText("It appears your are trying to create an event outside of timeline!");
+									alert.show();
 								}
 							}
 							/*
@@ -146,9 +151,16 @@ public class EventView {
 									alert.setHeaderText("Start date has to be earlier than end date!");
 									alert.show();
 								}
+								
 								else  {
 									if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
 									eventWindow.close();
+									}
+									else {
+										Alert alert = new Alert(AlertType.ERROR);
+										alert.setTitle("Error in chosing time");
+										alert.setHeaderText("It appears your are trying to create an event outside of timeline!");
+										alert.show();
 									}
 								}
 	
@@ -239,21 +251,28 @@ public class EventView {
 									}
 									else {
 										eventListener.onDeleteEvent();
-										eventListener.onAddEventDuration(name.getText(), description.getText(), startTime, endTime);
-										name.setDisable(true);
-										description.setDisable(true);
-		
-										yearStart.setDisable(true);
-										monthStart.setDisable(true);
-										dayStart.setDisable(true);
-										timeStart.setDisable(true);
-		
-										yearEnd.setDisable(true);
-										monthEnd.setDisable(true);
-										dayEnd.setDisable(true);
-										timeEnd.setDisable(true);
-										ok.setDisable(true);
-										cancel.setDisable(true);
+										if(eventListener.onAddEventDuration(name.getText(), description.getText(), startTime, endTime)) {
+											name.setDisable(true);
+											description.setDisable(true);
+			
+											yearStart.setDisable(true);
+											monthStart.setDisable(true);
+											dayStart.setDisable(true);
+											timeStart.setDisable(true);
+			
+											yearEnd.setDisable(true);
+											monthEnd.setDisable(true);
+											dayEnd.setDisable(true);
+											timeEnd.setDisable(true);
+											ok.setDisable(true);
+											cancel.setDisable(true);
+										}
+										else {
+											Alert alert = new Alert(AlertType.ERROR);
+											alert.setTitle("Error in chosing time");
+											alert.setHeaderText("It appears your are trying to create an event outside of timeline!");
+											alert.show();
+										}
 									}
 								}
 								
@@ -276,6 +295,12 @@ public class EventView {
 									ok.setDisable(true);
 									cancel.setDisable(true);
 									
+									}
+									else {
+										Alert alert = new Alert(AlertType.ERROR);
+										alert.setTitle("Error in chosing time");
+										alert.setHeaderText("It appears your are trying to create an event outside of timeline!");
+										alert.show();
 									}
 								}
 								
