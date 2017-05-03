@@ -27,6 +27,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class ApplicationView implements ChangeListener {
 
@@ -158,10 +159,44 @@ public class ApplicationView implements ChangeListener {
 	 * Creates the Help Button
 	 */
 	private Button createHelpButton() {
-		Button help = new Button("Help");
-		help.setPadding(new Insets(5));
-		return help;
+		Button helpButton = new Button("?");
+		helpButton.setStyle("-fx-background-radius: 5em; " + "-fx-min-width: 30px; " + "-fx-min-height: 30px; " + "-fx-max-width: 30px; " + 
+		"-fx-max-height: 30px;");
+		
+		helpButton.setOnAction(new EventHandler<ActionEvent>(){
+			  
+			@Override public void handle(ActionEvent e) {
+		        Stage stage = new Stage();
+		        //Fill stage with content
+		        stage.show();
+			}
+		});
+		return helpButton;
 	}
+	/* Creates a button which saves a given
+	 * timeline to a file path chosen by
+	   the user through the fileChooser.*/
+	
+	private Button saveTimelineButton() {
+		Button savey = new Button("Save Timeline");
+		savey.setPrefSize(120, 30);
+		
+		savey.setOnAction(ActionEvent  -> {
+		
+			appListener.onTimelineSaved();
+		});
+		return savey;
+	}
+	
+	private Button loadTimelineButton() {
+		Button loaded = new Button("Load Timeline");
+		loaded.setPrefSize(120, 30);
+		
+		loaded.setOnAction(ActionEvent -> {
+			appListener.onTimelineLoaded();
+		});
+		return loaded;
+}
 
 	/**
 	 * collects and return all buttons associated with timeline
@@ -186,7 +221,7 @@ public class ApplicationView implements ChangeListener {
 		eventButtons.getChildren().clear();
 		eventButtons.setAlignment(Pos.CENTER);
 		eventButtons.setSpacing(20.0);
-		eventButtons.getChildren().addAll(getAddEventButton());
+		eventButtons.getChildren().addAll(getAddEventButton(), saveTimelineButton(), loadTimelineButton());
 		return eventButtons;
 	}
 

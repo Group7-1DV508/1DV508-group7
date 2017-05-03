@@ -141,7 +141,6 @@ public class EventControl implements EventListener {
 	 */
 	private boolean isStartCorrect(LocalDateTime start) {
 		if (start == null || !isStartCorrectTimeline(start)) {
-			System.out.println("Start");
 			return false;
 		} else {
 			return true;
@@ -158,7 +157,6 @@ public class EventControl implements EventListener {
 	 */
 	private boolean isEndCorrect(LocalDateTime end) {
 		if (end == null || !isEndCorrectTimeline(end)) {
-			System.out.println("End");
 			return false;
 		} else {
 			return true;
