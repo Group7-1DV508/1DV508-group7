@@ -2,6 +2,7 @@ package ui;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 import controls.EventListener;
 import functions.Event;
@@ -59,6 +60,7 @@ public class EventView {
 	private Label eventStart = new Label("Event start:");
 	private Label eventEnd = new Label("Event end:");
 	private Label des = new Label("Description:");
+	private DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d yyyy  hh:mm a");
 
 
 	/**
@@ -239,14 +241,18 @@ public class EventView {
 
 							titleText.setText("  " + name.getText());
 							decText.setText(description.getText());
-							dateStartText.setText(monthStart.getId()+" " + dayStart.getText()+ " " + yearStart.getText()+
-							" " + timeStart.getValue());
+							dateStartText.setText(startTime.format(format)
+									/*monthStart.getId()+" " + dayStart.getText()+ " " + yearStart.getText()+
+							" " + timeStart.getValue()*/);
 
 
 							if(yearEnd.getText().length()!= 0){
-
-						    dateEndText.setText(monthEnd.getId()+" " + dayEnd.getText()+ " " + yearEnd.getText()+
-									" " + timeEnd.getValue());
+								LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
+										dayEnd.getText(),
+										timeEnd.getValue());
+						    dateEndText.setText(endTime.format(format)
+						    		/*monthEnd.getId()+" " + dayEnd.getText()+ " " + yearEnd.getText()+
+									" " + timeEnd.getValue()*/);
 
 							}
 							if (eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
@@ -281,11 +287,13 @@ public class EventView {
 							//Update in EventInfoView
 							titleText.setText("  "+name.getText());
 							decText.setText(description.getText());
-							dateStartText.setText(monthStart.getId()+" " + dayStart.getText()+ " " + yearStart.getText()+
-									" " + timeStart.getValue());
+							dateStartText.setText(startTime.format(format)
+									/*monthStart.getId()+" " + dayStart.getText()+ " " + yearStart.getText()+
+									" " + timeStart.getValue()*/);
 
-							dateEndText.setText(monthEnd.getId()+" " + dayEnd.getText()+ " " + yearEnd.getText()+
-									" " + timeEnd.getValue());
+							dateEndText.setText(endTime.format(format)
+									/*monthEnd.getId()+" " + dayEnd.getText()+ " " + yearEnd.getText()+
+									" " + timeEnd.getValue()*/);
 
 							if (eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
 								// it should dispaly an alert if the input is
