@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
 import ui.ApplicationView;
+import ui.TimelineView;
 
 public class ApplicationControl implements ApplicationListener {
 
@@ -21,6 +22,7 @@ public class ApplicationControl implements ApplicationListener {
 	private FileHandler fileHandler;
 	private TimelineControl timelineControl;
 	private EventControl eventControl;
+	private TimelineView timelineView;
 
 	/**
 	 * Constructor, Creates an ApplicationControl and sets variables for
@@ -107,6 +109,29 @@ public class ApplicationControl implements ApplicationListener {
         	Alert fieldError = new Alert(Alert.AlertType.ERROR, "Error, cancelling load process");
         	fieldError.showAndWait();
         }
+        // ApplicationControl appCon = new ApplicationControl(appView, app, fileHandler);
+        try {
+        	Timeline tl = new Timeline(fileHandler.loadTimeline(file).getName(), fileHandler.loadTimeline(file).getStart(),
+					fileHandler.loadTimeline(file).getEnd());
+        	tl.setEvents(fileHandler.loadTimeline(file).getEvents());
+        	this.app.addEvents(tl.getEvents());
+			this.app.addTimeline(tl.getName(), tl.getStart(), tl.getEnd());
+			
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+        try {
+			getTimelines().add(fileHandler.loadTimeline(file));
+		} 
+        catch (Exception e) {
+			e.printStackTrace();
+		}
 
+	}
+
+	@Override
+	public ArrayList<Timeline> getTimelines() {
+		// TODO Auto-generated method stub
+		return app.getTimelines();
 	}
 }

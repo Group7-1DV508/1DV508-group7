@@ -1,8 +1,10 @@
 package controls;
 
+import java.util.ArrayList;
+
 import functions.Event;
 import functions.Timeline;
-import javafx.scene.control.Button;
+
 
 public interface ApplicationListener {
 	
@@ -17,4 +19,6 @@ public interface ApplicationListener {
 	void onTimelineSaved();
 	
 	void onTimelineLoaded();
+
+	ArrayList<Timeline> getTimelines();
 }
