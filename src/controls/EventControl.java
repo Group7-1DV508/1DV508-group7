@@ -68,11 +68,11 @@ public class EventControl implements EventListener {
 	}
 	
 	public boolean isStartCorrectTimeline (LocalDateTime start) {
-		return currentApp.getCurrentTimeline().getStart().compareTo(start) >= 0;
+		return currentApp.getCurrentTimeline().getStart().getYear() <= start.getYear();
 	}
 	
 	public boolean isEndCorrectTimeline (LocalDateTime end) {
-		return currentApp.getCurrentTimeline().getEnd().compareTo(end) >= 0;
+		return currentApp.getCurrentTimeline().getEnd().getYear() >= end.getYear();
 	}
 	 /**
 	  * Checks if start date is not later than end date
@@ -141,6 +141,7 @@ public class EventControl implements EventListener {
 	 */
 	private boolean isStartCorrect(LocalDateTime start) {
 		if (start == null || !isStartCorrectTimeline(start)) {
+			System.out.println("Start");
 			return false;
 		} else {
 			return true;
@@ -157,6 +158,7 @@ public class EventControl implements EventListener {
 	 */
 	private boolean isEndCorrect(LocalDateTime end) {
 		if (end == null || !isEndCorrectTimeline(end)) {
+			System.out.println("End");
 			return false;
 		} else {
 			return true;
