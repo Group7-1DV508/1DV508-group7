@@ -9,7 +9,6 @@ import controls.EventListener;
 import functions.Event;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -100,11 +99,19 @@ public class EventView {
 	     	descriptionArea.setPrefSize(200, 200);
 	     	descriptionArea.setWrapText(true);
 	     	
+	     	/* Limit the number of characters*/
+	     	final int nameMAX_CHARS = 40 ;
+	     	name.setTextFormatter(new TextFormatter<String>(change -> 
+            change.getControlNewText().length() <= nameMAX_CHARS ? change : null));
+	     	final int desMAX_CHARS = 300 ;
+	     	descriptionArea.setTextFormatter(new TextFormatter<String>(change -> 
+	            change.getControlNewText().length() <= desMAX_CHARS ? change : null));
 	     
 	     Label nameL = new Label("Name");
 	     Label descriptionL = new Label("Description");
 	     Label EventStart = new Label("Event Start");
 	     Label EventEnd = new Label("Event End");
+	     
 	     
 	     timeStart = new ComboBox<String>();
 		 timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
@@ -141,11 +148,7 @@ public class EventView {
 		 
 		 
 		return vbox;
-		
-		
-		
-		
-		
+	
 		
 	}
 	
@@ -174,22 +177,21 @@ public class EventView {
 	       				final Stage eventWindow = new Stage();
 	 				
 	       				VBox textFieldsStart = createAddEventWindow();
-	 		       	  //checkInDatePickerStart = new DatePicker();
-	 				
-	 				
-	 				
-							
+	 		       	 
+	 						
 						
 			 ok.setOnAction(new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent event) {
+								if (isNeededFieldEmpty()){
+									
 								
-							if (checkInDatePickerEnd.getValue() == null){
+								if (checkInDatePickerEnd.getValue() == null){
 								String eventname = name.getText();
 								String eventdescrip = descriptionArea.getText();
 
 								 LocalDate date = checkInDatePickerStart.getValue()  ;
-						         System.out.println("Selected date: " +  date.getYear() +date.getMonthValue() +date.getDayOfMonth());
+						         
 								
 								
 						         int  year =  date.getYear() ;
@@ -210,8 +212,7 @@ public class EventView {
 									String eventdescrip = descriptionArea.getText();
 									
 									LocalDate date = checkInDatePickerStart.getValue();
-							         System.out.println("Selected date: " +  date.getYear() +date.getMonthValue() +date.getDayOfMonth());
-									
+							        
 							         int  year =  date.getYear() ;
 							         String year1 = Integer.toString(year);
 							         int  month =  date.getMonthValue();
@@ -242,7 +243,7 @@ public class EventView {
 									
 									
 								}
-								
+								}
 							}
 			 			});
 							
@@ -711,15 +712,29 @@ public class EventView {
 	 * @return boolean, true if needed fields are empty otherwise false
 	 */
 	private boolean isNeededFieldEmpty() {
+		
+		Alert alert = new Alert(AlertType.ERROR);
 		if (name.getText().isEmpty() || descriptionArea.getText().isEmpty()) {
-			return true;
-		} else if (yearStart.getText().isEmpty() || monthStart.getText().isEmpty() || dayStart.getText().isEmpty()
-				|| timeStart.getValue() == null) {
-			return true;
-		} else {
+			
+			
+			alert.setTitle("Error");
+			alert.setContentText("Please, fill in Title and description.");
+			alert.showAndWait();
+			
 			return false;
+			
+			
+		} else if (checkInDatePickerStart.getValue()== null  || timeStart.getValue()== null) {
+
+			alert.setTitle("Error");
+			alert.setContentText("Please, fill in date and time.");
+			alert.showAndWait();
+			return false;
+		} else  {
+			return true;
 		}
 	}
+		
 
 	/**
 	 * help method to check if the Event to be created is a duration event or
@@ -728,13 +743,6 @@ public class EventView {
 	 * @return boolean, true if it is not a duration event otherwise false
 	 */
 
-	private boolean isNotDurationEvent() {
-		if (yearEnd.getText().isEmpty() || monthEnd.getText().isEmpty() || dayEnd.getText().isEmpty()
-				|| timeEnd.getValue() == null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+	
 
 } 
