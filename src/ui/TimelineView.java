@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import controls.TimelineListener;
-import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -224,16 +223,7 @@ public class TimelineView {
 				
 			}
 			
-			int difference  = Integer.parseInt(endDate.substring(0, 4)) - Integer.parseInt(startDate.substring(0, 4));
-			
-			if (difference > 10) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error in timeline length");
-				alert.setHeaderText("Please choose timeline that is less than 10 years long");
-				alert.show();
-			}
-			
-			if (Integer.parseInt(endDate.substring(0, 4)) < Integer.parseInt(startDate.substring(0, 4))) {
+			if (startDate.compareTo(endDate) > 0) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error in timeline dates");
 				alert.setHeaderText("Start date has to be earlier than end date!");
