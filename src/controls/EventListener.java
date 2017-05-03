@@ -2,7 +2,6 @@ package controls;
 
 import java.time.LocalDateTime;
 
-import functions.Event;
 
 public interface EventListener {
 	
