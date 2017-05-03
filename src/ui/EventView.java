@@ -215,11 +215,6 @@ public class EventView {
 					@Override
 					public void handle(ActionEvent event) {
 						/*
-						 * Setting id's to Months, to get them as text
-						 */
-						ids();
-
-						/*
 						 * If Name, Description or Start Date fields are empty
 						 * an Error alert shows to the user
 						 */
@@ -241,18 +236,14 @@ public class EventView {
 
 							titleText.setText("  " + name.getText());
 							decText.setText(description.getText());
-							dateStartText.setText(startTime.format(format)
-									/*monthStart.getId()+" " + dayStart.getText()+ " " + yearStart.getText()+
-							" " + timeStart.getValue()*/);
+							dateStartText.setText(startTime.format(format));
 
 
 							if(yearEnd.getText().length()!= 0){
 								LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
 										dayEnd.getText(),
 										timeEnd.getValue());
-						    dateEndText.setText(endTime.format(format)
-						    		/*monthEnd.getId()+" " + dayEnd.getText()+ " " + yearEnd.getText()+
-									" " + timeEnd.getValue()*/);
+						    dateEndText.setText(endTime.format(format));
 
 							}
 							if (eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
@@ -287,13 +278,9 @@ public class EventView {
 							//Update in EventInfoView
 							titleText.setText("  "+name.getText());
 							decText.setText(description.getText());
-							dateStartText.setText(startTime.format(format)
-									/*monthStart.getId()+" " + dayStart.getText()+ " " + yearStart.getText()+
-									" " + timeStart.getValue()*/);
+							dateStartText.setText(startTime.format(format));
 
-							dateEndText.setText(endTime.format(format)
-									/*monthEnd.getId()+" " + dayEnd.getText()+ " " + yearEnd.getText()+
-									" " + timeEnd.getValue()*/);
+							dateEndText.setText(endTime.format(format));
 
 							if (eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
 								// it should dispaly an alert if the input is
@@ -349,65 +336,7 @@ public class EventView {
 			}
 		});
 		return editEvent;
-
 	}
-	/**
-	 * Setting Id's to months to get them in text form in Event View Window
-	 */
-
-	private void ids (){
-		if(monthStart.getText().equals("1")){
-			monthStart.setId("Jan");
-		}else if(monthStart.getText().equals("2")){
-			monthStart.setId("Feb");
-		}else if(monthStart.getText().equals("3")){
-			monthStart.setId("Mar");
-		}else if(monthStart.getText().equals("4")){
-			monthStart.setId("Apr");
-		}else if(monthStart.getText().equals("5")){
-			monthStart.setId("May");
-		}else if(monthStart.getText().equals("6")){
-			monthStart.setId("Jun");
-		}else if(monthStart.getText().equals("7")){
-			monthStart.setId("Jul");
-		}else if(monthStart.getText().equals("8")){
-			monthStart.setId("Aug");
-		}else if(monthStart.getText().equals("9")){
-			monthStart.setId("Sep");
-		}else if(monthStart.getText().equals("10")){
-			monthStart.setId("Oct");
-		}else if(monthStart.getText().equals("11")){
-			monthStart.setId("Nov");
-		}else if(monthStart.getText().equals("12")){
-			monthStart.setId("Dec");
-		}
-
-		if(monthEnd.getText().equals("1")){
-			monthEnd.setId("Jan");
-		}else if(monthEnd.getText().equals("2")){
-			monthEnd.setId("Feb");
-		}else if(monthEnd.getText().equals("3")){
-			monthEnd.setId("Mar");
-		}else if(monthEnd.getText().equals("4")){
-			monthEnd.setId("Apr");
-		}else if(monthEnd.getText().equals("5")){
-			monthEnd.setId("May");
-		}else if(monthEnd.getText().equals("6")){
-			monthEnd.setId("Jun");
-		}else if(monthEnd.getText().equals("7")){
-			monthEnd.setId("Jul");
-		}else if(monthEnd.getText().equals("8")){
-			monthEnd.setId("Aug");
-		}else if(monthEnd.getText().equals("9")){
-			monthEnd.setId("Sep");
-		}else if(monthEnd.getText().equals("10")){
-			monthEnd.setId("Oct");
-		}else if(monthEnd.getText().equals("11")){
-			monthEnd.setId("Nov");
-		}else if(monthEnd.getText().equals("12")){
-			monthEnd.setId("Dec");
-		}
-		}
 
 
 	/**
