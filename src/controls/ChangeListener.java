@@ -27,5 +27,12 @@ public interface ChangeListener {
 	 */
 	void onEditTimeline(Timeline current);									//used when current timeline is edited, either timeline or event
 																			//or when new events are created or deleted
+
+	/**
+	 * Called to inform the ApplicationView that an Event has been modified
+	 * in certain Timeline, therefore Timeline view has to change
+	 * @param current Timeline
+	 */
+	void onEditEvent(Timeline current);
 	
-}
+	}
