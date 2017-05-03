@@ -1,11 +1,14 @@
 package controls;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import functions.App;
 import functions.Event;
 import functions.Timeline;
 import io.FileHandler;
+import javafx.scene.control.Alert;
+import javafx.stage.FileChooser;
 import ui.ApplicationView;
 
 public class ApplicationControl implements ApplicationListener {
@@ -59,9 +62,55 @@ public class ApplicationControl implements ApplicationListener {
 	}
 
 	@Override
-	public ArrayList<Timeline> getTimelines() {
-		return app.getTimelines();
+	public void onTimelineSaved() {
+		FileChooser chooseFile = new FileChooser();
+
+		// Set extension filter
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+		chooseFile.getExtensionFilters().add(extFilter);
+
+		// Show save file dialog
+		File file = chooseFile.showSaveDialog(appView.getRoot().getScene().getWindow());
+
+		try {
+			fileHandler.saveTimeline(app.getCurrentTimeline(), file);
+		} catch (Exception saver) {
+			// if cancel is pressed, show error (popup window) message.
+			Alert fieldError = new Alert(Alert.AlertType.ERROR, "Error, cancelling save process.");
+			fieldError.showAndWait();
+		}
 	}
+
+	@Override
+	public void onTimelineLoaded() {
+		FileChooser fileChooser = new FileChooser();
+
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show open file dialog
+        File file = fileChooser.showOpenDialog(appView.getRoot().getScene().getWindow());
+        
+        try {
+        	Timeline t = fileHandler.loadTimeline(file);
+        	app.addTimelineToList(t);
+        }
+        catch (Exception loader) {
+        	// if cancel is pressed, show error(popup message) message.
+        	Alert fieldError = new Alert(Alert.AlertType.ERROR, "Error, cancelling load process");
+        	fieldError.showAndWait();
+        }
+        
+
+	}
+
+	@Override
+	public ArrayList<Timeline> getTimelines() {
+		// TODO Auto-generated method stub
+		return app.getTimelines();
+}
 	
 
 }

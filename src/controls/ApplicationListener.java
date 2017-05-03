@@ -19,4 +19,9 @@ public interface ApplicationListener {
 	 * @return arraylist containing timelines
 	 */
 	ArrayList<Timeline> getTimelines();
+	
+
+	void onTimelineSaved();
+	
+	void onTimelineLoaded();
 }
