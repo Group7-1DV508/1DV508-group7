@@ -15,6 +15,7 @@ import functions.Event;
 import functions.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -534,10 +535,19 @@ public class ApplicationView implements ChangeListener {
 
 	@Override
 	public void onChangedTimeline(ArrayList<Timeline> timelines, Timeline current) {
-		chooseTimeline(timelines, current);
-		showYear(current);
-		currentTimeline(current);
-		addEventsToTimeline(current);
+		if (!(current == null)) {
+			chooseTimeline(timelines, current);
+			showYear(current);
+			currentTimeline(current);
+			addEventsToTimeline(current);
+			getDeleteTimelineButton().setDisable(false);
+			eventView.setDisable(false);
+		}
+		else {
+			clearTimelineBox();
+			getDeleteTimelineButton().setDisable(true);
+			eventView.setDisable(true);
+		}
 	}
 
 	@Override
