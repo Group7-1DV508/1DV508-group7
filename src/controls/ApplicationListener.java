@@ -15,4 +15,6 @@ public interface ApplicationListener {
 	void onNewEventSelected(Event e);
 	
 	void onTimelineSaved();
+	
+	void onTimelineLoaded();
 }

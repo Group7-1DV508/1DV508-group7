@@ -181,6 +181,9 @@ public class ApplicationView implements ChangeListener {
 		});
 		return helpButton;
 	}
+	/* Creates a button which saves a given
+	 * timeline to a file path chosen by
+	   the user through the fileChooser.*/
 	
 	private Button saveTimelineButton() {
 		Button savey = new Button("Save Timeline");
@@ -191,6 +194,16 @@ public class ApplicationView implements ChangeListener {
 			appListener.onTimelineSaved();
 		});
 		return savey;
+	}
+	
+	private Button loadTimelineButton() {
+		Button loaded = new Button("Load Timeline");
+		loaded.setPrefSize(120, 30);
+		
+		loaded.setOnAction(ActionEvent -> {
+			appListener.onTimelineLoaded();
+		});
+		return loaded;
 	}
 
 	/**
@@ -216,7 +229,7 @@ public class ApplicationView implements ChangeListener {
 		eventButtons.getChildren().clear();
 		eventButtons.setAlignment(Pos.CENTER);
 		eventButtons.setSpacing(20.0);
-		eventButtons.getChildren().addAll(getAddEventButton(), saveTimelineButton());
+		eventButtons.getChildren().addAll(getAddEventButton(), saveTimelineButton(), loadTimelineButton());
 		return eventButtons;
 	}
 
