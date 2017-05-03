@@ -193,8 +193,8 @@ public class EventView {
 		editEvent = new Button("Edit Info");
 		editEvent.setMinSize(80, 30);
 		editEvent.setFont(Font.font("Verdana", 15));
-		editEvent.setTranslateX(60);
-		editEvent.setTranslateY(-30);
+		editEvent.setTranslateX(10);
+		editEvent.setTranslateY(30);
 		editEvent.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
@@ -341,7 +341,7 @@ public class EventView {
 		});
 		return editEvent;
 	}
-	
+
 	/**
 	 * Delete button responsible for delete selected event
 	 * @param e event to be deleted
@@ -350,6 +350,10 @@ public class EventView {
 	 */
 	public Button getDeleteButton(Event e, Stage s) {
 		delete = new Button("Delete event");
+		delete.setMinSize(80, 30);
+		delete.setFont(Font.font("Verdana", 15));
+		delete.setTranslateX(110);
+		delete.setTranslateY(-20);
 		delete.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -367,14 +371,14 @@ public class EventView {
 				    	confirmation.close();
 				    	s.close();
 				    }
-				} 
+				}
 				// user chose cancel, so alert window is closed
 				else {
 					confirmation.close();
 				}
-				
+
 			}
-			
+
 		});
 		return delete;
 	}
@@ -494,6 +498,7 @@ public class EventView {
 		final Stage eventWindow = new Stage();
 
 		VBox window = new VBox();
+		HBox hb = new HBox();
 		window.setSpacing(20);
 		window.setPrefSize(200, 200);
 
@@ -533,11 +538,10 @@ public class EventView {
 		decText.setTranslateX(8);
 		decText.setTranslateY(-53);
 
+
 		if (e.getEventEnd() == null) {
 			dateEndText = new Text(" ");
-
-		  window.getChildren().addAll(info, titleText, dateStartText, decText,dateEndText, EditButton(e));
-			window.getChildren().add(getDeleteButton(e, eventWindow));
+			window.getChildren().addAll(info, title, titleText, eventStart, dateStartText, des, decText, EditButton(e),getDeleteButton(e, eventWindow));
 
 		} else {
 			createEditEventWindow(e);
@@ -553,8 +557,7 @@ public class EventView {
 			dateEndText.setFont(Font.font("Verdana", 15));;
 			dateEndText.setTranslateY(-48);
 			dateEndText.setTranslateX(8);
-			window.getChildren().addAll(info, title, titleText, eventStart, dateStartText, eventEnd, dateEndText, des, decText, EditButton(e));
-
+			window.getChildren().addAll(info, title, titleText, eventStart, dateStartText, eventEnd, dateEndText, des, decText, EditButton(e),getDeleteButton(e, eventWindow));
 
 		}
 
