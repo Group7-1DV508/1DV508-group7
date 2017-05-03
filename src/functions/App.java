@@ -79,6 +79,12 @@ public class App {
 		changeListener.onEditTimeline(current);
 	}
 	
+	public void addTimelineToList(Timeline t) {
+		timelines.add(t);
+		current = t;
+		changeListener.onChangedTimeline(timelines, current);
+	}
+	
 	/**
 	 * Update the ChangeListener variable with the ChangeListener given as input
 	 * @param cl , (ChangeListener)

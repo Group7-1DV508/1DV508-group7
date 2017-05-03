@@ -102,30 +102,15 @@ public class ApplicationControl implements ApplicationListener {
         File file = fileChooser.showOpenDialog(appView.getRoot().getScene().getWindow());
         
         try {
-        	fileHandler.loadTimeline(file);
+        	Timeline t = fileHandler.loadTimeline(file);
+        	app.addTimelineToList(t);
         }
         catch (Exception loader) {
         	// if cancel is pressed, show error(popup message) message.
         	Alert fieldError = new Alert(Alert.AlertType.ERROR, "Error, cancelling load process");
         	fieldError.showAndWait();
         }
-        // ApplicationControl appCon = new ApplicationControl(appView, app, fileHandler);
-        try {
-        	Timeline tl = new Timeline(fileHandler.loadTimeline(file).getName(), fileHandler.loadTimeline(file).getStart(),
-					fileHandler.loadTimeline(file).getEnd());
-        	tl.setEvents(fileHandler.loadTimeline(file).getEvents());
-        	this.app.addEvents(tl.getEvents());
-			this.app.addTimeline(tl.getName(), tl.getStart(), tl.getEnd());
-			
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-        try {
-			getTimelines().add(fileHandler.loadTimeline(file));
-		} 
-        catch (Exception e) {
-			e.printStackTrace();
-		}
+        
 
 	}
 
