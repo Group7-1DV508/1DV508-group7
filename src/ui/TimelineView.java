@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import controls.TimelineListener;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

@@ -11,6 +11,7 @@ import functions.Event;
 import functions.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -157,7 +158,9 @@ public class ApplicationView implements ChangeListener {
 	 * Creates the Help Button
 	 */
 	private Button createHelpButton() {
-		return new Button("Help");
+		Button help = new Button("Help");
+		help.setPadding(new Insets(5));
+		return help;
 	}
 
 	/**
