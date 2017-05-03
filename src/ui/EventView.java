@@ -44,11 +44,12 @@ public class EventView {
 	private TextField dayEnd;
 	
 
-	// Buttons - Add Event Window
+	// Buttons
+	private Button addEvent = new Button("Add event");
 	private Button ok;
 	private Button cancel;
-	private Button editEvent;
-	private Button delete;
+	private Button editEvent = new Button("Edit event");
+	private Button delete = new Button("Delete event");
 	private Text titleText;
 	private Text decText;
 	private Text dateStartText;
@@ -73,9 +74,7 @@ public class EventView {
 	 */
 
 	public Button getAddEventButton() {
-
-		Button addEvent = new Button("Add Event");
-		addEvent.setMinSize(75, 30);
+		addEvent.setPadding(new Insets(5));
 
 		/*
 		 * when Add Event button is clicked a popup window is created where the
@@ -108,43 +107,52 @@ public class EventView {
 									"Name, Description and Start Date can't be empty.");
 							emptyFieldError.showAndWait();
 						}
-						/*
-						 * If the event doesn't have End Date an non duration
-						 * Event is created
-						 */
-						else if (isNotDurationEvent()) {
-							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-									dayStart.getText(),
-									timeStart.getValue()/*
-														 * hoursStart.getText()
-														 */);
-							String eventname = name.getText();
-							String eventdescrip = description.getText();
-
-							if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
-								eventWindow.close();
-							}
-						}
-						/*
-						 * If the Event has End Time an Event with duration is
-						 * created
-						 */
 						else {
-							LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
-									dayStart.getText(),
-									timeStart.getValue() /*
+							/*
+							 * If the event doesn't have End Date an non duration
+							 * Event is created
+							 */
+							if (isNotDurationEvent()) {
+								LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
+										dayStart.getText(),
+										timeStart.getValue()/*
 															 * hoursStart.getText()
 															 */);
-							LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
-									dayEnd.getText(),
-									timeEnd.getValue() /* hoursEnd.getText() */);
-							String eventname = name.getText();
-							String eventdescrip = description.getText();
-
-							if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
-								eventWindow.close();
+								String eventname = name.getText();
+								String eventdescrip = description.getText();
+	
+								if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
+									eventWindow.close();
+								}
 							}
-
+							/*
+							 * If the Event has End Time an Event with duration is
+							 * created
+							 */
+							else {
+								LocalDateTime startTime = createLocalDateTime(yearStart.getText(), monthStart.getText(),
+										dayStart.getText(),
+										timeStart.getValue() /*
+																 * hoursStart.getText()
+																 */);
+								LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
+										dayEnd.getText(),
+										timeEnd.getValue() /* hoursEnd.getText() */);
+								String eventname = name.getText();
+								String eventdescrip = description.getText();
+								if (startTime.compareTo(endTime) > 0) {
+									Alert alert = new Alert(AlertType.ERROR);
+									alert.setTitle("Error in event dates");
+									alert.setHeaderText("Start date has to be earlier than end date!");
+									alert.show();
+								}
+								else  {
+									if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
+									eventWindow.close();
+									}
+								}
+	
+							}
 						}
 
 					}
@@ -173,10 +181,12 @@ public class EventView {
 		return addEvent;
 
 	}
+	
+	public void setDisable (boolean notShown) {
+		addEvent.setDisable(notShown);
+	}
 
 	public Button EditButton(Event e) {
-
-		editEvent = new Button("Edit");
 		editEvent.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
@@ -221,22 +231,30 @@ public class EventView {
 								if (yearEnd != null && monthEnd != null && dayEnd != null && timeEnd != null) {
 									LocalDateTime endTime = createLocalDateTime(yearEnd.getText(), monthEnd.getText(),
 											dayEnd.getText(), timeEnd.getValue());
-									eventListener.onDeleteEvent();
-									eventListener.onAddEventDuration(name.getText(), description.getText(), startTime, endTime);
-									name.setDisable(true);
-									description.setDisable(true);
-	
-									yearStart.setDisable(true);
-									monthStart.setDisable(true);
-									dayStart.setDisable(true);
-									timeStart.setDisable(true);
-	
-									yearEnd.setDisable(true);
-									monthEnd.setDisable(true);
-									dayEnd.setDisable(true);
-									timeEnd.setDisable(true);
-									ok.setDisable(true);
-									cancel.setDisable(true);
+									if (startTime.compareTo(endTime) > 0) {
+										Alert alert = new Alert(AlertType.ERROR);
+										alert.setTitle("Error in event dates");
+										alert.setHeaderText("Start date has to be earlier than end date!");
+										alert.show();
+									}
+									else {
+										eventListener.onDeleteEvent();
+										eventListener.onAddEventDuration(name.getText(), description.getText(), startTime, endTime);
+										name.setDisable(true);
+										description.setDisable(true);
+		
+										yearStart.setDisable(true);
+										monthStart.setDisable(true);
+										dayStart.setDisable(true);
+										timeStart.setDisable(true);
+		
+										yearEnd.setDisable(true);
+										monthEnd.setDisable(true);
+										dayEnd.setDisable(true);
+										timeEnd.setDisable(true);
+										ok.setDisable(true);
+										cancel.setDisable(true);
+									}
 								}
 								
 								
@@ -356,7 +374,6 @@ public class EventView {
 	 * @return button with set action on it.
 	 */
 	public Button getDeleteButton(Event e, Stage s) {
-		delete = new Button("Delete event");
 		delete.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
