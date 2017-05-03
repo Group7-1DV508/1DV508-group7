@@ -21,7 +21,7 @@ public interface TimelineListener {
 	 * @param timeline
 	 * @return true if timeline was deleted successfully
 	 */
-	boolean onDeleteTimeline (Timeline timeline);
+	boolean onDeleteTimeline ();
 
 
 }

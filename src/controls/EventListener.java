@@ -52,5 +52,5 @@ public interface EventListener {
 	 * Requests to delete existing event.
 	 * @return true if event was deleted successfully
 	 */
-	boolean onDeleteEvent(Event event);
+	boolean onDeleteEvent();
 }

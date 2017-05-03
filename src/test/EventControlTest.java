@@ -50,12 +50,12 @@ public class EventControlTest implements ChangeListener {
 	private boolean editTimeline;
 	private boolean editEvent;
 	
+	
 	@BeforeClass
 	public static void beforeAllTests() {
 		app = new App();
 		eventC = new EventControl();
 		eventC.setApp(app);
-		
 	}
 	
 	@AfterClass
@@ -73,6 +73,7 @@ public class EventControlTest implements ChangeListener {
 		changeTimeline = false;
 		editTimeline = false;
 		editEvent = false;
+		
 	}
 	
 	@Test 
@@ -138,6 +139,11 @@ public class EventControlTest implements ChangeListener {
 		assertFalse(eventC.onEditEvent("", "", null));
 		//assure that changelistener wasn't called
 		assertFalse(editEvent);
+		//assure that event wasnt changed
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventName(), EXPECTED_EVENT_NAME2);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventDescription(), EXPECTED_EVENT_DESCR2);
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventStart(), EXPECTED_EVENT_START2);
+		
 	}
 	
 	
@@ -172,6 +178,49 @@ public class EventControlTest implements ChangeListener {
 	
 	}
 	
+	@Test
+	public void testOnDeleteEvent() {
+		//add event to current timeline
+		app.addEventToCurrent(EXPECTED_EVENT_NAME1, EXPECTED_EVENT_DESCR1, EXPECTED_EVENT_START1);
+		//assure that size is +1
+		assertEquals(app.getCurrentTimeline().getEvents().size(), 1);
+		
+		//add one more event
+		app.addEventToCurrent(EXPECTED_EVENT_NAME2, EXPECTED_EVENT_DESCR2, EXPECTED_EVENT_START2);
+		//assure that size is +1
+		assertEquals(app.getCurrentTimeline().getEvents().size(), 2);
+		
+		//set current event to the first event added
+		app.setCurrentEvent(app.getCurrentTimeline().getEvents().get(0));
+		//delete event
+		assertTrue(eventC.onDeleteEvent());
+		//assure that changelistener was called
+		assertTrue(editTimeline);
+		editTimeline = false;
+		//make sure event list is -1
+		assertEquals(app.getCurrentTimeline().getEvents().size(), 1);
+		
+		//check that the correct event was removed
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventName(), EXPECTED_EVENT_NAME2 );
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventDescription(), EXPECTED_EVENT_DESCR2 );
+		assertEquals(app.getCurrentTimeline().getEvents().get(0).getEventStart(), EXPECTED_EVENT_START2 );
+		
+		//set current event
+		app.setCurrentEvent(app.getCurrentTimeline().getEvents().get(0));
+		//delete event
+		assertTrue(eventC.onDeleteEvent());
+		//assure changelistener was called
+		assertTrue(editTimeline);
+		editTimeline = false;
+		//assure that the ArrayList of events now is empty
+		assertEquals(app.getCurrentTimeline().getEvents().size(), 0);
+		
+		//try to remove non existing event
+		assertFalse(eventC.onDeleteEvent());
+		//assure that changelistener wasn't called
+		assertFalse(editTimeline);
+	}
+	
 
 	@Override
 	public void onChangedTimeline(ArrayList<Timeline> timelines, Timeline current) {
@@ -196,4 +245,6 @@ public class EventControlTest implements ChangeListener {
 		editEvent = true;
 		
 	}
+
+	
 }
