@@ -1,9 +1,6 @@
 package controls;
 
-<<<<<<< HEAD
-=======
 import java.io.File;
->>>>>>> refs/remotes/origin/master
 import java.util.ArrayList;
 
 import functions.App;
@@ -63,8 +60,6 @@ public class ApplicationControl implements ApplicationListener {
 		app.setCurrentEvent(e);
 		
 	}
-<<<<<<< HEAD
-=======
 
 	@Override
 	public void onTimelineSaved() {
@@ -116,7 +111,6 @@ public class ApplicationControl implements ApplicationListener {
 		// TODO Auto-generated method stub
 		return app.getTimelines();
 }
->>>>>>> refs/remotes/origin/master
 	
 
 }

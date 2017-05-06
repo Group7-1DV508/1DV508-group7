@@ -59,10 +59,6 @@ public class App {
 	 * Removes selected timeline from timeline list.
 	 * @param timeline to be removed
 	 */
-<<<<<<< HEAD
-	public void removeTimeline (Timeline timeline) {
-		getTimelines().remove(timeline);
-=======
 	public void removeTimeline() {
 		getTimelines().remove(current);
 		if (timelines.size() > 0) {
@@ -81,7 +77,6 @@ public class App {
 	public void removeEvent() {
 		current.deleteEvent(currentEvent);
 		changeListener.onEditTimeline(current);
->>>>>>> refs/remotes/origin/master
 	}
 	
 	/**
@@ -117,15 +112,12 @@ public class App {
 		return timelines;
 	}
 	
-<<<<<<< HEAD
-=======
 	public void addTimelineToList(Timeline t) {
 		timelines.add(t);
 		current = t;
 		changeListener.onChangedTimeline(timelines, current);
 	}
 	
->>>>>>> refs/remotes/origin/master
 	public boolean isEventDuration() {
 		return currentEvent.isDuration();
 	}
@@ -139,9 +131,5 @@ public class App {
 	public void eventEdited() {
 		changeListener.onEditEvent(current);
 	}
-<<<<<<< HEAD
-}
-=======
 	
 }
->>>>>>> refs/remotes/origin/master
