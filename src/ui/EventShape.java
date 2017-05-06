@@ -10,23 +10,37 @@ import javafx.scene.shape.Line;
 /**
  * protected class, only classes in package ui got access.
  * creates an circle (EventShape) that holds variables to the duration bar
+<<<<<<< HEAD
  * and the Event it represents, also holds variable to the Timeline the 
  * Event belongs to 
+=======
+ * and the Event it represents, also holds variable to the Timeline the
+ * Event belongs to
+>>>>>>> refs/remotes/origin/master
  * @author carolinenilsson
  *
  */
 class EventShape extends Circle {
+<<<<<<< HEAD
 	
 	private final Event event;
 	private final Timeline timeline;
 	private final int timelineStart;
 	
+=======
+
+	private final Event event;
+	private final Timeline timeline;
+	private final int timelineStart;
+
+>>>>>>> refs/remotes/origin/master
 	private int yearStart;
 	private int monthStart;
 	private int dayStart;
 	private int yearEnd;
 	private int monthEnd;
 	private int dayEnd;
+<<<<<<< HEAD
 	
 	private final Line bar;
 	private int startX;
@@ -35,6 +49,16 @@ class EventShape extends Circle {
 	/**
 	 * Constructor, creates an EventShape for Event without duration 
 	 * @param current - the Timeline the Event belongs to 
+=======
+
+	private final Line bar;
+	private int startX;
+	private int endX;
+
+	/**
+	 * Constructor, creates an EventShape for Event without duration
+	 * @param current - the Timeline the Event belongs to
+>>>>>>> refs/remotes/origin/master
 	 * @param e - Event
 	 * @param start - LocalDateTime of the Event start
 	 */
@@ -52,10 +76,17 @@ class EventShape extends Circle {
 		setValueX();
 		createEventShape();
 	}
+<<<<<<< HEAD
 	
 	/**
 	 * Constructor, creates an EventShape and a duration bar for Event with duration
 	 * @param current - the Timeline the Event belongs to 
+=======
+
+	/**
+	 * Constructor, creates an EventShape and a duration bar for Event with duration
+	 * @param current - the Timeline the Event belongs to
+>>>>>>> refs/remotes/origin/master
 	 * @param e - Event
 	 * @param start - LocalDateTime of the Event start
 	 * @param end - LocalDateTime of the Event end
@@ -72,18 +103,43 @@ class EventShape extends Circle {
 		dayEnd = current.getDay(end);
 		bar = new Line();
 		setValueX();
+<<<<<<< HEAD
 		createEventShape();
 		createDurationBar();
 	}
 	
 	/**
 	 * create a circle shape that is visuals for the Event
+=======
+		createEventDurationShape();
+		createDurationBar();
+	}
+
+	/**
+	 * create a circle shape that is visuals for the Event without duration
+>>>>>>> refs/remotes/origin/master
 	 */
 	private void createEventShape() {
 		setValueX();
 		setRadius(12.5);
 		setStroke(Color.BLACK);
+<<<<<<< HEAD
 		setFill(Color.MEDIUMSEAGREEN);
+=======
+		setFill(Color.DEEPSKYBLUE);
+		setCenterX(startX);
+		setCenterY(25);
+		setManaged(false);
+	}
+	/**
+	 * create a circle shape that is visuals for the Event with duration
+	 */
+	private void createEventDurationShape() {
+		setValueX();
+		setRadius(12.5);
+		setStroke(Color.BLACK);
+		setFill(Color.LAWNGREEN);
+>>>>>>> refs/remotes/origin/master
 		setCenterX(startX);
 		setCenterY(25);
 		setManaged(false);
@@ -99,6 +155,7 @@ class EventShape extends Circle {
 	 */
 	private void createDurationBar() {
 		updateBar();
+<<<<<<< HEAD
 		bar.setStrokeWidth(5.0);
 		bar.setStroke(Color.BLACK);
 		bar.setVisible(false);
@@ -109,11 +166,24 @@ class EventShape extends Circle {
 	 * initializes the x-coordinate and y-coordinate value math explained below:
 	 * year (into the timeline) multiplied by 12 
 	 * then add month date (ex. 05 for may) subtracted by 1 
+=======
+		bar.setStrokeWidth(6.0);
+		bar.setStroke(Color.LAWNGREEN);
+		bar.setVisible(false);
+		bar.setManaged(false);
+	}
+
+	/**
+	 * initializes the x-coordinate and y-coordinate value math explained below:
+	 * year (into the timeline) multiplied by 12
+	 * then add month date (ex. 05 for may) subtracted by 1
+>>>>>>> refs/remotes/origin/master
 	 * (correct amount of months) multiplied by 100 (length of the monthBox)
 	 * add (monthBox length divided by 30 (generaly days / month) 100/30 multiplied by days date)
 	 * then add 5 multiplied by total number of months (this is due to spacing at 5.0 between months)
 	 */
 	private void setValueX() {
+<<<<<<< HEAD
 		int year = yearStart - timelineStart;
 		if (yearEnd == 0) {
 			startX = (((year) * 12) + (monthStart-1)) *100 + (100/30 * dayStart) + (5 * (12 *year + monthStart));;
@@ -124,6 +194,19 @@ class EventShape extends Circle {
 
 		}
 		
+=======
+		int YEAR_START = yearStart - timelineStart;
+		int YEAR_END = yearEnd - timelineStart;
+		if (YEAR_END < 0) {
+			startX = (((YEAR_START) * 12) + (monthStart-1)) *100 + (100/30 * dayStart) + (5 * (12 *YEAR_START + monthStart));;
+		}
+		else {
+			startX = (((YEAR_START) * 12) + (monthStart-1)) *100 + (100/30 * dayStart) + (5 * (12 *YEAR_START + monthStart));;
+			endX = (((YEAR_END) * 12) + (monthEnd-1)) *100 + (100/30 * dayEnd) + (5 * (12 *YEAR_END + monthEnd));;
+
+		}
+
+>>>>>>> refs/remotes/origin/master
 	}
 	/**
 	 * Sets new x-corrdiante and y-coordinates for start and end on bar
@@ -136,7 +219,11 @@ class EventShape extends Circle {
 	}
 	/**
 	 * sets visibility, Boolean condition on duration bar
+<<<<<<< HEAD
 	 * (bar only shows when mouse hover the EventShape) 
+=======
+	 * (bar only shows when mouse hover the EventShape)
+>>>>>>> refs/remotes/origin/master
 	 * @param b Boolean
 	 */
 	public void setBarVisibility(boolean b) {
@@ -152,7 +239,11 @@ class EventShape extends Circle {
 		dayStart = timeline.getDay(start);
 		setValueX();
 		updateEventShape();
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> refs/remotes/origin/master
 	}
 	/**
 	 * sets new date for duration Event
@@ -166,7 +257,11 @@ class EventShape extends Circle {
 		yearEnd = timeline.getYear(end);
 		monthEnd = timeline.getMonth(end);
 		dayEnd = timeline.getDay(end);
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> refs/remotes/origin/master
 		setValueX();
 		updateEventShape();
 		updateBar();
@@ -186,4 +281,8 @@ class EventShape extends Circle {
 		return event;
 	}
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> refs/remotes/origin/master
