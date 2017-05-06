@@ -23,4 +23,8 @@ public class LocalDateTimeXmlAdapter extends XmlAdapter<String, LocalDateTime> {
 	}
 
 	
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> refs/remotes/origin/master

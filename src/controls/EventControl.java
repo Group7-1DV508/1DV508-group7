@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 
 import functions.App;
 import functions.Event;
+<<<<<<< HEAD
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+=======
+>>>>>>> refs/remotes/origin/master
 
 public class EventControl implements EventListener {
 
@@ -58,10 +61,17 @@ public class EventControl implements EventListener {
 	}
 	
 	@Override
+<<<<<<< HEAD
 	public boolean onDeleteEvent(Event event) {
 		setCurrentEvent();
 		if (currentApp.getCurrentTimeline().getEvents().contains(event)) {
 			currentApp.getCurrentTimeline().deleteEvent(currentEvent);
+=======
+	public boolean onDeleteEvent() {
+		setCurrentEvent();
+		if (currentApp.getCurrentTimeline().getEvents().contains(currentEvent)) {
+			currentApp.removeEvent();
+>>>>>>> refs/remotes/origin/master
 			return true;
 		}
 		else {
@@ -69,6 +79,26 @@ public class EventControl implements EventListener {
 		}
 	}
 	
+<<<<<<< HEAD
+=======
+	public boolean isStartCorrectTimeline (LocalDateTime start) {
+		return currentApp.getCurrentTimeline().getStart().getYear() <= start.getYear();
+	}
+	
+	public boolean isEndCorrectTimeline (LocalDateTime end) {
+		return currentApp.getCurrentTimeline().getEnd().getYear() >= end.getYear();
+	}
+	 /**
+	  * Checks if start date is not later than end date
+	  * @param start
+	  * @param end
+	  * @return true if dates are correct
+	  */
+	private boolean areDatesCorrect (LocalDateTime start, LocalDateTime end) {
+		return start.compareTo(end) < 0;
+	}
+	
+>>>>>>> refs/remotes/origin/master
 	public void setCurrentEvent() {
 		currentEvent = currentApp.getCurrentEvent();
 	}
@@ -117,7 +147,11 @@ public class EventControl implements EventListener {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * validate that the LocalDateTime has been initialized (that it´s not
+=======
+	 * validate that the LocalDateTime has been initialized (that itÂ´s not
+>>>>>>> refs/remotes/origin/master
 	 * null)
 	 * 
 	 * @param start,
@@ -125,6 +159,7 @@ public class EventControl implements EventListener {
 	 * @return boolean, true if start date is valid otherwise false
 	 */
 	private boolean isStartCorrect(LocalDateTime start) {
+<<<<<<< HEAD
 		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
 		if (start.equals(temp)) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -132,6 +167,9 @@ public class EventControl implements EventListener {
 			alert.setHeaderText("Please choose a start date for your timeline");
 			alert.setContentText("Start year must be 4 numbers long. (Ex. 0001,0002...2016,2017)");
 			alert.show();
+=======
+		if (start == null || !isStartCorrectTimeline(start)) {
+>>>>>>> refs/remotes/origin/master
 			return false;
 		} else {
 			return true;
@@ -139,7 +177,11 @@ public class EventControl implements EventListener {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * validate that the LocalDateTime has been initialized (that it´s not
+=======
+	 * validate that the LocalDateTime has been initialized (that itÂ´s not
+>>>>>>> refs/remotes/origin/master
 	 * null)
 	 * 
 	 * @param end,
@@ -147,6 +189,7 @@ public class EventControl implements EventListener {
 	 * @return boolean, true if end date is valid otherwise false
 	 */
 	private boolean isEndCorrect(LocalDateTime end) {
+<<<<<<< HEAD
 		LocalDateTime temp = LocalDateTime.parse("0000-01-01T03:00:01");
 		if (end.equals(temp)) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -154,6 +197,9 @@ public class EventControl implements EventListener {
 			alert.setHeaderText("Please choose an end date for your timeline.");
 			alert.setContentText("End year must be 4 numbers long. (Ex. 0001,0002...2016,2017)");
 			alert.show();
+=======
+		if (end == null || !isEndCorrectTimeline(end)) {
+>>>>>>> refs/remotes/origin/master
 			return false;
 		} else {
 			return true;
@@ -193,7 +239,11 @@ public class EventControl implements EventListener {
 	 * @return boolean, true if all inputs are valid otherwise false
 	 */
 	private boolean isCorrectInputDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
+<<<<<<< HEAD
 		if (isNameCorrect(name) && isStartCorrect(start) && isEndCorrect(end) && isDescriptionCorrect(description)) {
+=======
+		if (isNameCorrect(name) && isStartCorrect(start) && isEndCorrect(end) && isDescriptionCorrect(description) && areDatesCorrect(start, end)) {
+>>>>>>> refs/remotes/origin/master
 			return true;
 		} else {
 			return false;

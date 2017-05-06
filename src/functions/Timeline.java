@@ -154,4 +154,8 @@ public class Timeline {
 	}
 	
 	
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> refs/remotes/origin/master
