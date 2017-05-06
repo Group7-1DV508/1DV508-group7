@@ -1,6 +1,7 @@
 package ui;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import controls.TimelineListener;
 import javafx.beans.property.BooleanProperty;
@@ -10,7 +11,10 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -20,6 +24,7 @@ import javafx.stage.Stage;
 public class TimelineView {
 
 	private Button addTimeline = new Button("Add Timeline");
+<<<<<<< HEAD
 	// Main pane that contains "Add Timeline" button
 	private GridPane gp = new GridPane();
 	private Button confirmTimeline = new Button("Finish");
@@ -27,12 +32,21 @@ public class TimelineView {
 	private HBox addTimelineButton = new HBox();
 	// HBox for timeline display
 	private HBox timelineBox = new HBox();
+=======
+	private Button deleteTimeline = new Button ("Delete Timeline");
+	private Button confirmTimeline = new Button("Finish");
+	// HBox for "Add Timeline" button
+	private HBox addTimelineButton = new HBox();
+>>>>>>> refs/remotes/origin/master
 	// Stage for new window where user inputs information about timeline
 	private Stage addTimelineWindow = new Stage();
 	private final TextField timelineName = new TextField();
 	private final TextField timelineStart = new TextField();
 	private final TextField timelineEnd = new TextField();
+<<<<<<< HEAD
 	private final BooleanProperty theFocus = new SimpleBooleanProperty(true);
+=======
+>>>>>>> refs/remotes/origin/master
 	private TimelineListener timelineListener;
 
 	/**
@@ -56,6 +70,15 @@ public class TimelineView {
 		addTimelineWindow();
 		return addTimeline;
 	}
+<<<<<<< HEAD
+=======
+	
+	public Button getDeleteTimelineButton() {
+		deleteTimeline.setPadding(new Insets(5));
+		deleteTimeline.setOnAction(new DeleteTimelineHandler());
+		return deleteTimeline;
+	}
+>>>>>>> refs/remotes/origin/master
 
 	/**
 	 * Sets EventHandler class for when "Add Timeline" is clicked, puts the
@@ -63,6 +86,7 @@ public class TimelineView {
 	 */
 	private void addTimelineWindow() {
 		addTimelineButton.getChildren().add(addTimeline);
+		addTimelineButton.setPadding(new Insets(5));
 		addTimeline.setPadding(new Insets(5));
 		addTimeline.setOnAction(new TimelineHandler());
 	}
@@ -74,10 +98,15 @@ public class TimelineView {
 		GridPane addTimelineRoot = initAddTimeline();
 		// Sets what happens when "Save" button is clicked
 		confirmTimeline.setOnAction(new ConfirmTimelineHandler());
+<<<<<<< HEAD
 		addTimelineWindow.setTitle("ADD TIMELINE WINDOW");
+=======
+		addTimelineWindow.setTitle("Add timeline");
+>>>>>>> refs/remotes/origin/master
 		addTimelineWindow.setScene(new Scene(addTimelineRoot, 600, 300));
 		addTimelineWindow.setResizable(false);
 		addTimelineWindow.show();
+		addTimelineRoot.requestFocus();
 	}
 
 	/**
@@ -119,6 +148,7 @@ public class TimelineView {
 		addTimelineRoot.add(confirmTimelineButton, 0, 3);
 		addTimelineRoot.setAlignment(Pos.CENTER);
 
+<<<<<<< HEAD
 		/*
 		 * The textfield timelineName was already focused(clicked) once the user
 		 * enters the add timeline window. Using BooleanProperty we change the
@@ -133,6 +163,39 @@ public class TimelineView {
 		return addTimelineRoot;
 	}
   
+=======
+		return addTimelineRoot;
+	}
+
+	/**
+	 * Opens an alert window of type confirmation, asks user if they
+	 * really want to delete selected timeline. If ok is pressed, timeline
+	 * is deleted and alert window closes. If cancel is pressed, window closes without 
+	 * deleting current timeline.
+	 * @author Indre Kvedaraite
+	 *
+	 */
+	private class DeleteTimelineHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			Alert confirmation = new Alert(AlertType.CONFIRMATION);
+			confirmation.setTitle("Deleting timeline");
+			confirmation.setContentText("Are you sure you want to delete this timeline?");
+			Optional<ButtonType> result = confirmation.showAndWait();
+			if (result.get() == ButtonType.OK){
+			    if (timelineListener.onDeleteTimeline()) {
+			    	confirmation.close();
+			    }
+			} else {
+				confirmation.close();
+			}
+		}
+		
+	}
+  
+
+>>>>>>> refs/remotes/origin/master
 	/**
 	 * Private class of EventHandler that runs a method to open add timeline
 	 * window when "Add Timeline" button is pressed
@@ -165,7 +228,41 @@ public class TimelineView {
 			String name = timelineName.getText();
 			String startDate = timelineStart.getText();
 			String endDate = timelineEnd.getText();
+<<<<<<< HEAD
 
+=======
+			
+			// Checks if all fields contain input
+			if (name.length() == 0) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error in timeline name");
+				alert.setHeaderText("Please choose a name for your timeline");
+				alert.show();
+			}
+			
+			else if (startDate.length() == 0) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error in timeline start date");
+				alert.setHeaderText("Please choose a start date for your timeline");
+				alert.show();
+			}
+			
+			else if (endDate.length() == 0) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error in timeline end date");
+				alert.setHeaderText("Please choose an end date for your timeline.");
+				alert.show();
+				
+			}
+			
+			if (startDate.compareTo(endDate) > 0) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error in timeline dates");
+				alert.setHeaderText("Start date has to be earlier than end date!");
+				alert.show();
+			}
+			
+>>>>>>> refs/remotes/origin/master
 			// Parses temporary values if user input is wrong, to avoid
 			// exception
 			LocalDateTime start = LocalDateTime.parse("0000-01-01T03:00:01");
@@ -182,11 +279,26 @@ public class TimelineView {
 
 			// If timeline was added successfully, closes the window
 			if (timelineListener.onAddTimeline(name, start, end)) {
+<<<<<<< HEAD
+=======
+				timelineName.clear();
+				timelineStart.clear();
+				timelineEnd.clear();
+>>>>>>> refs/remotes/origin/master
 				addTimelineWindow.close();
+
+				timelineName.clear();
+				timelineStart.clear();
+				timelineEnd.clear();
+
 			}
 
 		}
 
 	}
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> refs/remotes/origin/master
