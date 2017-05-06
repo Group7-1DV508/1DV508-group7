@@ -132,8 +132,4 @@ public class Event {
 		return isDuration;
 	}
 	
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> refs/remotes/origin/master

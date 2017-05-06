@@ -1,10 +1,7 @@
 package controls;
 
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
 
->>>>>>> refs/remotes/origin/master
 import functions.Event;
 import functions.Timeline;
 
@@ -15,11 +12,6 @@ public interface ApplicationListener {
 	 * @param t , chosen Timeline
 	 */
 	void onTimelineSelected(Timeline t);
-<<<<<<< HEAD
-
-	void onNewEventSelected(Event e);
-}
-=======
 
 	void onNewEventSelected(Event e);
 	/**
@@ -33,4 +25,3 @@ public interface ApplicationListener {
 	
 	void onTimelineLoaded();
 }
->>>>>>> refs/remotes/origin/master

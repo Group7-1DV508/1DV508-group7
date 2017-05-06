@@ -2,7 +2,6 @@ package controls;
 
 import java.util.ArrayList;
 
-import functions.Event;
 import functions.Timeline;
 
 public interface ChangeListener {
@@ -29,10 +28,6 @@ public interface ChangeListener {
 	void onEditTimeline(Timeline current);									//used when current timeline is edited, either timeline or event
 																			//or when new events are created or deleted
 
-<<<<<<< HEAD
-	void onEditEvent(Timeline current);
-}
-=======
 	/**
 	 * Called to inform the ApplicationView that an Event has been modified
 	 * in certain Timeline, therefore Timeline view has to change
@@ -41,4 +36,3 @@ public interface ChangeListener {
 	void onEditEvent(Timeline current);
 	
 	}
->>>>>>> refs/remotes/origin/master
