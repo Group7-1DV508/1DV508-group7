@@ -2,10 +2,6 @@ package controls;
 
 import java.time.LocalDateTime;
 
-<<<<<<< HEAD
-import functions.Timeline;
-=======
->>>>>>> refs/remotes/origin/master
 
 public interface TimelineListener {
 	
@@ -24,11 +20,7 @@ public interface TimelineListener {
 	 * @param timeline
 	 * @return true if timeline was deleted successfully
 	 */
-<<<<<<< HEAD
-	boolean onDeleteTimeline (Timeline timeline);
-=======
 	boolean onDeleteTimeline ();
->>>>>>> refs/remotes/origin/master
 
 
 }

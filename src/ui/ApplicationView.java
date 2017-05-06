@@ -11,10 +11,7 @@ import functions.Event;
 import functions.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-<<<<<<< HEAD
-=======
 import javafx.geometry.Insets;
->>>>>>> refs/remotes/origin/master
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -30,10 +27,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-<<<<<<< HEAD
-=======
 import javafx.stage.Stage;
->>>>>>> refs/remotes/origin/master
 
 public class ApplicationView implements ChangeListener {
 
@@ -58,11 +52,7 @@ public class ApplicationView implements ChangeListener {
 	// comboBox to choose timeline
 	private final ComboBox<Timeline> chooseTimeline = new ComboBox<Timeline>();
 	// contains all created events for the current timeline
-<<<<<<< HEAD
-	private final ArrayList<EventShape> eventShapes = new ArrayList<EventShape>();
-=======
 	private ArrayList<EventShape> eventShapes = new ArrayList<EventShape>();
->>>>>>> refs/remotes/origin/master
 	// contains all months/years for the current timeline
 	private final GridPane currentTimeline = new GridPane();
 	// list of months, used to divide the month names to the month boxes
@@ -77,11 +67,7 @@ public class ApplicationView implements ChangeListener {
 
 	// size of the month boxes
 	final int MONTH_BOX_HEIGHT = 50;
-<<<<<<< HEAD
-	final int MONTH_BOX_LENGTH = 100;
-=======
 	final int MONTH_BOX_LENGTH = 103;
->>>>>>> refs/remotes/origin/master
 
 	/**
 	 * Constructor, creates and initialize EventView and TimelineView
@@ -94,11 +80,7 @@ public class ApplicationView implements ChangeListener {
 	/**
 	 * Update the ApplicationListener variable with the ApplicationListener
 	 * given as input
-<<<<<<< HEAD
-	 * 
-=======
 	 *
->>>>>>> refs/remotes/origin/master
 	 * @param appList
 	 *            , (ApplicationListener)
 	 */
@@ -108,11 +90,7 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * Returns the EventView currently used
-<<<<<<< HEAD
-	 * 
-=======
 	 *
->>>>>>> refs/remotes/origin/master
 	 * @return EventView
 	 */
 	public EventView getEventView() {
@@ -121,11 +99,7 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * Returns the TimelineView currently used
-<<<<<<< HEAD
-	 * 
-=======
 	 *
->>>>>>> refs/remotes/origin/master
 	 * @return TimelineView
 	 */
 	public TimelineView getTimelineView() {
@@ -134,11 +108,7 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * Returns the root of the Application Window
-<<<<<<< HEAD
-	 * 
-=======
 	 *
->>>>>>> refs/remotes/origin/master
 	 * @return GridPane
 	 */
 	public VBox getRoot() {
@@ -152,12 +122,6 @@ public class ApplicationView implements ChangeListener {
 	 */
 	private VBox root() {
 		view.getChildren().clear();
-<<<<<<< HEAD
-		view.setSpacing(20);
-		view.setAlignment(Pos.CENTER);
-		view.getChildren().addAll(timelineButtonsBox(), timelineMainBox());
-		return view;
-=======
 		view.setSpacing(10);
 		view.setAlignment(Pos.CENTER);
 		view.getChildren().addAll(timelineButtonsBox(), timelineMainBox());
@@ -596,378 +560,10 @@ public class ApplicationView implements ChangeListener {
 		noTimelines.setFont(new Font("Times new Roman", 20));
 		noTimelines.setFill(Color.BLACK);
 		//currentTimeline.add(noTimelines, 0, 1);
->>>>>>> refs/remotes/origin/master
-	}
-
-	/**
-	 * Return "Add Timeline" Button
-	 * 
-	 * @return Button
-	 */
-	private Button getAddTimelineButton() {
-		return timelineView.getAddTimelineButton();
-	}
-
-	/**
-	 * Returns the "Delete Timeline" Button
-	 * 
-	 * @return Button
-	 */
-	private Button getDeleteTimelineButton() {
-		return new Button("Delete Timeline");
-	}
-
-	/**
-	 * Returns the "Add Event" Button
-	 * 
-	 * @return Button
-	 */
-	private Button getAddEventButton() {
-		return eventView.getAddEventButton();
-	}
-
-	/**
-	 * Creates the Help Button
-	 */
-	private Button createHelpButton() {
-		return new Button("Help");
-	}
-
-	/**
-	 * collects and return all buttons associated with timeline
-	 * 
-	 * @return HBox
-	 */
-	private HBox timelineButtonsBox() {
-		timelineButtons.getChildren().clear();
-		timelineButtons.setAlignment(Pos.CENTER);
-		timelineButtons.setSpacing(20.0);
-		timelineButtons.getChildren().addAll(chooseTimeline, getAddTimelineButton(), getDeleteTimelineButton(),
-				createHelpButton());
-		return timelineButtons;
-	}
-
-	/**
-	 * collects and return all buttons associated with event
-	 * 
-	 * @return HBox
-	 */
-	private HBox eventButtonsBox() {
-		eventButtons.getChildren().clear();
-		eventButtons.setAlignment(Pos.CENTER);
-		eventButtons.setSpacing(20.0);
-		eventButtons.getChildren().addAll(getAddEventButton());
-		return eventButtons;
-	}
-
-	/**
-	 * creates a combo box where loaded timelines can be chosen from also calls
-	 * method to create the current timeline and add events to it
-	 * 
-	 * @param timelines
-	 *            , the timelines available
-	 * @param current
-	 *            , the currently open timeline
-	 */
-	private void chooseTimeline(ArrayList<Timeline> timelines, Timeline current) {
-
-		chooseTimeline.getItems().clear();
-
-		for (Timeline t : timelines) {
-			chooseTimeline.getItems().add(t);
-		}
-		chooseTimeline.setValue(current);
-		chooseTimeline.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				if (chooseTimeline.getItems().size() > 0) {
-					appListener.onTimelineSelected(chooseTimeline.getValue());
-				}
-			}
-
-		});
-	}
-
-	/**
-	 * The main timeline box, contains scroll box, and event buttons box
-	 */
-	private VBox timelineMainBox() {
-		timelineMainBox.getChildren().clear();
-		timelineMainBox.setSpacing(10.0);
-		timelineMainBox.setAlignment(Pos.CENTER);
-		timelineMainBox.getChildren().addAll(timelineScrollBox(), eventButtonsBox());
-		return timelineMainBox;
-	}
-
-	/**
-	 * Creates a ScrollPane for the timeline and adds the current timeline and
-	 * the events pane to it
-	 */
-	private ScrollPane timelineScrollBox() {
-		VBox content = new VBox();
-		scrollTimeline.setPrefSize(400, 200);
-		content.getChildren().addAll(showYearBox, currentTimeline, eventBox);
-		scrollTimeline.setContent(content);
-
-		return scrollTimeline;
-	}
-
-	/**
-	 * fetch months for the current timeline and adds them to the timeline pane
-	 * 
-	 * @param current
-	 *            , the currently open timeline
-	 */
-	private void currentTimeline(Timeline current) {
-		currentTimeline.getChildren().clear();
-		currentTimeline.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-		currentTimeline.setHgap(5.0);
-		int yearStart = current.getYear(current.getStart());
-		int yearEnd = current.getYear(current.getEnd());
-
-		for (int year = 0; year < (yearEnd - yearStart); year++) {
-			initializeMonthsText();
-			for (int i = 1; i <= 12; i++) {
-				createTimelineMonth();
-				timelineMonth.getChildren().add(monthTexts.get(i - 1));
-				currentTimeline.add(timelineMonth, i + 12 * year, 0);
-			}
-		}
-	}
-
-	/**
-	 * Creates a month box for the Timeline
-	 */
-	private void createTimelineMonth() {
-		timelineMonth = new HBox();
-		timelineMonth.setMaxSize(MONTH_BOX_LENGTH, MONTH_BOX_HEIGHT);
-		timelineMonth.setMinSize(MONTH_BOX_LENGTH, MONTH_BOX_HEIGHT);
-		timelineMonth.setAlignment(Pos.CENTER);
-		timelineMonth.setBackground(new Background(new BackgroundFill(Color.LIGHTSKYBLUE, null, null)));
-	}
-
-	/**
-	 * Collects event information (start/end) and calls method to create an
-	 * event shape with the correct allignment at the timeline also creates a
-	 * line to connect the shape to the timeline
-	 * 
-	 * @param current
-	 *            , current Timeline
-	 */
-	private void addEventsToTimeline(Timeline current) {
-		ArrayList<Event> events = new ArrayList<Event>();
-		eventShapes.clear();
-		createEventBox(current);
-
-		events = current.getEvents();
-		for (Event event : events) {
-			if (event.getEventEnd() == null) {
-				eventShape = new EventShape(current, event, event.getEventStart());
-				eventShape.setOnMouseClicked(new EventHandler<MouseEvent>() {
-					@Override
-					public void handle(MouseEvent event) {
-						appListener.onNewEventSelected(((EventShape)event.getSource()).getEvent());
-						eventView.ViewEventInfo(((EventShape)event.getSource()).getEvent());
-
-					}
-
-				});
-			} else {
-				eventShape = new EventShape(current, event, event.getEventStart(), event.getEventEnd());
-
-				eventShape.setOnMouseEntered(new EventHandler<MouseEvent>() {
-
-					@Override
-					public void handle(MouseEvent event) {
-						EventShape source = (EventShape) event.getSource();
-						source.getBar().setVisible(true);
-					}
-
-				});
-				eventShape.setOnMouseExited(new EventHandler<MouseEvent>() {
-
-					@Override
-					public void handle(MouseEvent event) {
-						EventShape source = (EventShape) event.getSource();
-						source.getBar().setVisible(false);
-
-					}
-
-				});
-
-				eventShape.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-					@Override
-					public void handle(MouseEvent event) {
-						appListener.onNewEventSelected(((EventShape)event.getSource()).getEvent());
-						eventView.ViewEventInfo(((EventShape)event.getSource()).getEvent());
-
-					}
-
-				});
-				eventBox.getChildren().add(eventShape.getBar());
-			}
-
-			eventShapes.add(eventShape);
-		}
-
-		sortEventList(eventShapes);
-		setAllignmentEvents(eventShapes);
-		for (Circle circle : eventShapes) {
-			Line line = new Line();
-			line.setStartX(circle.getCenterX());
-			line.setStartY(0);
-			line.setEndX(circle.getCenterX());
-			line.setEndY(circle.getCenterY() - 12.5);
-			line.setManaged(false);
-			eventBox.getChildren().add(line);
-		}
-		for (EventShape circle : eventShapes) {
-			eventBox.getChildren().add(circle);
-		}
-	}
-
-	/**
-	 * Creates a pane with the same length as the timeline where Events are
-	 * added
-	 * 
-	 * @param current
-	 */
-	private void createEventBox(Timeline current) {
-		eventBox.getChildren().clear();
-		int start = current.getYear(current.getStart());
-		int end = current.getYear(current.getEnd());
-		long boxLength = ((end - start) * 12) * 100 + (end - start) * 5 * 12;
-		eventBox.setMaxSize(boxLength, 250);
-		eventBox.setMinSize(boxLength, 250);
-	}
-
-	/**
-	 * if Event shapes collide event gets a lower alignment
-	 * 
-	 * @param events
-	 *            , ArrayList<Circle>
-	 */
-	private void setAllignmentEvents(ArrayList<EventShape> events) {
-		int allignment = 25;
-		int firstCircle;
-		int secondCircle;
-
-		for (int index = 0; index < events.size() - 1; index++) {
-			firstCircle = (int) events.get(index).getCenterX();
-			secondCircle = (int) events.get(1 + index).getCenterX();
-			if (firstCircle > secondCircle || (firstCircle - secondCircle < 26 && firstCircle - secondCircle > -26)) {
-				allignment = allignment + 30;
-			}
-			events.get(index + 1).setCenterY(allignment);
-		}
-	}
-
-	/**
-	 * compare Alignment of the Circles and sort the ArrayList according to that
-	 * 
-	 * @param events
-	 *            ArrayList<Circle>
-	 */
-	private void sortEventList(ArrayList<EventShape> events) {
-		Comparator<EventShape> compare = new Comparator<EventShape>() {
-
-			@Override
-			public int compare(EventShape o1, EventShape o2) {
-				return (int) (o1.getCenterX() - o2.getCenterX());
-			}
-
-		};
-
-		Collections.sort(events, compare);
-
-		int counter;
-		int firstShape;
-		int secondShape;
-		for (int index = 0; index < events.size() - 1; index++) {
-			counter = index;
-			firstShape = (int) events.get(index).getCenterX();
-			secondShape = (int) events.get(1 + index).getCenterX();
-			while (firstShape - secondShape < 26 && events.size() - 1 > counter && firstShape - secondShape > -26) {
-				counter++;
-				EventShape temp = events.get(index + 1);
-				events.remove(index + 1);
-				events.add(temp);
-				secondShape = (int) events.get(1 + index).getCenterX();
-
-			}
-		}
-
-	}
-
-	/**
-	 * creates box to show years on top of the Timeline
-	 * 
-	 * @param current
-	 *            , current timeline
-	 */
-	private void showYear(Timeline current) {
-		showYearBox.getChildren().clear();
-		int start = current.getYear(current.getStart());
-		int end = current.getYear(current.getEnd());
-		long boxLength = ((end - start) * 12) * 100 + (end - start) * 5 * 12;
-		showYearBox.setMaxSize(boxLength, 50);
-		showYearBox.setMinSize(boxLength, 50);
-
-		for (int i = 0; i < end - start; i++) {
-			Text text = new Text(Integer.toString(start + i));
-			text.setFont(new Font(25));
-			text.setManaged(false);
-			text.setX((i * 12 * 100) + (i * 5 * 12) + 5);
-			text.setY(40);
-			showYearBox.getChildren().add(text);
-		}
-
-	}
-
-	/**
-	 * Creates an ArrayList<Text> with the months name is used to add correct
-	 * month name to the correct monthBox
-	 */
-	public void initializeMonthsText() {
-		monthTexts.clear();
-
-		Text january = new Text("Jan");
-		Text february = new Text("Feb");
-		Text march = new Text("Mar");
-		Text april = new Text("Apr");
-		Text may = new Text("May");
-		Text june = new Text("Jun");
-		Text july = new Text("Jul");
-		Text august = new Text("Aug");
-		Text september = new Text("Sep");
-		Text october = new Text("Oct");
-		Text november = new Text("Nov");
-		Text december = new Text("Dec");
-
-		monthTexts.add(january);
-		monthTexts.add(february);
-		monthTexts.add(march);
-		monthTexts.add(april);
-		monthTexts.add(may);
-		monthTexts.add(june);
-		monthTexts.add(july);
-		monthTexts.add(august);
-		monthTexts.add(september);
-		monthTexts.add(october);
-		monthTexts.add(november);
-		monthTexts.add(december);
-
 	}
 
 	@Override
 	public void onChangedTimeline(ArrayList<Timeline> timelines, Timeline current) {
-<<<<<<< HEAD
-		chooseTimeline(timelines, current);
-		showYear(current);
-		currentTimeline(current);
-		addEventsToTimeline(current);
-=======
 		if (!(current == null)) {
 			chooseTimeline(timelines, current);
 			showYear(current);
@@ -982,7 +578,6 @@ public class ApplicationView implements ChangeListener {
 			eventView.setDisable(true);
 		}
 		
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override
@@ -1001,17 +596,9 @@ public class ApplicationView implements ChangeListener {
 	@Override
 	public void onEditEvent(Timeline current) {
 		addEventsToTimeline(current);
-<<<<<<< HEAD
-		
-	}
-
-
-}
-=======
 
 	}
 
 	
 
 }
->>>>>>> refs/remotes/origin/master

@@ -2,10 +2,6 @@ package controls;
 
 import java.time.LocalDateTime;
 
-<<<<<<< HEAD
-import functions.Event;
-=======
->>>>>>> refs/remotes/origin/master
 
 public interface EventListener {
 	
@@ -55,10 +51,5 @@ public interface EventListener {
 	 * Requests to delete existing event.
 	 * @return true if event was deleted successfully
 	 */
-<<<<<<< HEAD
-	boolean onDeleteEvent(Event event);
-}
-=======
 	boolean onDeleteEvent();
 }
->>>>>>> refs/remotes/origin/master
