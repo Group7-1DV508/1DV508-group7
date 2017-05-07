@@ -68,11 +68,13 @@ public class EventControl implements EventListener {
 	}
 	
 	public boolean isStartCorrectTimeline (LocalDateTime start) {
-		return currentApp.getCurrentTimeline().getStart().getYear() <= start.getYear();
+		return currentApp.getCurrentTimeline().getStart().getYear() <= start.getYear() 
+				&& currentApp.getCurrentTimeline().getEnd().getYear() > start.getYear();
 	}
 	
 	public boolean isEndCorrectTimeline (LocalDateTime end) {
-		return currentApp.getCurrentTimeline().getEnd().getYear() >= end.getYear();
+		return currentApp.getCurrentTimeline().getEnd().getYear() > end.getYear() 
+				&& currentApp.getCurrentTimeline().getStart().getYear() <= end.getYear();
 	}
 	 /**
 	  * Checks if start date is not later than end date
