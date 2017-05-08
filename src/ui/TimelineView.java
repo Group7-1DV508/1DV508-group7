@@ -222,8 +222,8 @@ public class TimelineView {
 
 			// If the startDate is 4 integers long, parse into LocalDateTime
 			
-			LocalDateTime	start = createLocalDateTime(timelineStart.getValue().getYear()+"",timelineStart.getValue().getMonthValue()+"",timelineStart.getValue().getDayOfMonth()+"","00");////
-			
+			LocalDateTime	start =  createLocalDateTime(timelineStart.getValue().getYear()+"",timelineStart.getValue().getMonthValue()+"",timelineStart.getValue().getDayOfMonth()+"","00");////
+
 			// If the endDate is 4 integers long, parse into LocalDateTime
 		
 			LocalDateTime	end =  createLocalDateTime(timelineEnd.getValue().getYear()+"",timelineEnd.getValue().getMonthValue()+"",timelineEnd.getValue().getDayOfMonth()+"","00");///
