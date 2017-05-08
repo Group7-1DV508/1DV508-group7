@@ -213,35 +213,8 @@ class EventShape extends Circle {
 	public void setBarVisibility(boolean b) {
 		bar.setVisible(b);
 	}
-	/**
-	 * sets new date for non duration Event
-	 * @param start
-	 */
-	/*public void setDate(LocalDateTime start) {
-		yearStart = timeline.getYear(start);
-		monthStart = timeline.getMonth(start);
-		dayStart = timeline.getDay(start);
-		setValueX();
-		updateEventShape();
-
-	}*/
-	/**
-	 * sets new date for duration Event
-	 * @param start
-	 * @param end
-	 */
-	/*public void setDate(LocalDateTime start, LocalDateTime end) {
-		yearStart = timeline.getYear(start);
-		monthStart = timeline.getMonth(start);
-		dayStart = timeline.getDay(start);
-		yearEnd = timeline.getYear(end);
-		monthEnd = timeline.getMonth(end);
-		dayEnd = timeline.getDay(end);
-
-		setValueX();
-		updateEventShape();
-		updateBar();
-	}*/
+	
+	
 	/**
 	 * Returns the bar of the EventShape
 	 * @return Line
