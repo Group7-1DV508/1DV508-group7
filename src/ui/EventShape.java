@@ -1,5 +1,6 @@
 package ui;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import functions.Event;
@@ -7,6 +8,7 @@ import functions.Timeline;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.StrokeLineCap;
 /**
  * protected class, only classes in package ui got access.
  * creates an circle (EventShape) that holds variables to the duration bar
@@ -18,88 +20,97 @@ import javafx.scene.shape.Line;
 class EventShape extends Circle {
 
 	private final Event event;
-	private final Timeline timeline;
-	private final int timelineStart;
-
-	private int yearStart;
-	private int monthStart;
-	private int dayStart;
-	private int yearEnd;
-	private int monthEnd;
-	private int dayEnd;
 
 	private final Line bar;
-	private int startX;
-	private int endX;
+	private double startX;
+	private double endX;
+	
+	private final int BOX_WIDTH;
+	private LocalDateTime timelineStart;
 
-	/**
-	 * Constructor, creates an EventShape for Event without duration
-	 * @param current - the Timeline the Event belongs to
-	 * @param e - Event
-	 * @param start - LocalDateTime of the Event start
-	 */
-	public EventShape(Timeline current, Event e, LocalDateTime start) {
-		timeline = current;
-		event = e;
-		timelineStart = current.getYear(current.getStart());
-		yearStart = current.getYear(start);
-		monthStart = current.getMonth(start);
-		dayStart = current.getDay(start);
-		yearEnd = 0;
-		monthEnd = 0;
-		dayEnd = 0;
-		bar = new Line();
-		setValueX();
-		createEventShape();
-	}
 
-	/**
-	 * Constructor, creates an EventShape and a duration bar for Event with duration
-	 * @param current - the Timeline the Event belongs to
-	 * @param e - Event
-	 * @param start - LocalDateTime of the Event start
-	 * @param end - LocalDateTime of the Event end
-	 */
-	public EventShape(Timeline current, Event e, LocalDateTime start, LocalDateTime end) {
-		timeline = current;
+	public EventShape(Event e, LocalDateTime start, int width) {
+		timelineStart = start;
+		BOX_WIDTH = width;
 		event = e;
-		timelineStart = current.getYear(current.getStart());
-		yearStart = current.getYear(start);
-		monthStart = current.getMonth(start);
-		dayStart = current.getDay(start);
-		yearEnd = current.getYear(end);
-		monthEnd = current.getMonth(end);
-		dayEnd = current.getDay(end);
 		bar = new Line();
-		setValueX();
-		createEventDurationShape();
-		createDurationBar();
 	}
+	
+	
+	public void createYearEventShape() {
+		setValueXYear();
+		if (event.getEventEnd() == null) {
+			createEventShape();
+		}
+		else {
+			createEventDurationShape();
+		}
+	}
+	
+	public void createMonthEventShape() {
+		setValueXMonth();
+		if (event.getEventEnd() == null) {
+			createEventShape();
+		}
+		else {
+			createEventDurationShape();
+		}
+	}
+	
+	public void createDayEventShape() {
+		setValueXDay();
+		if (event.getEventEnd() == null) {
+			createEventShape();
+		}
+		else {
+			createEventDayBar();
+		}
+	}
+	
+	
 
 	/**
 	 * create a circle shape that is visuals for the Event without duration
 	 */
 	private void createEventShape() {
-		setValueX();
 		setRadius(12.5);
 		setStroke(Color.BLACK);
 		setFill(Color.DEEPSKYBLUE);
 		setCenterX(startX);
 		setCenterY(25);
 		setManaged(false);
+		bar.setVisible(false);
 	}
 	/**
 	 * create a circle shape that is visuals for the Event with duration
 	 */
 	private void createEventDurationShape() {
-		setValueX();
 		setRadius(12.5);
 		setStroke(Color.BLACK);
 		setFill(Color.LAWNGREEN);
 		setCenterX(startX);
 		setCenterY(25);
 		setManaged(false);
+		createDurationBar();
 	}
+	
+	private void createEventDayBar() {
+		setRadius(12.5);
+		setStroke(Color.BLACK);
+		setFill(Color.DEEPSKYBLUE);
+		setCenterX(startX);
+		setCenterY(25);
+		setManaged(false);
+		setVisible(false);
+		updateBar();
+		bar.setLayoutY(25);
+		bar.setStrokeWidth(15.0);
+		bar.setStrokeLineCap(StrokeLineCap.ROUND);
+		bar.setStroke(Color.LAWNGREEN);
+		bar.setManaged(false);
+		bar.setVisible(true);
+	}
+	
 	/**
 	 * updates the x-coordinate of the EventShape
 	 */
@@ -112,6 +123,7 @@ class EventShape extends Circle {
 	private void createDurationBar() {
 		updateBar();
 		bar.setStrokeWidth(6.0);
+		bar.setStrokeLineCap(StrokeLineCap.ROUND);
 		bar.setStroke(Color.LAWNGREEN);
 		bar.setVisible(false);
 		bar.setManaged(false);
@@ -125,27 +137,73 @@ class EventShape extends Circle {
 	 * add (monthBox length divided by 30 (generaly days / month) 100/30 multiplied by days date)
 	 * then add 5 multiplied by total number of months (this is due to spacing at 5.0 between months)
 	 */
-	private void setValueX() {
-		int YEAR_START = yearStart - timelineStart;
-		int YEAR_END = yearEnd - timelineStart;
-		if (YEAR_END < 0) {
-			startX = (((YEAR_START) * 12) + (monthStart-1)) *100 + (100/30 * dayStart) + (5 * (12 *YEAR_START + monthStart));;
+	private void setValueXYear() {
+		int start = event.getEventStart().getYear()-timelineStart.getYear();
+		if ((event.getEventEnd() == null)) {
+			startX = (start*BOX_WIDTH + ((BOX_WIDTH/12)*event.getEventStart().getMonthValue()) + (2 * start));
 		}
 		else {
-			startX = (((YEAR_START) * 12) + (monthStart-1)) *100 + (100/30 * dayStart) + (5 * (12 *YEAR_START + monthStart));;
-			endX = (((YEAR_END) * 12) + (monthEnd-1)) *100 + (100/30 * dayEnd) + (5 * (12 *YEAR_END + monthEnd));;
+			int end = event.getEventEnd().getYear()-timelineStart.getYear();
+			startX = (start*BOX_WIDTH + ((BOX_WIDTH/12)*event.getEventStart().getMonthValue()) + (2 * start));
+			endX = (end*BOX_WIDTH + ((BOX_WIDTH/12)*event.getEventEnd().getMonthValue()) + (2 * end));
 
 		}
 
 	}
+	private void setValueXMonth() {
+		LocalDate startDate = event.getEventStart().toLocalDate();
+		if (startDate.getYear() != timelineStart.getYear()) {
+			startDate = startDate.withYear(timelineStart.getYear()).withMonth(01).withDayOfMonth(01);
+		}
+		int start = startDate.getMonthValue()-timelineStart.getMonthValue();
+		
+		
+		if ((event.getEventEnd() == null)) {
+			startX = (start*BOX_WIDTH + ((BOX_WIDTH/startDate.lengthOfMonth())*startDate.getDayOfMonth()) + (2 * start));
+		}
+		else {
+			LocalDate endDate = event.getEventEnd().toLocalDate();
+			if (startDate.getYear() != endDate.getYear()) {
+				endDate = startDate.withMonth(12).withDayOfMonth(31);
+			}
+			int end = endDate.getMonthValue()-timelineStart.getMonthValue();
+			startX = (start*BOX_WIDTH + ((BOX_WIDTH/startDate.lengthOfMonth())*startDate.getDayOfMonth()) + (2 * start));
+			endX = (end*BOX_WIDTH + ((BOX_WIDTH/endDate.lengthOfMonth())*endDate.getDayOfMonth()) + (2 * end));
+			
+		}
+	}
+	private  void setValueXDay() {
+	
+		LocalDate startDate = event.getEventStart().toLocalDate();
+		if (startDate.getMonthValue() != timelineStart.getMonthValue()) {
+			startDate = startDate.withMonth(timelineStart.getMonthValue()).withDayOfMonth(01);
+		}
+		int start = startDate.getDayOfMonth()-timelineStart.getDayOfMonth();
+		
+		
+		if ((event.getEventEnd() == null)) {
+			startX = (start*BOX_WIDTH +  (2 * start)+ (BOX_WIDTH/2));
+		}
+		else {
+			
+			LocalDate endDate = event.getEventEnd().toLocalDate();
+
+			if (startDate.getMonthValue()!=endDate.getMonthValue() && timelineStart.getMonthValue()!= endDate.getMonthValue()) {
+				endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+			}
+			int end = endDate.getDayOfMonth()-timelineStart.getDayOfMonth();
+			startX = (start*BOX_WIDTH) -(BOX_WIDTH) + (2 * start);
+			endX = (end*BOX_WIDTH +(BOX_WIDTH) + (2 * end));
+		}
+	}
+	
 	/**
 	 * Sets new x-corrdiante and y-coordinates for start and end on bar
 	 */
 	private void updateBar() {
 		bar.setStartX(startX);
 		bar.setEndX(endX);
-		bar.setStartY(0);
-		bar.setEndY(0);
+		
 	}
 	/**
 	 * sets visibility, Boolean condition on duration bar
@@ -159,20 +217,20 @@ class EventShape extends Circle {
 	 * sets new date for non duration Event
 	 * @param start
 	 */
-	public void setDate(LocalDateTime start) {
+	/*public void setDate(LocalDateTime start) {
 		yearStart = timeline.getYear(start);
 		monthStart = timeline.getMonth(start);
 		dayStart = timeline.getDay(start);
 		setValueX();
 		updateEventShape();
 
-	}
+	}*/
 	/**
 	 * sets new date for duration Event
 	 * @param start
 	 * @param end
 	 */
-	public void setDate(LocalDateTime start, LocalDateTime end) {
+	/*public void setDate(LocalDateTime start, LocalDateTime end) {
 		yearStart = timeline.getYear(start);
 		monthStart = timeline.getMonth(start);
 		dayStart = timeline.getDay(start);
@@ -183,7 +241,7 @@ class EventShape extends Circle {
 		setValueX();
 		updateEventShape();
 		updateBar();
-	}
+	}*/
 	/**
 	 * Returns the bar of the EventShape
 	 * @return Line
@@ -198,5 +256,6 @@ class EventShape extends Circle {
 	public Event getEvent() {
 		return event;
 	}
+	
 
 }
