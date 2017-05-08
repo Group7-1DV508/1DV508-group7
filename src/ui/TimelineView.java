@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -29,8 +30,8 @@ public class TimelineView {
 	// Stage for new window where user inputs information about timeline
 	private Stage addTimelineWindow = new Stage();
 	private final TextField timelineName = new TextField();
-	private final TextField timelineStart = new TextField();
-	private final TextField timelineEnd = new TextField();
+	private final DatePicker timelineStart = new DatePicker();
+	private final DatePicker timelineEnd = new DatePicker();
 	private TimelineListener timelineListener;
 
 	/**
@@ -91,7 +92,7 @@ public class TimelineView {
 	 *
 	 * @return GridPane containing three text fields and a button.
 	 */
-	private GridPane initAddTimeline() {
+	private GridPane initAddTimeline() { ////change
 
 		GridPane addTimelineRoot = new GridPane();
 
@@ -99,9 +100,9 @@ public class TimelineView {
 		timelineName.setPromptText("Timeline Name");
 		timelineName.setFont(new Font("Times new Roman", 20));
 		timelineStart.setPromptText("Start Year");
-		timelineStart.setFont(new Font("Times new Roman", 15));
+		//timelineStart.setFont(new Font("Times new Roman", 15));
 		timelineEnd.setPromptText("End Year");
-		timelineEnd.setFont(new Font("Times new Roman", 15));
+		//timelineEnd.setFont(new Font("Times new Roman", 15));
 
 		confirmTimeline.setMinSize(100, 30);
 
@@ -182,12 +183,12 @@ public class TimelineView {
 	 */
 	private class ConfirmTimelineHandler implements EventHandler<ActionEvent> {
 
-		@Override
+		@Override ////change
 		public void handle(ActionEvent arg0) {
 			// Variables to collect input from user
 			String name = timelineName.getText();
-			String startDate = timelineStart.getText();
-			String endDate = timelineEnd.getText();
+			String startDate = timelineStart.getValue().getYear()+""+timelineStart.getValue().getMonthValue()+timelineStart.getValue().getDayOfMonth();
+			String endDate = timelineEnd.getValue().getYear()+""+timelineEnd.getValue().getMonthValue()+ timelineEnd;
 			
 			// Checks if all fields contain input
 			if (name.length() == 0) {
@@ -212,41 +213,70 @@ public class TimelineView {
 				
 			}
 			
-			if (startDate.compareTo(endDate) > 0) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error in timeline dates");
-				alert.setHeaderText("Start date has to be earlier than end date!");
-				alert.show();
-			}
+			
 			
 			// Parses temporary values if user input is wrong, to avoid
 			// exception
-			LocalDateTime start = LocalDateTime.parse("0000-01-01T03:00:01");
-			LocalDateTime end = LocalDateTime.parse("0000-01-01T03:00:01");
+			//LocalDateTime start = LocalDateTime.parse("0000-01-01T03:00:01");
+			//LocalDateTime end = LocalDateTime.parse("0000-01-01T03:00:01");
 
 			// If the startDate is 4 integers long, parse into LocalDateTime
-			if (startDate.length() == 4 && startDate.matches("[0-9]+")) {
-				start = LocalDateTime.parse(startDate + "-01-01T03:00:00");
-			}
+			
+			LocalDateTime	start = createLocalDateTime(timelineStart.getValue().getYear()+"",timelineStart.getValue().getMonthValue()+"",timelineStart.getValue().getDayOfMonth()+"","00");////
+			
 			// If the endDate is 4 integers long, parse into LocalDateTime
-			if (endDate.length() == 4 && endDate.matches("[0-9]+")) {
-				end = LocalDateTime.parse(endDate + "-01-01T03:00:00");
-			}
+		
+			LocalDateTime	end =  createLocalDateTime(timelineEnd.getValue().getYear()+"",timelineEnd.getValue().getMonthValue()+"",timelineEnd.getValue().getDayOfMonth()+"","00");///
+			
 
 			// If timeline was added successfully, closes the window
 			if (timelineListener.onAddTimeline(name, start, end)) {
 				timelineName.clear();
-				timelineStart.clear();
-				timelineEnd.clear();
+				timelineStart.getEditor().clear();
+				timelineEnd.getEditor().clear();
 				addTimelineWindow.close();
 
 				timelineName.clear();
-				timelineStart.clear();
-				timelineEnd.clear();
+				timelineStart.getEditor().clear();
+				timelineEnd.getEditor().clear();
 
 			}
 
 		}
+		
+		
+		 
+			private LocalDateTime createLocalDateTime(String j, String k, String l, String hour) {
+				String localDate;
+				LocalDateTime time = null;
+
+				// if user input year is less than 4 digits, zeroes will be added in
+				// front.
+				for (int i = 0; i < 4 - j.length(); i++) {
+					j = "0" + j;
+				}
+				// if month is less than 2 digits, zeroes will be added in front
+				for (int i = 0; i < 2 - k.length(); i++) {
+					k = "0" + k;
+				}
+				// if day is less than 2 digits, zeroes will be added in front
+				for (int i = 0; i < 2 - l.length(); i++) {
+					l = "0" + l;
+				}
+				// creates the String format that is needed to create LocalDateTime
+				localDate = j + "-" + k + "-" + l + "T" + hour + ":00";
+
+				try {
+					time = LocalDateTime.parse(localDate);
+				} catch (Exception e) {
+					// if input is wrong, show error (popup window) message.
+					Alert fieldError = new Alert(Alert.AlertType.ERROR, "Date input is not correct.");
+					fieldError.showAndWait();
+					System.out.println(e);
+				}
+				return time;
+
+			}
 
 	}
 
