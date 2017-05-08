@@ -248,6 +248,15 @@ public class EventView {
 						 * an Error alert shows to the user
 						 */
 						
+						if (checkInDatePickerEnd.getEditor().getText().length() == 0) {
+							checkInDatePickerEnd.setValue(null);
+							
+						}
+						
+						if (timeEnd.getValue() == null || timeEnd.getValue().length() == 0) {
+							timeEnd.setValue(null);
+						}
+						
 						if (isNeededFieldEmpty()) {
 							Alert emptyFieldError = new Alert(Alert.AlertType.ERROR,
 									"Name, Description and date fields can't be empty.");
@@ -878,11 +887,6 @@ public class EventView {
 		} else if (checkInDatePickerStart.getValue() == null
 				|| timeStart.getValue() == null) {
 			return true;
-		}
-		// check if date picker for end text field has been deleted and
-		// time set to nothing
-		else if (checkInDatePickerEnd.getEditor().getText().length() == 0 && timeEnd.getValue().equals("")) {
-			return false;
 		}
 		// check if date picker for end value is selected, but time is not selected
 		// or if date picker for end is not selected, but time is selected
