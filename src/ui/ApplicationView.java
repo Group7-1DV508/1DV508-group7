@@ -383,13 +383,13 @@ public class ApplicationView implements ChangeListener {
 
 	@Override
 	public void onEditTimeline(Timeline current) {
-		currentTimeline.createVisualTimeline(current);
+		currentTimeline.updateVisualTimeline();
 
 	}
 
 	@Override
 	public void onEditEvent(Timeline current) {
-		currentTimeline.createVisualTimeline(current);
+		currentTimeline.updateVisualTimeline();
 
 	}
 
