@@ -1,5 +1,6 @@
 package ui;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -92,7 +93,7 @@ public class TimelineView {
 	 *
 	 * @return GridPane containing three text fields and a button.
 	 */
-	private GridPane initAddTimeline() { ////change
+	private GridPane initAddTimeline() {
 
 		GridPane addTimelineRoot = new GridPane();
 
@@ -100,10 +101,8 @@ public class TimelineView {
 		timelineName.setPromptText("Timeline Name");
 		timelineName.setFont(new Font("Times new Roman", 20));
 		timelineStart.setPromptText("Start Year");
-		//timelineStart.setFont(new Font("Times new Roman", 15));
 		timelineEnd.setPromptText("End Year");
-		//timelineEnd.setFont(new Font("Times new Roman", 15));
-
+		
 		confirmTimeline.setMinSize(100, 30);
 
 		HBox nameBox = new HBox(timelineName);
@@ -187,8 +186,9 @@ public class TimelineView {
 		public void handle(ActionEvent arg0) {
 			// Variables to collect input from user
 			String name = timelineName.getText();
-			String startDate = timelineStart.getValue().getYear()+""+timelineStart.getValue().getMonthValue()+timelineStart.getValue().getDayOfMonth();
-			String endDate = timelineEnd.getValue().getYear()+""+timelineEnd.getValue().getMonthValue()+ timelineEnd;
+			LocalDate startDate = timelineEnd.getValue();
+			LocalDate endDate = timelineEnd.getValue();
+			System.out.println(startDate +"-.-.-.-."+endDate );
 			
 			// Checks if all fields contain input
 			if (name.length() == 0) {
@@ -198,20 +198,20 @@ public class TimelineView {
 				alert.show();
 			}
 			
-			else if (startDate.length() == 0) {
+			else if (startDate == null) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error in timeline start date");
 				alert.setHeaderText("Please choose a start date for your timeline");
 				alert.show();
 			}
 			
-			else if (endDate.length() == 0) {
+			else if (endDate == null) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error in timeline end date");
 				alert.setHeaderText("Please choose an end date for your timeline.");
 				alert.show();
 				
-			}
+			}else{
 			
 			
 			
@@ -240,8 +240,8 @@ public class TimelineView {
 				timelineStart.getEditor().clear();
 				timelineEnd.getEditor().clear();
 
+				}
 			}
-
 		}
 		
 		
