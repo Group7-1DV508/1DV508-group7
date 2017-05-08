@@ -577,6 +577,7 @@ public class ApplicationView implements ChangeListener {
 			addEventsToTimeline(current);
 			getDeleteTimelineButton().setDisable(false);
 			eventView.setDisable(false);
+			savey.setDisable(false);
 		}
 		else {
 			clearTimelineBox();
