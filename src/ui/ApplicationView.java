@@ -1,6 +1,7 @@
 package ui;
 
 import controls.ApplicationListener;
+
 import controls.ChangeListener;
 
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import functions.Event;
 import functions.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -289,13 +289,41 @@ public class ApplicationView implements ChangeListener {
 		currentTimeline.setHgap(2.0);
 		int yearStart = current.getYear(current.getStart());
 		int yearEnd = current.getYear(current.getEnd());
-
+		int monthStart = current.getMonth(current.getStart());
+		int monthEnd = current.getMonth(current.getEnd());
+		
+		 ShowMonth( current);
+		   //System.out.println(yearStart);
+			//System.out.println(monthStart);
+			
+		
 		for (int year = 0; year < (yearEnd - yearStart); year++) {
 			initializeMonthsText();
+		 if (monthEnd==1){
 			for (int i = 1; i <= 12; i++) {
 				createTimelineMonth();
 				timelineMonth.getChildren().add(monthTexts.get(i - 1));
 				currentTimeline.add(timelineMonth, i + 12 * year, 0);
+				}
+			}else if (monthEnd==2){
+					for (int i = 1; i <= 11; i++) {
+						createTimelineMonth();
+						timelineMonth.getChildren().add(monthTexts.get(i - 1));
+						currentTimeline.add(timelineMonth, i + 12 * year, 0);
+				}
+				
+			}else if (monthEnd==3){
+				for (int i = 1; i <= 10; i++) {
+					createTimelineMonth();
+					timelineMonth.getChildren().add(monthTexts.get(i - 1));
+					currentTimeline.add(timelineMonth, i + 12 * year, 0);
+			}
+			}else if(monthEnd==4) {
+				for (int i = 1; i <=9; i++) {
+					createTimelineMonth();
+					timelineMonth.getChildren().add(monthTexts.get(i - 1));
+					currentTimeline.add(timelineMonth, i + 12 * year, 0);
+			}
 			}
 		}
 	}
@@ -475,7 +503,7 @@ public class ApplicationView implements ChangeListener {
 		showYearBox.getChildren().clear();
 		int start = current.getYear(current.getStart());
 		int end = current.getYear(current.getEnd());
-		long boxLength = ((end - start) * 12) * 100 + (end - start) * 5 * 12;
+		long boxLength = (end - start) ; ////
 		showYearBox.setMaxSize(boxLength, 50);
 		showYearBox.setMinSize(boxLength, 50);
 
@@ -488,6 +516,16 @@ public class ApplicationView implements ChangeListener {
 			showYearBox.getChildren().add(text);
 		}
 
+	}
+	
+	
+	
+	private void ShowMonth(Timeline current){
+	String startMonth=	current.getStart().getDayOfMonth()+"/"+current.getStart().getMonthValue()+"/"+current.getStart().getYear();
+	String endMonth = 	current.getEnd().getDayOfMonth()+"/"+current.getEnd().getMonthValue()+"/"+current.getEnd().getYear();
+	System.out.println(startMonth+ startMonth);
+	
+	
 	}
 
 	/**
