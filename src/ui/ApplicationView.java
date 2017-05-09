@@ -28,6 +28,10 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import ui.timelineVisuals.EventShape;
+import ui.timelineVisuals.ShowEvents;
+import ui.timelineVisuals.TimelineInformationBox;
+import ui.timelineVisuals.VisualTimeline;
 
 public class ApplicationView implements ChangeListener {
 

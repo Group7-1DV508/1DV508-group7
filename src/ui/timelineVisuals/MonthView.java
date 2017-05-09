@@ -1,4 +1,4 @@
-package ui;
+package ui.timelineVisuals;
 
 import java.util.ArrayList;
 
