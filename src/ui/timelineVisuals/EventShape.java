@@ -1,10 +1,9 @@
-package ui;
+package ui.timelineVisuals;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import functions.Event;
-import functions.Timeline;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -17,7 +16,7 @@ import javafx.scene.shape.StrokeLineCap;
  * @author carolinenilsson
  *
  */
-class EventShape extends Circle {
+public class EventShape extends Circle {
 
 	private final Event event;
 
@@ -111,12 +110,7 @@ class EventShape extends Circle {
 		bar.setVisible(true);
 	}
 	
-	/**
-	 * updates the x-coordinate of the EventShape
-	 */
-	private void updateEventShape() {
-		setCenterX(startX);
-	}
+	
 	/**
 	 * Creates an duration bar for the Event
 	 */
@@ -173,11 +167,15 @@ class EventShape extends Circle {
 		}
 	}
 	private  void setValueXDay() {
-	
+		startX = 0;
+		endX = 0;
 		LocalDate startDate = event.getEventStart().toLocalDate();
-		if (startDate.getMonthValue() != timelineStart.getMonthValue()) {
+		if (startDate.getMonthValue() != timelineStart.getMonthValue() ||
+				startDate.getYear() != timelineStart.getYear() ) {
 			startDate = startDate.withMonth(timelineStart.getMonthValue()).withDayOfMonth(01);
+			startX = (-BOX_WIDTH/2);
 		}
+		
 		int start = startDate.getDayOfMonth()-timelineStart.getDayOfMonth();
 		
 		
@@ -188,12 +186,15 @@ class EventShape extends Circle {
 			
 			LocalDate endDate = event.getEventEnd().toLocalDate();
 
-			if (startDate.getMonthValue()!=endDate.getMonthValue() && timelineStart.getMonthValue()!= endDate.getMonthValue()) {
+			if (timelineStart.getMonthValue()!= endDate.getMonthValue() || 
+					timelineStart.getYear() != endDate.getYear()) {
 				endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+				endX = (BOX_WIDTH/2);
 			}
+			
 			int end = endDate.getDayOfMonth()-timelineStart.getDayOfMonth();
-			startX = (start*BOX_WIDTH) -(BOX_WIDTH) + (2 * start);
-			endX = (end*BOX_WIDTH +(BOX_WIDTH) + (2 * end));
+			startX = startX+ (start*BOX_WIDTH) +(BOX_WIDTH/2) + (2 * start);
+			endX = endX+ (end*BOX_WIDTH +(BOX_WIDTH/2) + (2 * end));
 		}
 	}
 	

@@ -1,4 +1,4 @@
-package ui;
+package ui.timelineVisuals;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +31,8 @@ public class VisualTimeline extends GridPane {
 	private LocalDateTime currentEndDate;
 	private Text text;
 	
+	boolean monthView;
+	boolean yearView;
 	
 	private YearView year;
 	private MonthView month;
@@ -58,22 +60,24 @@ public class VisualTimeline extends GridPane {
 		endDate = current.getEnd();
 		
 		if (startDate.getYear() < endDate.getYear()) {
-			
+			monthView = true;
+			yearView = true;
 			createYear(startDate, endDate);
 		}
 		else if (startDate.getYear() == endDate.getYear() && startDate.getMonthValue()<endDate.getMonthValue()) {
-			
+			yearView = false;
+			monthView = true;
 			createMonthView(startDate);
 		}
 		else if (startDate.getMonthValue() == endDate.getMonthValue()) {
-			
+			yearView = false;
+			monthView = false;
 			createDayView(startDate);
 		}
 		
 	}
 	
 	public void updateVisualTimeline() {
-		System.out.println("Start: "+currentStartDate+" End: "+currentEndDate);
 		if (currentStartDate.getMonthValue() == currentEndDate.getMonthValue() &&
 				currentStartDate.getYear() == currentEndDate.getYear()) {
 			
@@ -113,7 +117,6 @@ public class VisualTimeline extends GridPane {
 			counter++;
 		}
 		
-		System.out.println("YearView:   Start: "+currentStartDate+" End: "+currentEndDate);
 		eventBox.addYearEvents(timeline.getEvents(), year.getLength(), timeline);
 		
 	}
@@ -128,8 +131,10 @@ public class VisualTimeline extends GridPane {
 
 			@Override
 			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					createMonthView(start);
+				}
 				
-				createMonthView(start);
 				
 			}
 			
@@ -168,7 +173,6 @@ public class VisualTimeline extends GridPane {
 			counter++;
 		}
 		
-		System.out.println("MonthView:   Start: "+currentStartDate+" End: "+currentEndDate);
 		findEvents(start, currentEndDate);
 		eventBox.addMonthEvents(events, month.getLength(), start);
 		
@@ -188,7 +192,7 @@ public class VisualTimeline extends GridPane {
 					
 					createDayView(start);
 				}
-				else {
+				else if (event.getButton() == MouseButton.SECONDARY && yearView){
 					
 					createYear(timeline.getStart(), timeline.getEnd());
 				}
@@ -231,7 +235,6 @@ public class VisualTimeline extends GridPane {
 			counter++;
 		}
 		
-		System.out.println("DayView:   Start: "+currentStartDate+" End: "+currentEndDate);
 		findEvents(start, currentEndDate );
 		eventBox.addDayEvents(events, day.getLength(), start);
 	}
@@ -245,7 +248,7 @@ public class VisualTimeline extends GridPane {
 			
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.SECONDARY) {
+				if (event.getButton() == MouseButton.SECONDARY && monthView) {
 					
 					createMonthView(monthStartDate);
 				}
