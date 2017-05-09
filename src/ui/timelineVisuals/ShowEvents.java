@@ -1,4 +1,4 @@
-package ui;
+package ui.timelineVisuals;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,17 +10,27 @@ import functions.Event;
 import functions.Timeline;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineJoin;
+import javafx.scene.text.Text;
+import javafx.stage.Popup;
+import ui.EventView;
 
 public class ShowEvents extends HBox {
 	
 	private ApplicationListener appListener;
 	private EventView eventView;
 	private TimelineInformationBox infoBox;
-	
 	
 	private EventShape eventShape;
 	private final ArrayList<EventShape> shapeList = new ArrayList<EventShape>();
@@ -54,10 +64,11 @@ public class ShowEvents extends HBox {
 			eventShape = new EventShape(event, timeline.getStart(), boxWidth);
 			eventShape.createYearEventShape();
 			setOnMouseClick();
+			setOnMouseHover();
 			shapeList.add(eventShape);
 			
 			if (!(event.getEventEnd() == null)) {
-				setOnMouseHoover();
+				setOnMouseHover();
 				getChildren().add(eventShape.getBar());
 			}
 		}
@@ -80,10 +91,11 @@ public class ShowEvents extends HBox {
 			eventShape = new EventShape(event, start, boxWidth);
 			eventShape.createMonthEventShape();
 			setOnMouseClick();
+			setOnMouseHover();
 			shapeList.add(eventShape);
 			
 			if (!(event.getEventEnd() == null)) {
-				setOnMouseHoover();
+				setOnMouseHover();
 				getChildren().add(eventShape.getBar());
 			}
 		}
@@ -106,8 +118,10 @@ public class ShowEvents extends HBox {
 			eventShape = new EventShape(event, start, boxWidth);
 			eventShape.createDayEventShape();
 			setOnMouseClick();
+			setOnMouseHover();
 			shapeList.add(eventShape);
 			setBarOnMouseClick(eventShape);
+			setBarOnMouseHover(eventShape);
 			
 		}
 		addDayEvent();
@@ -117,13 +131,28 @@ public class ShowEvents extends HBox {
 	/**
 	 * help method to setOnMouseEntered & setOnMouseExited for eventshapes
 	 */
-	private void setOnMouseHoover() {
+	private void setOnMouseHover() {
+		Popup eventName = new Popup();
+		HBox nameBox = new HBox();
+		nameBox.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, new CornerRadii(2.0), null)));
+		nameBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
 		eventShape.setOnMouseEntered(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
 				EventShape source = (EventShape) event.getSource();
-				source.getBar().setVisible(true);
+				if (source.getEvent().isDuration()) {
+					source.getBar().setVisible(true);
+				}
+				nameBox.getChildren().clear();
+				eventName.getContent().clear();
+				nameBox.getChildren().add(new Text(source.getEvent().getEventName()));
+				eventName.getContent().add(nameBox);
+				eventName.setX(source.localToScreen(source.getBoundsInLocal()).getMinX()+30);
+				eventName.setY(source.localToScreen(source.getBoundsInLocal()).getMinY()+6);
+				eventName.show(getScene().getWindow());
+				
+				
 			}
 
 		});
@@ -133,7 +162,7 @@ public class ShowEvents extends HBox {
 			public void handle(MouseEvent event) {
 				EventShape source = (EventShape) event.getSource();
 				source.getBar().setVisible(false);
-
+				eventName.hide();
 			}
 
 		});
@@ -168,6 +197,40 @@ public class ShowEvents extends HBox {
 				appListener.onNewEventSelected(shape.getEvent());
 				eventView.ViewEventInfo(shape.getEvent());
 
+			}
+
+		});
+	}
+	
+	private void setBarOnMouseHover(EventShape eventShape) {
+		EventShape shape = eventShape;
+		Popup eventName = new Popup();
+		HBox nameBox = new HBox();
+		nameBox.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, new CornerRadii(2.0), null)));
+		nameBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
+		eventShape.getBar().setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				
+				nameBox.getChildren().clear();
+				eventName.getContent().clear();
+				nameBox.getChildren().add(new Text(shape.getEvent().getEventName()));
+				eventName.getContent().add(nameBox);
+				eventName.setX(event.getScreenX()+ 15);
+				eventName.setY(shape.getBar().localToScreen(shape.getBar().getBoundsInLocal()).getMinY());
+				eventName.show(getScene().getWindow());
+				
+				
+			}
+
+		});
+		eventShape.getBar().setOnMouseExited(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				
+				eventName.hide();
 			}
 
 		});
