@@ -27,6 +27,23 @@ public class TimelineControl implements TimelineListener {
 	}
 	
 	@Override
+	public boolean onAddTimelineMonth(String name, LocalDateTime start, LocalDateTime end) {
+		if (isCorrectInput(name, start, end)) {
+			// If start and end dates are same, increase end date by one month
+			if (Integer.parseInt(start.toString().substring(5, 6)) == Integer.parseInt(end.toString().substring(5, 6))) {
+				end = end.plusMonths(1);
+				currentApp.addTimeline(name, start, end);
+			}
+			else {
+				currentApp.addTimeline(name, start, end);
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
 	public boolean onDeleteTimeline() {
 		if (currentApp.getTimelines().contains(currentApp.getCurrentTimeline())) {	
 			currentApp.removeTimeline();
