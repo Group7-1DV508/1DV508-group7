@@ -55,10 +55,10 @@ public class ShowEvents extends HBox {
 	 * @param boxWidth - int
 	 * @param current - Timeline
 	 */
-	public void addYearEvents(ArrayList<Event> eventList, int boxWidth, Timeline timeline) {
+	public void addYearEvents(ArrayList<Event> eventList, int boxWidth, Timeline timeline, int years) {
 		getChildren().clear();
 		infoBox.setYearInformation(eventList, timeline, boxWidth);
-		createEventBox(boxWidth, (timeline.getEnd().getYear()-timeline.getStart().getYear())+1);
+		createEventBox(boxWidth, years);
 		shapeList.clear();
 		for (Event event : eventList) {				
 			eventShape = new EventShape(event, timeline.getStart(), boxWidth);
@@ -81,11 +81,11 @@ public class ShowEvents extends HBox {
 	 * @param boxWidth - int
 	 * @param start - LocalDateTime
 	 */
-	public void addMonthEvents(ArrayList<Event> eventList, int boxWidth, LocalDateTime start) {
+	public void addMonthEvents(ArrayList<Event> eventList, int boxWidth, LocalDateTime start, int months) {
 		getChildren().clear();
 		
 		infoBox.setMonthInformation(eventList, boxWidth, start);
-		createEventBox(boxWidth, 12);
+		createEventBox(boxWidth, months);
 		shapeList.clear();
 		for (Event event : eventList) {				
 			eventShape = new EventShape(event, start, boxWidth);
@@ -108,11 +108,11 @@ public class ShowEvents extends HBox {
 	 * @param boxWidth - int
 	 * @param start - LocalDateTime
 	 */
-	public void addDayEvents(ArrayList<Event> eventList, int boxWidth, LocalDateTime start) {
+	public void addDayEvents(ArrayList<Event> eventList, int boxWidth, LocalDateTime start, int days) {
 		getChildren().clear();
 		
 		infoBox.setDayInformation(eventList, boxWidth, start);
-		createEventBox(boxWidth, start.toLocalDate().lengthOfMonth());
+		createEventBox(boxWidth, days);
 		shapeList.clear();
 		for (Event event : eventList) {
 			eventShape = new EventShape(event, start, boxWidth);

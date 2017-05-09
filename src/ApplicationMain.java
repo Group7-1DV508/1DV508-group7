@@ -61,6 +61,7 @@ public class ApplicationMain extends Application {
 		app.addEventToCurrent("Project Day", "We Have Done Awesome Work With Our Project", LocalDateTime.of(2003, 05, 15, 00, 00));
 		app.addEventToCurrent("Event Without Duration", ":)", LocalDateTime.of(2003, 05, 05, 00, 00));
 		
+		app.addTimeline("Test", LocalDateTime.of(2001, 04, 12, 00, 00), LocalDateTime.of(2001, 05, 26, 00, 00));
 		
 		//Collect Root from ApplicationView and build
 		Scene scene = new Scene(appView.getRoot(), 1267, 700);
