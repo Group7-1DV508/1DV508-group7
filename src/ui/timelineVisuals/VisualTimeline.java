@@ -26,6 +26,7 @@ public class VisualTimeline extends GridPane {
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 	private LocalDateTime monthStartDate;
+	private LocalDateTime monthEndDate;
 	
 	private LocalDateTime currentStartDate;
 	private LocalDateTime currentEndDate;
@@ -67,12 +68,12 @@ public class VisualTimeline extends GridPane {
 		else if (startDate.getYear() == endDate.getYear() && startDate.getMonthValue()<endDate.getMonthValue()) {
 			yearView = false;
 			monthView = true;
-			createMonthView(startDate);
+			createMonthView(startDate, endDate);
 		}
 		else if (startDate.getMonthValue() == endDate.getMonthValue()) {
 			yearView = false;
 			monthView = false;
-			createDayView(startDate);
+			createDayView(startDate, endDate);
 		}
 		
 	}
@@ -81,12 +82,12 @@ public class VisualTimeline extends GridPane {
 		if (currentStartDate.getMonthValue() == currentEndDate.getMonthValue() &&
 				currentStartDate.getYear() == currentEndDate.getYear()) {
 			
-			createDayView(currentStartDate);
+			createDayView(currentStartDate, currentEndDate);
 		}
 		else if (currentStartDate.getMonthValue()<currentEndDate.getMonthValue() &&
 				currentStartDate.getYear()==currentEndDate.getYear()) {
 			
-			createMonthView(currentStartDate);
+			createMonthView(currentStartDate, currentEndDate);
 		}
 		else if (currentStartDate.getYear() < currentEndDate.getYear()) {
 			
@@ -111,13 +112,13 @@ public class VisualTimeline extends GridPane {
 			text.setFill(Color.WHITE);
 			text.setFont(Font.font ("Times New Roman", 22));
 			year.getChildren().add(text);
-			setYearOnAction(year, start);
+			setYearOnAction(year, start, end);
 			start = start.plusYears(1);
 			this.add(year, counter, 0);
 			counter++;
 		}
 		
-		eventBox.addYearEvents(timeline.getEvents(), year.getLength(), timeline);
+		eventBox.addYearEvents(timeline.getEvents(), year.getLength(), timeline, counter);
 		
 	}
 	
@@ -126,13 +127,13 @@ public class VisualTimeline extends GridPane {
 	 * @param box - yearBox
 	 * @param start - start date of the yearBox
 	 */
-	private void setYearOnAction(HBox box, LocalDateTime start) {
+	private void setYearOnAction(HBox box, LocalDateTime start, LocalDateTime end) {
 		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
-					createMonthView(start);
+					createMonthView(start, end);
 				}
 				
 				
@@ -145,13 +146,22 @@ public class VisualTimeline extends GridPane {
 	 * creates one monthbox for each month in the specific year
 	 * @param start - start date of the year
 	 */
-	private void createMonthView(LocalDateTime start) {
+	private void createMonthView(LocalDateTime start, LocalDateTime end) {
+		LocalDateTime endDate;
 		currentStartDate = start;
-		currentEndDate = start.withMonth(12).withDayOfMonth(31);
+		if (end == null || end.getYear()!=start.getYear()) {
+			currentEndDate = start.withMonth(12).withDayOfMonth(31);
+			endDate = start.withMonth(12).withDayOfMonth(31);
+			monthEndDate = null;
+		}
+		else {
+			currentEndDate = end;
+			monthEndDate = end;
+			endDate = end;
+		}
 		monthStartDate = start;
 		getChildren().clear();
 		LocalDateTime startDate = start;
-		LocalDateTime endDate = start.withMonth(12).withDayOfMonth(31);
 		int counter = 0;
 		
 		while (startDate.getMonthValue() <= endDate.getMonthValue() &&
@@ -162,7 +172,7 @@ public class VisualTimeline extends GridPane {
 			text.setFill(Color.WHITE);
 			text.setFont(Font.font ("Times New Roman", 22));
 			month.getChildren().add(text);
-			setMonthOnAction(month, startDate);
+			setMonthOnAction(month, startDate, end);
 			if (startDate.getMonthValue() == 12) {
 				startDate = startDate.plusYears(1).withDayOfYear(1);
 			}
@@ -174,7 +184,7 @@ public class VisualTimeline extends GridPane {
 		}
 		
 		findEvents(start, currentEndDate);
-		eventBox.addMonthEvents(events, month.getLength(), start);
+		eventBox.addMonthEvents(events, month.getLength(), start, counter);
 		
 	}
 	
@@ -183,14 +193,14 @@ public class VisualTimeline extends GridPane {
 	 * @param box - monthBox
 	 * @param start - startDate of the monthBox
 	 */
-	private void setMonthOnAction(HBox box, LocalDateTime start) {
+	private void setMonthOnAction(HBox box, LocalDateTime start, LocalDateTime end) {
 		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					
-					createDayView(start);
+					createDayView(start, end);
 				}
 				else if (event.getButton() == MouseButton.SECONDARY && yearView){
 					
@@ -208,19 +218,26 @@ public class VisualTimeline extends GridPane {
 	 * creates one daybox for each day in the specific month
 	 * @param start - start date of the month
 	 */
-	private void createDayView(LocalDateTime start) {
-		currentStartDate = start;
-		currentEndDate = start.withDayOfMonth(start.toLocalDate().lengthOfMonth());
-		getChildren().clear();
-		LocalDateTime startDate = start;
+	private void createDayView(LocalDateTime start, LocalDateTime end) {
 		LocalDateTime endDate;
-		if (startDate.getMonthValue() == 12) {
-			endDate = startDate.plusYears(1).withDayOfYear(1);
+		currentStartDate = start;
+		if (end == null || end.getYear()!=start.getYear() || end.getMonthValue()!=start.getMonthValue()) {
+			currentEndDate = start.withDayOfMonth(start.toLocalDate().lengthOfMonth());
+			if (startDate.getMonthValue() == 12) {
+				endDate = startDate.plusYears(1).withDayOfYear(1);
+			}
+			else {
+				endDate = startDate.plusMonths(1).withDayOfMonth(1);
+			}
+			
 		}
 		else {
-			endDate = startDate.plusMonths(1).withDayOfMonth(1);
+			currentEndDate = end;
+			endDate = end;
 		}
-
+		
+		getChildren().clear();
+		LocalDateTime startDate = start;
 		int counter = 0;
 		
 		while (startDate.compareTo(endDate) <0) {
@@ -236,7 +253,7 @@ public class VisualTimeline extends GridPane {
 		}
 		
 		findEvents(start, currentEndDate );
-		eventBox.addDayEvents(events, day.getLength(), start);
+		eventBox.addDayEvents(events, day.getLength(), start, counter);
 	}
 	
 	/**
@@ -250,7 +267,7 @@ public class VisualTimeline extends GridPane {
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.SECONDARY && monthView) {
 					
-					createMonthView(monthStartDate);
+					createMonthView(monthStartDate, monthEndDate);
 				}
 				else {
 					
