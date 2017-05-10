@@ -186,7 +186,7 @@ public class TimelineView {
 		public void handle(ActionEvent arg0) {
 			// Variables to collect input from user
 			String name = timelineName.getText();
-			LocalDate startDate = timelineEnd.getValue();
+			LocalDate startDate = timelineStart.getValue();
 			LocalDate endDate = timelineEnd.getValue();
 			System.out.println(startDate +"-.-.-.-."+endDate );
 			
@@ -215,8 +215,8 @@ public class TimelineView {
 			
 			
 	
-			LocalDateTime	start =	LocalDateTime.parse(timelineStart.getValue() + "T00:00");
-			LocalDateTime	end =LocalDateTime.parse(timelineEnd.getValue()+ "T00:00");
+			LocalDateTime start = LocalDateTime.parse(timelineStart.getValue() + "T00:00");
+			LocalDateTime end = LocalDateTime.parse(timelineEnd.getValue()+ "T00:00");
 			
 
 			// If timeline was added successfully, closes the window
