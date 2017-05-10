@@ -33,6 +33,15 @@ public class TimelineControl implements TimelineListener {
 		}
 	}
 	
+	@Override
+	public boolean onDeleteFile() {
+		if (currentApp.getCurrentTimeline().getFile().exists()) {
+			currentApp.getCurrentTimeline().getFile().delete();
+			return true;
+		}
+		return false;
+	}
+	
 	private boolean areDatesCorrect (LocalDateTime start, LocalDateTime end) {
 		return start.compareTo(end) <= 0;
 	}

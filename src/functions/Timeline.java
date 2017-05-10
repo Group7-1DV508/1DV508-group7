@@ -1,5 +1,6 @@
 package functions;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name = "Timeline")
-@XmlType(propOrder = {"name", "start", "end", "events"})
+@XmlType(propOrder = {"name", "start", "end", "events", "filePath"})
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Timeline {
 	
@@ -26,6 +27,8 @@ public class Timeline {
 	@XmlJavaTypeAdapter(value = io.LocalDateTimeXmlAdapter.class)
 	@XmlElement(name = "TimelineEndDate")
 	private LocalDateTime end;
+	@XmlElement(name = "FilePath")
+	private File filePath;
 	
 	
 	// Constructor
@@ -51,6 +54,10 @@ public class Timeline {
 		return end;
 	}
 	
+	public File getFile() {
+		return filePath;
+	}
+	
 	public ArrayList<Event> getEvents() {
 		return events;
 	}
@@ -66,6 +73,10 @@ public class Timeline {
 	
 	public void setEnd(LocalDateTime end) {
 		this.end = end;
+	}
+	
+	public void setFilePath(File filePath) {
+		this.filePath = filePath;
 	}
 	
 	// Methods
