@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import functions.App;
 import functions.Event;
 import functions.Timeline;
 import javafx.event.ActionEvent;
@@ -35,6 +36,7 @@ import ui.timelineVisuals.VisualTimeline;
 
 public class ApplicationView implements ChangeListener {
 
+	private Button savey;
 	private EventView eventView;
 	private TimelineView timelineView;
 	private ApplicationListener appListener;
@@ -80,6 +82,7 @@ public class ApplicationView implements ChangeListener {
 	public ApplicationView() {
 		eventView = new EventView();
 		timelineView = new TimelineView();
+		savey = new Button();
 	}
 
 	/**
@@ -185,15 +188,18 @@ public class ApplicationView implements ChangeListener {
 	   the user through the fileChooser.*/
 	
 	private Button saveTimelineButton() {
-		Button savey = new Button("Save Timeline");
+		 savey = new Button("Save Timeline");
 		savey.setPrefSize(120, 30);
-		
+	
+
 		savey.setOnAction(ActionEvent  -> {
-		
+	
 			appListener.onTimelineSaved();
 		});
 		return savey;
 	}
+	
+	
 	
 	private Button loadTimelineButton() {
 		Button loaded = new Button("Load Timeline");
@@ -369,14 +375,17 @@ public class ApplicationView implements ChangeListener {
 			
 			getDeleteTimelineButton().setDisable(false);
 			eventView.setDisable(false);
+			savey.setDisable(false);
 		}
 		else {
 			clearTimelineBox();
 			getDeleteTimelineButton().setDisable(true);
 			eventView.setDisable(true);
+			savey.setDisable(true);
+			
 		}
 		
-	}
+	} 
 
 	@Override
 	public void onNewTimelineSelected(Timeline current) {

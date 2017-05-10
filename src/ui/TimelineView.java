@@ -1,5 +1,6 @@
 package ui;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -29,8 +31,8 @@ public class TimelineView {
 	// Stage for new window where user inputs information about timeline
 	private Stage addTimelineWindow = new Stage();
 	private final TextField timelineName = new TextField();
-	private final TextField timelineStart = new TextField();
-	private final TextField timelineEnd = new TextField();
+	private final DatePicker timelineStart = new DatePicker();
+	private final DatePicker timelineEnd = new DatePicker();
 	private TimelineListener timelineListener;
 
 	/**
@@ -99,10 +101,8 @@ public class TimelineView {
 		timelineName.setPromptText("Timeline Name");
 		timelineName.setFont(new Font("Times new Roman", 20));
 		timelineStart.setPromptText("Start Year");
-		timelineStart.setFont(new Font("Times new Roman", 15));
 		timelineEnd.setPromptText("End Year");
-		timelineEnd.setFont(new Font("Times new Roman", 15));
-
+		
 		confirmTimeline.setMinSize(100, 30);
 
 		HBox nameBox = new HBox(timelineName);
@@ -182,12 +182,13 @@ public class TimelineView {
 	 */
 	private class ConfirmTimelineHandler implements EventHandler<ActionEvent> {
 
-		@Override
+		@Override ////change
 		public void handle(ActionEvent arg0) {
 			// Variables to collect input from user
 			String name = timelineName.getText();
-			String startDate = timelineStart.getText();
-			String endDate = timelineEnd.getText();
+			LocalDate startDate = timelineEnd.getValue();
+			LocalDate endDate = timelineEnd.getValue();
+			System.out.println(startDate +"-.-.-.-."+endDate );
 			
 			// Checks if all fields contain input
 			if (name.length() == 0) {
@@ -197,57 +198,45 @@ public class TimelineView {
 				alert.show();
 			}
 			
-			else if (startDate.length() == 0) {
+			else if (startDate == null) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error in timeline start date");
 				alert.setHeaderText("Please choose a start date for your timeline");
 				alert.show();
 			}
 			
-			else if (endDate.length() == 0) {
+			else if (endDate == null) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error in timeline end date");
 				alert.setHeaderText("Please choose an end date for your timeline.");
 				alert.show();
 				
-			}
+			}else{
 			
-			if (startDate.compareTo(endDate) > 0) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error in timeline dates");
-				alert.setHeaderText("Start date has to be earlier than end date!");
-				alert.show();
-			}
 			
-			// Parses temporary values if user input is wrong, to avoid
-			// exception
-			LocalDateTime start = LocalDateTime.parse("0000-01-01T03:00:01");
-			LocalDateTime end = LocalDateTime.parse("0000-01-01T03:00:01");
-
-			// If the startDate is 4 integers long, parse into LocalDateTime
-			if (startDate.length() == 4 && startDate.matches("[0-9]+")) {
-				start = LocalDateTime.parse(startDate + "-01-01T03:00:00");
-			}
-			// If the endDate is 4 integers long, parse into LocalDateTime
-			if (endDate.length() == 4 && endDate.matches("[0-9]+")) {
-				end = LocalDateTime.parse(endDate + "-01-01T03:00:00");
-			}
+	
+			LocalDateTime	start =	LocalDateTime.parse(timelineStart.getValue() + "T00:00");
+			LocalDateTime	end =LocalDateTime.parse(timelineEnd.getValue()+ "T00:00");
+			
 
 			// If timeline was added successfully, closes the window
 			if (timelineListener.onAddTimeline(name, start, end)) {
 				timelineName.clear();
-				timelineStart.clear();
-				timelineEnd.clear();
+				timelineStart.getEditor().clear();
+				timelineEnd.getEditor().clear();
 				addTimelineWindow.close();
 
 				timelineName.clear();
-				timelineStart.clear();
-				timelineEnd.clear();
+				timelineStart.getEditor().clear();
+				timelineEnd.getEditor().clear();
 
+				}
 			}
-
 		}
-
+		
+		
+		 
+			
 	}
 
 }

@@ -134,7 +134,7 @@ public class EventControl implements EventListener {
 	}
 
 	/**
-	 * validate that the LocalDateTime has been initialized (that itÂ´s not
+	 * validate that the LocalDateTime has been initialized (that it´s not
 	 * null)
 	 * 
 	 * @param start,
@@ -150,7 +150,7 @@ public class EventControl implements EventListener {
 	}
 
 	/**
-	 * validate that the LocalDateTime has been initialized (that itÂ´s not
+	 * validate that the LocalDateTime has been initialized (that it´s not
 	 * null)
 	 * 
 	 * @param end,
