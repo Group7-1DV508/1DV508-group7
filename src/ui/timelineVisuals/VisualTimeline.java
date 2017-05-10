@@ -110,7 +110,7 @@ public class VisualTimeline extends GridPane {
 			year = new YearView();
 			year.setText(start.getYear()+"");
 			setYearOnAction(year, start, end);
-			start = start.plusYears(1);
+			start = start.plusYears(1).withMonth(1);
 			this.add(year, counter, 0);
 			counter++;
 		}
