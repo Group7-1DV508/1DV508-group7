@@ -214,19 +214,9 @@ public class TimelineView {
 			}else{
 			
 			
-			
-			// Parses temporary values if user input is wrong, to avoid
-			// exception
-			//LocalDateTime start = LocalDateTime.parse("0000-01-01T03:00:01");
-			//LocalDateTime end = LocalDateTime.parse("0000-01-01T03:00:01");
-
-			// If the startDate is 4 integers long, parse into LocalDateTime
-			
-			LocalDateTime	start =  createLocalDateTime(timelineStart.getValue().getYear()+"",timelineStart.getValue().getMonthValue()+"",timelineStart.getValue().getDayOfMonth()+"","00");////
-
-			// If the endDate is 4 integers long, parse into LocalDateTime
-		
-			LocalDateTime	end =  createLocalDateTime(timelineEnd.getValue().getYear()+"",timelineEnd.getValue().getMonthValue()+"",timelineEnd.getValue().getDayOfMonth()+"","00");///
+	
+			LocalDateTime	start =	LocalDateTime.parse(timelineStart.getValue() + "T00:00");
+			LocalDateTime	end =LocalDateTime.parse(timelineEnd.getValue()+ "T00:00");
 			
 
 			// If timeline was added successfully, closes the window
@@ -246,38 +236,7 @@ public class TimelineView {
 		
 		
 		 
-			private LocalDateTime createLocalDateTime(String j, String k, String l, String hour) {
-				String localDate;
-				LocalDateTime time = null;
-
-				// if user input year is less than 4 digits, zeroes will be added in
-				// front.
-				for (int i = 0; i < 4 - j.length(); i++) {
-					j = "0" + j;
-				}
-				// if month is less than 2 digits, zeroes will be added in front
-				for (int i = 0; i < 2 - k.length(); i++) {
-					k = "0" + k;
-				}
-				// if day is less than 2 digits, zeroes will be added in front
-				for (int i = 0; i < 2 - l.length(); i++) {
-					l = "0" + l;
-				}
-				// creates the String format that is needed to create LocalDateTime
-				localDate = j + "-" + k + "-" + l + "T" + hour + ":00";
-
-				try {
-					time = LocalDateTime.parse(localDate);
-				} catch (Exception e) {
-					// if input is wrong, show error (popup window) message.
-					Alert fieldError = new Alert(Alert.AlertType.ERROR, "Date input is not correct.");
-					fieldError.showAndWait();
-					System.out.println(e);
-				}
-				return time;
-
-			}
-
+			
 	}
 
 }
