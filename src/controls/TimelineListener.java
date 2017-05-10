@@ -14,8 +14,6 @@ public interface TimelineListener {
 	 */
 	boolean onAddTimeline(String name, LocalDateTime start, LocalDateTime end);
 	
-	boolean onAddTimelineMonth(String name, LocalDateTime start, LocalDateTime end);
-	
 	
 	/**
 	 * Deletes specified timeline from timeline list
