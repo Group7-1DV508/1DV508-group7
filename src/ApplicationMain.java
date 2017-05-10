@@ -1,4 +1,3 @@
-
 import javafx.application.*;
 
 import java.io.File;
