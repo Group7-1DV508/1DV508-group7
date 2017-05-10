@@ -247,7 +247,7 @@ public class ShowEvents extends HBox {
 			line.setStartX(circle.getCenterX());
 			line.setStartY(0);
 			line.setEndX(circle.getCenterX());
-			line.setEndY(circle.getCenterY() - 12.5);
+			line.setEndY(circle.getCenterY() - circle.getRadius());
 			line.setManaged(false);
 			getChildren().add(line);
 		}
@@ -260,18 +260,28 @@ public class ShowEvents extends HBox {
 	 * help method to align the events in the eventBox
 	 */
 	private void setAllignmentEvents() {
-		int allignment = 25;
+		int alignment;
+		int shapeSize;
+		if (shapeList.size() > 0) {
+			shapeSize = (int)(shapeList.get(0).getRadius()*2+1);
+			alignment = (int)(shapeList.get(0).getRadius()*2+1);
+			shapeList.get(0).setCenterY(alignment);
+		}
+		else {
+			shapeSize = 26;
+			alignment = 25;
+		}
 		int firstCircle;
 		int secondCircle;
 
 		for (int index = 0; index < shapeList.size() - 1; index++) {
 			firstCircle = (int) shapeList.get(index).getCenterX();
 			secondCircle = (int) shapeList.get(1 + index).getCenterX();
-			if (firstCircle > secondCircle || (firstCircle - secondCircle < 26 && firstCircle - secondCircle > -26)) {
-				allignment = allignment + 30;
-				setPrefHeight(allignment+50);
+			if (firstCircle > secondCircle || (firstCircle - secondCircle < shapeSize && firstCircle - secondCircle > -shapeSize)) {
+				alignment = alignment + shapeSize+2;
+				setPrefHeight(alignment+50);
 			}
-			shapeList.get(index + 1).setCenterY(allignment);
+			shapeList.get(index + 1).setCenterY(alignment);
 		}
 	}
 	

@@ -108,10 +108,7 @@ public class VisualTimeline extends GridPane {
 		int counter = 0;
 		while (start.getYear() <= end.getYear()) {
 			year = new YearView();
-			text = new Text(start.getYear()+"");
-			text.setFill(Color.WHITE);
-			text.setFont(Font.font ("Times New Roman", 22));
-			year.getChildren().add(text);
+			year.setText(start.getYear()+"");
 			setYearOnAction(year, start, end);
 			start = start.plusYears(1);
 			this.add(year, counter, 0);
@@ -168,10 +165,7 @@ public class VisualTimeline extends GridPane {
 				startDate.getYear() == endDate.getYear()) {
 			
 			month = new MonthView();
-			text = new Text(startDate.format(formatMonth));
-			text.setFill(Color.WHITE);
-			text.setFont(Font.font ("Times New Roman", 22));
-			month.getChildren().add(text);
+			month.setText(startDate.format(formatMonth));
 			setMonthOnAction(month, startDate, end);
 			if (startDate.getMonthValue() == 12) {
 				startDate = startDate.plusYears(1).withDayOfYear(1);
@@ -222,12 +216,13 @@ public class VisualTimeline extends GridPane {
 		LocalDateTime endDate;
 		currentStartDate = start;
 		if (end == null || end.getYear()!=start.getYear() || end.getMonthValue()!=start.getMonthValue()) {
+			
 			currentEndDate = start.withDayOfMonth(start.toLocalDate().lengthOfMonth());
 			if (startDate.getMonthValue() == 12) {
-				endDate = startDate.plusYears(1).withDayOfYear(1);
+				endDate = start.plusYears(1).withDayOfYear(1);
 			}
 			else {
-				endDate = startDate.plusMonths(1).withDayOfMonth(1);
+				endDate = start.plusMonths(1).withDayOfMonth(1);
 			}
 			
 		}
@@ -240,17 +235,16 @@ public class VisualTimeline extends GridPane {
 		LocalDateTime startDate = start;
 		int counter = 0;
 		
+		
 		while (startDate.compareTo(endDate) <0) {
 			day = new DayView();
-			text = new Text(startDate.getDayOfMonth()+"");
-			text.setFill(Color.WHITE);
-			text.setFont(Font.font ("Times New Roman", 22));
-			day.getChildren().add(text);
+			day.setText(startDate.getDayOfMonth()+"");
 			startDate = startDate.plusDays(1);
 			setDayOnAction(day);
 			add(day, counter, 0);
 			counter++;
 		}
+		
 		
 		findEvents(start, currentEndDate );
 		eventBox.addDayEvents(events, day.getLength(), start, counter);

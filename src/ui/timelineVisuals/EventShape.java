@@ -39,9 +39,11 @@ public class EventShape extends Circle {
 	public void createYearEventShape() {
 		setValueXYear();
 		if (event.getEventEnd() == null) {
+			setRadius(8);
 			createEventShape();
 		}
 		else {
+			setRadius(8);
 			createEventDurationShape();
 		}
 	}
@@ -49,9 +51,11 @@ public class EventShape extends Circle {
 	public void createMonthEventShape() {
 		setValueXMonth();
 		if (event.getEventEnd() == null) {
+			setRadius(12.5);
 			createEventShape();
 		}
 		else {
+			setRadius(12.5);
 			createEventDurationShape();
 		}
 	}
@@ -59,9 +63,11 @@ public class EventShape extends Circle {
 	public void createDayEventShape() {
 		setValueXDay();
 		if (event.getEventEnd() == null) {
+			setRadius(12.5);
 			createEventShape();
 		}
 		else {
+			setRadius(12.5);
 			createEventDayBar();
 		}
 	}
@@ -72,7 +78,6 @@ public class EventShape extends Circle {
 	 * create a circle shape that is visuals for the Event without duration
 	 */
 	private void createEventShape() {
-		setRadius(12.5);
 		setStroke(Color.BLACK);
 		setFill(Color.DEEPSKYBLUE);
 		setCenterX(startX);
@@ -84,7 +89,6 @@ public class EventShape extends Circle {
 	 * create a circle shape that is visuals for the Event with duration
 	 */
 	private void createEventDurationShape() {
-		setRadius(12.5);
 		setStroke(Color.BLACK);
 		setFill(Color.LAWNGREEN);
 		setCenterX(startX);
@@ -94,7 +98,6 @@ public class EventShape extends Circle {
 	}
 	
 	private void createEventDayBar() {
-		setRadius(12.5);
 		setStroke(Color.BLACK);
 		setFill(Color.DEEPSKYBLUE);
 		setCenterX(startX);
