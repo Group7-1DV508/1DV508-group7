@@ -69,10 +69,8 @@ public class TimelineControl implements TimelineListener {
 	 * @return true if start date is not temp date
 	 */
 	private boolean isStartCorrect(LocalDateTime start) {
-		
-		String start1 = start.toString();
-		//Year zero doesnt work 
-		if (start1.equals("0000-01-01T03:00:01")) {
+ 
+		if (start == null) {
 			return false;
 		} else {
 			return true;
