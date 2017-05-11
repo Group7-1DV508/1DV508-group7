@@ -71,6 +71,7 @@ public class ApplicationControl implements ApplicationListener {
 
 		// Show save file dialog
 		File file = chooseFile.showSaveDialog(appView.getRoot().getScene().getWindow());
+		app.getCurrentTimeline().setFilePath(file);
 
 		try {
 			fileHandler.saveTimeline(app.getCurrentTimeline(), file);
