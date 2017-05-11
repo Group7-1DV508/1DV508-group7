@@ -76,9 +76,6 @@ public class ApplicationControl implements ApplicationListener {
 		try {
 			fileHandler.saveTimeline(app.getCurrentTimeline(), file);
 		} catch (Exception saver) {
-			// if cancel is pressed, show error (popup window) message.
-			Alert fieldError = new Alert(Alert.AlertType.ERROR, "Error, cancelling save process.");
-			fieldError.showAndWait();
 		}
 	}
 
@@ -99,9 +96,6 @@ public class ApplicationControl implements ApplicationListener {
         	app.addTimelineToList(t);
         }
         catch (Exception loader) {
-        	// if cancel is pressed, show error(popup message) message.
-        	Alert fieldError = new Alert(Alert.AlertType.ERROR, "Error, cancelling load process");
-        	fieldError.showAndWait();
         }
         
 

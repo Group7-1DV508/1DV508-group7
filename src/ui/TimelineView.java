@@ -236,7 +236,7 @@ public class TimelineView {
 		public void handle(ActionEvent arg0) {
 			// Variables to collect input from user
 			String name = timelineName.getText();
-			LocalDate startDate = timelineEnd.getValue();
+			LocalDate startDate = timelineStart.getValue();
 			LocalDate endDate = timelineEnd.getValue();
 			System.out.println(startDate + "-.-.-.-." + endDate);
 
@@ -260,22 +260,25 @@ public class TimelineView {
 				alert.setTitle("Error in timeline end date");
 				alert.setHeaderText("Please choose an end date for your timeline.");
 				alert.show();
+				
+			}else{
+			
+			
+	
+			LocalDateTime start = LocalDateTime.parse(timelineStart.getValue() + "T00:00");
+			LocalDateTime end = LocalDateTime.parse(timelineEnd.getValue()+ "T00:00");
+			
 
-			} else {
+			// If timeline was added successfully, closes the window
+			if (timelineListener.onAddTimeline(name, start, end)) {
+				timelineName.clear();
+				timelineStart.getEditor().clear();
+				timelineEnd.getEditor().clear();
+				addTimelineWindow.close();
 
-				LocalDateTime start = LocalDateTime.parse(timelineStart.getValue() + "T00:00");
-				LocalDateTime end = LocalDateTime.parse(timelineEnd.getValue() + "T00:00");
-
-				// If timeline was added successfully, closes the window
-				if (timelineListener.onAddTimeline(name, start, end)) {
-					timelineName.clear();
-					timelineStart.getEditor().clear();
-					timelineEnd.getEditor().clear();
-					addTimelineWindow.close();
-
-					timelineName.clear();
-					timelineStart.getEditor().clear();
-					timelineEnd.getEditor().clear();
+				timelineName.clear();
+				timelineStart.getEditor().clear();
+				timelineEnd.getEditor().clear();
 
 				}
 			}
