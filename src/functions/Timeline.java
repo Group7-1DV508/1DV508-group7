@@ -28,7 +28,7 @@ public class Timeline {
 	@XmlElement(name = "TimelineEndDate")
 	private LocalDateTime end;
 	@XmlElement(name = "FilePath")
-	private File filePath;
+	private File filePath = new File("");
 	
 	
 	// Constructor
