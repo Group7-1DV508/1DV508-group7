@@ -70,6 +70,12 @@ public class App {
 		changeListener.onChangedTimeline(timelines, current);
 	}
 	
+	public void removeFile() {
+		
+		current.getFile().delete();
+		
+	}
+	
 	/**
 	 * Removes selected event from timeline
 	 * @param event to be removed
