@@ -232,13 +232,12 @@ public class TimelineView {
 	 */
 	private class ConfirmTimelineHandler implements EventHandler<ActionEvent> {
 
-		@Override //// change
+		@Override 
 		public void handle(ActionEvent arg0) {
 			// Variables to collect input from user
 			String name = timelineName.getText();
 			LocalDate startDate = timelineStart.getValue();
 			LocalDate endDate = timelineEnd.getValue();
-			System.out.println(startDate + "-.-.-.-." + endDate);
 
 			// Checks if all fields contain input
 			if (name.length() == 0) {
