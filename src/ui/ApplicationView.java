@@ -72,9 +72,6 @@ public class ApplicationView implements ChangeListener {
 	private final TimelineInformationBox informationBox = new TimelineInformationBox();
 	private final VisualTimeline currentTimeline = new VisualTimeline(eventBox);
 
-	// size of the month boxes
-	final int MONTH_BOX_HEIGHT = 50;
-	final int MONTH_BOX_LENGTH = 103;
 
 	/**
 	 * Constructor, creates and initialize EventView and TimelineView
@@ -294,66 +291,6 @@ public class ApplicationView implements ChangeListener {
 	
 
 
-	/**
-	 * Creates an ArrayList<Text> with the months name is used to add correct
-	 * month name to the correct monthBox
-	 */
-	public void initializeMonthsText() {
-		monthTexts.clear();
-
-		Text january = new Text("Jan");
-		Text february = new Text("Feb");
-		Text march = new Text("Mar");
-		Text april = new Text("Apr");
-		Text may = new Text("May");
-		Text june = new Text("Jun");
-		Text july = new Text("Jul");
-		Text august = new Text("Aug");
-		Text september = new Text("Sep");
-		Text october = new Text("Oct");
-		Text november = new Text("Nov");
-		Text december = new Text("Dec");
-
-		january.setFill(Color.WHITE);
-		february.setFill(Color.WHITE);
-		march.setFill(Color.WHITE);
-		april.setFill(Color.WHITE);
-		may.setFill(Color.WHITE);
-		june.setFill(Color.WHITE);
-		july.setFill(Color.WHITE);
-		august.setFill(Color.WHITE);
-		september.setFill(Color.WHITE);
-		october.setFill(Color.WHITE);
-		november.setFill(Color.WHITE);
-		december.setFill(Color.WHITE);
-
-		january.setFont(Font.font ("Times New Roman", 22));
-		february.setFont(Font.font ("Times New Roman", 22));
-		march.setFont(Font.font ("Times New Roman", 22));
-		april.setFont(Font.font ("Times New Roman", 22));
-		may.setFont(Font.font ("Times New Roman", 22));
-		june.setFont(Font.font ("Times New Roman", 22));
-		july.setFont(Font.font ("Times New Roman", 22));
-		august.setFont(Font.font ("Times New Roman", 22));
-		september.setFont(Font.font ("Times New Roman", 22));
-		october.setFont(Font.font ("Times New Roman", 22));
-		november.setFont(Font.font ("Times New Roman", 22));
-		december.setFont(Font.font ("Times New Roman", 22));
-
-		monthTexts.add(january);
-		monthTexts.add(february);
-		monthTexts.add(march);
-		monthTexts.add(april);
-		monthTexts.add(may);
-		monthTexts.add(june);
-		monthTexts.add(july);
-		monthTexts.add(august);
-		monthTexts.add(september);
-		monthTexts.add(october);
-		monthTexts.add(november);
-		monthTexts.add(december);
-
-	}
 	
 	private void clearTimelineBox() {
 		currentTimeline.getChildren().clear();
