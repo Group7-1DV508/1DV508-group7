@@ -236,7 +236,7 @@ public class VisualTimeline extends GridPane {
 		int counter = 0;
 		
 		
-		while (startDate.compareTo(endDate) <=0) {
+		while (startDate.compareTo(endDate) <0) {
 			day = new DayView();
 			day.setText(startDate.getDayOfMonth()+"");
 			startDate = startDate.plusDays(1);
