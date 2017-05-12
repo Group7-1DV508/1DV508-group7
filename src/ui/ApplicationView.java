@@ -54,7 +54,8 @@ public class ApplicationView implements ChangeListener {
 	private final VBox timelineMainBox = new VBox();
 	// scroll window for timeline
 	private final ScrollPane scrollTimeline = new ScrollPane();
-	private final GridPane scrollTimeline2 = new GridPane();
+	//add timeline and addEvent to the same grid
+	private final GridPane timelineGrid = new GridPane();
 	// buttons for add/edit/delete event
 	private final HBox eventButtons = new HBox();
 	// comboBox to choose timeline
@@ -273,7 +274,7 @@ public class ApplicationView implements ChangeListener {
 		timelineMainBox.getChildren().clear();
 		timelineMainBox.setSpacing(10.0);
 		timelineMainBox.setAlignment(Pos.CENTER);
-		timelineMainBox.getChildren().addAll(timelineScrollBox2(), eventButtonsBox());
+		timelineMainBox.getChildren().addAll(timelineBox(), eventButtonsBox());
 		return timelineMainBox;
 	}
 
@@ -286,16 +287,16 @@ public class ApplicationView implements ChangeListener {
 	 * the events pane to it
 	 */
 	
-	private GridPane timelineScrollBox2() {  
+	private GridPane timelineBox() {  
 		VBox content = new VBox();
 		content.setPadding(new Insets(0, 3, 0, 3));
-		scrollTimeline2.setPrefSize(800, 400);
-		scrollTimeline2.setGridLinesVisible(true);
+		timelineGrid.setPrefSize(800, 400);
+		timelineGrid.setGridLinesVisible(true);
 		content.setAlignment(Pos.TOP_CENTER);
 		content.getChildren().addAll(informationBox,getAddEventButton(),timelineScrollBox());
-		scrollTimeline2.add(content, 0, 1);
+		timelineGrid.add(content, 0, 1);
 
-		return scrollTimeline2;
+		return timelineGrid;
 	}
 	
 	private ScrollPane timelineScrollBox() {  
