@@ -22,6 +22,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -53,6 +54,7 @@ public class ApplicationView implements ChangeListener {
 	private final VBox timelineMainBox = new VBox();
 	// scroll window for timeline
 	private final ScrollPane scrollTimeline = new ScrollPane();
+	private final GridPane scrollTimeline2 = new GridPane();
 	// buttons for add/edit/delete event
 	private final HBox eventButtons = new HBox();
 	// comboBox to choose timeline
@@ -71,6 +73,7 @@ public class ApplicationView implements ChangeListener {
 	private EventShape eventShape;
 	private final TimelineInformationBox informationBox = new TimelineInformationBox();
 	private final VisualTimeline currentTimeline = new VisualTimeline(eventBox);
+
 
 
 	/**
@@ -231,7 +234,7 @@ public class ApplicationView implements ChangeListener {
 		eventButtons.getChildren().clear();
 		eventButtons.setAlignment(Pos.CENTER);
 		eventButtons.setSpacing(20.0);
-		eventButtons.getChildren().addAll(getAddEventButton(), saveTimelineButton(), loadTimelineButton());
+		eventButtons.getChildren().addAll(saveTimelineButton(), loadTimelineButton());
 		return eventButtons;
 	}
 
@@ -270,25 +273,43 @@ public class ApplicationView implements ChangeListener {
 		timelineMainBox.getChildren().clear();
 		timelineMainBox.setSpacing(10.0);
 		timelineMainBox.setAlignment(Pos.CENTER);
-		timelineMainBox.getChildren().addAll(timelineScrollBox(), eventButtonsBox());
+		timelineMainBox.getChildren().addAll(timelineScrollBox2(), eventButtonsBox());
 		return timelineMainBox;
 	}
 
+	
+
+	
+	
 	/**
 	 * Creates a ScrollPane for the timeline and adds the current timeline and
 	 * the events pane to it
 	 */
-	private ScrollPane timelineScrollBox() {
+	
+	private GridPane timelineScrollBox2() {  
 		VBox content = new VBox();
 		content.setPadding(new Insets(0, 3, 0, 3));
-		scrollTimeline.setPrefSize(400, 300);
-		content.getChildren().addAll(informationBox, currentTimeline, eventBox);
+		scrollTimeline2.setPrefSize(800, 400);
+		scrollTimeline2.setGridLinesVisible(true);
+		content.setAlignment(Pos.TOP_CENTER);
+		content.getChildren().addAll(informationBox,getAddEventButton(),timelineScrollBox());
+		scrollTimeline2.add(content, 0, 1);
+
+		return scrollTimeline2;
+	}
+	
+	private ScrollPane timelineScrollBox() {  
+		VBox content = new VBox();
+		content.setPadding(new Insets(0, 4, 0, 4));
+		scrollTimeline.setPrefSize(5000, 400);
+		scrollTimeline.setStyle("-fx-background-color:transparent;");
+		content.getChildren().addAll(currentTimeline, eventBox);
 		scrollTimeline.setContent(content);
 
 		return scrollTimeline;
 	}
 
-	
+
 
 
 	
@@ -309,7 +330,6 @@ public class ApplicationView implements ChangeListener {
 			chooseTimeline(timelines, current);
 			//showYear(current);
 			currentTimeline.createVisualTimeline(current);
-			
 			getDeleteTimelineButton().setDisable(false);
 			eventView.setDisable(false);
 			savey.setDisable(false);
