@@ -70,6 +70,12 @@ public class App {
 		changeListener.onChangedTimeline(timelines, current);
 	}
 	
+	public void removeFile() {
+		
+		current.getFile().delete();
+		
+	}
+	
 	/**
 	 * Removes selected event from timeline
 	 * @param event to be removed
@@ -110,6 +116,12 @@ public class App {
 	 */
 	public ArrayList<Timeline> getTimelines(){
 		return timelines;
+	}
+	
+	public void addTimelineToList(Timeline t) {
+		timelines.add(t);
+		current = t;
+		changeListener.onChangedTimeline(timelines, current);
 	}
 	
 	public boolean isEventDuration() {

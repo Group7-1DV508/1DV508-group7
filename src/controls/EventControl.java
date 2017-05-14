@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import functions.App;
 import functions.Event;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 public class EventControl implements EventListener {
 
@@ -69,6 +67,25 @@ public class EventControl implements EventListener {
 		}
 	}
 	
+	public boolean isStartCorrectTimeline (LocalDateTime start) {
+		return currentApp.getCurrentTimeline().getStart().compareTo(start) <= 0 
+				&& currentApp.getCurrentTimeline().getEnd().compareTo(start) > 0;
+	}
+	
+	public boolean isEndCorrectTimeline (LocalDateTime end) {
+		return currentApp.getCurrentTimeline().getEnd().compareTo(end) > 0
+				&& currentApp.getCurrentTimeline().getStart().compareTo(end) <= 0;
+	}
+	 /**
+	  * Checks if start date is not later than end date
+	  * @param start
+	  * @param end
+	  * @return true if dates are correct
+	  */
+	private boolean areDatesCorrect (LocalDateTime start, LocalDateTime end) {
+		return start.compareTo(end) < 0;
+	}
+	
 	public void setCurrentEvent() {
 		currentEvent = currentApp.getCurrentEvent();
 	}
@@ -117,7 +134,7 @@ public class EventControl implements EventListener {
 	}
 
 	/**
-	 * validate that the LocalDateTime has been initialized (that itÂ´s not
+	 * validate that the LocalDateTime has been initialized (that it´s not
 	 * null)
 	 * 
 	 * @param start,
@@ -125,7 +142,7 @@ public class EventControl implements EventListener {
 	 * @return boolean, true if start date is valid otherwise false
 	 */
 	private boolean isStartCorrect(LocalDateTime start) {
-		if (start == null) {
+		if (start == null || !isStartCorrectTimeline(start)) {
 			return false;
 		} else {
 			return true;
@@ -133,7 +150,7 @@ public class EventControl implements EventListener {
 	}
 
 	/**
-	 * validate that the LocalDateTime has been initialized (that itÂ´s not
+	 * validate that the LocalDateTime has been initialized (that it´s not
 	 * null)
 	 * 
 	 * @param end,
@@ -141,7 +158,7 @@ public class EventControl implements EventListener {
 	 * @return boolean, true if end date is valid otherwise false
 	 */
 	private boolean isEndCorrect(LocalDateTime end) {
-		if (end == null) {
+		if (end == null || !isEndCorrectTimeline(end)) {
 			return false;
 		} else {
 			return true;
@@ -181,7 +198,7 @@ public class EventControl implements EventListener {
 	 * @return boolean, true if all inputs are valid otherwise false
 	 */
 	private boolean isCorrectInputDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
-		if (isNameCorrect(name) && isStartCorrect(start) && isEndCorrect(end) && isDescriptionCorrect(description)) {
+		if (isNameCorrect(name) && isStartCorrect(start) && isEndCorrect(end) && isDescriptionCorrect(description) && areDatesCorrect(start, end)) {
 			return true;
 		} else {
 			return false;

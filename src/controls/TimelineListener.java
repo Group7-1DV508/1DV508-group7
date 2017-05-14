@@ -2,7 +2,6 @@ package controls;
 
 import java.time.LocalDateTime;
 
-import functions.Timeline;
 
 public interface TimelineListener {
 	
@@ -22,6 +21,6 @@ public interface TimelineListener {
 	 * @return true if timeline was deleted successfully
 	 */
 	boolean onDeleteTimeline ();
-
-
+	
+	boolean onDeleteFile();
 }

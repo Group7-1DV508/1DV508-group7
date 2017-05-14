@@ -1,12 +1,10 @@
 package ui;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import controls.TimelineListener;
-import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -25,15 +24,15 @@ import javafx.stage.Stage;
 public class TimelineView {
 
 	private Button addTimeline = new Button("Add Timeline");
-	private Button deleteTimeline = new Button ("Delete Timeline");
+	private Button deleteTimeline = new Button("Delete Timeline");
 	private Button confirmTimeline = new Button("Finish");
 	// HBox for "Add Timeline" button
 	private HBox addTimelineButton = new HBox();
 	// Stage for new window where user inputs information about timeline
 	private Stage addTimelineWindow = new Stage();
 	private final TextField timelineName = new TextField();
-	private final TextField timelineStart = new TextField();
-	private final TextField timelineEnd = new TextField();
+	private final DatePicker timelineStart = new DatePicker();
+	private final DatePicker timelineEnd = new DatePicker();
 	private TimelineListener timelineListener;
 
 	/**
@@ -57,7 +56,7 @@ public class TimelineView {
 		addTimelineWindow();
 		return addTimeline;
 	}
-	
+
 	public Button getDeleteTimelineButton() {
 		deleteTimeline.setPadding(new Insets(5));
 		deleteTimeline.setOnAction(new DeleteTimelineHandler());
@@ -102,9 +101,7 @@ public class TimelineView {
 		timelineName.setPromptText("Timeline Name");
 		timelineName.setFont(new Font("Times new Roman", 20));
 		timelineStart.setPromptText("Start Year");
-		timelineStart.setFont(new Font("Times new Roman", 15));
 		timelineEnd.setPromptText("End Year");
-		timelineEnd.setFont(new Font("Times new Roman", 15));
 
 		confirmTimeline.setMinSize(100, 30);
 
@@ -132,10 +129,11 @@ public class TimelineView {
 	}
 
 	/**
-	 * Opens an alert window of type confirmation, asks user if they
-	 * really want to delete selected timeline. If ok is pressed, timeline
-	 * is deleted and alert window closes. If cancel is pressed, window closes without 
-	 * deleting current timeline.
+	 * Opens an alert window of type confirmation, asks user if they really want
+	 * to delete selected timeline. If ok is pressed, timeline is deleted and
+	 * alert window closes. If cancel is pressed, window closes without deleting
+	 * current timeline.
+	 * 
 	 * @author Indre Kvedaraite
 	 *
 	 */
@@ -143,26 +141,75 @@ public class TimelineView {
 
 		@Override
 		public void handle(ActionEvent arg0) {
-			Alert confirmation = new Alert(AlertType.CONFIRMATION);
-			confirmation.setTitle("Deleting timeline");
-			confirmation.setContentText("Are you sure you want to delete this timeline?");
-			Optional<ButtonType> result = confirmation.showAndWait();
-			if (result.get() == ButtonType.OK){
-			    if (timelineListener.onDeleteTimeline()) {
-			    	confirmation.close();
-			    }
-			} else {
-				confirmation.close();
-			}
+			Stage stage = new Stage();
+			HBox buttony = new HBox();
+			Button timeline = new Button("Delete Timeline only");
+			Button timelineAndFile = new Button("Delete Timeline and File");
+			Button cancel = new Button("Cancel");
+
+			timeline.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+					confirmation.setTitle("Deleting Timeline");
+					confirmation.setContentText("Are you sure you wish to delete the current timeline?");
+					Optional<ButtonType> result = confirmation.showAndWait();
+					if (result.get() == ButtonType.OK) {
+						timelineListener.onDeleteTimeline();
+						confirmation.close();
+						stage.close();
+					} else {
+						confirmation.close();
+					}
+				}
+			});
+
+			timelineAndFile.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+					confirm.setTitle("Deleting Timeline and File");
+					confirm.setContentText(
+							"Are you sure you wish to delete the current timeline and its respective file?");
+					Optional<ButtonType> result = confirm.showAndWait();
+					if (result.get() == ButtonType.OK) {
+						timelineListener.onDeleteTimeline();
+						timelineListener.onDeleteFile();
+						stage.close();
+					} else {
+						confirm.close();
+					}
+				}
+
+			});
+
+			cancel.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					stage.close();
+				}
+			});
+			buttony.getChildren().clear();
+			buttony.setAlignment(Pos.CENTER);
+			buttony.setSpacing(20.0);
+			buttony.getChildren().addAll(timeline, timelineAndFile, cancel);
+
+			Scene scenery = new Scene(buttony, 500, 100);
+
+			stage.setTitle("Delete Options");
+			stage.setScene(scenery);
+			stage.show();
 		}
-		
+
 	}
-  
 
 	/**
 	 * Private class of EventHandler that runs a method to open add timeline
 	 * window when "Add Timeline" button is pressed
-   *
+	 *
 	 * @author Indre Kvedaraite
 	 *
 	 */
@@ -185,13 +232,13 @@ public class TimelineView {
 	 */
 	private class ConfirmTimelineHandler implements EventHandler<ActionEvent> {
 
-		@Override
+		@Override 
 		public void handle(ActionEvent arg0) {
 			// Variables to collect input from user
 			String name = timelineName.getText();
-			String startDate = timelineStart.getText();
-			String endDate = timelineEnd.getText();
-			
+			LocalDate startDate = timelineStart.getValue();
+			LocalDate endDate = timelineEnd.getValue();
+
 			// Checks if all fields contain input
 			if (name.length() == 0) {
 				Alert alert = new Alert(AlertType.ERROR);
@@ -199,65 +246,41 @@ public class TimelineView {
 				alert.setHeaderText("Please choose a name for your timeline");
 				alert.show();
 			}
-			
-			else if (startDate.length() == 0) {
+
+			else if (startDate == null) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error in timeline start date");
 				alert.setHeaderText("Please choose a start date for your timeline");
 				alert.show();
 			}
-			
-			else if (endDate.length() == 0) {
+
+			else if (endDate == null) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error in timeline end date");
 				alert.setHeaderText("Please choose an end date for your timeline.");
 				alert.show();
 				
-			}
+			}else{
 			
-			int difference  = Integer.parseInt(endDate.substring(0, 4)) - Integer.parseInt(startDate.substring(0, 4));
 			
-			if (difference > 10) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error in timeline length");
-				alert.setHeaderText("Please choose timeline that is less than 10 years long");
-				alert.show();
-			}
+	
+			LocalDateTime start = LocalDateTime.parse(timelineStart.getValue() + "T00:00");
+			LocalDateTime end = LocalDateTime.parse(timelineEnd.getValue()+ "T00:00");
 			
-			if (Integer.parseInt(endDate.substring(0, 4)) < Integer.parseInt(startDate.substring(0, 4))) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error in timeline dates");
-				alert.setHeaderText("Start date has to be earlier than end date!");
-				alert.show();
-			}
-			
-			// Parses temporary values if user input is wrong, to avoid
-			// exception
-			LocalDateTime start = LocalDateTime.parse("0000-01-01T03:00:01");
-			LocalDateTime end = LocalDateTime.parse("0000-01-01T03:00:01");
-
-			// If the startDate is 4 integers long, parse into LocalDateTime
-			if (startDate.length() == 4 && startDate.matches("[0-9]+")) {
-				start = LocalDateTime.parse(startDate + "-01-01T03:00:00");
-			}
-			// If the endDate is 4 integers long, parse into LocalDateTime
-			if (endDate.length() == 4 && endDate.matches("[0-9]+")) {
-				end = LocalDateTime.parse(endDate + "-01-01T03:00:00");
-			}
 
 			// If timeline was added successfully, closes the window
 			if (timelineListener.onAddTimeline(name, start, end)) {
 				timelineName.clear();
-				timelineStart.clear();
-				timelineEnd.clear();
+				timelineStart.getEditor().clear();
+				timelineEnd.getEditor().clear();
 				addTimelineWindow.close();
 
 				timelineName.clear();
-				timelineStart.clear();
-				timelineEnd.clear();
+				timelineStart.getEditor().clear();
+				timelineEnd.getEditor().clear();
 
+				}
 			}
-
 		}
 
 	}
