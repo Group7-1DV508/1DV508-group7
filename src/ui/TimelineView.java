@@ -14,10 +14,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -34,6 +36,8 @@ public class TimelineView {
 	private final DatePicker timelineStart = new DatePicker();
 	private final DatePicker timelineEnd = new DatePicker();
 	private TimelineListener timelineListener;
+	
+	private boolean gotFilePath;
 
 	/**
 	 * Sets listener to be able to implement functions for certain UI actions
@@ -96,7 +100,7 @@ public class TimelineView {
 	private GridPane initAddTimeline() {
 
 		GridPane addTimelineRoot = new GridPane();
-
+		
 		confirmTimeline.setFont(new Font("Times new Roman", 20));
 		timelineName.setPromptText("Timeline Name");
 		timelineName.setFont(new Font("Times new Roman", 20));
@@ -143,9 +147,14 @@ public class TimelineView {
 		public void handle(ActionEvent arg0) {
 			Stage stage = new Stage();
 			HBox buttony = new HBox();
-			Button timeline = new Button("Delete Timeline only");
-			Button timelineAndFile = new Button("Delete Timeline and File");
+			CheckBox checkBox = new CheckBox("Delete file along with timeline.");
+			Button timeline = new Button("Delete");
+			//Button timelineAndFile = new Button("Delete Timeline and File");
 			Button cancel = new Button("Cancel");
+			
+			if (!gotFilePath) {
+				checkBox.setDisable(true);
+			}
 
 			timeline.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -156,33 +165,19 @@ public class TimelineView {
 					confirmation.setContentText("Are you sure you wish to delete the current timeline?");
 					Optional<ButtonType> result = confirmation.showAndWait();
 					if (result.get() == ButtonType.OK) {
-						timelineListener.onDeleteTimeline();
+						if (checkBox.isSelected()) {
+							timelineListener.onDeleteFile();
+							timelineListener.onDeleteTimeline();
+						}
+						else {
+							timelineListener.onDeleteTimeline();
+						}
 						confirmation.close();
 						stage.close();
 					} else {
 						confirmation.close();
 					}
 				}
-			});
-
-			timelineAndFile.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent arg0) {
-					Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-					confirm.setTitle("Deleting Timeline and File");
-					confirm.setContentText(
-							"Are you sure you wish to delete the current timeline and its respective file?");
-					Optional<ButtonType> result = confirm.showAndWait();
-					if (result.get() == ButtonType.OK) {
-						timelineListener.onDeleteTimeline();
-						timelineListener.onDeleteFile();
-						stage.close();
-					} else {
-						confirm.close();
-					}
-				}
-
 			});
 
 			cancel.setOnAction(new EventHandler<ActionEvent>() {
@@ -192,12 +187,18 @@ public class TimelineView {
 					stage.close();
 				}
 			});
+			HBox checkbox = new HBox();
+			checkbox.getChildren().add(checkBox);
 			buttony.getChildren().clear();
 			buttony.setAlignment(Pos.CENTER);
 			buttony.setSpacing(20.0);
-			buttony.getChildren().addAll(timeline, timelineAndFile, cancel);
+			buttony.getChildren().addAll(timeline, cancel);
+			VBox box = new VBox();
+			box.setSpacing(20);
+			box.setPadding(new Insets(30));
+			box.getChildren().addAll(checkbox, buttony);
 
-			Scene scenery = new Scene(buttony, 500, 100);
+			Scene scenery = new Scene(box);
 
 			stage.setTitle("Delete Options");
 			stage.setScene(scenery);
@@ -283,6 +284,9 @@ public class TimelineView {
 			}
 		}
 
+	}
+	public void setTimelineSaved(boolean b) {
+		gotFilePath = b;
 	}
 
 }

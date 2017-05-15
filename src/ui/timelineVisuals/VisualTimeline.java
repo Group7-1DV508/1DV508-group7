@@ -151,6 +151,11 @@ public class VisualTimeline extends GridPane {
 			endDate = start.withMonth(12).withDayOfMonth(31);
 			monthEndDate = null;
 		}
+		else if (end.getDayOfMonth() == 1) {
+			currentEndDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth());
+			endDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth());
+			monthEndDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth());
+		}
 		else {
 			currentEndDate = end;
 			monthEndDate = end;
