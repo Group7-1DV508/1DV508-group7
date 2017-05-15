@@ -25,11 +25,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class TimelineView {
 	private String css = this.getClass().getResource("/ui/application.css").toExternalForm();
-	private final Image addT = new Image(getClass().getResource("/addT.png").toExternalForm(), 30, 100, true, true);
+	private final Image addT = new Image(getClass().getResource("/addT.png").toExternalForm(), 23, 100, true, true);
 	DropShadow shadow = new DropShadow();
 	private Button addTimeline = new Button("Add Timeline", new ImageView(addT));
 	private Button deleteTimeline = new Button("Delete Timeline");
@@ -77,12 +78,12 @@ public class TimelineView {
 	 */
 	private void addTimelineWindow() {
 		addTimelineButton.getChildren().add(addTimeline);
-		addTimeline.setStyle("-fx-base: #32cd32;-fx-text-fill: #ffffff;-fx-font: 15 arial;");
-		addTimeline.setMinSize(135, 30);
-		addTimeline.setMaxSize(135, 30);
-		addTimeline.setPadding(new Insets(0,0,0,-5));
+		addTimeline.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+		addTimeline.setMinSize(125, 30);
+		addTimeline.setMaxSize(125, 30);
+		addTimeline.setPadding(new Insets(0,0,0,-8));
+		addTimeline.getGraphic().setTranslateX(-2);
 		addTimeline.getGraphic().setTranslateY(-1);
-		addTimeline.getGraphic().setTranslateX(1);
 		addTimeline.getStylesheets().add(css);
 		addTimeline.setOnAction(new TimelineHandler());
 	}
