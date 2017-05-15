@@ -75,9 +75,10 @@ public class ApplicationControl implements ApplicationListener {
 			}
 			Alert success = new Alert(Alert.AlertType.INFORMATION);
 			success.setTitle("Saving complete");
+			success.setHeaderText("Success!");
 			success.setContentText("Your file has been successfully saved!");
 			success.showAndWait();
-
+			
 		}
 
 		else {
