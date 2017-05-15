@@ -77,9 +77,9 @@ public class TimelineView {
 	 */
 	private void addTimelineWindow() {
 		addTimelineButton.getChildren().add(addTimeline);
-		addTimeline.setStyle("-fx-background-radius: 5em; -fx-base: #32cd32;-fx-text-fill: #ffffff;-fx-font: 15 arial;");
-		addTimeline.setMinSize(135, 35);
-		addTimeline.setMaxSize(135, 35);
+		addTimeline.setStyle("-fx-base: #32cd32;-fx-text-fill: #ffffff;-fx-font: 15 arial;");
+		addTimeline.setMinSize(135, 30);
+		addTimeline.setMaxSize(135, 30);
 		addTimeline.setPadding(new Insets(0,0,0,-5));
 		addTimeline.getGraphic().setTranslateY(-1);
 		addTimeline.getGraphic().setTranslateX(1);
