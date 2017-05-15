@@ -73,6 +73,10 @@ public class ApplicationControl implements ApplicationListener {
 				appView.onTimelineSaved(app.getCurrentTimeline());
 			} catch (Exception e) {
 			}
+			Alert success = new Alert(Alert.AlertType.INFORMATION);
+			success.setTitle("Saving complete");
+			success.setContentText("Your file has been successfully saved!");
+			success.showAndWait();
 
 		}
 
