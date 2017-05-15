@@ -152,6 +152,12 @@ public class ApplicationTest implements ChangeListener {
 		
 	}
 
+	@Override
+	public void onTimelineSaved(Timeline current) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 }

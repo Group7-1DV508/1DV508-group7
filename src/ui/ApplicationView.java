@@ -45,6 +45,7 @@ public class ApplicationView implements ChangeListener {
 	// contains ComboBox to choose current timeline, add/delete timeline and
 	// help button
 	private final HBox timelineButtons = new HBox();
+	boolean filePath;
 
 	/*
 	 * contains all parts within the Current Timeline View Add/Edit/Delete event
@@ -327,7 +328,7 @@ public class ApplicationView implements ChangeListener {
 	@Override
 	public void onNewTimelineSelected(Timeline current) {
 		currentTimeline.createVisualTimeline(current);
-		//showYear(current);
+		onTimelineSaved(current);
 		
 	}
 
@@ -342,6 +343,18 @@ public class ApplicationView implements ChangeListener {
 		currentTimeline.updateVisualTimeline();
 
 	}
+
+	@Override
+	public void onTimelineSaved(Timeline current) {
+		if (current.getFile().isFile()) {
+			timelineView.setTimelineSaved(true);
+		}
+		else {
+			timelineView.setTimelineSaved(false);
+		}
+		
+	}
+	
 
 	
 
