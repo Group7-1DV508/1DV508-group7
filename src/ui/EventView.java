@@ -84,7 +84,7 @@ public class EventView {
 	 */
 
 	public Button getAddEventButton() {
-		addEvent.setPrefSize(120, 30);
+		addEvent.setMinSize(120, 30);
 
 		/*
 		 * when Add Event button is clicked a popup window is created where the
