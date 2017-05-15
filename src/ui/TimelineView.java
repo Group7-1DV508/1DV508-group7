@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import com.sun.prism.paint.Color;
+
 import controls.TimelineListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,14 +18,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class TimelineView {
-
-	private Button addTimeline = new Button("Add Timeline");
+	private String css = this.getClass().getResource("/ui/application.css").toExternalForm();
+	private final Image addT = new Image(getClass().getResource("/addT.png").toExternalForm(), 30, 100, true, true);
+	DropShadow shadow = new DropShadow();
+	private Button addTimeline = new Button("Add Timeline", new ImageView(addT));
 	private Button deleteTimeline = new Button("Delete Timeline");
 	private Button confirmTimeline = new Button("Finish");
 	// HBox for "Add Timeline" button
@@ -69,8 +77,13 @@ public class TimelineView {
 	 */
 	private void addTimelineWindow() {
 		addTimelineButton.getChildren().add(addTimeline);
-		addTimelineButton.setPadding(new Insets(5));
-		addTimeline.setPadding(new Insets(5));
+		addTimeline.setStyle("-fx-background-radius: 5em; -fx-base: #32cd32;-fx-text-fill: #ffffff;-fx-font: 15 arial;");
+		addTimeline.setMinSize(135, 35);
+		addTimeline.setMaxSize(135, 35);
+		addTimeline.setPadding(new Insets(0,0,0,-5));
+		addTimeline.getGraphic().setTranslateY(-1);
+		addTimeline.getGraphic().setTranslateX(1);
+		addTimeline.getStylesheets().add(css);
 		addTimeline.setOnAction(new TimelineHandler());
 	}
 
@@ -133,7 +146,7 @@ public class TimelineView {
 	 * to delete selected timeline. If ok is pressed, timeline is deleted and
 	 * alert window closes. If cancel is pressed, window closes without deleting
 	 * current timeline.
-	 * 
+	 *
 	 * @author Indre Kvedaraite
 	 *
 	 */
@@ -232,7 +245,7 @@ public class TimelineView {
 	 */
 	private class ConfirmTimelineHandler implements EventHandler<ActionEvent> {
 
-		@Override 
+		@Override
 		public void handle(ActionEvent arg0) {
 			// Variables to collect input from user
 			String name = timelineName.getText();
@@ -259,14 +272,14 @@ public class TimelineView {
 				alert.setTitle("Error in timeline end date");
 				alert.setHeaderText("Please choose an end date for your timeline.");
 				alert.show();
-				
+
 			}else{
-			
-			
-	
+
+
+
 			LocalDateTime start = LocalDateTime.parse(timelineStart.getValue() + "T00:00");
 			LocalDateTime end = LocalDateTime.parse(timelineEnd.getValue()+ "T00:00");
-			
+
 
 			// If timeline was added successfully, closes the window
 			if (timelineListener.onAddTimeline(name, start, end)) {
