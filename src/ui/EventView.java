@@ -218,14 +218,7 @@ public class EventView {
 
 			public void handle(ActionEvent event) {
 
-				name.setDisable(false);
-				description.setDisable(false);
-				checkInDatePickerStart.setDisable(false);
-				checkInDatePickerEnd.setDisable(false);
-				timeStart.setDisable(false);
-				timeEnd.setDisable(false);
-				ok.setDisable(false);
-				cancel.setDisable(false);
+				setDisableFields(false);
 
 
 				ok.setOnAction(new EventHandler<ActionEvent>() {
@@ -266,47 +259,26 @@ public class EventView {
 				            // edit old event
 							if (!e.isDuration() && checkInDatePickerEnd.getValue() == null) {
 			
-			                titleText.setText("  " + name.getText());
-			                decText.setText(description.getText());
-			                dateStartText.setText(startTime.format(format));
-			
 				                if (eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
 				
-				    				name.setDisable(true);
-				    				description.setDisable(true);
-				    				
-				    				checkInDatePickerStart.setDisable(true);
-				    				checkInDatePickerEnd.setDisable(true);
-				    				
-				    				timeStart.setDisable(true);
-				    				timeEnd.setDisable(true);
-				    				
-				    				ok.setDisable(true);
-				    				cancel.setDisable(true);
+					                titleText.setText("  " + name.getText());
+					                decText.setText(description.getText());
+					                dateStartText.setText(startTime.format(format));
+					                setDisableFields(true);
 				                }
 				                else {
 				                	createAlertError("Error in chosing time", "It appears your are trying to create an event outside of timeline!");
 								}
 				            } // End of editing of event from non duration to non duration
 							else if (e.isDuration() && checkInDatePickerEnd.getValue() == null) {
-				                titleText.setText("  " + name.getText());
-				                decText.setText(description.getText());
-				                dateStartText.setText(startTime.format(format));
 								
 								if(eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
+					                titleText.setText("  " + name.getText());
+					                decText.setText(description.getText());
+					                dateStartText.setText(startTime.format(format));
+					                dateEndText.setText("");
 									createEditEventWindow(e);
-									dateEndText.setText("");
-				    				name.setDisable(true);
-				    				description.setDisable(true);
-				    				
-				    				checkInDatePickerStart.setDisable(true);
-				    				checkInDatePickerEnd.setDisable(true);
-				    				
-				    				timeStart.setDisable(true);
-				    				timeEnd.setDisable(true);
-				    				
-				    				ok.setDisable(true);
-				    				cancel.setDisable(true);
+									setDisableFields(true);
 								} // End of add of new event
 				                else {
 				                	createAlertError("Error in chosing time", "It appears your are trying to create an event outside of timeline!");
@@ -318,12 +290,8 @@ public class EventView {
 								LocalDateTime endTime = createLocalDateTime(checkInDatePickerEnd.getValue().getYear()+"", 
 										checkInDatePickerEnd.getValue().getMonthValue()+"",
 										checkInDatePickerEnd.getValue().getDayOfMonth()+"",
-										timeEnd.getValue());
-								
-				                //Update in EventInfoView
-				                titleText.setText("  "+name.getText());
-				                decText.setText(description.getText());
-				                dateStartText.setText(startTime.format(format));
+										timeEnd.getValue());								
+				           
 								
 				                if (startTime.compareTo(endTime) > 0) {
 				                	 createAlertError("Error in event dates", "Start date has to be earlier than end date!");
@@ -332,17 +300,11 @@ public class EventView {
 				                else {
 									if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
 										dateEndText.setText(endTime.format(format));
-					    				name.setDisable(true);
-					    				description.setDisable(true);
-					    				
-					    				checkInDatePickerStart.setDisable(true);
-					    				checkInDatePickerEnd.setDisable(true);
-					    				
-					    				timeStart.setDisable(true);
-					    				timeEnd.setDisable(true);
-					    				
-					    				ok.setDisable(true);
-					    				cancel.setDisable(true);
+										titleText.setText("  "+name.getText());
+							            decText.setText(description.getText());
+							            dateStartText.setText(startTime.format(format));
+							            createEditEventWindow(e);
+							            setDisableFields(true);
 									} // End of add of new event
 					                else {
 					                	createAlertError("Error in chosing time", "It appears your are trying to create an event outside of timeline!");
@@ -355,13 +317,6 @@ public class EventView {
 									checkInDatePickerEnd.getValue().getMonthValue()+"",
 									checkInDatePickerEnd.getValue().getDayOfMonth()+"",
 									timeEnd.getValue());
-							
-							
-			                //Update in EventInfoView
-			                titleText.setText("  "+name.getText());
-			                decText.setText(description.getText());
-			                dateStartText.setText(startTime.format(format));
-			                dateEndText.setText(endTime.format(format));
 			
 			                
 			                if (startTime.compareTo(endTime) > 0) {
@@ -370,21 +325,12 @@ public class EventView {
 			
 			                else {
 			                   if(eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
-			                      // it should dispaly an alert if the input is
-			                      // not correct
-			                      // title = new Text("Title: "+
-			                      // description.getText());
-				    				name.setDisable(true);
-				    				description.setDisable(true);
-				    				
-				    				checkInDatePickerStart.setDisable(true);
-				    				checkInDatePickerEnd.setDisable(true);
-				    				
-				    				timeStart.setDisable(true);
-				    				timeEnd.setDisable(true);
-				    				
-				    				ok.setDisable(true);
-				    				cancel.setDisable(true);
+			                	   
+			                	    titleText.setText("  "+name.getText());
+					                decText.setText(description.getText());
+					                dateStartText.setText(startTime.format(format));
+					                dateEndText.setText(endTime.format(format));
+					                setDisableFields(true);
 			                    } // End of editing event without duration
 			                  else {
 			                	  createAlertError("Error in chosing time", "It appears your are trying to create an event outside of timeline!");
@@ -402,16 +348,7 @@ public class EventView {
 
 					@Override
 					public void handle(ActionEvent event) {
-						name.setDisable(true);
-						description.setDisable(true);
-
-						checkInDatePickerStart.setDisable(true);
-						timeStart.setDisable(true);
-
-						checkInDatePickerEnd.setDisable(true);
-						timeEnd.setDisable(true);
-						ok.setDisable(true);
-						cancel.setDisable(true);
+						setDisableFields(true);
 					} // End of handle() method for cancel
 				}); // End of setOnAction for cancel button
 			} // End of handle() for editEvent button
@@ -485,12 +422,7 @@ public class EventView {
 		description.setWrapText(true);
 		
 		// In case fields are disabled
-		checkInDatePickerStart.setDisable(false);
-		checkInDatePickerEnd.setDisable(false);
-		ok.setDisable(false);
-		cancel.setDisable(false);
-		timeStart.setDisable(false);
-		timeEnd.setDisable(false);
+		setDisableFields(false);
 		checkInDatePickerStart.setValue(null);
 		checkInDatePickerEnd.setValue(null);
 		
@@ -510,6 +442,7 @@ public class EventView {
 				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
 				"20:00", "21:00", "22:00", "23:00");
 		timeStart.setStyle("-fx-font: 16 timesnewroman;");
+		timeStart.setMinWidth(130);
 		timeStart.setMinWidth(130);
 
 		// Combo box for end event times
@@ -638,7 +571,6 @@ public class EventView {
 		createEditEventWindow(e);
 		window.getChildren().addAll(info, title, titleText, eventStart, dateStartText, eventEnd, dateEndText, des, decText, EditButton(e),getDeleteButton(e, eventWindow));
 
-		// get delete Button
 		HBox all = new HBox();
 		all.setPrefSize(550, 190);
 		all.setPadding(new Insets(10, 10, 10, 10));
@@ -670,19 +602,19 @@ public class EventView {
 		String startLocalDate = localDateTimeToString(startDate);
 		LocalDate localDate = LocalDate.parse(startLocalDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		checkInDatePickerStart.setValue(localDate);
-		checkInDatePickerStart.setMinWidth(150);
-		checkInDatePickerEnd.setMinWidth(150);
+		checkInDatePickerStart.setMinSize(150, 30);
+		checkInDatePickerEnd.setMinSize(150, 30);
 		
 		Label yearL = new Label("Start Date");
 		int strHour = e.getEventStart().getHour();
 		timeStart = new ComboBox<String>();
-		timeStart.setMinSize(150, 25);
+		timeStart.setMinSize(150, 30);
 		timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
 				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
 				"20:00", "21:00", "22:00", "23:00");
 		timeStart.getSelectionModel().clearAndSelect(strHour);
 		timeEnd = new ComboBox<String>();
-		timeEnd.setMinSize(150, 25);
+		timeEnd.setMinSize(150, 30);
 		timeEnd.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
 				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
 				"20:00", "21:00", "22:00", "23:00", "");
@@ -873,11 +805,34 @@ public class EventView {
 		}
 	}
 	
+	/**
+	 * Help method to create an alert of type error
+	 * @param name name of the error
+	 * @param message messaged displayed, describing the error
+	 */
 	private void createAlertError(String name, String message) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle(name);
         alert.setHeaderText(message);
         alert.show();
+	}
+	
+	/**
+	 * Help method to disable fields when editing event
+	 * @param b false if fields are active
+	 */
+	private void setDisableFields (boolean b) {
+		name.setDisable(b);
+		description.setDisable(b);
+		
+		checkInDatePickerStart.setDisable(b);
+		checkInDatePickerEnd.setDisable(b);
+		
+		timeStart.setDisable(b);
+		timeEnd.setDisable(b);
+		
+		ok.setDisable(b);
+		cancel.setDisable(b);
 	}
 	
 	/**
