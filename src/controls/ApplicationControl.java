@@ -12,20 +12,24 @@ import javafx.stage.FileChooser;
 import ui.ApplicationView;
 
 public class ApplicationControl implements ApplicationListener {
-	
+
 	private ApplicationView appView;
 	private App app;
 	private FileHandler fileHandler;
 	private TimelineControl timelineControl;
 	private EventControl eventControl;
-	
+
 	/**
-	 * Constructor, Creates an ApplicationControl and sets variables for 
-	 * ApplicationView, App, FileHandler. Also creates a new TimelineControl and 
-	 * an EventControl. 
-	 * @param av , ApplicationView
-	 * @param app , App
-	 * @param fh , FileHandler
+	 * Constructor, Creates an ApplicationControl and sets variables for
+	 * ApplicationView, App, FileHandler. Also creates a new TimelineControl and
+	 * an EventControl.
+	 * 
+	 * @param av
+	 *            , ApplicationView
+	 * @param app
+	 *            , App
+	 * @param fh
+	 *            , FileHandler
 	 */
 	public ApplicationControl(ApplicationView av, App app, FileHandler fh) {
 		appView = av;
@@ -36,10 +40,10 @@ public class ApplicationControl implements ApplicationListener {
 		eventControl.setApp(app);
 		timelineControl.setApp(app);
 	}
-	
+
 	/**
-	 * Connects the View and Control through the Listener
-	 * Also connects ApplicationView to App through the Listener 
+	 * Connects the View and Control through the Listener Also connects
+	 * ApplicationView to App through the Listener
 	 */
 	public void setUpListeners() {
 		appView.getTimelineView().addListener(timelineControl);
@@ -47,35 +51,49 @@ public class ApplicationControl implements ApplicationListener {
 		appView.addListener(this);
 		app.addListener(appView);
 	}
-	
 
 	@Override
 	public void onTimelineSelected(Timeline t) {
 		app.setCurrentTimeline(t);
-		
+
 	}
 
 	@Override
 	public void onNewEventSelected(Event e) {
 		app.setCurrentEvent(e);
-		
+
 	}
 
 	@Override
 	public void onTimelineSaved() {
-		FileChooser chooseFile = new FileChooser();
 
-		// Set extension filter
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
-		chooseFile.getExtensionFilters().add(extFilter);
+		if (app.getCurrentTimeline().getFile().exists()) {
+			try {
+				fileHandler.saveTimeline(app.getCurrentTimeline(), app.getCurrentTimeline().getFile());
+				appView.onTimelineSaved(app.getCurrentTimeline());
+			} catch (Exception e) {
+			}
 
-		// Show save file dialog
-		File file = chooseFile.showSaveDialog(appView.getRoot().getScene().getWindow());
-		app.getCurrentTimeline().setFilePath(file);
+		}
 
-		try {
-			fileHandler.saveTimeline(app.getCurrentTimeline(), file);
-		} catch (Exception saver) {
+		else {
+			
+			FileChooser chooseFile = new FileChooser();
+
+			// Set extension filter
+			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+			chooseFile.getExtensionFilters().add(extFilter);
+
+			// Show save file dialog
+			File file = chooseFile.showSaveDialog(appView.getRoot().getScene().getWindow());
+			app.getCurrentTimeline().setFilePath(file);
+
+			try {
+				fileHandler.saveTimeline(app.getCurrentTimeline(), file);
+				appView.onTimelineSaved(app.getCurrentTimeline());
+			} 
+				catch (Exception saver) {
+				}
 		}
 	}
 
@@ -83,21 +101,18 @@ public class ApplicationControl implements ApplicationListener {
 	public void onTimelineLoaded() {
 		FileChooser fileChooser = new FileChooser();
 
-        // Set extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                "XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter);
+		// Set extension filter
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+		fileChooser.getExtensionFilters().add(extFilter);
 
-        // Show open file dialog
-        File file = fileChooser.showOpenDialog(appView.getRoot().getScene().getWindow());
-        
-        try {
-        	Timeline t = fileHandler.loadTimeline(file);
-        	app.addTimelineToList(t);
-        }
-        catch (Exception loader) {
-        }
-        
+		// Show open file dialog
+		File file = fileChooser.showOpenDialog(appView.getRoot().getScene().getWindow());
+
+		try {
+			Timeline t = fileHandler.loadTimeline(file);
+			app.addTimelineToList(t);
+		} catch (Exception loader) {
+		}
 
 	}
 
@@ -105,7 +120,6 @@ public class ApplicationControl implements ApplicationListener {
 	public ArrayList<Timeline> getTimelines() {
 		// TODO Auto-generated method stub
 		return app.getTimelines();
-}
-	
+	}
 
 }
