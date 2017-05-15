@@ -35,6 +35,8 @@ public class TimelineView {
 	private final DatePicker timelineStart = new DatePicker();
 	private final DatePicker timelineEnd = new DatePicker();
 	private TimelineListener timelineListener;
+	
+	private boolean gotFilePath;
 
 	/**
 	 * Sets listener to be able to implement functions for certain UI actions
@@ -272,6 +274,10 @@ public class TimelineView {
 			}
 		}
 
+	}
+	
+	public void setTimelineSaved(boolean b) {
+		gotFilePath = b;
 	}
 
 }

@@ -34,5 +34,7 @@ public interface ChangeListener {
 	 * @param current Timeline
 	 */
 	void onEditEvent(Timeline current);
+
+	void onTimelineSaved(Timeline current);
 	
 	}
