@@ -213,9 +213,9 @@ public class ApplicationView implements ChangeListener {
 
 		timelineButtons.getChildren().clear();
 		timelineButtons.setSpacing(20.0);
-		timelineButtons.getChildren().addAll(getAddTimelineButton(), saveTimelineButton(), loadTimelineButton(), getDeleteTimelineButton());
+		timelineButtons.getChildren().addAll(chooseTimeline,getAddTimelineButton(), saveTimelineButton(), loadTimelineButton(), getDeleteTimelineButton());
 		timelineButtons.setAlignment(Pos.CENTER_LEFT);
-		timelineButtons.setPadding(new Insets(0,500,0,10));
+		timelineButtons.setPadding(new Insets(0,300,0,10));
 
 		temp.getChildren().addAll(timelineButtons,helpButton);
 
@@ -233,11 +233,9 @@ public class ApplicationView implements ChangeListener {
 		eventButtons.setSpacing(20.0);
 		eventButtons.setAlignment(Pos.CENTER_LEFT);
 		eventButtons.setPadding(new Insets(0,0,0,5));
-		chooseTimeline.setMinSize(120,35);
+		chooseTimeline.setMinSize(150,35);
 		chooseTimeline.setStyle("-fx-base: #e6e6fa;-fx-font: 15 arial;-fx-text-alignment: center;");
 		chooseTimeline.getStylesheets().add(css);
-
-		eventButtons.getChildren().add(chooseTimeline);
 		return eventButtons;
 	}
 

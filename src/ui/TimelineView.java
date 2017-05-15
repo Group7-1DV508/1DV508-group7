@@ -3,9 +3,6 @@ package ui;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
-
-import com.sun.prism.paint.Color;
-
 import controls.TimelineListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,10 +15,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -29,10 +25,12 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class TimelineView {
+	private final Tooltip tooltip = new Tooltip();
 	private String css = this.getClass().getResource("/ui/application.css").toExternalForm();
-	private final Image addT = new Image(getClass().getResource("/addT.png").toExternalForm(), 23, 100, true, true);
-	DropShadow shadow = new DropShadow();
-	private Button addTimeline = new Button("Add Timeline", new ImageView(addT));
+	private final Image addT = new Image(getClass().getResource("/addT.png").toExternalForm(), 30, 100, true, true);
+
+
+	private Button addTimeline = new Button("", new ImageView(addT));
 	private Button deleteTimeline = new Button("Delete Timeline");
 	private Button confirmTimeline = new Button("Finish");
 	// HBox for "Add Timeline" button
@@ -77,13 +75,15 @@ public class TimelineView {
 	 * button in HBox
 	 */
 	private void addTimelineWindow() {
+		tooltip.isActivated();
+		tooltip.setText("Add Timeline");
 		addTimelineButton.getChildren().add(addTimeline);
 		addTimeline.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-		addTimeline.setMinSize(125, 30);
-		addTimeline.setMaxSize(125, 30);
-		addTimeline.setPadding(new Insets(0,0,0,-8));
-		addTimeline.getGraphic().setTranslateX(-2);
-		addTimeline.getGraphic().setTranslateY(-1);
+		addTimeline.setTooltip(tooltip);
+		addTimeline.setMinSize(70, 30);
+		addTimeline.setMaxSize(70, 30);
+		addTimeline.setPadding(new Insets(0,0,0,-3));
+
 		addTimeline.getStylesheets().add(css);
 		addTimeline.setOnAction(new TimelineHandler());
 	}
