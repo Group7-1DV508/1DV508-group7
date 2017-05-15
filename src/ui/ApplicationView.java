@@ -4,11 +4,6 @@ import controls.ApplicationListener;
 import controls.ChangeListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
-import functions.App;
-import functions.Event;
 import functions.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,15 +12,9 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -35,16 +24,16 @@ import ui.timelineVisuals.TimelineInformationBox;
 import ui.timelineVisuals.VisualTimeline;
 
 public class ApplicationView implements ChangeListener {
-
+	private String css = this.getClass().getResource("/ui/application.css").toExternalForm();
 	private Button savey;
 	private EventView eventView;
 	private TimelineView timelineView;
 	private ApplicationListener appListener;
 	// contains all parts of the window (Main view)
 	private final VBox view = new VBox();
-	// contains ComboBox to choose current timeline, add/delete timeline and
-	// help button
+	// contains ComboBox to choose current timeline, add/delete timeline
 	private final HBox timelineButtons = new HBox();
+	private final HBox helpButton = new HBox();
 
 	/*
 	 * contains all parts within the Current Timeline View Add/Edit/Delete event
@@ -128,6 +117,7 @@ public class ApplicationView implements ChangeListener {
 	 * and the Main Timeline Box
 	 */
 	private VBox root() {
+		view.setStyle("-fx-base: #e6e6fa");
 		view.getChildren().clear();
 		view.setSpacing(10);
 		view.setAlignment(Pos.CENTER);
@@ -167,11 +157,11 @@ public class ApplicationView implements ChangeListener {
 	 */
 	private Button createHelpButton() {
 		Button helpButton = new Button("?");
-		helpButton.setStyle("-fx-background-radius: 5em; " + "-fx-min-width: 30px; " + "-fx-min-height: 30px; " + "-fx-max-width: 30px; " + 
+		helpButton.setStyle("-fx-background-radius: 5em; " + "-fx-min-width: 30px; " + "-fx-min-height: 30px; " + "-fx-max-width: 30px; " +
 		"-fx-max-height: 30px;");
-		
+
 		helpButton.setOnAction(new EventHandler<ActionEvent>(){
-			  
+
 			@Override public void handle(ActionEvent e) {
 		        Stage stage = new Stage();
 		        //Fill stage with content
@@ -183,25 +173,24 @@ public class ApplicationView implements ChangeListener {
 	/* Creates a button which saves a given
 	 * timeline to a file path chosen by
 	   the user through the fileChooser.*/
-	
+
 	private Button saveTimelineButton() {
 		 savey = new Button("Save Timeline");
 		savey.setPrefSize(120, 30);
-	
 
 		savey.setOnAction(ActionEvent  -> {
-	
+
 			appListener.onTimelineSaved();
 		});
 		return savey;
 	}
-	
-	
-	
+
+
+
 	private Button loadTimelineButton() {
 		Button loaded = new Button("Load Timeline");
 		loaded.setPrefSize(120, 30);
-		
+
 		loaded.setOnAction(ActionEvent -> {
 			appListener.onTimelineLoaded();
 		});
@@ -214,12 +203,23 @@ public class ApplicationView implements ChangeListener {
 	 * @return HBox
 	 */
 	private HBox timelineButtonsBox() {
+		chooseTimeline.setMinSize(30, 30);
+
+		HBox temp = new HBox();
+		temp.getChildren().clear();
+		helpButton.getChildren().clear();
+		helpButton.getChildren().add(createHelpButton());
+		helpButton.setAlignment(Pos.BOTTOM_LEFT);
+
 		timelineButtons.getChildren().clear();
-		timelineButtons.setAlignment(Pos.CENTER);
 		timelineButtons.setSpacing(20.0);
-		timelineButtons.getChildren().addAll(chooseTimeline, getAddTimelineButton(), getDeleteTimelineButton(),
-				createHelpButton());
-		return timelineButtons;
+		timelineButtons.getChildren().addAll(getAddTimelineButton(), saveTimelineButton(), loadTimelineButton(), getDeleteTimelineButton());
+		timelineButtons.setAlignment(Pos.CENTER_LEFT);
+		timelineButtons.setPadding(new Insets(0,500,0,10));
+
+		temp.getChildren().addAll(timelineButtons,helpButton);
+
+		return temp;
 	}
 
 	/**
@@ -231,7 +231,13 @@ public class ApplicationView implements ChangeListener {
 		eventButtons.getChildren().clear();
 		eventButtons.setAlignment(Pos.CENTER);
 		eventButtons.setSpacing(20.0);
-		eventButtons.getChildren().addAll(getAddEventButton(), saveTimelineButton(), loadTimelineButton());
+		eventButtons.setAlignment(Pos.CENTER_LEFT);
+		eventButtons.setPadding(new Insets(0,0,0,5));
+		chooseTimeline.setMinSize(120,35);
+		chooseTimeline.setStyle("-fx-base: #e6e6fa;-fx-font: 15 arial;-fx-text-alignment: center;");
+		chooseTimeline.getStylesheets().add(css);
+
+		eventButtons.getChildren().add(chooseTimeline);
 		return eventButtons;
 	}
 
@@ -288,10 +294,6 @@ public class ApplicationView implements ChangeListener {
 		return scrollTimeline;
 	}
 
-	
-
-
-	
 	private void clearTimelineBox() {
 		currentTimeline.getChildren().clear();
 		eventBox.getChildren().clear();
@@ -309,7 +311,7 @@ public class ApplicationView implements ChangeListener {
 			chooseTimeline(timelines, current);
 			//showYear(current);
 			currentTimeline.createVisualTimeline(current);
-			
+
 			getDeleteTimelineButton().setDisable(false);
 			eventView.setDisable(false);
 			savey.setDisable(false);
@@ -319,16 +321,16 @@ public class ApplicationView implements ChangeListener {
 			getDeleteTimelineButton().setDisable(true);
 			eventView.setDisable(true);
 			savey.setDisable(true);
-			
+
 		}
-		
-	} 
+
+	}
 
 	@Override
 	public void onNewTimelineSelected(Timeline current) {
 		currentTimeline.createVisualTimeline(current);
 		//showYear(current);
-		
+
 	}
 
 	@Override
@@ -343,6 +345,6 @@ public class ApplicationView implements ChangeListener {
 
 	}
 
-	
+
 
 }
