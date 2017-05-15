@@ -1,0 +1,12 @@
+.combo-box .combo-box-popup .list-view, .combo-box .combo-box-popup .list-cell {
+    -fx-background-color: lavender ;
+    -fx-text-fill: black ;
+    -fx-font-family: "Arial" ;
+}
+.combo-box .combo-box-popup .list-cell:hover {
+    -fx-text-fill: white ;
+}
+.button:pressed {
+	-fx-background-color:-fx-shadow-highlight-color,
+      linear-gradient(to bottom, derive(-fx-color,-63%) 0%, derive(-fx-color,-33%) 55%)
+}
