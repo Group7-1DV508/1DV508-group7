@@ -6,7 +6,19 @@
 .combo-box .combo-box-popup .list-cell:hover {
     -fx-text-fill: white ;
 }
+.button{
+   -fx-background-color:
+        linear-gradient(#f0ff35, #a9ff00),
+        radial-gradient(center 50% -35%, radius 180%, #b8ee36 40%, #80c800 50%);
+    -fx-effect: dropshadow(three-pass-box , rgba(0,0,0,0.5) , 5, 0.0 , 0 , 1 );
+    -fx-text-fill: #303030;
+}
+.button:hover{
+	-fx-background-color: linear-gradient(#f0ff35, #a9ff00),
+        radial-gradient(center 50% -35%, radius 200%, #b8ee36 40%, #80c800 50%);
+}
+
 .button:pressed {
 	-fx-background-color:-fx-shadow-highlight-color,
-      linear-gradient(to bottom, derive(-fx-color,-63%) 0%, derive(-fx-color,-33%) 55%)
+      linear-gradient(to bottom, derive(-fx-color,0%) 40%, derive(-fx-color,-33%) 55%)
 }
