@@ -83,11 +83,18 @@ public class EventControl implements EventListener {
 		return start.compareTo(end) <= 0;
 	}
 	
+	/**
+	 * Sets current event for this class
+	 */
 	public void setCurrentEvent() {
 		currentEvent = currentApp.getCurrentEvent();
 	}
 	
-	public Event getCurrentEvent (Event e) {
+	/**
+	 * Returns current event
+	 * @return current event
+	 */
+	public Event getCurrentEvent () {
 		return currentEvent;
 	}
 	/**

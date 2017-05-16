@@ -9,7 +9,7 @@ public class App {
 	
 	ChangeListener changeListener;
 	private ArrayList<Timeline> timelines;
-	private Timeline current;
+	private Timeline currentTimeline;
 	private Event currentEvent;
 	
 	/**
@@ -28,8 +28,8 @@ public class App {
 	 */
 	public void addTimeline(String name, LocalDateTime start, LocalDateTime end) {
 		setCurrentTimeline(new Timeline(name, start, end));
-		timelines.add(current);
-		changeListener.onChangedTimeline(timelines, current);
+		timelines.add(currentTimeline);
+		changeListener.onChangedTimeline(timelines, currentTimeline);
 	}
 	
 	/**
@@ -39,8 +39,9 @@ public class App {
 	 * @param start , event start date
 	 */
 	public void addEventToCurrent(String name, String description, LocalDateTime start) {
-		current.addEvent(name, description, start);
-		changeListener.onEditTimeline(current);
+		currentTimeline.addEvent(name, description, start);
+		setCurrentEvent(currentTimeline.getEvents().get(currentTimeline.getEvents().size()-1));
+		changeListener.onEditTimeline(currentTimeline);
 	}
 	
 	/**
@@ -51,8 +52,9 @@ public class App {
 	 * @param end , event end date
 	 */
 	public void addEventToCurrentDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
-		current.addEventDuration(name, description, start, end);
-		changeListener.onEditTimeline(current);
+		currentTimeline.addEventDuration(name, description, start, end);
+		setCurrentEvent(currentTimeline.getEvents().get(currentTimeline.getEvents().size()-1));
+		changeListener.onEditTimeline(currentTimeline);
 	}
 	
 	/**
@@ -60,20 +62,18 @@ public class App {
 	 * @param timeline to be removed
 	 */
 	public void removeTimeline() {
-		getTimelines().remove(current);
+		getTimelines().remove(currentTimeline);
 		if (timelines.size() > 0) {
-			current = timelines.get(0);
+			currentTimeline = timelines.get(0);
 		}
 		else {
-			current = null;
+			currentTimeline = null;
 		}
-		changeListener.onChangedTimeline(timelines, current);
+		changeListener.onChangedTimeline(timelines, currentTimeline);
 	}
 	
 	public void removeFile() {
-		
-		current.getFile().delete();
-		
+		currentTimeline.getFile().delete();
 	}
 	
 	/**
@@ -81,8 +81,8 @@ public class App {
 	 * @param event to be removed
 	 */
 	public void removeEvent() {
-		current.deleteEvent(currentEvent);
-		changeListener.onEditTimeline(current);
+		currentTimeline.deleteEvent(currentEvent);
+		changeListener.onEditTimeline(currentTimeline);
 	}
 	
 	/**
@@ -98,8 +98,8 @@ public class App {
 	 * @param t , the Timeline used at the moment
 	 */
 	public void setCurrentTimeline(Timeline t) {
-		current = t;
-		changeListener.onNewTimelineSelected(current);
+		currentTimeline = t;
+		changeListener.onNewTimelineSelected(currentTimeline);
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public class App {
 	 * @return Timeline
 	 */
 	public Timeline getCurrentTimeline() {
-		return current;
+		return currentTimeline;
 	}
 
 	/**
@@ -118,24 +118,45 @@ public class App {
 		return timelines;
 	}
 	
+	/**
+	 * Adds timeline object to list of loaded timelines
+	 * @param t timeline object
+	 */
 	public void addTimelineToList(Timeline t) {
 		timelines.add(t);
-		current = t;
-		changeListener.onChangedTimeline(timelines, current);
+		currentTimeline = t;
+		changeListener.onChangedTimeline(timelines, currentTimeline);
 	}
 	
+	/**
+	 * Returns true if event is duration event
+	 * @return true
+	 */
 	public boolean isEventDuration() {
 		return currentEvent.isDuration();
 	}
 	
+	/**
+	 * Changes current event
+	 * @param e event to be set to current event
+	 */
 	public void setCurrentEvent(Event e) {
 		currentEvent = e;
 	}
+	
+	/**
+	 * Returns current event
+	 * @return current event
+	 */
 	public Event getCurrentEvent() {
 		return currentEvent;
 	}
+	
+	/**
+	 * Informs change listener about changed timeline
+	 */
 	public void eventEdited() {
-		changeListener.onEditEvent(current);
+		changeListener.onEditEvent(currentTimeline);
 	}
 	
 }
