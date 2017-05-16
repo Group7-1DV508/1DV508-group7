@@ -235,8 +235,11 @@ public class EventView {
 							
 						}
 						
-						if (timeEnd.getValue() == null || timeEnd.getValue().length() == 0) {
+						if (timeEnd.getValue() == null || timeEnd.getValue().length() > 5) {
 							timeEnd.setValue(null);
+						}
+						if (timeStart.getValue().length() > 5) {
+							timeStart.setValue(null);
 						}
 						
 						if (isNeededFieldEmpty()) {
@@ -271,13 +274,13 @@ public class EventView {
 								}
 				            } // End of editing of event from non duration to non duration
 							else if (e.isDuration() && checkInDatePickerEnd.getValue() == null) {
-								
-								if(eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
+								System.out.println("is at correct position");
+								if(eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
 					                titleText.setText("  " + name.getText());
 					                decText.setText(description.getText());
 					                dateStartText.setText(startTime.format(format));
 					                dateEndText.setText("");
-									createEditEventWindow(e);
+									//createEditEventWindow(e);
 									setDisableFields(true);
 								} // End of add of new event
 				                else {
@@ -298,7 +301,7 @@ public class EventView {
 					                } // End of alert for start date later than end date for event
 				                
 				                else {
-									if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
+									if (eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
 										dateEndText.setText(endTime.format(format));
 										titleText.setText("  "+name.getText());
 							            decText.setText(description.getText());
@@ -438,7 +441,7 @@ public class EventView {
      	// Combo box for start event times
      	timeStart.setPromptText("Start time");
      	timeStart.setValue(null);
-		timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+		timeStart.getItems().addAll("Start Time", "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
 				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
 				"20:00", "21:00", "22:00", "23:00");
 		timeStart.setStyle("-fx-font: 16 timesnewroman;");
@@ -448,7 +451,7 @@ public class EventView {
 		// Combo box for end event times
 		timeEnd.setPromptText("End time");
 		timeEnd.setValue(null);
-		timeEnd.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+		timeEnd.getItems().addAll("End Time","00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
 				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
 				"20:00", "21:00", "22:00", "23:00");
 		timeEnd.setStyle("-fx-font: 16 timesnewroman;");
@@ -609,15 +612,15 @@ public class EventView {
 		int strHour = e.getEventStart().getHour();
 		timeStart = new ComboBox<String>();
 		timeStart.setMinSize(150, 30);
-		timeStart.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+		timeStart.getItems().addAll("Start Time", "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
 				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
 				"20:00", "21:00", "22:00", "23:00");
-		timeStart.getSelectionModel().clearAndSelect(strHour);
+		timeStart.getSelectionModel().clearAndSelect(strHour+1);
 		timeEnd = new ComboBox<String>();
 		timeEnd.setMinSize(150, 30);
-		timeEnd.getItems().addAll("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+		timeEnd.getItems().addAll("End Time", "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
 				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
-				"20:00", "21:00", "22:00", "23:00", "");
+				"20:00", "21:00", "22:00", "23:00");
 		Label hourL = new Label("Start Time");
 
 		HBox h2 = new HBox();
@@ -635,7 +638,7 @@ public class EventView {
 
 			int strHourEnd = e.getEventEnd().getHour();
 
-			timeEnd.getSelectionModel().clearAndSelect(strHourEnd);
+			timeEnd.getSelectionModel().clearAndSelect(strHourEnd +1);
 
 		} else if (e.getEventEnd() == null) {
 			checkInDatePickerEnd.getEditor().clear();
