@@ -102,14 +102,24 @@ public class VisualTimeline extends GridPane {
 	 * @param end - timeline end
 	 */
 	public void createYear(LocalDateTime start, LocalDateTime end) {
-		currentStartDate = start;
-		currentEndDate = end;
+		
+		if (end.getMonthValue() == 1 && end.getDayOfMonth() == 1) {
+			endDate = end.withYear(end.getYear()-1).withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59);
+			currentStartDate = start;
+			currentEndDate = end.withYear(end.getYear()-1).withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59);
+		}
+		else {
+			endDate = end;
+			currentStartDate = start;
+			currentEndDate = end;
+		}
+		
 		getChildren().clear();
 		int counter = 0;
-		while (start.getYear() <= end.getYear()) {
+		while (start.getYear() <= endDate.getYear()) {
 			year = new YearView();
 			year.setText(start.getYear()+"");
-			setYearOnAction(year, start, end);
+			setYearOnAction(year, start, endDate);
 			start = start.plusYears(1).withMonth(1);
 			this.add(year, counter, 0);
 			counter++;
@@ -152,9 +162,9 @@ public class VisualTimeline extends GridPane {
 			monthEndDate = null;
 		}
 		else if (end.getDayOfMonth() == 1) {
-			currentEndDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth());
-			endDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth());
-			monthEndDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth());
+			currentEndDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
+			endDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
+			monthEndDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
 		}
 		else {
 			currentEndDate = end;
