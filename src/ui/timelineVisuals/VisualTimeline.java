@@ -30,7 +30,6 @@ public class VisualTimeline extends GridPane {
 	
 	private LocalDateTime currentStartDate;
 	private LocalDateTime currentEndDate;
-	private Text text;
 	
 	boolean monthView;
 	boolean yearView;

@@ -36,7 +36,7 @@ import ui.timelineVisuals.VisualTimeline;
 
 public class ApplicationView implements ChangeListener {
 
-	private Button savey;
+	private Button saveButton;
 	private EventView eventView;
 	private TimelineView timelineView;
 	private ApplicationListener appListener;
@@ -58,18 +58,8 @@ public class ApplicationView implements ChangeListener {
 	private final HBox eventButtons = new HBox();
 	// comboBox to choose timeline
 	private final ComboBox<Timeline> chooseTimeline = new ComboBox<Timeline>();
-	// contains all created events for the current timeline
-	private ArrayList<EventShape> eventShapes = new ArrayList<EventShape>();
-	// contains all months/years for the current timeline
-	//private final GridPane currentTimeline = new GridPane();
-	// list of months, used to divide the month names to the month boxes
-	private final ArrayList<Text> monthTexts = new ArrayList<Text>();
-	// contains one month
-	private HBox timelineMonth;
 	// contains all events at the correct position
 	private final ShowEvents eventBox = new ShowEvents();
-	// shape that represents an event
-	private EventShape eventShape;
 	private final TimelineInformationBox informationBox = new TimelineInformationBox();
 	private final VisualTimeline currentTimeline = new VisualTimeline(eventBox);
 
@@ -80,7 +70,7 @@ public class ApplicationView implements ChangeListener {
 	public ApplicationView() {
 		eventView = new EventView();
 		timelineView = new TimelineView();
-		savey = new Button();
+		saveButton = new Button();
 	}
 
 	/**
@@ -186,15 +176,15 @@ public class ApplicationView implements ChangeListener {
 	   the user through the fileChooser.*/
 	
 	private Button saveTimelineButton() {
-		 savey = new Button("Save Timeline");
-		savey.setPrefSize(120, 30);
+		saveButton = new Button("Save Timeline");
+		saveButton.setPrefSize(120, 30);
 	
 
-		savey.setOnAction(ActionEvent  -> {
+		saveButton.setOnAction(ActionEvent  -> {
 	
 			appListener.onTimelineSaved();
 		});
-		return savey;
+		return saveButton;
 	}
 	
 	
@@ -313,13 +303,13 @@ public class ApplicationView implements ChangeListener {
 			
 			getDeleteTimelineButton().setDisable(false);
 			eventView.setDisable(false);
-			savey.setDisable(false);
+			saveButton.setDisable(false);
 		}
 		else {
 			clearTimelineBox();
 			getDeleteTimelineButton().setDisable(true);
 			eventView.setDisable(true);
-			savey.setDisable(true);
+			saveButton.setDisable(true);
 			
 		}
 		
