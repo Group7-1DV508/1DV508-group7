@@ -3,6 +3,12 @@ package ui;
 import controls.ApplicationListener;
 import controls.ChangeListener;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,9 +20,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -74,6 +86,8 @@ public class ApplicationView implements ChangeListener {
 	private EventShape eventShape;
 	private final TimelineInformationBox informationBox = new TimelineInformationBox();
 	private final VisualTimeline currentTimeline = new VisualTimeline(eventBox);
+
+	private static String FILENAMEIN;
 
 
 
@@ -169,7 +183,7 @@ public class ApplicationView implements ChangeListener {
 	/**
 	 * Creates the Help Button
 	 */
-	private Button createHelpButton() {
+	private Button createHelpButton()  {
 		Button helpButton = new Button("?");
 		helpButton.setStyle("-fx-background-radius: 5em; " + "-fx-min-width: 30px; " + "-fx-min-height: 30px; " + "-fx-max-width: 30px; " + 
 		"-fx-max-height: 30px;");
@@ -177,9 +191,175 @@ public class ApplicationView implements ChangeListener {
 		helpButton.setOnAction(new EventHandler<ActionEvent>(){
 			  
 			@Override public void handle(ActionEvent e) {
-		        Stage stage = new Stage();
-		        //Fill stage with content
-		        stage.show();
+		        Stage primaryStage = new Stage();
+		        
+		        primaryStage.setTitle("Help Window");
+
+		      //Gif add:
+		      final File file = new File("src/BS.png");
+		      FileInputStream fileInput = null;
+			try {
+				fileInput = new FileInputStream(file);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		      Image image = new Image(fileInput);
+		      ImageView iv1 = new ImageView();
+		      iv1.setImage(image);
+		      VBox v1 = new VBox();
+
+		      //Label used to show help text:
+		      FILENAMEIN ="src/HELP.txt"; 
+		      String content = null;
+			try {
+				content = new String(Files.readAllBytes(Paths.get(FILENAMEIN)));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		      final Label description = new Label();
+		      description.setFont(Font.font("Verdana", 12));
+
+		      //Main Categories:  
+		      Hyperlink event1 = new Hyperlink("Event"); //event1 since event is used as a variable in: ActionEvent event
+		       Hyperlink timeline = new Hyperlink("Timeline");
+		       Hyperlink other = new Hyperlink("Other");
+		       
+		       event1.setFont(Font.font("Verdana", 20));
+		       timeline.setFont(Font.font("Verdana", 20));
+		       other.setFont(Font.font("Verdana", 20));
+		       
+		       event1.setLayoutY(0); 
+		       timeline.setLayoutY(20);
+		       other.setLayoutY(40);
+		       
+		       //Subcategories for Event:
+		       Hyperlink eventHelpAdd = new Hyperlink("");
+		       Hyperlink eventHelpDelete = new Hyperlink("");
+		       
+		       eventHelpAdd.setFont(Font.font("Verdana", 12));
+		       eventHelpDelete.setFont(Font.font("Verdana", 12));
+		       
+		       eventHelpAdd.setDisable(true);
+		       eventHelpDelete.setDisable(true);
+		          
+		       //Subcategories for Timeline:
+		       Hyperlink timelineHelpCreate = new Hyperlink("");
+		       Hyperlink timelineHelpDelete = new Hyperlink("");
+		       
+		       timelineHelpCreate.setFont(Font.font("Verdana", 12));
+		       timelineHelpDelete.setFont(Font.font("Verdana", 12));
+		       
+		       timelineHelpCreate.setDisable(true);
+		       timelineHelpDelete.setDisable(true);
+		         
+		      event1.setOnAction(new EventHandler<ActionEvent>() {
+
+		            @Override
+		            public void handle(ActionEvent event) {
+		                if(eventHelpAdd.getText() == ""){
+		              	 eventHelpAdd.setLayoutY(31);
+		               	 eventHelpAdd.setText("How to add event");
+		               	 eventHelpAdd.setDisable(false);
+		               	 eventHelpDelete.setLayoutY(43);
+		               	 eventHelpDelete.setText("How to delete event");
+		               	 eventHelpDelete.setDisable(false);
+		               	 
+		               	 timeline.setLayoutY(58);
+		               	 other.setLayoutY(78);
+		               	 
+		               	 timelineHelpCreate.setText("");
+		            	     timelineHelpCreate.setDisable(true);
+		                   timelineHelpDelete.setText("");
+		              	 timelineHelpDelete.setDisable(true);
+		              	  
+		              	  }
+		               
+		               else {
+		                eventHelpAdd.setText("");
+		             	  eventHelpAdd.setDisable(true);
+		             	  eventHelpDelete.setText("");
+		             	  eventHelpDelete.setDisable(true);
+		             	 
+		             	  timeline.setLayoutY(20);
+		             	  other.setLayoutY(40);
+		               }
+		               }  
+		             });
+		           
+		          timeline.setOnAction(new EventHandler<ActionEvent>() {
+
+		              @Override
+		              public void handle(ActionEvent event) {
+		              	 if(timelineHelpCreate.getText() == ""){
+		              		  //"closing" the event help if "open"
+		              		  eventHelpAdd.setText("");
+		                    	  eventHelpAdd.setDisable(true);
+		                    	  eventHelpDelete.setText("");
+		                    	  eventHelpDelete.setDisable(true);
+		                    	  timeline.setLayoutY(20);
+		                    	  
+		                    	 timelineHelpCreate.setLayoutY(55);
+		                    	 timelineHelpCreate.setText("How to create a timeline"); 
+		                    	 timelineHelpCreate.setDisable(false);
+		                  	 
+		                    	 timelineHelpDelete.setLayoutY(67);
+		                  	 timelineHelpDelete.setText("How to delete timeline");
+		                  	 timelineHelpDelete.setDisable(false);
+		                  	 
+		                  	other.setLayoutY(84);
+		                    	  
+		                    	  
+		                    	  
+		              		 
+		                  	  
+		                  	  }
+		                   
+		                   else {
+		               
+		                  	  timelineHelpCreate.setText("");
+		                  	  timelineHelpCreate.setDisable(true);
+		                    	  timelineHelpDelete.setText("");
+		                    	  timelineHelpDelete.setDisable(true);
+		                    	 
+		                    	  timeline.setLayoutY(20);
+		                    	  other.setLayoutY(40);
+		                   }
+		              }  
+		            });
+		          
+		          //events for subcategories (should later be gifs)
+		          eventHelpAdd.setOnAction(new EventHandler<ActionEvent>() {
+
+		              @Override
+		              public void handle(ActionEvent event)  {
+		              	String evenHelpAddString = null;
+		              	if(description.getText() == evenHelpAddString){
+		              		description.setText("");;
+		              		v1.getChildren().remove(iv1);
+		                  	  }
+		              	else{
+		              		description.setLayoutX(140);
+		              		description.setLayoutY(10);
+		              		description.setText(evenHelpAddString);
+		              		v1.getChildren().add(iv1);
+		              		v1.setLayoutX(100);
+		              		v1.setLayoutY(50);
+		              		
+		              		
+		              	}
+		              }});
+		                
+		          Group root = new Group();
+		          root.getChildren().addAll(v1);
+		          root.getChildren().addAll(event1, timeline, other);
+		          root.getChildren().addAll(eventHelpAdd, eventHelpDelete);
+		          root.getChildren().addAll(timelineHelpCreate, timelineHelpDelete);
+		          root.getChildren().addAll(description);
+		          
+		          primaryStage.setScene(new Scene(root, 500, 850));
+		          primaryStage.show();
 			}
 		});
 		return helpButton;
