@@ -48,10 +48,14 @@ public class EventView {
 	private Button cancel = new Button("Cancel");
 	private Button editEvent = new Button("Edit Info");
 	private Button delete = new Button("Delete event");
+	
+	// Texts
 	private Text titleText;
 	private Text decText;
 	private Text dateStartText;
 	private Text dateEndText;
+	
+	// Combo boxes
 	private ComboBox<String> timeStart = new ComboBox<String>();
 	private ComboBox<String> timeEnd = new ComboBox<String>();
 
@@ -226,18 +230,19 @@ public class EventView {
 					@Override
 					public void handle(ActionEvent event) {
 						/*
-						 * If Name, Description or Start Date fields are empty
-						 * an Error alert shows to the user
+						 * Checking for empty fields or unfinished date choosing
+						 * example, user picked end time, but not end date.
 						 */
 						
 						if (checkInDatePickerEnd.getEditor().getText().length() == 0) {
 							checkInDatePickerEnd.setValue(null);
-							
 						}
 						
-						if (timeEnd.getValue() == null || timeEnd.getValue().length() > 5) {
+						if (timeEnd.getValue() == null || timeEnd.getValue().length() == 0 || timeEnd.getValue().length() > 5) {
 							timeEnd.setValue(null);
 						}
+						
+						
 						if (timeStart.getValue().length() > 5) {
 							timeStart.setValue(null);
 						}
@@ -264,9 +269,7 @@ public class EventView {
 			
 				                if (eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
 				
-					                titleText.setText("  " + name.getText());
-					                decText.setText(description.getText());
-					                dateStartText.setText(startTime.format(format));
+				                	setNewTextsDuration(startTime, null);
 					                setDisableFields(true);
 				                }
 				                else {
@@ -274,13 +277,8 @@ public class EventView {
 								}
 				            } // End of editing of event from non duration to non duration
 							else if (e.isDuration() && checkInDatePickerEnd.getValue() == null) {
-								System.out.println("is at correct position");
 								if(eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
-					                titleText.setText("  " + name.getText());
-					                decText.setText(description.getText());
-					                dateStartText.setText(startTime.format(format));
-					                dateEndText.setText("");
-									//createEditEventWindow(e);
+									setNewTextsDuration(startTime, null);
 									setDisableFields(true);
 								} // End of add of new event
 				                else {
@@ -302,11 +300,7 @@ public class EventView {
 				                
 				                else {
 									if (eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
-										dateEndText.setText(endTime.format(format));
-										titleText.setText("  "+name.getText());
-							            decText.setText(description.getText());
-							            dateStartText.setText(startTime.format(format));
-							            createEditEventWindow(e);
+										setNewTextsDuration(startTime, endTime);
 							            setDisableFields(true);
 									} // End of add of new event
 					                else {
@@ -329,10 +323,7 @@ public class EventView {
 			                else {
 			                   if(eventListener.onEditEventDuration(eventname, eventdescrip, startTime, endTime)) {
 			                	   
-			                	    titleText.setText("  "+name.getText());
-					                decText.setText(description.getText());
-					                dateStartText.setText(startTime.format(format));
-					                dateEndText.setText(endTime.format(format));
+			                	   	setNewTextsDuration(startTime, endTime);
 					                setDisableFields(true);
 			                    } // End of editing event without duration
 			                  else {
@@ -818,6 +809,19 @@ public class EventView {
         alert.setTitle(name);
         alert.setHeaderText(message);
         alert.show();
+	}
+
+	
+	private void setNewTextsDuration(LocalDateTime startTime, LocalDateTime endTime) {
+        titleText.setText("  " + name.getText());
+        decText.setText(description.getText());
+        dateStartText.setText(startTime.format(format));
+        if (endTime == null) {
+        	dateEndText.setText("");
+        }
+        else {
+        	dateEndText.setText(endTime.format(format));
+        }
 	}
 	
 	/**

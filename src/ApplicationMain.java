@@ -1,6 +1,5 @@
 import javafx.application.*;
 
-import java.io.File;
 import java.time.LocalDateTime;
 
 import controls.ApplicationControl;
