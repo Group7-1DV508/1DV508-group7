@@ -37,4 +37,7 @@ public interface ChangeListener {
 
 	void onTimelineSaved(Timeline current);
 	
+	void onTimelineSaved(Timeline current);
+		
 	}
+

@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 public class Timeline {
 	
 	@XmlElement(name = "Event")
-	private ArrayList<Event> events;
+	private ArrayList<Event> events = new ArrayList<Event>();
 	
 	@XmlElement(name = "TimelineName")
 	private String name;
@@ -33,7 +33,6 @@ public class Timeline {
 	
 	// Constructor
 	public Timeline (String name, LocalDateTime start, LocalDateTime end) {
-		events = new ArrayList<Event>();
 		this.name = name;
 		this.start = start;
 		this.end = end;

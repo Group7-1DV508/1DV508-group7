@@ -1,9 +1,9 @@
 package ui;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
-
 import controls.TimelineListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,28 +17,37 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class TimelineView {
+	private final Tooltip addTo = new Tooltip();
+	private final Tooltip delTo = new Tooltip();
+	private String css = this.getClass().getResource("/ui/application.css").toExternalForm();
+	private final Image addT = new Image(getClass().getResource("/addT.png").toExternalForm(), 43, 100, true, true);
+	private final Image delT = new Image(getClass().getResource("/delT.png").toExternalForm(), 35, 100, true, true);
 
-	private Button addTimeline = new Button("Add Timeline");
-	private Button deleteTimeline = new Button("Delete Timeline");
+	private Button addTimeline = new Button("", new ImageView(addT));
+	private Button deleteTimeline = new Button("",new ImageView(delT));
 	private Button confirmTimeline = new Button("Finish");
 	// HBox for "Add Timeline" button
 	private HBox addTimelineButton = new HBox();
 	// Stage for new window where user inputs information about timeline
 	private Stage addTimelineWindow = new Stage();
 	private final TextField timelineName = new TextField();
-	private final DatePicker timelineStart = new DatePicker();
-	private final DatePicker timelineEnd = new DatePicker();
+	private DatePicker timelineStart = new DatePicker();
+	private DatePicker timelineEnd = new DatePicker();
+	Converter converter = new Converter();
 	private TimelineListener timelineListener;
-	
 	private boolean gotFilePath;
-
 	/**
 	 * Sets listener to be able to implement functions for certain UI actions
 	 * (such as button click)
@@ -62,7 +71,14 @@ public class TimelineView {
 	}
 
 	public Button getDeleteTimelineButton() {
-		deleteTimeline.setPadding(new Insets(5));
+		delTo.setText("Delete Timeline");
+		delTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+
+		deleteTimeline.setTooltip(delTo);
+		deleteTimeline.setMinSize(70, 35);
+		deleteTimeline.setMaxSize(70, 35);
+		deleteTimeline.setPadding(new Insets(0,0,0,-3));
+		deleteTimeline.getStylesheets().add(css);
 		deleteTimeline.setOnAction(new DeleteTimelineHandler());
 		return deleteTimeline;
 	}
@@ -72,9 +88,15 @@ public class TimelineView {
 	 * button in HBox
 	 */
 	private void addTimelineWindow() {
+		addTo.setText("Add Timeline");
+		addTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 		addTimelineButton.getChildren().add(addTimeline);
-		addTimelineButton.setPadding(new Insets(5));
-		addTimeline.setPadding(new Insets(5));
+		addTimeline.setTooltip(addTo);
+		addTimeline.setMinSize(80, 35);
+		addTimeline.setMaxSize(80, 35);
+		addTimeline.setPadding(new Insets(0,0,0,-3));
+
+		addTimeline.getStylesheets().add(css);
 		addTimeline.setOnAction(new TimelineHandler());
 	}
 
@@ -100,12 +122,14 @@ public class TimelineView {
 	private GridPane initAddTimeline() {
 
 		GridPane addTimelineRoot = new GridPane();
-
+		
 		confirmTimeline.setFont(new Font("Times new Roman", 20));
 		timelineName.setPromptText("Timeline Name");
 		timelineName.setFont(new Font("Times new Roman", 20));
 		timelineStart.setPromptText("Start Year");
+		timelineStart.setConverter(converter);
 		timelineEnd.setPromptText("End Year");
+		timelineEnd.setConverter(converter);
 
 		confirmTimeline.setMinSize(100, 30);
 
@@ -137,7 +161,7 @@ public class TimelineView {
 	 * to delete selected timeline. If ok is pressed, timeline is deleted and
 	 * alert window closes. If cancel is pressed, window closes without deleting
 	 * current timeline.
-	 * 
+	 *
 	 * @author Indre Kvedaraite
 	 *
 	 */
@@ -149,7 +173,12 @@ public class TimelineView {
 			HBox buttony = new HBox();
 			Button timeline = new Button("Delete Timeline");
 			CheckBox checkBox = new CheckBox("-> Delete file too");
+			//Button timelineAndFile = new Button("Delete Timeline and File");
 			Button cancel = new Button("Cancel");
+			
+			if (!gotFilePath) {
+				checkBox.setDisable(true);
+			}
 
 			timeline.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -229,57 +258,85 @@ public class TimelineView {
 	 */
 	private class ConfirmTimelineHandler implements EventHandler<ActionEvent> {
 
-		@Override 
+		@Override
 		public void handle(ActionEvent arg0) {
 			// Variables to collect input from user
 			String name = timelineName.getText();
 			LocalDate startDate = timelineStart.getValue();
 			LocalDate endDate = timelineEnd.getValue();
+		 
 
 			// Checks if all fields contain input
-			if (name.length() == 0) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error in timeline name");
-				alert.setHeaderText("Please choose a name for your timeline");
-				alert.show();
+			if (timelineName.getText().length() == 0) {
+				createAlertError("Error in timeline name", "Please choose a name for your timeline");
 			}
 
-			else if (startDate == null) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error in timeline start date");
-				alert.setHeaderText("Please choose a start date for your timeline");
-				alert.show();
+			else if (timelineStart.getEditor().getText().length() == 0) {
+				createAlertError("Error in timeline start date", "Please choose a start date for your timeline");
 			}
 
-			else if (endDate == null) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error in timeline end date");
-				alert.setHeaderText("Please choose an end date for your timeline.");
-				alert.show();
+			else if (timelineEnd.getEditor().getText().length() == 0) {
+				createAlertError("Error in timeline end date", "Please choose an end date for your timeline.");
+			}
+			else if (timelineStart.getValue().compareTo(timelineEnd.getValue()) > 0) {
+				createAlertError("Error in timeline end date", "Start date cannot be earlier than end date.");
+			}
+			else{
+				String name = timelineName.getText();
+				LocalDateTime start = LocalDateTime.parse(timelineStart.getValue() + "T00:00");
+				LocalDateTime end = LocalDateTime.parse(timelineEnd.getValue()+ "T00:00");
 				
-			}else{
-			
-			
-	
-			LocalDateTime start = LocalDateTime.parse(timelineStart.getValue() + "T00:00");
-			LocalDateTime end = LocalDateTime.parse(timelineEnd.getValue()+ "T00:00");
-			
-
-			// If timeline was added successfully, closes the window
-			if (timelineListener.onAddTimeline(name, start, end)) {
-				timelineName.clear();
-				timelineStart.getEditor().clear();
-				timelineEnd.getEditor().clear();
-				addTimelineWindow.close();
-
-				timelineName.clear();
-				timelineStart.getEditor().clear();
-				timelineEnd.getEditor().clear();
-
+				// If timeline was added successfully, closes the window
+				if (timelineListener.onAddTimeline(name, start, end)) {
+					timelineName.clear();
+					timelineStart.setValue(null);
+					timelineEnd.setValue(null);
+					addTimelineWindow.close();
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Help method to create alert of type error
+	 * @param name Name of alert
+	 * @param message Message displayed in alert
+	 */
+	private void createAlertError(String name, String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle(name);
+		alert.setHeaderText(message);
+		alert.show();
+	}
+	public void setTimelineSaved(boolean b) {
+		gotFilePath = b;
+	}
+	
+	private class Converter extends StringConverter<LocalDate> {
 
+		String pattern = "GGyyyy-MM-dd";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+		
+		@Override
+		public String toString(LocalDate date) {
+			if (date != null) {
+				return formatter.format(date);
+			}
+			else {
+				return "";
+			}
+		}
+
+		@Override
+		public LocalDate fromString(String string) {
+			if (string != null && !string.isEmpty()) {
+				return LocalDate.parse(string, formatter);
+			}
+			else {
+				return null; 
+			}
+		}
+		
 	}
 	
 	public void setTimelineSaved(boolean b) {
