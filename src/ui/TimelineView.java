@@ -2,6 +2,7 @@ package ui;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -35,8 +36,8 @@ public class TimelineView {
 	// Stage for new window where user inputs information about timeline
 	private Stage addTimelineWindow = new Stage();
 	private final TextField timelineName = new TextField();
-	private final DatePicker timelineStart = new DatePicker();
-	private final DatePicker timelineEnd = new DatePicker();
+	private DatePicker timelineStart = new DatePicker();
+	private DatePicker timelineEnd = new DatePicker();
 	Converter converter = new Converter();
 	private TimelineListener timelineListener;
 	
@@ -244,6 +245,7 @@ public class TimelineView {
 			String name = timelineName.getText();
 			LocalDate startDate = timelineStart.getValue();
 			LocalDate endDate = timelineEnd.getValue();
+		 
 
 			// Checks if all fields contain input
 			if (name.length() == 0) {
@@ -270,9 +272,9 @@ public class TimelineView {
 			
 			
 	
-			LocalDateTime start = LocalDateTime.parse(timelineStart.getValue() + "T00:00");
-			LocalDateTime end = LocalDateTime.parse(timelineEnd.getValue()+ "T00:00");
-			
+			LocalDateTime start = LocalDateTime.of(startDate, LocalTime.of( 00,00));
+			LocalDateTime end = LocalDateTime.of(endDate, LocalTime.of( 00,00));
+			System.out.println("Start: "+start+" End: "+end);
 
 			// If timeline was added successfully, closes the window
 			if (timelineListener.onAddTimeline(name, start, end)) {
