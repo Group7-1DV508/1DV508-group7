@@ -166,9 +166,9 @@ public class VisualTimeline extends GridPane {
 			monthEndDate = null;
 		}
 		else if (end.getDayOfMonth() == 1) {
-			currentEndDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
-			endDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
-			monthEndDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
+			currentEndDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.withMonth(end.getMonthValue()-1).toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
+			endDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.withMonth(end.getMonthValue()-1).toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
+			monthEndDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.withMonth(end.getMonthValue()-1).toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
 		}
 		else {
 			currentEndDate = end;
