@@ -63,7 +63,7 @@ public class ApplicationMain extends Application {
 
 
 		//Collect Root from ApplicationView and build
-		Scene scene = new Scene(appView.getRoot(), 1150, 400);
+		Scene scene = new Scene(appView.getRoot(), 1100, 400);
 		primaryStage.getIcons().add(new Image("/Timeline.png"));
 		primaryStage.setTitle("Timeline Manager");
 		primaryStage.setScene(scene);

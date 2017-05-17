@@ -25,13 +25,14 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class TimelineView {
-	private final Tooltip tooltip = new Tooltip();
+	private final Tooltip addTo = new Tooltip();
+	private final Tooltip delTo = new Tooltip();
 	private String css = this.getClass().getResource("/ui/application.css").toExternalForm();
-	private final Image addT = new Image(getClass().getResource("/addT.png").toExternalForm(), 30, 100, true, true);
-
+	private final Image addT = new Image(getClass().getResource("/addT.png").toExternalForm(), 43, 100, true, true);
+	private final Image delT = new Image(getClass().getResource("/delT.png").toExternalForm(), 35, 100, true, true);
 
 	private Button addTimeline = new Button("", new ImageView(addT));
-	private Button deleteTimeline = new Button("Delete Timeline");
+	private Button deleteTimeline = new Button("",new ImageView(delT));
 	private Button confirmTimeline = new Button("Finish");
 	// HBox for "Add Timeline" button
 	private HBox addTimelineButton = new HBox();
@@ -41,7 +42,6 @@ public class TimelineView {
 	private final DatePicker timelineStart = new DatePicker();
 	private final DatePicker timelineEnd = new DatePicker();
 	private TimelineListener timelineListener;
-
 	/**
 	 * Sets listener to be able to implement functions for certain UI actions
 	 * (such as button click)
@@ -65,7 +65,14 @@ public class TimelineView {
 	}
 
 	public Button getDeleteTimelineButton() {
-		deleteTimeline.setPadding(new Insets(5));
+		delTo.setText("Delete Timeline");
+		delTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+
+		deleteTimeline.setTooltip(delTo);
+		deleteTimeline.setMinSize(70, 35);
+		deleteTimeline.setMaxSize(70, 35);
+		deleteTimeline.setPadding(new Insets(0,0,0,-3));
+		deleteTimeline.getStylesheets().add(css);
 		deleteTimeline.setOnAction(new DeleteTimelineHandler());
 		return deleteTimeline;
 	}
@@ -75,13 +82,12 @@ public class TimelineView {
 	 * button in HBox
 	 */
 	private void addTimelineWindow() {
-		tooltip.isActivated();
-		tooltip.setText("Add Timeline");
+		addTo.setText("Add Timeline");
+		addTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 		addTimelineButton.getChildren().add(addTimeline);
-		addTimeline.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-		addTimeline.setTooltip(tooltip);
-		addTimeline.setMinSize(70, 30);
-		addTimeline.setMaxSize(70, 30);
+		addTimeline.setTooltip(addTo);
+		addTimeline.setMinSize(80, 35);
+		addTimeline.setMaxSize(80, 35);
 		addTimeline.setPadding(new Insets(0,0,0,-3));
 
 		addTimeline.getStylesheets().add(css);
