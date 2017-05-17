@@ -38,7 +38,7 @@ public class ApplicationView implements ChangeListener {
 	private final Tooltip loadTo = new Tooltip();
 	private final Tooltip helpTo = new Tooltip();
 
-	private Button saveButton = new Button("",new ImageView(saveT));;
+	private Button saveButton = new Button();
 	private EventView eventView;
 	private TimelineView timelineView;
 	private ApplicationListener appListener;
@@ -184,6 +184,7 @@ public class ApplicationView implements ChangeListener {
 	   the user through the fileChooser.*/
 
 	private Button saveTimelineButton() {
+		saveButton = new Button("",new ImageView(saveT));
 		saveTo.setText("Save Timeline");
 		saveTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 		saveButton.setTooltip(saveTo);
