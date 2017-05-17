@@ -62,7 +62,7 @@ public class TimelineInformationBox extends HBox {
 		setMinSize(width, 50);
 		text = new Text();
 		text.setFont(Font.font("Times New Roman", 25));
-		text.setText(start.getMonth()+": "+events.size()+" Events");
+		text.setText(start.getYear()+" "+start.getMonth()+": "+events.size()+" Events");
 		getChildren().add(text);
 	}
 	
