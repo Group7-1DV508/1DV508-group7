@@ -1,8 +1,9 @@
 package ui;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
-
 import controls.TimelineListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,27 +14,40 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class TimelineView {
+	private final Tooltip addTo = new Tooltip();
+	private final Tooltip delTo = new Tooltip();
+	private String css = this.getClass().getResource("/ui/application.css").toExternalForm();
+	private final Image addT = new Image(getClass().getResource("/addT.png").toExternalForm(), 43, 100, true, true);
+	private final Image delT = new Image(getClass().getResource("/delT.png").toExternalForm(), 35, 100, true, true);
 
-	private Button addTimeline = new Button("Add Timeline");
-	private Button deleteTimeline = new Button("Delete Timeline");
+	private Button addTimeline = new Button("", new ImageView(addT));
+	private Button deleteTimeline = new Button("",new ImageView(delT));
 	private Button confirmTimeline = new Button("Finish");
 	// HBox for "Add Timeline" button
 	private HBox addTimelineButton = new HBox();
 	// Stage for new window where user inputs information about timeline
 	private Stage addTimelineWindow = new Stage();
 	private final TextField timelineName = new TextField();
-	private final DatePicker timelineStart = new DatePicker();
-	private final DatePicker timelineEnd = new DatePicker();
+	private DatePicker timelineStart = new DatePicker();
+	private DatePicker timelineEnd = new DatePicker();
+	Converter converter = new Converter();
 	private TimelineListener timelineListener;
-
+	private boolean gotFilePath;
 	/**
 	 * Sets listener to be able to implement functions for certain UI actions
 	 * (such as button click)
@@ -57,7 +71,14 @@ public class TimelineView {
 	}
 
 	public Button getDeleteTimelineButton() {
-		deleteTimeline.setPadding(new Insets(5));
+		delTo.setText("Delete Timeline");
+		delTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+
+		deleteTimeline.setTooltip(delTo);
+		deleteTimeline.setMinSize(70, 35);
+		deleteTimeline.setMaxSize(70, 35);
+		deleteTimeline.setPadding(new Insets(0,0,0,-3));
+		deleteTimeline.getStylesheets().add(css);
 		deleteTimeline.setOnAction(new DeleteTimelineHandler());
 		return deleteTimeline;
 	}
@@ -67,9 +88,15 @@ public class TimelineView {
 	 * button in HBox
 	 */
 	private void addTimelineWindow() {
+		addTo.setText("Add Timeline");
+		addTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 		addTimelineButton.getChildren().add(addTimeline);
-		addTimelineButton.setPadding(new Insets(5));
-		addTimeline.setPadding(new Insets(5));
+		addTimeline.setTooltip(addTo);
+		addTimeline.setMinSize(80, 35);
+		addTimeline.setMaxSize(80, 35);
+		addTimeline.setPadding(new Insets(0,0,0,-3));
+
+		addTimeline.getStylesheets().add(css);
 		addTimeline.setOnAction(new TimelineHandler());
 	}
 
@@ -95,12 +122,14 @@ public class TimelineView {
 	private GridPane initAddTimeline() {
 
 		GridPane addTimelineRoot = new GridPane();
-
+		
 		confirmTimeline.setFont(new Font("Times new Roman", 20));
 		timelineName.setPromptText("Timeline Name");
 		timelineName.setFont(new Font("Times new Roman", 20));
 		timelineStart.setPromptText("Start Year");
+		timelineStart.setConverter(converter);
 		timelineEnd.setPromptText("End Year");
+		timelineEnd.setConverter(converter);
 
 		confirmTimeline.setMinSize(100, 30);
 
@@ -132,7 +161,7 @@ public class TimelineView {
 	 * to delete selected timeline. If ok is pressed, timeline is deleted and
 	 * alert window closes. If cancel is pressed, window closes without deleting
 	 * current timeline.
-	 * 
+	 *
 	 * @author Indre Kvedaraite
 	 *
 	 */
@@ -142,9 +171,14 @@ public class TimelineView {
 		public void handle(ActionEvent arg0) {
 			Stage stage = new Stage();
 			HBox buttony = new HBox();
-			Button timeline = new Button("Delete Timeline only");
-			Button timelineAndFile = new Button("Delete Timeline and File");
+			CheckBox checkBox = new CheckBox("Delete file along with timeline.");
+			Button timeline = new Button("Delete");
+			//Button timelineAndFile = new Button("Delete Timeline and File");
 			Button cancel = new Button("Cancel");
+			
+			if (!gotFilePath) {
+				checkBox.setDisable(true);
+			}
 
 			timeline.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -155,33 +189,19 @@ public class TimelineView {
 					confirmation.setContentText("Are you sure you wish to delete the current timeline?");
 					Optional<ButtonType> result = confirmation.showAndWait();
 					if (result.get() == ButtonType.OK) {
-						timelineListener.onDeleteTimeline();
+						if (checkBox.isSelected()) {
+							timelineListener.onDeleteFile();
+							timelineListener.onDeleteTimeline();
+						}
+						else {
+							timelineListener.onDeleteTimeline();
+						}
 						confirmation.close();
 						stage.close();
 					} else {
 						confirmation.close();
 					}
 				}
-			});
-
-			timelineAndFile.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent arg0) {
-					Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-					confirm.setTitle("Deleting Timeline and File");
-					confirm.setContentText(
-							"Are you sure you wish to delete the current timeline and its respective file?");
-					Optional<ButtonType> result = confirm.showAndWait();
-					if (result.get() == ButtonType.OK) {
-						timelineListener.onDeleteTimeline();
-						timelineListener.onDeleteFile();
-						stage.close();
-					} else {
-						confirm.close();
-					}
-				}
-
 			});
 
 			cancel.setOnAction(new EventHandler<ActionEvent>() {
@@ -191,12 +211,18 @@ public class TimelineView {
 					stage.close();
 				}
 			});
+			HBox checkbox = new HBox();
+			checkbox.getChildren().add(checkBox);
 			buttony.getChildren().clear();
 			buttony.setAlignment(Pos.CENTER);
 			buttony.setSpacing(20.0);
-			buttony.getChildren().addAll(timeline, timelineAndFile, cancel);
+			buttony.getChildren().addAll(timeline, cancel);
+			VBox box = new VBox();
+			box.setSpacing(20);
+			box.setPadding(new Insets(30));
+			box.getChildren().addAll(checkbox, buttony);
 
-			Scene scenery = new Scene(buttony, 500, 100);
+			Scene scenery = new Scene(box);
 
 			stage.setTitle("Delete Options");
 			stage.setScene(scenery);
@@ -231,8 +257,13 @@ public class TimelineView {
 	 */
 	private class ConfirmTimelineHandler implements EventHandler<ActionEvent> {
 
-		@Override 
+		@Override
 		public void handle(ActionEvent arg0) {
+			// Variables to collect input from user
+			String name = timelineName.getText();
+			LocalDate startDate = timelineStart.getValue();
+			LocalDate endDate = timelineEnd.getValue();
+		 
 
 			// Checks if all fields contain input
 			if (timelineName.getText().length() == 0) {
@@ -275,6 +306,36 @@ public class TimelineView {
 		alert.setTitle(name);
 		alert.setHeaderText(message);
 		alert.show();
+	}
+	public void setTimelineSaved(boolean b) {
+		gotFilePath = b;
+	}
+	
+	private class Converter extends StringConverter<LocalDate> {
+
+		String pattern = "GGyyyy-MM-dd";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+		
+		@Override
+		public String toString(LocalDate date) {
+			if (date != null) {
+				return formatter.format(date);
+			}
+			else {
+				return "";
+			}
+		}
+
+		@Override
+		public LocalDate fromString(String string) {
+			if (string != null && !string.isEmpty()) {
+				return LocalDate.parse(string, formatter);
+			}
+			else {
+				return null; 
+			}
+		}
+		
 	}
 
 }
