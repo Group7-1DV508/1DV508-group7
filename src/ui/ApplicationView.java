@@ -4,6 +4,8 @@ import controls.ApplicationListener;
 import controls.ChangeListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import functions.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
