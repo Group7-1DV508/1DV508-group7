@@ -2,6 +2,7 @@ package ui;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import controls.TimelineListener;
@@ -22,6 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class TimelineView {
 
@@ -35,6 +37,7 @@ public class TimelineView {
 	private final TextField timelineName = new TextField();
 	private final DatePicker timelineStart = new DatePicker();
 	private final DatePicker timelineEnd = new DatePicker();
+	Converter converter = new Converter();
 	private TimelineListener timelineListener;
 	
 	private boolean gotFilePath;
@@ -105,7 +108,9 @@ public class TimelineView {
 		timelineName.setPromptText("Timeline Name");
 		timelineName.setFont(new Font("Times new Roman", 20));
 		timelineStart.setPromptText("Start Year");
+		timelineStart.setConverter(converter);
 		timelineEnd.setPromptText("End Year");
+		timelineEnd.setConverter(converter);
 
 		confirmTimeline.setMinSize(100, 30);
 
@@ -287,6 +292,33 @@ public class TimelineView {
 	}
 	public void setTimelineSaved(boolean b) {
 		gotFilePath = b;
+	}
+	
+	private class Converter extends StringConverter<LocalDate> {
+
+		String pattern = "GGyyyy-MM-dd";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+		
+		@Override
+		public String toString(LocalDate date) {
+			if (date != null) {
+				return formatter.format(date);
+			}
+			else {
+				return "";
+			}
+		}
+
+		@Override
+		public LocalDate fromString(String string) {
+			if (string != null && !string.isEmpty()) {
+				return LocalDate.parse(string, formatter);
+			}
+			else {
+				return null; 
+			}
+		}
+		
 	}
 
 }
