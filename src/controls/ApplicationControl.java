@@ -78,7 +78,6 @@ public class ApplicationControl implements ApplicationListener {
 				success.showAndWait();
 			} catch (Exception e) {
 			}
-			
 		}
 
 		else {

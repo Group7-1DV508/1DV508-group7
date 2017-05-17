@@ -19,6 +19,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -147,7 +148,7 @@ public class TimelineView {
 			Stage stage = new Stage();
 			HBox buttony = new HBox();
 			Button timeline = new Button("Delete Timeline");
-			CheckBox checkFile = new CheckBox("-> Delete file too");
+			CheckBox checkBox = new CheckBox("-> Delete file too");
 			Button cancel = new Button("Cancel");
 
 			timeline.setOnAction(new EventHandler<ActionEvent>() {
@@ -158,13 +159,13 @@ public class TimelineView {
 					confirmation.setTitle("Deleting Timeline");
 					confirmation.setContentText("Are you sure you wish to delete the current timeline (and file is checked)? ");
 					Optional<ButtonType> result = confirmation.showAndWait();
-					if (result.get() == ButtonType.OK && checkFile.isSelected()) {
+					if (result.get() == ButtonType.OK && checkBox.isSelected()) {
 						timelineListener.onDeleteFile();
 						timelineListener.onDeleteTimeline();
 						confirmation.close();
 						stage.close();
 					}
-					else if(!checkFile.isSelected()) {
+					else if(result.get() == ButtonType.OK && !checkBox.isSelected()) {
 						timelineListener.onDeleteTimeline();
 						confirmation.close();
 						stage.close();
@@ -182,14 +183,19 @@ public class TimelineView {
 					stage.close();
 				}
 			});
+			HBox checkbox = new HBox();
+			checkbox.getChildren().add(checkBox);
 			buttony.getChildren().clear();
 			buttony.setAlignment(Pos.CENTER);
 			buttony.setSpacing(20.0);
-			
-			buttony.getChildren().addAll(timeline, cancel, checkFile);
+			buttony.getChildren().addAll(timeline, cancel);
+			VBox box = new VBox();
+			box.setSpacing(20);
+			box.setPadding(new Insets(30));
+			box.getChildren().addAll(checkbox, buttony);
 
-			Scene scenery = new Scene(buttony, 400, 200);
-			checkFile.relocate(250, 75);
+			Scene scenery = new Scene(box);
+
 			stage.setTitle("Delete Options");
 			stage.setScene(scenery);
 			stage.show();
