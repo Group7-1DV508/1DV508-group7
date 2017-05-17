@@ -32,10 +32,8 @@ public class EventControl implements EventListener {
 	public boolean onEditEventDuration(String name, String description, LocalDateTime start, LocalDateTime end) {
 		setCurrentEvent();
 		if (isCorrectInputDuration(name, description, start, end)) {
-			currentEvent.setEventName(name);
-			currentEvent.setEventDescription(description);
-			currentEvent.setEventStart(start);
-			currentEvent.setEventEnd(end);
+			currentApp.removeEvent();
+			currentApp.addEventToCurrentDuration(name, description, start, end);
 			currentApp.eventEdited();
 			return true;
 		}
@@ -46,9 +44,8 @@ public class EventControl implements EventListener {
 	public boolean onEditEvent(String name, String description, LocalDateTime start) {
 		setCurrentEvent();
 		if (isCorrectInput(name, description, start)) {
-			currentEvent.setEventName(name);
-			currentEvent.setEventDescription(description);
-			currentEvent.setEventStart(start);
+			currentApp.removeEvent();
+			currentApp.addEventToCurrent(name, description, start);
 			currentApp.eventEdited();
 			return true;
 		}
@@ -83,14 +80,21 @@ public class EventControl implements EventListener {
 	  * @return true if dates are correct
 	  */
 	private boolean areDatesCorrect (LocalDateTime start, LocalDateTime end) {
-		return start.compareTo(end) < 0;
+		return start.compareTo(end) <= 0;
 	}
 	
+	/**
+	 * Sets current event for this class
+	 */
 	public void setCurrentEvent() {
 		currentEvent = currentApp.getCurrentEvent();
 	}
 	
-	public Event getCurrentEvent (Event e) {
+	/**
+	 * Returns current event
+	 * @return current event
+	 */
+	public Event getCurrentEvent () {
 		return currentEvent;
 	}
 	/**
@@ -134,7 +138,7 @@ public class EventControl implements EventListener {
 	}
 
 	/**
-	 * validate that the LocalDateTime has been initialized (that it´s not
+	 * validate that the LocalDateTime has been initialized (that itï¿½s not
 	 * null)
 	 * 
 	 * @param start,
@@ -150,7 +154,7 @@ public class EventControl implements EventListener {
 	}
 
 	/**
-	 * validate that the LocalDateTime has been initialized (that it´s not
+	 * validate that the LocalDateTime has been initialized (that itï¿½s not
 	 * null)
 	 * 
 	 * @param end,
