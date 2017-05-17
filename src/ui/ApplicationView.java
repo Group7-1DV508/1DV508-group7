@@ -87,7 +87,8 @@ public class ApplicationView implements ChangeListener {
 	private final TimelineInformationBox informationBox = new TimelineInformationBox();
 	private final VisualTimeline currentTimeline = new VisualTimeline(eventBox);
 
-	private static String FILENAMEIN;
+	private static String FILENAMEINAddEvent;
+	private static String FILENAMEINDeleteEvent;
 
 
 
@@ -194,7 +195,8 @@ public class ApplicationView implements ChangeListener {
 		        Stage primaryStage = new Stage();
 		        
 		        primaryStage.setTitle("Help Window");
-
+		        VBox v1 = new VBox();
+		        VBox v2 = new VBox();
 		      //pic add:
 		      final File helpAddEventPic = new File("src/helpAddEvent.png");
 		      FileInputStream helpAddEventPicIS = null;
@@ -209,20 +211,42 @@ public class ApplicationView implements ChangeListener {
 		      ivhelpAddEventPic.setImage(imageHelpAddEvent);
 		      ivhelpAddEventPic.setPreserveRatio(true);
 		      ivhelpAddEventPic.setFitHeight(300);
-		
 		      
-		      VBox v1 = new VBox();
+		       
+		       final File helpDeleteEventPic = new File("src/helpDeleteEvent.png");
+			      FileInputStream helpDeleteEventPicIS = null;
+				try {
+					helpDeleteEventPicIS = new FileInputStream(helpDeleteEventPic);
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			      Image imageHelpDeleteEvent = new Image(helpAddEventPicIS);
+			      ImageView ivhelpDeleteEventPic = new ImageView();
+			      ivhelpDeleteEventPic.setImage(imageHelpDeleteEvent);
+			      ivhelpDeleteEventPic.setPreserveRatio(true);
+			      ivhelpDeleteEventPic.setFitHeight(300);
 
 		      //Label used to show help text:
-		      FILENAMEIN ="src/helpAddEvent.txt"; 
-		  String content = null;
+			      FILENAMEINAddEvent ="src/helpAddEvent.txt"; 
+		  String contenthelpAdd = null;
 			try {
-				content = new String(Files.readAllBytes(Paths.get(FILENAMEIN)));
+				contenthelpAdd = new String(Files.readAllBytes(Paths.get(FILENAMEINAddEvent)));
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			String content2 = content;
+			String contenthelpAdd2 = contenthelpAdd;
+			
+			 FILENAMEINAddEvent ="src/helpDeleteEvent.txt"; 
+			  String contenthelpDelete = null;
+				try {
+					contenthelpDelete = new String(Files.readAllBytes(Paths.get(FILENAMEINAddEvent)));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				String contenthelpDelete2 = contenthelpDelete;
 		      final Label description = new Label();
 		      description.setFont(Font.font("Verdana", 12));
 
@@ -242,12 +266,15 @@ public class ApplicationView implements ChangeListener {
 		       //Subcategories for Event:
 		       Hyperlink eventHelpAdd = new Hyperlink("");
 		       Hyperlink eventHelpDelete = new Hyperlink("");
+		       Hyperlink eventHelpEdit = new Hyperlink("");
 		       
 		       eventHelpAdd.setFont(Font.font("Verdana", 12));
 		       eventHelpDelete.setFont(Font.font("Verdana", 12));
+		       eventHelpEdit.setFont(Font.font("Verdana", 12));
 		       
 		       eventHelpAdd.setDisable(true);
 		       eventHelpDelete.setDisable(true);
+		       eventHelpEdit.setDisable(true);
 		          
 		       //Subcategories for Timeline:
 		       Hyperlink timelineHelpCreate = new Hyperlink("");
@@ -270,9 +297,12 @@ public class ApplicationView implements ChangeListener {
 		               	 eventHelpDelete.setLayoutY(43);
 		               	 eventHelpDelete.setText("How to delete event");
 		               	 eventHelpDelete.setDisable(false);
+		               	 eventHelpEdit.setLayoutY(55);
+		               	 eventHelpEdit.setText("How to edit an event");
+		               	 eventHelpEdit.setDisable(false);
 		               	 
-		               	 timeline.setLayoutY(58);
-		               	 other.setLayoutY(78);
+		               	 timeline.setLayoutY(70);
+		               	 other.setLayoutY(90);
 		               	 
 		               	 timelineHelpCreate.setText("");
 		            	     timelineHelpCreate.setDisable(true);
@@ -286,6 +316,8 @@ public class ApplicationView implements ChangeListener {
 		             	  eventHelpAdd.setDisable(true);
 		             	  eventHelpDelete.setText("");
 		             	  eventHelpDelete.setDisable(true);
+		              	 eventHelpEdit.setText("");
+                   	    eventHelpEdit.setDisable(true);
 		             	 
 		             	  timeline.setLayoutY(20);
 		             	  other.setLayoutY(40);
@@ -303,6 +335,8 @@ public class ApplicationView implements ChangeListener {
 		                    	  eventHelpAdd.setDisable(true);
 		                    	  eventHelpDelete.setText("");
 		                    	  eventHelpDelete.setDisable(true);
+		                    	  eventHelpEdit.setText("");
+		                    	  eventHelpEdit.setDisable(true);
 		                    	  timeline.setLayoutY(20);
 		                    	  
 		                    	 timelineHelpCreate.setLayoutY(55);
@@ -334,12 +368,12 @@ public class ApplicationView implements ChangeListener {
 		              }  
 		            });
 		          
-		          //events for subcategories (should later be gifs)
+		          //events for subcategories
 		          eventHelpAdd.setOnAction(new EventHandler<ActionEvent>() {
 
 		              @Override
 		              public void handle(ActionEvent event)  {
-		              	String evenHelpAddString = content2;
+		              	String evenHelpAddString = contenthelpAdd2;
 		              	if(description.getText() == evenHelpAddString){
 		              		description.setText("");;
 		              		v1.getChildren().remove(ivhelpAddEventPic);
@@ -355,11 +389,35 @@ public class ApplicationView implements ChangeListener {
 		              		
 		              	}
 		              }});
-		                
+		        eventHelpDelete.setOnAction(new EventHandler<ActionEvent>() {
+
+		              @Override
+		              public void handle(ActionEvent event)  {
+		              	String evenHelpDeleteString = contenthelpDelete2;
+		              	if(description.getText() == evenHelpDeleteString){
+		              		description.setText("");;
+		              		v1.getChildren().remove(ivhelpAddEventPic);
+		              		description.setText("");;
+		              	
+		                  	  }
+		              	else{
+		              		description.setLayoutX(140);
+		              		description.setLayoutY(10);
+		              		description.setText(evenHelpDeleteString);
+		              		v2.getChildren().add(ivhelpDeleteEventPic);
+		              		v2.setLayoutX(200);
+		              		v2.setLayoutY(370);
+		              		
+		              		
+		              	}
+		              }}); 
+		          
+		        
 		          Group root = new Group();
 		          root.getChildren().addAll(v1);
+		          root.getChildren().addAll(v2);
 		          root.getChildren().addAll(event1, timeline, other);
-		          root.getChildren().addAll(eventHelpAdd, eventHelpDelete);
+		          root.getChildren().addAll(eventHelpAdd, eventHelpDelete, eventHelpEdit);
 		          root.getChildren().addAll(timelineHelpCreate, timelineHelpDelete);
 		          root.getChildren().addAll(description);
 		          
