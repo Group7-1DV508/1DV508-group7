@@ -1,5 +1,6 @@
 package ui;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -120,6 +121,7 @@ public class TimelineView {
 	 * @return GridPane containing three text fields and a button.
 	 */
 	private GridPane initAddTimeline() {
+
 
 		GridPane addTimelineRoot = new GridPane();
 		
@@ -260,12 +262,6 @@ public class TimelineView {
 
 		@Override
 		public void handle(ActionEvent arg0) {
-			// Variables to collect input from user
-			String name = timelineName.getText();
-			LocalDate startDate = timelineStart.getValue();
-			LocalDate endDate = timelineEnd.getValue();
-		 
-
 			// Checks if all fields contain input
 			if (timelineName.getText().length() == 0) {
 				createAlertError("Error in timeline name", "Please choose a name for your timeline");
@@ -308,10 +304,7 @@ public class TimelineView {
 		alert.setHeaderText(message);
 		alert.show();
 	}
-	public void setTimelineSaved(boolean b) {
-		gotFilePath = b;
-	}
-	
+
 	private class Converter extends StringConverter<LocalDate> {
 
 		String pattern = "GGyyyy-MM-dd";
