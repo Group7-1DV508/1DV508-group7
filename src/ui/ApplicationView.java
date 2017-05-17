@@ -195,22 +195,26 @@ public class ApplicationView implements ChangeListener {
 		        
 		        primaryStage.setTitle("Help Window");
 
-		      //Gif add:
-		      final File file = new File("src/BS.png");
-		      FileInputStream fileInput = null;
+		      //pic add:
+		      final File helpAddEventPic = new File("src/helpAddEvent.png");
+		      FileInputStream helpAddEventPicIS = null;
 			try {
-				fileInput = new FileInputStream(file);
+				helpAddEventPicIS = new FileInputStream(helpAddEventPic);
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		      Image image = new Image(fileInput);
-		      ImageView iv1 = new ImageView();
-		      iv1.setImage(image);
+		      Image imageHelpAddEvent = new Image(helpAddEventPicIS);
+		      ImageView ivhelpAddEventPic = new ImageView();
+		      ivhelpAddEventPic.setImage(imageHelpAddEvent);
+		      ivhelpAddEventPic.setPreserveRatio(true);
+		      ivhelpAddEventPic.setFitHeight(300);
+		
+		      
 		      VBox v1 = new VBox();
 
 		      //Label used to show help text:
-		      FILENAMEIN ="src/HELP.txt"; 
+		      FILENAMEIN ="src/helpAddEvent.txt"; 
 		  String content = null;
 			try {
 				content = new String(Files.readAllBytes(Paths.get(FILENAMEIN)));
@@ -338,15 +342,15 @@ public class ApplicationView implements ChangeListener {
 		              	String evenHelpAddString = content2;
 		              	if(description.getText() == evenHelpAddString){
 		              		description.setText("");;
-		              		v1.getChildren().remove(iv1);
+		              		v1.getChildren().remove(ivhelpAddEventPic);
 		                  	  }
 		              	else{
 		              		description.setLayoutX(140);
 		              		description.setLayoutY(10);
 		              		description.setText(evenHelpAddString);
-		              		v1.getChildren().add(iv1);
-		              		v1.setLayoutX(100);
-		              		v1.setLayoutY(50);
+		              		v1.getChildren().add(ivhelpAddEventPic);
+		              		v1.setLayoutX(200);
+		              		v1.setLayoutY(370);
 		              		
 		              		
 		              	}
@@ -359,7 +363,7 @@ public class ApplicationView implements ChangeListener {
 		          root.getChildren().addAll(timelineHelpCreate, timelineHelpDelete);
 		          root.getChildren().addAll(description);
 		          
-		          primaryStage.setScene(new Scene(root, 500, 850));
+		          primaryStage.setScene(new Scene(root, 1267, 700));
 		          primaryStage.show();
 			}
 		});
