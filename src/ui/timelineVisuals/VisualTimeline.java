@@ -30,7 +30,6 @@ public class VisualTimeline extends GridPane {
 	
 	private LocalDateTime currentStartDate;
 	private LocalDateTime currentEndDate;
-	private Text text;
 	
 	boolean monthView;
 	boolean yearView;
@@ -102,14 +101,29 @@ public class VisualTimeline extends GridPane {
 	 * @param end - timeline end
 	 */
 	public void createYear(LocalDateTime start, LocalDateTime end) {
-		currentStartDate = start;
-		currentEndDate = end;
+		System.out.println(start.getYear());
+		if (end.getMonthValue() == 1 && end.getDayOfMonth() == 1) {
+			endDate = end.withYear(end.getYear()-1).withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59);
+			currentStartDate = start;
+			currentEndDate = end.withYear(end.getYear()-1).withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59);
+		}
+		else {
+			endDate = end;
+			currentStartDate = start;
+			currentEndDate = end;
+		}
+		
 		getChildren().clear();
 		int counter = 0;
-		while (start.getYear() <= end.getYear()) {
+		while (start.getYear() <= endDate.getYear()) {
 			year = new YearView();
-			year.setText(start.getYear()+"");
-			setYearOnAction(year, start, end);
+			if (start.getYear() > 0) {
+				year.setText(start.getYear()+"");
+			}
+			else {
+				year.setText((start.getYear()-1)+"");
+			}
+			setYearOnAction(year, start, endDate);
 			start = start.plusYears(1).withMonth(1);
 			this.add(year, counter, 0);
 			counter++;
@@ -150,6 +164,11 @@ public class VisualTimeline extends GridPane {
 			currentEndDate = start.withMonth(12).withDayOfMonth(31);
 			endDate = start.withMonth(12).withDayOfMonth(31);
 			monthEndDate = null;
+		}
+		else if (end.getDayOfMonth() == 1) {
+			currentEndDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
+			endDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
+			monthEndDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
 		}
 		else {
 			currentEndDate = end;

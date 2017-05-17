@@ -9,7 +9,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 /**
- * protected class, only classes in package ui got access.
  * creates an circle (EventShape) that holds variables to the duration bar
  * and the Event it represents, also holds variable to the Timeline the
  * Event belongs to
