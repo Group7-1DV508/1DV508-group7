@@ -211,13 +211,14 @@ public class ApplicationView implements ChangeListener {
 
 		      //Label used to show help text:
 		      FILENAMEIN ="src/HELP.txt"; 
-		      String content = null;
+		  String content = null;
 			try {
 				content = new String(Files.readAllBytes(Paths.get(FILENAMEIN)));
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			String content2 = content;
 		      final Label description = new Label();
 		      description.setFont(Font.font("Verdana", 12));
 
@@ -334,7 +335,7 @@ public class ApplicationView implements ChangeListener {
 
 		              @Override
 		              public void handle(ActionEvent event)  {
-		              	String evenHelpAddString = null;
+		              	String evenHelpAddString = content2;
 		              	if(description.getText() == evenHelpAddString){
 		              		description.setText("");;
 		              		v1.getChildren().remove(iv1);
