@@ -171,8 +171,8 @@ public class TimelineView {
 		public void handle(ActionEvent arg0) {
 			Stage stage = new Stage();
 			HBox buttony = new HBox();
-			CheckBox checkBox = new CheckBox("Delete file along with timeline.");
-			Button timeline = new Button("Delete");
+			Button timeline = new Button("Delete Timeline");
+			CheckBox checkBox = new CheckBox("-> Delete file too");
 			//Button timelineAndFile = new Button("Delete Timeline and File");
 			Button cancel = new Button("Cancel");
 			
@@ -186,19 +186,20 @@ public class TimelineView {
 				public void handle(ActionEvent arg0) {
 					Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
 					confirmation.setTitle("Deleting Timeline");
-					confirmation.setContentText("Are you sure you wish to delete the current timeline?");
+					confirmation.setContentText("Are you sure you wish to delete the current timeline (and file is checked)? ");
 					Optional<ButtonType> result = confirmation.showAndWait();
-					if (result.get() == ButtonType.OK) {
-						if (checkBox.isSelected()) {
-							timelineListener.onDeleteFile();
-							timelineListener.onDeleteTimeline();
-						}
-						else {
-							timelineListener.onDeleteTimeline();
-						}
+					if (result.get() == ButtonType.OK && checkBox.isSelected()) {
+						timelineListener.onDeleteFile();
+						timelineListener.onDeleteTimeline();
 						confirmation.close();
 						stage.close();
-					} else {
+					}
+					else if(result.get() == ButtonType.OK && !checkBox.isSelected()) {
+						timelineListener.onDeleteTimeline();
+						confirmation.close();
+						stage.close();
+					}
+					else {
 						confirmation.close();
 					}
 				}
@@ -336,6 +337,10 @@ public class TimelineView {
 			}
 		}
 		
+	}
+	
+	public void setTimelineSaved(boolean b) {
+		gotFilePath = b;
 	}
 
 }
