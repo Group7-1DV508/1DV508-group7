@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import functions.App;
-import functions.Event;
+
 import functions.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

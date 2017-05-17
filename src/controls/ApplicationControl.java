@@ -78,11 +78,10 @@ public class ApplicationControl implements ApplicationListener {
 			success.setHeaderText("Success!");
 			success.setContentText("Your file has been successfully saved!");
 			success.showAndWait();
-			
 		}
 
 		else {
-			
+
 			FileChooser chooseFile = new FileChooser();
 
 			// Set extension filter
@@ -96,9 +95,8 @@ public class ApplicationControl implements ApplicationListener {
 			try {
 				fileHandler.saveTimeline(app.getCurrentTimeline(), file);
 				appView.onTimelineSaved(app.getCurrentTimeline());
-			} 
-				catch (Exception saver) {
-				}
+			} catch (Exception saver) {
+			}
 		}
 	}
 
@@ -118,7 +116,6 @@ public class ApplicationControl implements ApplicationListener {
 			app.addTimelineToList(t);
 		} catch (Exception loader) {
 		}
-
 	}
 
 	@Override
