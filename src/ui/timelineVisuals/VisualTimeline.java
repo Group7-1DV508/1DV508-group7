@@ -101,7 +101,7 @@ public class VisualTimeline extends GridPane {
 	 * @param end - timeline end
 	 */
 	public void createYear(LocalDateTime start, LocalDateTime end) {
-		
+		System.out.println(start.getYear());
 		if (end.getMonthValue() == 1 && end.getDayOfMonth() == 1) {
 			endDate = end.withYear(end.getYear()-1).withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59);
 			currentStartDate = start;
@@ -117,7 +117,12 @@ public class VisualTimeline extends GridPane {
 		int counter = 0;
 		while (start.getYear() <= endDate.getYear()) {
 			year = new YearView();
-			year.setText(start.getYear()+"");
+			if (start.getYear() > 0) {
+				year.setText(start.getYear()+"");
+			}
+			else {
+				year.setText((start.getYear()-1)+"");
+			}
 			setYearOnAction(year, start, endDate);
 			start = start.plusYears(1).withMonth(1);
 			this.add(year, counter, 0);
