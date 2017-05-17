@@ -258,10 +258,8 @@ public class EventView {
 						 * possible
 						 */
 						else {
-							LocalDateTime startTime = createLocalDateTime(checkInDatePickerStart.getValue().getYear()+"", 
-									checkInDatePickerStart.getValue().getMonthValue()+"",
-									checkInDatePickerStart.getValue().getDayOfMonth()+"",
-									timeStart.getValue());
+							LocalDateTime startTime = LocalDateTime.of(checkInDatePickerStart.getValue(),
+									LocalTime.parse(timeStart.getValue() + ":00"));
 				                String eventname = name.getText();
 				                String eventdescrip = description.getText();
 							
@@ -292,10 +290,8 @@ public class EventView {
 								// duration
 
 							else if (!e.isDuration() && checkInDatePickerEnd.getValue() != null) {
-								LocalDateTime endTime = createLocalDateTime(checkInDatePickerEnd.getValue().getYear()+"", 
-										checkInDatePickerEnd.getValue().getMonthValue()+"",
-										checkInDatePickerEnd.getValue().getDayOfMonth()+"",
-										timeEnd.getValue());								
+								LocalDateTime endTime = LocalDateTime.of(checkInDatePickerEnd.getValue(),
+										LocalTime.parse(timeEnd.getValue() + ":00"));							
 				           
 								
 				                if (startTime.compareTo(endTime) > 0) {
@@ -314,10 +310,8 @@ public class EventView {
 							}// End of edit event from non duration to duration
 							else {
 			            	// Get end date, since it's event with duration  
-							LocalDateTime endTime = createLocalDateTime(checkInDatePickerEnd.getValue().getYear()+"", 
-									checkInDatePickerEnd.getValue().getMonthValue()+"",
-									checkInDatePickerEnd.getValue().getDayOfMonth()+"",
-									timeEnd.getValue());
+							LocalDateTime endTime = LocalDateTime.of(checkInDatePickerEnd.getValue(),
+									LocalTime.parse(timeEnd.getValue() + ":00"));
 			
 			                
 			                if (startTime.compareTo(endTime) > 0) {
