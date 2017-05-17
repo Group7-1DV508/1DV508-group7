@@ -2,6 +2,7 @@ package ui;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -30,6 +31,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class EventView {
 
@@ -40,7 +42,6 @@ public class EventView {
 
 	// TextFields - Add Event Window
 	private TextField name;
-
 
 	// Buttons
 	private Button addEvent = new Button("Add Event");
@@ -59,23 +60,23 @@ public class EventView {
 	private ComboBox<String> timeStart = new ComboBox<String>();
 	private ComboBox<String> timeEnd = new ComboBox<String>();
 
-	//Labels - View Event Window
+	// Labels - View Event Window
 	private Label title = new Label("Title:");
 	private Label eventStart = new Label("Event start:");
 	private Label eventEnd = new Label("Event end:");
 	private Label des = new Label("Description:");
-	
-	// Other
-	private DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d yyyy  HH:mm");
-	private DatePicker checkInDatePickerStart = new DatePicker();
-	private DatePicker checkInDatePickerEnd = new DatePicker();
-	
 
+	// Other
+	private DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d yyyy (GG)  HH:mm");
+	private final DatePicker checkInDatePickerStart = new DatePicker();
+	private final DatePicker checkInDatePickerEnd = new DatePicker();
+	private final Converter converter = new Converter();
 
 	/**
 	 * Update the EventListener variable with the EventListener given as input
 	 *
-	 * @param eventList, (EventListener)
+	 * @param eventList,
+	 *            (EventListener)
 	 */
 	public void addListener(EventListener eventList) {
 		eventListener = eventList;
@@ -99,12 +100,11 @@ public class EventView {
 
 			@Override
 			public void handle(ActionEvent event) {
-				
+
 				final Stage eventWindow = new Stage();
 				GridPane textFieldsStart = createAddEventWindow();
 				eventWindow.setTitle("Add event window");
 				eventWindow.setResizable(false);
-
 
 				/*
 				 * When "Ok" button is clicked, textfields are fetched and
@@ -123,38 +123,35 @@ public class EventView {
 							createAlertError("Empty fields", "Name, description and start Date can't be empty!");
 						} // End of alert for empty fields
 						else {
-							LocalDateTime startTime = createLocalDateTime(checkInDatePickerStart.getValue().getYear()+"", 
-									checkInDatePickerStart.getValue().getMonthValue()+"",
-									checkInDatePickerStart.getValue().getDayOfMonth()+"",
-									timeStart.getValue());
+							LocalDateTime startTime = LocalDateTime.of(checkInDatePickerStart.getValue(),
+									LocalTime.parse(timeStart.getValue() + ":00"));
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
 							/*
-							 * If the event doesn't have End Date an non duration
-							 * Event is created
+							 * If the event doesn't have End Date an non
+							 * duration Event is created
 							 */
 							if (isNotDurationEvent()) {
 								// Create event
 								if (eventListener.onAddEvent(eventname, eventdescrip, startTime)) {
 									eventWindow.close();
-								} // End for successfully creating non duration event
-								
+								} // End for successfully creating non duration
+									// event
+
 								// Check if event is out of timeline
 								else {
 									createAlertError("Error in chosing time", "It appears your are trying to create an event outside of timeline!");
 								} // End of alert for out of timeline event
 							} // End of creating non duration event
-							
+
 							/*
-							 * If the Event has End Time an Event with duration is
-							 * created
+							 * If the Event has End Time an Event with duration
+							 * is created
 							 */
 							else {
 								// Event is with duration, end time is created
-								LocalDateTime endTime = createLocalDateTime(checkInDatePickerEnd.getValue().getYear()+"", 
-										checkInDatePickerEnd.getValue().getMonthValue()+"",
-										checkInDatePickerEnd.getValue().getDayOfMonth()+"",
-										timeEnd.getValue());
+								LocalDateTime endTime = LocalDateTime.of(checkInDatePickerEnd.getValue(),
+										LocalTime.parse(timeEnd.getValue() + ":00"));
 								// Check if start time is later than end time
 								if (startTime.compareTo(endTime) > 0) {
 									createAlertError("Error in event dates", "Start date has to be earlier than end date!");
@@ -163,12 +160,14 @@ public class EventView {
 								// Event has correct start and end date, create event with duration 
 								else  {
 									if (eventListener.onAddEventDuration(eventname, eventdescrip, startTime, endTime)) {
-									eventWindow.close();
-									} // End of successfully creating event with duration
+										eventWindow.close();
+									} // End of successfully creating event with
+										// duration
 									else {
 										createAlertError("Error in chosing time", "It appears your are trying to create an event outside of timeline!");
 									} // End of alert for event out of timeline
-								} // End of successfully creating event with duration
+								} // End of successfully creating event with
+									// duration
 							} // End of creating event with duration
 						} // End of creating event
 					} // End of handle() method
@@ -198,18 +197,22 @@ public class EventView {
 		return addEvent;
 
 	}
-	
+
 	/**
 	 * Method to disable addEvent when no timelines are loaded
-	 * @param notShown true if button should be disabled
+	 * 
+	 * @param notShown
+	 *            true if button should be disabled
 	 */
-	public void setDisable (boolean notShown) {
+	public void setDisable(boolean notShown) {
 		addEvent.setDisable(notShown);
 	}
 
 	/**
 	 * Creates and returns Edit Event button and it's functionalities
-	 * @param e event to be edited
+	 * 
+	 * @param e
+	 *            event to be edited
 	 * @return editEvent button
 	 */
 	public Button EditButton(Event e) {
@@ -224,7 +227,6 @@ public class EventView {
 
 				setDisableFields(false);
 
-
 				ok.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
@@ -233,7 +235,7 @@ public class EventView {
 						 * Checking for empty fields or unfinished date choosing
 						 * example, user picked end time, but not end date.
 						 */
-						
+
 						if (checkInDatePickerEnd.getEditor().getText().length() == 0) {
 							checkInDatePickerEnd.setValue(null);
 						}
@@ -246,14 +248,14 @@ public class EventView {
 						if (timeStart.getValue().length() > 5) {
 							timeStart.setValue(null);
 						}
-						
+            
 						if (isNeededFieldEmpty()) {
 							createAlertError("Empty fields", "Name, description and start Date can't be empty!");
 						} // End of checking if fields are empty
-			
+
 						/*
-						 * If all fields were not empty,
-						 * event editing is possible
+						 * If all fields were not empty, event editing is
+						 * possible
 						 */
 						else {
 							LocalDateTime startTime = createLocalDateTime(checkInDatePickerStart.getValue().getYear()+"", 
@@ -275,7 +277,8 @@ public class EventView {
 				                else {
 				                	createAlertError("Error in chosing time", "It appears your are trying to create an event outside of timeline!");
 								}
-				            } // End of editing of event from non duration to non duration
+							} // End of editing of event from non duration to
+								// non duration
 							else if (e.isDuration() && checkInDatePickerEnd.getValue() == null) {
 								if(eventListener.onEditEvent(eventname, eventdescrip, startTime)) {
 									setNewTextsDuration(startTime, null);
@@ -284,9 +287,10 @@ public class EventView {
 				                else {
 				                	createAlertError("Error in chosing time", "It appears your are trying to create an event outside of timeline!");
 								} // End of alert for out of timeline event
-								
-							}// End of editing event from duration to non duration
-							
+
+							} // End of editing event from duration to non
+								// duration
+
 							else if (!e.isDuration() && checkInDatePickerEnd.getValue() != null) {
 								LocalDateTime endTime = createLocalDateTime(checkInDatePickerEnd.getValue().getYear()+"", 
 										checkInDatePickerEnd.getValue().getMonthValue()+"",
@@ -334,7 +338,6 @@ public class EventView {
 			            } // End of event editing
 			          } // End of handle() method
 					}); // End of setOnAction method
-
 				/*
 				 * when cancel button is clicked the popup window is closed
 				 */
@@ -347,14 +350,17 @@ public class EventView {
 				}); // End of setOnAction for cancel button
 			} // End of handle() for editEvent button
 		}); // End of setOnAction for editEvent button
-		
+
 		return editEvent;
 	}
 
 	/**
 	 * Delete button responsible for delete selected event
-	 * @param e event to be deleted
-	 * @param s closes event information window of delete event
+	 * 
+	 * @param e
+	 *            event to be deleted
+	 * @param s
+	 *            closes event information window of delete event
 	 * @return button with set action on it.
 	 */
 	public Button getDeleteButton(Event e, Stage s) {
@@ -374,11 +380,11 @@ public class EventView {
 				Optional<ButtonType> result = confirmation.showAndWait();
 				// if user chose ok, event is deleted, information
 				// window is closed as it is not needed
-				if (result.get() == ButtonType.OK){
-				    if (eventListener.onDeleteEvent()) {
-				    	confirmation.close();
-				    	s.close();
-				    }
+				if (result.get() == ButtonType.OK) {
+					if (eventListener.onDeleteEvent()) {
+						confirmation.close();
+						s.close();
+					}
 				}
 				// user chose cancel, so alert window is closed
 				else {
@@ -391,7 +397,6 @@ public class EventView {
 		return delete;
 	}
 
-
 	/**
 	 * Help method to create popup window, initializes all TextFields, Labels
 	 * and Buttons for the window, and then add it all to the GridPane
@@ -402,7 +407,7 @@ public class EventView {
 	private GridPane createAddEventWindow() {
 
 		GridPane pane = new GridPane();
-		
+
 		// TextFields,TextAreas initialized
 		name = new TextField();
 		name.setPromptText("Event name");
@@ -414,7 +419,7 @@ public class EventView {
 		description.setFont(Font.font("Times new Roman", 20));
 		description.setPrefSize(446, 200);
 		description.setWrapText(true);
-		
+
 		// In case fields are disabled
 		setDisableFields(false);
 		checkInDatePickerStart.setValue(null);
@@ -447,23 +452,24 @@ public class EventView {
 				"20:00", "21:00", "22:00", "23:00");
 		timeEnd.setStyle("-fx-font: 16 timesnewroman;");
 		timeEnd.setMinWidth(130);
-	    
+
 		// Date pickers for start event
 		checkInDatePickerStart.setStyle("-fx-font: 16 timesnewroman;");
 		checkInDatePickerStart.setPromptText("Event start");
-		
+		checkInDatePickerStart.setConverter(converter);
+
 		// Date pickers for end event
 		checkInDatePickerEnd.setStyle("-fx-font: 16 timesnewroman;");
 		checkInDatePickerEnd.setPromptText("Event end");
+		checkInDatePickerEnd.setConverter(converter);
 
 		// Buttons initialized
 		ok.setPrefSize(135, 35);
-		ok.setFont(Font.font("Times new Roman",20));
+		ok.setFont(Font.font("Times new Roman", 20));
 
 		cancel.setPrefSize(135, 35);
 		cancel.setTranslateX(175);
-		cancel.setFont(Font.font("Times new Roman",20));
-
+		cancel.setFont(Font.font("Times new Roman", 20));
 
 		// HBox initialized
 
@@ -481,14 +487,14 @@ public class EventView {
 		HBox.setMargin(timeEnd, new Insets(5));
 		hb1.getChildren().addAll(checkInDatePickerEnd, timeEnd);
 		hb1.setAlignment(Pos.CENTER);
-		hb2.getChildren().addAll(ok,cancel);
+		hb2.getChildren().addAll(ok, cancel);
 		hb3.getChildren().add(name);
 		hb4.getChildren().add(description);
 
-		hb.setPadding(new Insets(0,0,10,0));
-		hb1.setPadding(new Insets(0,0,30,0));
-		hb3.setPadding(new Insets(0,0,10,0));
-		hb4.setPadding(new Insets(0,0,10,0));
+		hb.setPadding(new Insets(0, 0, 10, 0));
+		hb1.setPadding(new Insets(0, 0, 30, 0));
+		hb3.setPadding(new Insets(0, 0, 10, 0));
+		hb4.setPadding(new Insets(0, 0, 10, 0));
 
 		// Add initialized Nodes to the GridPane
 		pane.setPadding(new Insets(20));
@@ -502,9 +508,10 @@ public class EventView {
 	}
 
 	/**
-	 * Creates a window that displays information about 
-	 * certain event
-	 * @param e event that information is displayed about
+	 * Creates a window that displays information about certain event
+	 * 
+	 * @param e
+	 *            event that information is displayed about
 	 */
 	public void ViewEventInfo(Event e) {
 		final Stage eventWindow = new Stage();
@@ -519,32 +526,34 @@ public class EventView {
 		info.setTextFill(Color.BLACK);
 		info.setAlignment(Pos.CENTER);
 
-		title.setFont(Font.font ("Verdana", FontWeight.BOLD, 17));
+		title.setFont(Font.font("Verdana", FontWeight.BOLD, 17));
 		title.setTranslateX(8);
 		titleText = new Text("  " + e.getEventName());
-		titleText.setFont(Font.font ("Verdana", 15));
+		titleText.setFont(Font.font("Verdana", 15));
 		titleText.setWrappingWidth(250);
 		titleText.setTranslateY(-13);
 
 		String formattedStringS = e.getEventStart().format(format);
 
-		eventStart.setFont(Font.font ("Verdana", FontWeight.BOLD, 17));
+		eventStart.setFont(Font.font("Verdana", FontWeight.BOLD, 17));
 		eventStart.setTranslateX(8);
 		eventStart.setTranslateY(-20);
 
 		dateStartText = new Text(formattedStringS);
-		dateStartText.setFont(Font.font("Verdana", 15));;
+		dateStartText.setFont(Font.font("Verdana", 15));
+		;
 		dateStartText.setWrappingWidth(250);
 		dateStartText.setTranslateY(-33);
 		dateStartText.setTranslateX(8);
 
-		des.setFont(Font.font ("Verdana", FontWeight.BOLD, 17));
+		des.setFont(Font.font("Verdana", FontWeight.BOLD, 17));
 		des.setTranslateX(8);
 		des.setTranslateY(-40);
 
 		decText = new Text(e.getEventDescription());
 		decText.setWrappingWidth(250);
-		decText.setFont(Font.font("Verdana", 15));;
+		decText.setFont(Font.font("Verdana", 15));
+		;
 		decText.setTranslateX(8);
 		decText.setTranslateY(-53);
 		
@@ -556,7 +565,6 @@ public class EventView {
 		eventEnd.setFont(Font.font ("Verdana", FontWeight.BOLD, 17));
 		eventEnd.setTranslateX(8);
 		eventEnd.setTranslateY(-35);
-
 
 		if (e.getEventEnd() != null) {
 			String formattedStringE = e.getEventEnd().format(format);
@@ -577,13 +585,14 @@ public class EventView {
 	}
 
 	/**
-	 * Responsible for getting information about event
-	 * in edit event window
-	 * @param e event to be edited
-	 * @return a window 
+	 * Responsible for getting information about event in edit event window
+	 * 
+	 * @param e
+	 *            event to be edited
+	 * @return a window
 	 */
 	public VBox createEditEventWindow(Event e) {
-		
+
 		VBox editeHolder = new VBox();
 		editeHolder.setPrefSize(400, 400);
 		editeHolder.setTranslateX(50);
@@ -591,14 +600,16 @@ public class EventView {
 		description = new TextArea(e.getEventDescription());
 		Label nameL = new Label("Name");
 		Label descriptionL = new Label("Description");
-		
+
 		LocalDateTime startDate = e.getEventStart();
+    checkInDatePickerStart.setConverter(converter);
+    checkInDatePickerStart.setValue(startDate.toLocalDate());
+    
 		String startLocalDate = localDateTimeToString(startDate);
 		LocalDate localDate = LocalDate.parse(startLocalDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		checkInDatePickerStart.setValue(localDate);
 		checkInDatePickerStart.setMinSize(150, 30);
 		checkInDatePickerEnd.setMinSize(150, 30);
-		
+
 		Label yearL = new Label("Start Date");
 		int strHour = e.getEventStart().getHour();
 		timeStart = new ComboBox<String>();
@@ -623,9 +634,11 @@ public class EventView {
 
 		if (e.getEventEnd() != null) {
 			LocalDateTime endDate = e.getEventEnd();
+			checkInDatePickerEnd.setConverter(converter);
+      checkInDatePickerEnd.setValue(endDate.toLocalDate());
+
 			String endLocalDate = localDateTimeToString(endDate);
 			LocalDate localDate2 = LocalDate.parse(endLocalDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			checkInDatePickerEnd.setValue(localDate2);
 
 			int strHourEnd = e.getEventEnd().getHour();
 
@@ -652,7 +665,6 @@ public class EventView {
 		yearL.setFont(Font.font("Verdana", 13));
 		hourL.setFont(Font.font("Verdana", 13));
 
-
 		VBox vb1 = new VBox();
 		VBox vb2 = new VBox();
 		VBox vb3 = new VBox();
@@ -668,29 +680,29 @@ public class EventView {
 		HBox hb2 = new HBox();
 		HBox hb3 = new HBox();
 
-		vb1.getChildren().addAll(nameL,name);
-		vb1.setPadding(new Insets(10,10,10,10));
+		vb1.getChildren().addAll(nameL, name);
+		vb1.setPadding(new Insets(10, 10, 10, 10));
 
-		vb2.getChildren().addAll(descriptionL,description);
-		vb2.setPadding(new Insets(10,10,10,10));
+		vb2.getChildren().addAll(descriptionL, description);
+		vb2.setPadding(new Insets(10, 10, 10, 10));
 
-		vb3.getChildren().addAll(yearL,checkInDatePickerStart);
-		vb3.setPadding(new Insets(0,5,0,0));
+		vb3.getChildren().addAll(yearL, checkInDatePickerStart);
+		vb3.setPadding(new Insets(0, 5, 0, 0));
 
-		vb6.getChildren().addAll(hourL,timeStart);
-		vb6.setPadding(new Insets(0,5,0,0));
+		vb6.getChildren().addAll(hourL, timeStart);
+		vb6.setPadding(new Insets(0, 5, 0, 0));
 
-		vb7.getChildren().addAll(yearLE,checkInDatePickerEnd);
-		vb7.setPadding(new Insets(0,5,0,0));
+		vb7.getChildren().addAll(yearLE, checkInDatePickerEnd);
+		vb7.setPadding(new Insets(0, 5, 0, 0));
 
-		vb10.getChildren().addAll(hourLE,timeEnd);
-		vb10.setPadding(new Insets(0,5,0,0));
+		vb10.getChildren().addAll(hourLE, timeEnd);
+		vb10.setPadding(new Insets(0, 5, 0, 0));
 
-		hb1.getChildren().addAll(vb3,vb4,vb5,vb6);
-		hb1.setPadding(new Insets(5,5,5,10));
+		hb1.getChildren().addAll(vb3, vb4, vb5, vb6);
+		hb1.setPadding(new Insets(5, 5, 5, 10));
 
-		hb2.getChildren().addAll(vb7,vb8,vb9,vb10);
-		hb2.setPadding(new Insets(5,5,5,10));
+		hb2.getChildren().addAll(vb7, vb8, vb9, vb10);
+		hb2.setPadding(new Insets(5, 5, 5, 10));
 
 		h1.add(vb1, 0, 1);
 		h1.add(vb2, 0, 2);
@@ -717,69 +729,28 @@ public class EventView {
 	}
 
 	/**
-	 * help method to create a LocalDateTime from user input
-	 *
-	 * @param year - String
-	 * @param month - String
-	 * @param day - String
-	 * @param hour - String
-	 * @return LocalDateTime created from user input
-	 */
-	private LocalDateTime createLocalDateTime(String year, String month, String day, String hour) {
-		String localDate;
-		LocalDateTime time = null;
-
-		// if user input year is less than 4 digits, zeroes will be added in
-		// front.
-		for (int i = 0; i < 4 - year.length(); i++) {
-			year = "0" + year;
-		}
-		// if month is less than 2 digits, zeroes will be added in front
-		for (int i = 0; i < 2 - month.length(); i++) {
-			month = "0" + month;
-		}
-		// if day is less than 2 digits, zeroes will be added in front
-		for (int i = 0; i < 2 - day.length(); i++) {
-			day = "0" + day;
-		}
-		// creates the String format that is needed to create LocalDateTime
-		localDate = year + "-" + month + "-" + day + "T" + hour + ":00";
-
-		try {
-			time = LocalDateTime.parse(localDate);
-		} catch (Exception e) {
-			// if input is wrong, show error (popup window) message.
-			Alert fieldError = new Alert(Alert.AlertType.ERROR, "Date input is not correct.");
-			fieldError.showAndWait();
-			System.out.println(e);
-		}
-		return time;
-
-	}
-
-	/**
 	 * help method to check if any fields that are needed to create an Event is
 	 * empty (Name, Description, Year, Month, Day and Hour)
 	 *
 	 * @return boolean, true if needed fields are empty otherwise false
 	 */
 	private boolean isNeededFieldEmpty() {
-		//Check if name or description is empty
+		// Check if name or description is empty
 		if (name.getText().isEmpty() || description.getText().isEmpty()) {
 			return true;
-		// check if date picker for start is not selected or if time for start 
-		// is not selected
-		} else if (checkInDatePickerStart.getValue() == null
-				|| timeStart.getValue() == null) {
+			// check if date picker for start is not selected or if time for
+			// start
+			// is not selected
+		} else if (checkInDatePickerStart.getValue() == null || timeStart.getValue() == null) {
 			return true;
 		}
-		// check if date picker for end value is selected, but time is not selected
+		// check if date picker for end value is selected, but time is not
+		// selected
 		// or if date picker for end is not selected, but time is selected
 		else if ((checkInDatePickerEnd.getValue() != null && timeEnd.getValue() == null)
 				|| (checkInDatePickerEnd.getValue() == null && timeEnd.getValue() != null)) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
@@ -798,6 +769,7 @@ public class EventView {
 			return false;
 		}
 	}
+
 	
 	/**
 	 * Help method to create an alert of type error
@@ -864,6 +836,31 @@ public class EventView {
 		date = date + l.getDayOfMonth();
 		
 		return date;
+}
+
+	private class Converter extends StringConverter<LocalDate> {
+
+		String pattern = "GGyyyy-MM-dd";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+
+		@Override
+		public String toString(LocalDate date) {
+			if (date != null) {
+				return formatter.format(date);
+			} else {
+				return "";
+			}
+		}
+
+		@Override
+		public LocalDate fromString(String string) {
+			if (string != null && !string.isEmpty()) {
+				return LocalDate.parse(string, formatter);
+			} else {
+				return null;
+			}
+		}
+
 	}
 
 }
