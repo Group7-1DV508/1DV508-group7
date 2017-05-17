@@ -1,6 +1,5 @@
 package ui;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -267,46 +266,46 @@ public class TimelineView {
 		 
 
 			// Checks if all fields contain input
-			if (name.length() == 0) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error in timeline name");
-				alert.setHeaderText("Please choose a name for your timeline");
-				alert.show();
+			if (timelineName.getText().length() == 0) {
+				createAlertError("Error in timeline name", "Please choose a name for your timeline");
 			}
 
-			else if (startDate == null) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error in timeline start date");
-				alert.setHeaderText("Please choose a start date for your timeline");
-				alert.show();
+			else if (timelineStart.getEditor().getText().length() == 0) {
+				createAlertError("Error in timeline start date", "Please choose a start date for your timeline");
 			}
 
-			else if (endDate == null) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error in timeline end date");
-				alert.setHeaderText("Please choose an end date for your timeline.");
-				alert.show();
-
+			else if (timelineEnd.getEditor().getText().length() == 0) {
+				createAlertError("Error in timeline end date", "Please choose an end date for your timeline.");
 			}
-      else{
-			LocalDateTime start = LocalDateTime.of(startDate, LocalTime.of( 00,00));
-			LocalDateTime end = LocalDateTime.of(endDate, LocalTime.of( 00,00));
-
-			// If timeline was added successfully, closes the window
-			if (timelineListener.onAddTimeline(name, start, end)) {
-				timelineName.clear();
-				timelineStart.getEditor().clear();
-				timelineEnd.getEditor().clear();
-				addTimelineWindow.close();
-
-				timelineName.clear();
-				timelineStart.getEditor().clear();
-				timelineEnd.getEditor().clear();
-
+			else if (timelineStart.getValue().compareTo(timelineEnd.getValue()) > 0) {
+				createAlertError("Error in timeline end date", "Start date cannot be earlier than end date.");
+			}
+			else{
+				String name = timelineName.getText();
+				LocalDateTime start = LocalDateTime.parse(timelineStart.getValue() + "T00:00");
+				LocalDateTime end = LocalDateTime.parse(timelineEnd.getValue()+ "T00:00");
+				
+				// If timeline was added successfully, closes the window
+				if (timelineListener.onAddTimeline(name, start, end)) {
+					timelineName.clear();
+					timelineStart.setValue(null);
+					timelineEnd.setValue(null);
+					addTimelineWindow.close();
 				}
 			}
 		}
-
+	}
+	
+	/**
+	 * Help method to create alert of type error
+	 * @param name Name of alert
+	 * @param message Message displayed in alert
+	 */
+	private void createAlertError(String name, String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle(name);
+		alert.setHeaderText(message);
+		alert.show();
 	}
 	public void setTimelineSaved(boolean b) {
 		gotFilePath = b;
