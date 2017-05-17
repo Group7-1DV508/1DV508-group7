@@ -71,13 +71,14 @@ public class ApplicationControl implements ApplicationListener {
 			try {
 				fileHandler.saveTimeline(app.getCurrentTimeline(), app.getCurrentTimeline().getFile());
 				appView.onTimelineSaved(app.getCurrentTimeline());
+				Alert success = new Alert(Alert.AlertType.INFORMATION);
+				success.setTitle("Saving complete");
+				success.setHeaderText("Success!");
+				success.setContentText("Your file has been successfully saved!");
+				success.showAndWait();
 			} catch (Exception e) {
 			}
-			Alert success = new Alert(Alert.AlertType.INFORMATION);
-			success.setTitle("Saving complete");
-			success.setHeaderText("Success!");
-			success.setContentText("Your file has been successfully saved!");
-			success.showAndWait();
+			
 		}
 
 		else {
