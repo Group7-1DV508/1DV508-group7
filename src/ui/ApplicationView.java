@@ -36,7 +36,7 @@ public class ApplicationView implements ChangeListener {
 	private final Tooltip loadTo = new Tooltip();
 	private final Tooltip helpTo = new Tooltip();
 
-	private Button savey;
+	private Button saveButton = new Button("",new ImageView(saveT));;
 	private EventView eventView;
 	private TimelineView timelineView;
 	private ApplicationListener appListener;
@@ -45,6 +45,7 @@ public class ApplicationView implements ChangeListener {
 	// contains ComboBox to choose current timeline, add/delete timeline
 	private final HBox timelineButtons = new HBox();
 	private final HBox helpButton = new HBox();
+	boolean filePath;
 
 	/*
 	 * contains all parts within the Current Timeline View Add/Edit/Delete event
@@ -57,18 +58,8 @@ public class ApplicationView implements ChangeListener {
 	private final HBox eventButtons = new HBox();
 	// comboBox to choose timeline
 	private final ComboBox<Timeline> chooseTimeline = new ComboBox<Timeline>();
-	// contains all created events for the current timeline
-	private ArrayList<EventShape> eventShapes = new ArrayList<EventShape>();
-	// contains all months/years for the current timeline
-	//private final GridPane currentTimeline = new GridPane();
-	// list of months, used to divide the month names to the month boxes
-	private final ArrayList<Text> monthTexts = new ArrayList<Text>();
-	// contains one month
-	private HBox timelineMonth;
 	// contains all events at the correct position
 	private final ShowEvents eventBox = new ShowEvents();
-	// shape that represents an event
-	private EventShape eventShape;
 	private final TimelineInformationBox informationBox = new TimelineInformationBox();
 	private final VisualTimeline currentTimeline = new VisualTimeline(eventBox);
 
@@ -79,7 +70,7 @@ public class ApplicationView implements ChangeListener {
 	public ApplicationView() {
 		eventView = new EventView();
 		timelineView = new TimelineView();
-		savey = new Button();
+		saveButton = new Button();
 	}
 
 	/**
@@ -193,17 +184,15 @@ public class ApplicationView implements ChangeListener {
 	private Button saveTimelineButton() {
 		saveTo.setText("Save Timeline");
 		saveTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-		savey = new Button("",new ImageView(saveT));
-		savey.setTooltip(saveTo);
-		savey.setMinSize(70, 35);
-		savey.setMaxSize(70, 35);
-		savey.getStylesheets().add(css);
+		saveButton.setTooltip(saveTo);
+		saveButton.setMinSize(70, 35);
+		saveButton.setMaxSize(70, 35);
+		saveButton.getStylesheets().add(css);
 
-		savey.setOnAction(ActionEvent  -> {
-
-			appListener.onTimelineSaved();
+		saveButton.setOnAction(ActionEvent  -> {
+			  appListener.onTimelineSaved();
 		});
-		return savey;
+    return saveButton;
 	}
 
 
@@ -339,14 +328,13 @@ public class ApplicationView implements ChangeListener {
 
 			getDeleteTimelineButton().setDisable(false);
 			eventView.setDisable(false);
-			savey.setDisable(false);
+			saveButton.setDisable(false);
 		}
 		else {
 			clearTimelineBox();
 			getDeleteTimelineButton().setDisable(true);
 			eventView.setDisable(true);
-			savey.setDisable(true);
-
+			saveButton.setDisable(true);
 		}
 
 	}
@@ -354,22 +342,26 @@ public class ApplicationView implements ChangeListener {
 	@Override
 	public void onNewTimelineSelected(Timeline current) {
 		currentTimeline.createVisualTimeline(current);
-		//showYear(current);
-
+		onTimelineSaved(current);
 	}
 
 	@Override
 	public void onEditTimeline(Timeline current) {
 		currentTimeline.updateVisualTimeline();
-
 	}
 
 	@Override
 	public void onEditEvent(Timeline current) {
 		currentTimeline.updateVisualTimeline();
-
 	}
 
-
-
+	@Override
+	public void onTimelineSaved(Timeline current) {
+		if (current.getFile().isFile()) {
+			timelineView.setTimelineSaved(true);
+		}
+		else {
+			timelineView.setTimelineSaved(false);
+		}
+	}
 }

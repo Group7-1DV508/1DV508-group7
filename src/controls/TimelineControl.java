@@ -35,7 +35,7 @@ public class TimelineControl implements TimelineListener {
 	
 	@Override
 	public boolean onDeleteFile() {
-		if (currentApp.getCurrentTimeline().getFile().exists()) {
+		if (currentApp.getCurrentTimeline().getFile().isFile()) {
 			currentApp.removeFile();
 			return true;
 		}
