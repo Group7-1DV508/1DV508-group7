@@ -12,10 +12,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ui.timelineVisuals.EventShape;
@@ -24,7 +28,14 @@ import ui.timelineVisuals.TimelineInformationBox;
 import ui.timelineVisuals.VisualTimeline;
 
 public class ApplicationView implements ChangeListener {
+	private final Image saveT = new Image(getClass().getResource("/saveT.png").toExternalForm(), 30, 30, true, true);
+	private final Image loadT = new Image(getClass().getResource("/loadT.png").toExternalForm(), 35, 35, true, true);
+	private final Image help = new Image(getClass().getResource("/help.png").toExternalForm(), 25, 25, true, true);
 	private String css = this.getClass().getResource("/ui/application.css").toExternalForm();
+	private final Tooltip saveTo = new Tooltip();
+	private final Tooltip loadTo = new Tooltip();
+	private final Tooltip helpTo = new Tooltip();
+
 	private Button savey;
 	private EventView eventView;
 	private TimelineView timelineView;
@@ -156,9 +167,14 @@ public class ApplicationView implements ChangeListener {
 	 * Creates the Help Button
 	 */
 	private Button createHelpButton() {
-		Button helpButton = new Button("?");
-		helpButton.setStyle("-fx-background-radius: 5em; " + "-fx-min-width: 30px; " + "-fx-min-height: 30px; " + "-fx-max-width: 30px; " +
-		"-fx-max-height: 30px;");
+		helpTo.setText("Help");
+		helpTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+
+		Button helpButton = new Button("",new ImageView(help));
+		helpButton.setStyle("-fx-background-radius: 5em; ");
+		helpButton.setTooltip(helpTo);
+		helpButton.setMinSize(35, 35);
+		helpButton.setMaxSize(35, 35);
 
 		helpButton.setOnAction(new EventHandler<ActionEvent>(){
 
@@ -175,8 +191,13 @@ public class ApplicationView implements ChangeListener {
 	   the user through the fileChooser.*/
 
 	private Button saveTimelineButton() {
-		 savey = new Button("Save Timeline");
-		savey.setPrefSize(120, 30);
+		saveTo.setText("Save Timeline");
+		saveTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+		savey = new Button("",new ImageView(saveT));
+		savey.setTooltip(saveTo);
+		savey.setMinSize(70, 35);
+		savey.setMaxSize(70, 35);
+		savey.getStylesheets().add(css);
 
 		savey.setOnAction(ActionEvent  -> {
 
@@ -188,8 +209,14 @@ public class ApplicationView implements ChangeListener {
 
 
 	private Button loadTimelineButton() {
-		Button loaded = new Button("Load Timeline");
-		loaded.setPrefSize(120, 30);
+		loadTo.setText("Load Timeline");
+		loadTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+		Button loaded = new Button("",new ImageView(loadT));
+
+		loaded.setTooltip(loadTo);
+		loaded.setMinSize(70, 35);
+		loaded.setMaxSize(70, 35);
+		loaded.getStylesheets().add(css);
 
 		loaded.setOnAction(ActionEvent -> {
 			appListener.onTimelineLoaded();
@@ -212,10 +239,10 @@ public class ApplicationView implements ChangeListener {
 		helpButton.setAlignment(Pos.BOTTOM_LEFT);
 
 		timelineButtons.getChildren().clear();
-		timelineButtons.setSpacing(20.0);
+		timelineButtons.setSpacing(18.0);
 		timelineButtons.getChildren().addAll(chooseTimeline,getAddTimelineButton(), saveTimelineButton(), loadTimelineButton(), getDeleteTimelineButton());
 		timelineButtons.setAlignment(Pos.CENTER_LEFT);
-		timelineButtons.setPadding(new Insets(0,300,0,10));
+		timelineButtons.setPadding(new Insets(0,500,0,10));
 
 		temp.getChildren().addAll(timelineButtons,helpButton);
 
