@@ -101,16 +101,15 @@ public class VisualTimeline extends GridPane {
 	 * @param end - timeline end
 	 */
 	public void createYear(LocalDateTime start, LocalDateTime end) {
-		System.out.println(start.getYear());
 		if (end.getMonthValue() == 1 && end.getDayOfMonth() == 1) {
 			endDate = end.withYear(end.getYear()-1).withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59);
 			currentStartDate = start;
 			currentEndDate = end.withYear(end.getYear()-1).withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59);
 		}
 		else {
-			endDate = end;
+			endDate = end.withHour(23).withMinute(59);
 			currentStartDate = start;
-			currentEndDate = end;
+			currentEndDate = end.withHour(23).withMinute(59);
 		}
 		
 		getChildren().clear();
@@ -161,8 +160,8 @@ public class VisualTimeline extends GridPane {
 		LocalDateTime endDate;
 		currentStartDate = start;
 		if (end == null || end.getYear()!=start.getYear()) {
-			currentEndDate = start.withMonth(12).withDayOfMonth(31);
-			endDate = start.withMonth(12).withDayOfMonth(31);
+			currentEndDate = start.withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59);
+			endDate = start.withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59);
 			monthEndDate = null;
 		}
 		else if (end.getDayOfMonth() == 1) {
@@ -171,9 +170,9 @@ public class VisualTimeline extends GridPane {
 			monthEndDate = end.withMonth(end.getMonthValue()-1).withDayOfMonth(end.withMonth(end.getMonthValue()-1).toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
 		}
 		else {
-			currentEndDate = end;
-			monthEndDate = end;
-			endDate = end;
+			currentEndDate = end.withHour(23).withMinute(59);
+			monthEndDate = end.withHour(23).withMinute(59);
+			endDate = end.withHour(23).withMinute(59);
 		}
 		monthStartDate = start;
 		getChildren().clear();
@@ -234,26 +233,19 @@ public class VisualTimeline extends GridPane {
 	private void createDayView(LocalDateTime start, LocalDateTime end) {
 		LocalDateTime endDate;
 		currentStartDate = start;
-		if (end == null || end.getYear()!=start.getYear() || end.getMonthValue()!=start.getMonthValue()) {
+		if (end == null || end.getYear()!=start.getYear() || end.getMonthValue()!=start.getMonthValue() || startDate.getMonthValue() == 12) {
 			
-			currentEndDate = start.withDayOfMonth(start.toLocalDate().lengthOfMonth());
-			if (startDate.getMonthValue() == 12) {
-				endDate = start.plusYears(1).withDayOfYear(1);
-			}
-			else {
-				endDate = start.plusMonths(1).withDayOfMonth(1);
-			}
-			
+			currentEndDate = start.withDayOfMonth(start.toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
+			endDate = start.withDayOfMonth(start.toLocalDate().lengthOfMonth()).withHour(23).withMinute(59);
 		}
 		else {
-			currentEndDate = end;
-			endDate = end;
+			currentEndDate = end.withHour(23).withMinute(59);
+			endDate = end.withHour(23).withMinute(59);
 		}
 		
 		getChildren().clear();
 		LocalDateTime startDate = start;
 		int counter = 0;
-		
 		
 		while (startDate.compareTo(endDate) <0) {
 			day = new DayView();
