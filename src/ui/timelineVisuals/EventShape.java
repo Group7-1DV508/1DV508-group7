@@ -23,7 +23,7 @@ public class EventShape extends Circle {
 	private double startX;
 	private double endX;
 	
-	private final int BOX_WIDTH;
+	private final double BOX_WIDTH;
 	private LocalDateTime timelineStart;
 
 
