@@ -17,6 +17,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -31,6 +32,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 public class EventView {
@@ -68,9 +70,12 @@ public class EventView {
 
 	// Other
 	private DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d yyyy (GG)  HH:mm");
-	private final DatePicker checkInDatePickerStart = new DatePicker();
-	private final DatePicker checkInDatePickerEnd = new DatePicker();
+	private DatePicker checkInDatePickerStart;
+	private DatePicker checkInDatePickerEnd;
 	private final Converter converter = new Converter();
+	
+	private LocalDate timelineStart;
+	private LocalDate timelineEnd;
 
 	/**
 	 * Update the EventListener variable with the EventListener given as input
@@ -80,6 +85,11 @@ public class EventView {
 	 */
 	public void addListener(EventListener eventList) {
 		eventListener = eventList;
+	}
+	
+	public void setTimelineStartEnd(LocalDate start, LocalDate end) {
+		timelineStart = start;
+		timelineEnd = end;
 	}
 
 	/**
@@ -399,7 +409,10 @@ public class EventView {
 	 */
 
 	private GridPane createAddEventWindow() {
-
+		checkInDatePickerStart = new DatePicker();
+		checkInDatePickerEnd = new DatePicker();
+		
+		
 		GridPane pane = new GridPane();
 
 		// TextFields,TextAreas initialized
@@ -416,8 +429,9 @@ public class EventView {
 
 		// In case fields are disabled
 		setDisableFields(false);
-		checkInDatePickerStart.setValue(null);
-		checkInDatePickerEnd.setValue(null);
+		datePickerSettings(checkInDatePickerStart);
+		datePickerSettings(checkInDatePickerEnd);
+		
 		
      	/* Limit the number of characters*/
      	final int nameMAX_CHARS = 40;
@@ -450,12 +464,12 @@ public class EventView {
 		// Date pickers for start event
 		checkInDatePickerStart.setStyle("-fx-font: 16 timesnewroman;");
 		checkInDatePickerStart.setPromptText("Event start");
-		checkInDatePickerStart.setConverter(converter);
+		
 
 		// Date pickers for end event
 		checkInDatePickerEnd.setStyle("-fx-font: 16 timesnewroman;");
 		checkInDatePickerEnd.setPromptText("Event end");
-		checkInDatePickerEnd.setConverter(converter);
+		
 
 		// Buttons initialized
 		ok.setPrefSize(135, 35);
@@ -510,6 +524,8 @@ public class EventView {
 	public void ViewEventInfo(Event e) {
 		final Stage eventWindow = new Stage();
 
+		checkInDatePickerStart = new DatePicker();
+		checkInDatePickerEnd = new DatePicker();
 		VBox window = new VBox();
 		window.setSpacing(20);
 		window.setPrefSize(200, 200);
@@ -596,7 +612,7 @@ public class EventView {
 		Label descriptionL = new Label("Description");
 
 		LocalDateTime startDate = e.getEventStart();
-    checkInDatePickerStart.setConverter(converter);
+    datePickerSettings(checkInDatePickerStart);
     checkInDatePickerStart.setValue(startDate.toLocalDate());
     
 		String startLocalDate = localDateTimeToString(startDate);
@@ -628,8 +644,8 @@ public class EventView {
 
 		if (e.getEventEnd() != null) {
 			LocalDateTime endDate = e.getEventEnd();
-			checkInDatePickerEnd.setConverter(converter);
-      checkInDatePickerEnd.setValue(endDate.toLocalDate());
+			datePickerSettings(checkInDatePickerEnd);
+			checkInDatePickerEnd.setValue(endDate.toLocalDate());
 
 			String endLocalDate = localDateTimeToString(endDate);
 			LocalDate localDate2 = LocalDate.parse(endLocalDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -806,6 +822,26 @@ public class EventView {
 		
 		ok.setDisable(b);
 		cancel.setDisable(b);
+	}
+	private void datePickerSettings(DatePicker dp) {
+		
+		final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
+		     public DateCell call(final DatePicker datePicker) {
+		         return new DateCell() {
+		             @Override public void updateItem(LocalDate item, boolean empty) {
+		                 super.updateItem(item, empty);
+
+		                 if (item.compareTo(timelineStart)<0 || item.compareTo(timelineEnd)>0) {
+		                     setDisable(true);
+		                 }
+		                
+		             }
+		         };
+		     }
+		 };
+		dp.setDayCellFactory(dayCellFactory);
+		dp.setConverter(converter);
+		dp.setShowWeekNumbers(true);
 	}
 	
 	/**
