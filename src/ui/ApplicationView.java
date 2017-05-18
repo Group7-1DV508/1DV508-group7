@@ -328,6 +328,7 @@ public class ApplicationView implements ChangeListener {
 			chooseTimeline(timelines, current);
 			//showYear(current);
 			currentTimeline.createVisualTimeline(current);
+			eventView.setTimelineStartEnd(current.getStart().toLocalDate(), current.getEnd().toLocalDate());
 
 			getDeleteTimelineButton().setDisable(false);
 			eventView.setDisable(false);
@@ -345,6 +346,7 @@ public class ApplicationView implements ChangeListener {
 	@Override
 	public void onNewTimelineSelected(Timeline current) {
 		currentTimeline.createVisualTimeline(current);
+		eventView.setTimelineStartEnd(current.getStart().toLocalDate(), current.getEnd().toLocalDate());
 		onTimelineSaved(current);
 	}
 
