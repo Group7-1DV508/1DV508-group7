@@ -136,12 +136,12 @@ public class EventShape extends Circle {
 	private void setValueXYear() {
 		int start = event.getEventStart().getYear()-timelineStart.getYear();
 		if ((event.getEventEnd() == null)) {
-			startX = (start*BOX_WIDTH + ((BOX_WIDTH/12)*event.getEventStart().getMonthValue()) + (2 * start));
+			startX = (start*BOX_WIDTH + ((BOX_WIDTH/12)*event.getEventStart().getMonthValue())-((BOX_WIDTH/12)/2) + (2 * start));
 		}
 		else {
 			int end = event.getEventEnd().getYear()-timelineStart.getYear();
-			startX = (start*BOX_WIDTH + ((BOX_WIDTH/12)*event.getEventStart().getMonthValue()) + (2 * start));
-			endX = (end*BOX_WIDTH + ((BOX_WIDTH/12)*event.getEventEnd().getMonthValue()) + (2 * end));
+			startX = (start*BOX_WIDTH + ((BOX_WIDTH/12)*event.getEventStart().getMonthValue())-((BOX_WIDTH/12)/2) + (2 * start));
+			endX = (end*BOX_WIDTH + ((BOX_WIDTH/12)*event.getEventEnd().getMonthValue())-((BOX_WIDTH/12)/2) + (2 * end));
 
 		}
 
@@ -155,7 +155,7 @@ public class EventShape extends Circle {
 		
 		
 		if ((event.getEventEnd() == null)) {
-			startX = (start*BOX_WIDTH + ((BOX_WIDTH/startDate.lengthOfMonth())*startDate.getDayOfMonth()) + (2 * start));
+			startX = (start*BOX_WIDTH + ((BOX_WIDTH/startDate.lengthOfMonth())*startDate.getDayOfMonth())-((BOX_WIDTH/startDate.lengthOfMonth())/2) + (2 * start));
 		}
 		else {
 			LocalDate endDate = event.getEventEnd().toLocalDate();
@@ -163,8 +163,8 @@ public class EventShape extends Circle {
 				endDate = startDate.withMonth(12).withDayOfMonth(31);
 			}
 			int end = endDate.getMonthValue()-timelineStart.getMonthValue();
-			startX = (start*BOX_WIDTH + ((BOX_WIDTH/startDate.lengthOfMonth())*startDate.getDayOfMonth()) + (2 * start));
-			endX = (end*BOX_WIDTH + ((BOX_WIDTH/endDate.lengthOfMonth())*endDate.getDayOfMonth()) + (2 * end));
+			startX = (start*BOX_WIDTH + ((BOX_WIDTH/startDate.lengthOfMonth())*startDate.getDayOfMonth())-((BOX_WIDTH/startDate.lengthOfMonth())/2) + (2 * start));
+			endX = (end*BOX_WIDTH + ((BOX_WIDTH/endDate.lengthOfMonth())*endDate.getDayOfMonth())-((BOX_WIDTH/endDate.lengthOfMonth())/2) + (2 * end));
 			
 		}
 	}

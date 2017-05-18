@@ -232,7 +232,7 @@ public class ApplicationView implements ChangeListener {
 
 		timelineButtons.getChildren().clear();
 		timelineButtons.setSpacing(18.0);
-		timelineButtons.getChildren().addAll(chooseTimeline,getAddTimelineButton(), saveTimelineButton(), loadTimelineButton(), getDeleteTimelineButton());
+		timelineButtons.getChildren().addAll(chooseTimeline,getAddTimelineButton(), saveTimelineButton(), loadTimelineButton(), getDeleteTimelineButton(), getAddEventButton());
 		timelineButtons.setAlignment(Pos.CENTER_LEFT);
 		timelineButtons.setPadding(new Insets(0,500,0,10));
 
