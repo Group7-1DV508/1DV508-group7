@@ -25,6 +25,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
@@ -110,7 +111,8 @@ public class TimelineView {
 		addTimelineWindow.setTitle("Add timeline");
 		addTimelineWindow.setScene(new Scene(addTimelineRoot, 600, 300));
 		addTimelineWindow.setResizable(false);
-		addTimelineWindow.show();
+		addTimelineWindow.initModality(Modality.APPLICATION_MODAL);
+		addTimelineWindow.showAndWait();
 		addTimelineRoot.requestFocus();
 	}
 
@@ -228,7 +230,8 @@ public class TimelineView {
 
 			stage.setTitle("Delete Options");
 			stage.setScene(scenery);
-			stage.show();
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.showAndWait();
 		}
 
 	}

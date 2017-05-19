@@ -31,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
@@ -199,7 +200,9 @@ public class EventView {
 				 */
 				Scene eventScene = new Scene(textFieldsStart);
 				eventWindow.setScene(eventScene);
-				eventWindow.show();
+				eventWindow.initModality(Modality.APPLICATION_MODAL);
+				eventWindow.showAndWait();
+				eventWindow.setAlwaysOnTop(true);
 				textFieldsStart.requestFocus();
 
 			}
@@ -590,7 +593,8 @@ public class EventView {
 		Scene eventScene = new Scene(all);
 		eventWindow.setTitle("Event");
 		eventWindow.setScene(eventScene);
-		eventWindow.show();
+		eventWindow.initModality(Modality.APPLICATION_MODAL);
+		eventWindow.showAndWait();
 
 	}
 

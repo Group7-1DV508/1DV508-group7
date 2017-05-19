@@ -31,6 +31,7 @@ public class ShowEvents extends HBox {
 	private TimelineInformationBox infoBox;
 	
 	private EventShape eventShape;
+	private Popup eventName = new Popup();
 	private final ArrayList<EventShape> shapeList = new ArrayList<EventShape>();
 	
 	
@@ -130,7 +131,6 @@ public class ShowEvents extends HBox {
 	 * help method to setOnMouseEntered & setOnMouseExited for eventshapes
 	 */
 	private void setOnMouseHover() {
-		Popup eventName = new Popup();
 		HBox nameBox = new HBox();
 		nameBox.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, new CornerRadii(2.0), null)));
 		nameBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
@@ -149,11 +149,12 @@ public class ShowEvents extends HBox {
 				eventName.setX(source.localToScreen(source.getBoundsInLocal()).getMinX()+30);
 				eventName.setY(source.localToScreen(source.getBoundsInLocal()).getMinY()+6);
 				eventName.show(getScene().getWindow());
-				
+
 				
 			}
 
 		});
+		
 		eventShape.setOnMouseExited(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -174,8 +175,10 @@ public class ShowEvents extends HBox {
 			
 			@Override
 			public void handle(MouseEvent event) {
+				eventName.getContent().clear();
 				appListener.onNewEventSelected(((EventShape)event.getSource()).getEvent());
 				eventView.ViewEventInfo(((EventShape)event.getSource()).getEvent());
+				
 
 			}
 
