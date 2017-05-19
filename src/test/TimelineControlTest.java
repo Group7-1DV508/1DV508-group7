@@ -2,18 +2,17 @@ package test;
 
 import static org.junit.Assert.*;
 
-import java.time.LocalDate;
+import java.io.File;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import controls.ChangeListener;
-import controls.EventControl;
 import controls.TimelineControl;
 import functions.App;
 import functions.Timeline;
@@ -42,12 +41,16 @@ public class TimelineControlTest implements ChangeListener {
 	private boolean editTimeline;
 	private boolean editEvent;
 	
+	private static File testFile;
+	
 	
 	@BeforeClass
 	public static void beforeAllTests() {
 		app = new App();
 		timelineC = new TimelineControl();
 		timelineC.setApp(app);
+		testFile = new File("src/test/fileDeleteTest.xml");
+		createXml();
 		
 	}
 	
@@ -109,6 +112,15 @@ public class TimelineControlTest implements ChangeListener {
 		assertEquals(app.getTimelines().size(), 0);
 		assertTrue(app.getCurrentTimeline() == null);
 	}
+	
+	@Test 
+	public void testOnDeleteFile() {
+		assertTrue(timelineC.onAddTimeline(EXPECTED_TIMELINE_NAME, EXPECTED_TIMELINE_START, EXPECTED_TIMELINE_END));
+		app.getTimelines().get(0).setFilePath(testFile);
+		assertTrue(testFile.exists());
+		assertTrue(timelineC.onDeleteFile());
+		assertFalse(testFile.exists());
+	}
 
 	@Override
 	public void onChangedTimeline(ArrayList<Timeline> timelines, Timeline current) {
@@ -140,7 +152,17 @@ public class TimelineControlTest implements ChangeListener {
 		
 	}
 
-	
+	private static void createXml() {
+		PrintWriter printWriter = null;
+		try {
+			printWriter = new PrintWriter(testFile);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		printWriter.print("");
+		printWriter.close();
+	}
 	
 
 }

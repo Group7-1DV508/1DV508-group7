@@ -4,8 +4,6 @@ import controls.ApplicationListener;
 import controls.ChangeListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import functions.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,7 +22,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import ui.timelineVisuals.EventShape;
 import ui.timelineVisuals.ShowEvents;
 import ui.timelineVisuals.TimelineInformationBox;
 import ui.timelineVisuals.VisualTimeline;

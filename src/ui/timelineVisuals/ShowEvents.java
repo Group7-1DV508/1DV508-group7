@@ -20,8 +20,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import ui.EventView;

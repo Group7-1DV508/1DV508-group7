@@ -1,8 +1,5 @@
 package ui.timelineVisuals;
 
-import java.util.ArrayList;
-
-import functions.Event;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
