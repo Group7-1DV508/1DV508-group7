@@ -257,6 +257,11 @@ public class ApplicationView implements ChangeListener {
 
 						}
 
+						String help2 = comboBox.getSelectionModel().getSelectedItem();
+						if (help2 == "help") {
+							helpText.setText("");
+
+						}
 					}
 
 				});
