@@ -47,9 +47,9 @@ public class ApplicationView implements ChangeListener {
 	private Background scrollBackground = new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null));
 	private CornerRadii radii = new CornerRadii(5);
 
-	private final JFXButton saveButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.SAVE, "30")) );
-	private final JFXButton helpButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.QUESTION_SIGN, "30")) ); 
-	private final JFXButton loadButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.FOLDER_OPEN, "30")) ); 
+	private final JFXButton saveButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.SAVE, "20")) );
+	private final JFXButton helpButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.QUESTION_SIGN, "20")) ); 
+	private final JFXButton loadButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.FOLDER_OPEN, "20")) ); 
 
 	private EventView eventView;
 	private TimelineView timelineView;

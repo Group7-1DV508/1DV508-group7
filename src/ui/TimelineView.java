@@ -40,8 +40,8 @@ public class TimelineView {
 	private final Tooltip addTo = new Tooltip();
 	private final Tooltip delTo = new Tooltip();
 
-	private JFXButton addTimeline = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.PLUS_SIGN, "30")));
-	private JFXButton deleteTimeline = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.TRASH, "30")));
+	private JFXButton addTimeline = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.PLUS_SIGN, "20")));
+	private JFXButton deleteTimeline = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.TRASH, "20")));
 	private JFXButton confirmTimeline = new JFXButton("Finish");
 	// HBox for "Add Timeline" button
 	private HBox addTimelineButton = new HBox();
