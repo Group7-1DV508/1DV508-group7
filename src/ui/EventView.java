@@ -9,6 +9,8 @@ import java.util.Optional;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 
 import controls.EventListener;
@@ -27,11 +29,8 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.effect.Light;
-import javafx.scene.effect.Lighting;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
@@ -51,17 +50,17 @@ public class EventView {
 	private EventListener eventListener;
 
 	// TextArea - Add Event Window
-	private TextArea description;
+	private JFXTextArea description;
 
 	// TextFields - Add Event Window
-	private TextField name;
+	private JFXTextField name;
 
 	// Buttons
 	private JFXButton addEvent  = new JFXButton ();
-	private Button ok = new Button("Finish");
-	private Button cancel = new Button("Cancel");
-	private Button editEvent = new Button("Edit Info");
-	private Button delete = new Button("Delete event");
+	private JFXButton ok = new JFXButton("Finish");
+	private JFXButton cancel = new JFXButton("Cancel");
+	private JFXButton editEvent = new JFXButton("Edit Info");
+	private JFXButton delete = new JFXButton("Delete event");
 	
 	// Texts
 	private Text titleText;
@@ -433,12 +432,12 @@ public class EventView {
 		GridPane pane = new GridPane();
 
 		// TextFields,TextAreas initialized
-		name = new TextField();
+		name = new JFXTextField();
 		name.setPromptText("Event name");
 		name.setFont(new Font("Times new Roman", 20));
 		name.setPrefWidth(446);
 
-		description = new TextArea();
+		description = new JFXTextArea();
 		description.setPromptText("Event information");
 		description.setFont(Font.font("Times new Roman", 20));
 		description.setPrefSize(446, 200);
@@ -616,8 +615,8 @@ public class EventView {
 		VBox editeHolder = new VBox();
 		editeHolder.setPrefSize(400, 400);
 		editeHolder.setTranslateX(50);
-		name = new TextField(e.getEventName());
-		description = new TextArea(e.getEventDescription());
+		name = new JFXTextField(e.getEventName());
+		description = new JFXTextArea(e.getEventDescription());
 		Label nameL = new Label("Name");
 		Label descriptionL = new Label("Description");
 
