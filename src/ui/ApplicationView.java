@@ -248,8 +248,12 @@ public class ApplicationView implements ChangeListener {
 						}
 
 						String helpEdit = comboBox.getSelectionModel().getSelectedItem();
-						if (helpEdit  == "Edit Event") {
-							helpText.setText("text");
+						if (helpEdit == "Edit Event") {
+							helpText.setText("Click the Event circle, which should be edited.\n"
+									+ " The Event windows textfields are disabled so no accidental changes can be made.\n"
+									+ "To start editing press the “Edit information” button.\n"
+									+ "After clicking the edit “Event information” the name, description and dates will become editable.\n"
+									+ "Apply changes to the information as prefered, and then click the “ Finish” button when done. ");
 
 						}
 
