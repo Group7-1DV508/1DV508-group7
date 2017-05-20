@@ -29,11 +29,8 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.effect.Light;
-import javafx.scene.effect.Lighting;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
@@ -445,6 +442,7 @@ public class EventView {
 
 		// TextFields,TextAreas initialized
 		name = new JFXTextField();
+
 		name.setUnFocusColor(Color.web("rgb(87,56,97)"));
 		name.setFocusColor(Color.web("rgb(87,56,97)"));
 		name.setPromptText("Event name");
@@ -452,6 +450,7 @@ public class EventView {
 		name.setPrefWidth(446);
 
 		description = new JFXTextArea();
+
 		description.setUnFocusColor(Color.web("rgb(87,56,97)"));
 		description.setFocusColor(Color.web("rgb(87,56,97)"));
 		description.setPromptText("Event information");
@@ -640,11 +639,13 @@ public class EventView {
 		editeHolder.setPrefSize(400, 400);
 		editeHolder.setTranslateX(50);
 		name = new JFXTextField(e.getEventName());
+
 		name.setUnFocusColor(Color.web("rgb(87,56,97)"));
 		name.setFocusColor(Color.web("rgb(87,56,97)"));
 		description = new JFXTextArea(e.getEventDescription());
 		description.setUnFocusColor(Color.web("rgb(87,56,97)"));
 		description.setFocusColor(Color.web("rgb(87,56,97)"));
+		
 		Label nameL = new Label("Name");
 		Label descriptionL = new Label("Description");
 
