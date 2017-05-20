@@ -17,17 +17,15 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.CornerRadii;
@@ -43,10 +41,6 @@ import ui.timelineVisuals.TimelineInformationBox;
 import ui.timelineVisuals.VisualTimeline;
 
 public class ApplicationView implements ChangeListener {
-	private final Image saveT = new Image(getClass().getResource("/saveT.png").toExternalForm(), 30, 30, true, true);
-	private final Image loadT = new Image(getClass().getResource("/loadT.png").toExternalForm(), 35, 35, true, true);
-	private final Image help = new Image(getClass().getResource("/help.png").toExternalForm(), 25, 25, true, true);
-	private String css = this.getClass().getResource("/ui/application.css").toExternalForm();
 	private final Tooltip saveTo = new Tooltip();
 	private final Tooltip loadTo = new Tooltip();
 	private final Tooltip helpTo = new Tooltip();
@@ -67,21 +61,13 @@ public class ApplicationView implements ChangeListener {
 	private TimelineView timelineView;
 	private ApplicationListener appListener;
 	// contains all parts of the window (Main view)
-	private final VBox view = new VBox();
+	private final BorderPane view = new BorderPane();
 	// contains ComboBox to choose current timeline, add/delete timeline
 	private final HBox timelineButtons = new HBox();
-	private final HBox helpBox = new HBox();
 	boolean filePath;
 
-	/*
-	 * contains all parts within the Current Timeline View Add/Edit/Delete event
-	 * buttons, scroll window, current timeline and events visuals
-	 */
-	private final VBox timelineMainBox = new VBox();
 	// scroll window for timeline
 	private final ScrollPane scrollTimeline = new ScrollPane();
-	// buttons for add/edit/delete event
-	private final HBox eventButtons = new HBox();
 	// comboBox to choose timeline
 	private final JFXComboBox<Timeline> chooseTimeline = new JFXComboBox<Timeline>();
 	// contains all events at the correct position
@@ -134,7 +120,7 @@ public class ApplicationView implements ChangeListener {
 	 *
 	 * @return GridPane
 	 */
-	public VBox getRoot() {
+	public BorderPane getRoot() {
 
 		return root();
 	}
@@ -143,12 +129,13 @@ public class ApplicationView implements ChangeListener {
 	 * Creates the Root for the Application Window collects the Timeline Buttons
 	 * and the Main Timeline Box
 	 */
-	private VBox root() {
+	private BorderPane root() {
 		view.setBackground(background);
 		view.getChildren().clear();
-		view.setSpacing(10);
-		view.setAlignment(Pos.CENTER);
-		view.getChildren().addAll(timelineButtonsBox(), timelineMainBox());
+		timelineButtonsBox();
+		view.setTop(timelineButtons);
+		view.setCenter(timelineScrollBox());
+		
 		return view;
 	}
 
@@ -254,43 +241,18 @@ public class ApplicationView implements ChangeListener {
 
 	/**
 	 * collects and return all buttons associated with timeline
-	 *
-	 * @return HBox
 	 */
-	private HBox timelineButtonsBox() {
-		chooseTimeline.setMinSize(30, 30);
-
-		HBox temp = new HBox();
-		temp.getChildren().clear();
-		helpBox.getChildren().clear();
-		helpBox.getChildren().add(createHelpButton());
-		helpBox.setAlignment(Pos.BOTTOM_LEFT);
-
+	private void timelineButtonsBox() {
+		
 		timelineButtons.getChildren().clear();
 		timelineButtons.setSpacing(18.0);
-		timelineButtons.getChildren().addAll(chooseTimeline,getAddTimelineButton(), saveTimelineButton(), loadTimelineButton(), getDeleteTimelineButton(), getAddEventButton());
-		timelineButtons.setAlignment(Pos.CENTER_LEFT);
-		timelineButtons.setPadding(new Insets(0,500,0,10));
-
-		temp.getChildren().addAll(timelineButtons,helpBox);
-
-		return temp;
+		timelineButtons.setPadding(new Insets(15, 10, 15, 10));
+		timelineButtons.getChildren().addAll(chooseTimeline,getAddTimelineButton(), saveTimelineButton(), loadTimelineButton(), getDeleteTimelineButton(), getAddEventButton(), createHelpButton());
+		
+		
 	}
 
-	/**
-	 * collects and return all buttons associated with event
-	 *
-	 * @return HBox
-	 */
-	private HBox eventButtonsBox() {
-		eventButtons.getChildren().clear();
-		eventButtons.setAlignment(Pos.CENTER);
-		eventButtons.setSpacing(20.0);
-		eventButtons.setAlignment(Pos.CENTER_LEFT);
-		eventButtons.setPadding(new Insets(0,0,0,5));
-		chooseTimeline.setMinSize(150,35);
-		return eventButtons;
-	}
+	
 
 	/**
 	 * creates a combo box where loaded timelines can be chosen from also calls
@@ -324,17 +286,6 @@ public class ApplicationView implements ChangeListener {
 	}
 
 	/**
-	 * The main timeline box, contains scroll box, and event buttons box
-	 */
-	private VBox timelineMainBox() {
-		timelineMainBox.getChildren().clear();
-		timelineMainBox.setSpacing(10.0);
-		timelineMainBox.setAlignment(Pos.CENTER);
-		timelineMainBox.getChildren().addAll(timelineScrollBox(), eventButtonsBox());
-		return timelineMainBox;
-	}
-
-	/**
 	 * Creates a ScrollPane for the timeline and adds the current timeline and
 	 * the events pane to it
 	 */
@@ -342,7 +293,6 @@ public class ApplicationView implements ChangeListener {
 		VBox content = new VBox();
 		content.setBackground(scrollBackground);
 		content.setPadding(new Insets(0, 3, 0, 3));
-		scrollTimeline.setPrefSize(400, 300);
 		scrollTimeline.setBackground(scrollBackground);
 		scrollTimeline.setStyle("-fx-background: rgb(223,223,223);");
 		scrollTimeline.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, radii, BorderStroke.THIN)));
