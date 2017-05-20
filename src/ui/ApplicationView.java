@@ -222,7 +222,7 @@ public class ApplicationView implements ChangeListener {
 						}
 						String hej1 = comboBox.getSelectionModel().getSelectedItem();
 						if(hej1 == "Zoom"){
-							helpText.setText("A text");
+							helpText.setText("To zoom in right-click with the computer mouse.When zoomed in, the month in that year will appear. Zooming in one more time will give the user a day by day view with the respective event circles.To zoom out left-click with the computer mouse.");
 					
 					}
 						String hej2 = comboBox.getSelectionModel().getSelectedItem();
