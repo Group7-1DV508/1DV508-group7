@@ -150,7 +150,7 @@ public class EventShape extends Circle {
 		lighting.setDiffuseConstant(1.2);
 		lighting.setLight(light);
 		lighting.setSurfaceScale(3.0);
-		setEffect(lighting);
+		bar.setEffect(lighting);
 		bar.setVisible(false);
 		bar.setManaged(false);
 	}
