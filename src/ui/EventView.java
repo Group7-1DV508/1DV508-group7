@@ -110,7 +110,7 @@ public class EventView {
 	 */
 
 	public JFXButton getAddEventButton() {
-		addEvent = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.CALENDAR, "30")) ); 
+		addEvent = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.CALENDAR, "20")) ); 
 		addEvent.setMaxSize(40, 40);
 		addEvent.setMinSize(40, 40);
 		addEvent.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.FLAT);
