@@ -219,7 +219,6 @@ public class ApplicationView implements ChangeListener {
 		loadButton.setMinSize(40, 40);
 		loadButton.setMaxSize(40, 40);
 		loadButton.setBackground(scrollBackground);
-		loadButton.setButtonType(ButtonType.FLAT);
 
 		loadButton.setOnAction(ActionEvent -> {
 			appListener.onTimelineLoaded();
@@ -266,6 +265,7 @@ public class ApplicationView implements ChangeListener {
 		chooseTimeline.getItems().clear();
 		chooseTimeline.setFocusColor(Color.web("rgb(87,56,97)"));
 		chooseTimeline.setUnFocusColor(Color.web("rgb(87,56,97)"));
+		chooseTimeline.setStyle("-fx-font-size: 20px; -fx-font-family: monospace;");
 		chooseTimeline.setBackground(background);
 
 		for (Timeline t : timelines) {

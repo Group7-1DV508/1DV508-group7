@@ -80,7 +80,7 @@ public class EventShape extends Circle {
 	 */
 	private void createEventShape() {
 		setStroke(Color.BLACK);
-		setFill(Color.web("rgb(176, 149, 203)"));
+		setFill(Color.web("rgb(108, 107, 153)"));
 		Light.Distant light = new Light.Distant();
 		light.setAzimuth(-20.0);
 		Lighting lighting = new Lighting();

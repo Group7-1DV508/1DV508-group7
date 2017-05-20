@@ -28,7 +28,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Background;
@@ -111,7 +110,7 @@ public class EventView {
 	 */
 
 	public JFXButton getAddEventButton() {
-		addEvent = new JFXButton("Event", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.CALENDAR, "20")) ); 
+		addEvent = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.CALENDAR, "30")) ); 
 		addEvent.setMaxSize(40, 40);
 		addEvent.setMinSize(40, 40);
 		addEvent.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.FLAT);
@@ -653,13 +652,10 @@ public class EventView {
 		datePickerSettings(checkInDatePickerStart);
 		checkInDatePickerStart.setValue(startDate.toLocalDate());
     
-		String startLocalDate = localDateTimeToString(startDate);
-		LocalDate localDate = LocalDate.parse(startLocalDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		checkInDatePickerStart.setMinSize(150, 30);
 		checkInDatePickerEnd.setMinSize(150, 30);
 
 		Label yearL = new Label("Start Date");
-		int strHour = e.getEventStart().getHour();
 		JtimeStart.setIs24HourView(true);
 		JtimeStart.setDefaultColor(Color.web("rgb(87,56,97)"));
 		
@@ -680,12 +676,6 @@ public class EventView {
 			LocalDateTime endDate = e.getEventEnd();
 			datePickerSettings(checkInDatePickerEnd);
 			checkInDatePickerEnd.setValue(endDate.toLocalDate());
-
-			String endLocalDate = localDateTimeToString(endDate);
-			LocalDate localDate2 = LocalDate.parse(endLocalDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-			int strHourEnd = e.getEventEnd().getHour();
-		
 		
 
 		} else if (e.getEventEnd() == null) {
@@ -878,34 +868,7 @@ public class EventView {
 		dp.setConverter(converter);
 		dp.setShowWeekNumbers(true);
 	}	
-	
-	
-	
-	
-	
-	/**
-	 * Help method to turn LocalDateTime to string with 0
-	 * where month or day is less than 10
-	 * @param l LocalDateTime to be converted
-	 * @return LocalDateTime turned into string
-	 */
-	private String localDateTimeToString(LocalDateTime l) {
-		String date = "";
-		for (int i = 0; i < 4 - (l.getYear()+"").length(); i++) {
-			date = date + "0";
-		}
-		date = date + l.getYear() + "-";
-		for (int i = 0; i < 2 - (l.getMonthValue()+"").length(); i++) {
-			date = date + "0";
-		}
-		date = date + l.getMonthValue() + "-";
-		for (int i = 0; i < 2 - (l.getDayOfMonth()+"").length(); i++) {
-			date = date + "0";
-		}
-		date = date + l.getDayOfMonth();
-		
-		return date;
-}
+	 
 
 	private class Converter extends StringConverter<LocalDate> {
 
