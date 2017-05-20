@@ -201,8 +201,8 @@ public class ApplicationView implements ChangeListener {
 		        final  ComboBox<String> comboBox = new ComboBox<>();
 		        comboBox.setMaxSize(70, 70);
 		        comboBox.getItems().add("quick help");
-		        comboBox.getItems().add("Help1");
-		        comboBox.getItems().add("help2");
+		        comboBox.getItems().add("Zoom");
+		        comboBox.getItems().add("Delete Event");
 		        
 		        comboBox.setLayoutX(0);
 		        comboBox.setLayoutY(0);
@@ -221,12 +221,12 @@ public class ApplicationView implements ChangeListener {
 							helpText.setText("nothin here yet");
 						}
 						String hej1 = comboBox.getSelectionModel().getSelectedItem();
-						if(hej1 == "Help1"){
+						if(hej1 == "Zoom"){
 							helpText.setText("A text");
 					
 					}
 						String hej2 = comboBox.getSelectionModel().getSelectedItem();
-							if(hej2 == "help2"){
+							if(hej2 == "Delete Event"){
 								helpText.setText("Text to be added");
 						
 						}
