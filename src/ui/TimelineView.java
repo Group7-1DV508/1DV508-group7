@@ -34,7 +34,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
 public class TimelineView {
@@ -43,7 +42,7 @@ public class TimelineView {
 
 	private JFXButton addTimeline = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.PLUS_SIGN, "30")));
 	private JFXButton deleteTimeline = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.TRASH, "30")));
-	private Button confirmTimeline = new Button("Finish");
+	private JFXButton confirmTimeline = new JFXButton("Finish");
 	// HBox for "Add Timeline" button
 	private HBox addTimelineButton = new HBox();
 	// Stage for new window where user inputs information about timeline
@@ -72,6 +71,7 @@ public class TimelineView {
 	 * @return An HBox with a button "Add Timeline"
 	 */
 	public Button getAddTimelineButton() {
+		System.out.println(timelineStart.getEditor().getText());
 		addTimelineWindow();
 		return addTimeline;
 	}
@@ -118,19 +118,12 @@ public class TimelineView {
 		addTimelineWindow = new Stage();
 		// Sets what happens when "Save" button is clicked
 		confirmTimeline.setOnAction(new ConfirmTimelineHandler());
+		confirmTimeline.setBackground(new Background(new BackgroundFill(Color.web("rgb(212, 212, 214)"), null, null)));
 		addTimelineWindow.setTitle("Add timeline");
 		addTimelineWindow.setScene(new Scene(addTimelineRoot, 600, 300));
 		addTimelineWindow.setResizable(false);
 		addTimelineWindow.initModality(Modality.APPLICATION_MODAL);
 		addTimelineWindow.showAndWait();
-		addTimelineWindow.setOnCloseRequest(new EventHandler<WindowEvent>() {
-
-			@Override
-			public void handle(WindowEvent arg0) {
-				addTimelineWindow.hide();
-			}
-			
-		});
 		addTimelineRoot.requestFocus();
 	}
 
@@ -196,7 +189,7 @@ public class TimelineView {
 		public void handle(ActionEvent arg0) {
 			Stage stage = new Stage();
 			HBox buttony = new HBox();
-			Button timeline = new Button("Delete Timeline");
+			JFXButton timeline = new JFXButton("Delete Timeline");
 			CheckBox checkBox = new CheckBox("-> Delete file too");
 			//Button timelineAndFile = new Button("Delete Timeline and File");
 			Button cancel = new Button("Cancel");
@@ -291,11 +284,11 @@ public class TimelineView {
 				createAlertError("Error in timeline name", "Please choose a name for your timeline");
 			}
 
-			else if (timelineStart.getEditor().getText().length() == 0) {
+			else if (timelineStart.getValue() == null) {
 				createAlertError("Error in timeline start date", "Please choose a start date for your timeline");
 			}
 
-			else if (timelineEnd.getEditor().getText().length() == 0) {
+			else if (timelineEnd.getValue() == null) {
 				createAlertError("Error in timeline end date", "Please choose an end date for your timeline.");
 			}
 			else if (timelineStart.getValue().compareTo(timelineEnd.getValue()) > 0) {
@@ -313,6 +306,7 @@ public class TimelineView {
 					timelineEnd.setValue(null);
 					addTimelineWindow.close();
 				}
+
 			}
 		}
 	}
