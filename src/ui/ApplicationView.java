@@ -219,16 +219,16 @@ public class ApplicationView implements ChangeListener {
 						if (hej == "quick help") {
 							helpText.setText("nothin here yet");
 						}
-						String hej1 = comboBox.getSelectionModel().getSelectedItem();
-						if (hej1 == "Zoom") {
+						String helpZoom = comboBox.getSelectionModel().getSelectedItem();
+						if (helpZoom == "Zoom") {
 							helpText.setText("To zoom in right-click with the computer mouse.\n"
 									+ "When zoomed in, the month in that year will appear.\n"
 									+ " Zooming in one more time will give the user a day by day view with the respective event circles.\n"
 									+ "To zoom out left-click with the computer mouse.");
 
 						}
-						String hej2 = comboBox.getSelectionModel().getSelectedItem();
-						if (hej2 == "Delete Event") {
+						String helpDelete = comboBox.getSelectionModel().getSelectedItem();
+						if (helpDelete == "Delete Event") {
 							helpText.setText("Click on the Event circle, which should be deleted.\n"
 									+ "Then the event information box will appear.\n"
 									+ "Click on the “ Delete” button in the bottom right corner");
