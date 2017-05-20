@@ -90,6 +90,12 @@ public class ApplicationView implements ChangeListener {
 	private static String FILENAMEIN;
 	private static String FILENAMEINAddEvent;
 	private static String FILENAMEINDeleteEvent;
+	private static String FILENAMEINEditEvent;
+	
+	private static String FILENAMEINCreateTimeline;
+	private static String FILENAMEINDeleteTimeline;
+	
+	private static String FILENAMEINScrollfunction;
 
 	/**
 	 * Constructor, creates and initialize EventView and TimelineView
@@ -195,8 +201,14 @@ public class ApplicationView implements ChangeListener {
 				Stage primaryStage = new Stage();
 
 				primaryStage.setTitle("Help Window");
+				//VBox for pics:
 				VBox v1 = new VBox();
 				VBox v2 = new VBox();
+				VBox v3 = new VBox();
+				VBox v4 = new VBox();
+				VBox v5 = new VBox();
+				VBox v6 = new VBox();
+				
 				final ComboBox<String> comboBox = new ComboBox<>();
 				comboBox.setMaxSize(70, 70);
 				comboBox.getItems().add("quick help");
@@ -231,7 +243,7 @@ public class ApplicationView implements ChangeListener {
 						if (helpDelete == "Delete Event") {
 							helpText.setText("Click on the Event circle, which should be deleted.\n"
 									+ "Then the event information box will appear.\n"
-									+ "Click on the “ Delete” button in the bottom right corner");
+									+ "Click on the â€œ Deleteâ€� button in the bottom right corner");
 
 						}
 
@@ -284,6 +296,50 @@ public class ApplicationView implements ChangeListener {
 						ivhelpDeleteEventPic.setImage(imageHelpDeleteEvent);
 						ivhelpDeleteEventPic.setPreserveRatio(true);
 						ivhelpDeleteEventPic.setFitHeight(300);
+						
+
+						final File helpEditEventPic = new File("src/helpEditEvent.png");
+						FileInputStream helpEditEventPicIS = null;
+						try {
+							helpEditEventPicIS = new FileInputStream(helpEditEventPic);
+						} catch (FileNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						Image imageHelpEditEvent = new Image(helpEditEventPicIS);
+						ImageView ivhelpEditEventPic = new ImageView();
+						ivhelpEditEventPic.setImage(imageHelpEditEvent);
+						ivhelpEditEventPic.setPreserveRatio(true);
+						ivhelpEditEventPic.setFitHeight(300);
+						
+						final File helpEditEventSecPic = new File("src/helpEditEvent2.png");
+						FileInputStream helpEditEventSecPicIS = null;
+						try {
+							helpEditEventSecPicIS = new FileInputStream(helpEditEventSecPic);
+						} catch (FileNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						Image imageHelpEditEventSec = new Image(helpEditEventSecPicIS);
+						ImageView ivhelpEditEventSecPic = new ImageView();
+						ivhelpEditEventSecPic.setImage(imageHelpEditEventSec);
+						ivhelpEditEventSecPic.setPreserveRatio(true);
+						ivhelpEditEventSecPic.setFitHeight(300);
+						
+						final File HelpCreateTimelinePic = new File("src/HelpCreateTimeline.png");
+						FileInputStream HelpCreateTimelinePicIS = null;
+						try {
+							HelpCreateTimelinePicIS = new FileInputStream(HelpCreateTimelinePic);
+						} catch (FileNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						Image imageHelpCreateTimelinePic = new Image(HelpCreateTimelinePicIS);
+						ImageView ivHelpCreateTimelinePic= new ImageView();
+						ivHelpCreateTimelinePic.setImage(imageHelpCreateTimelinePic);
+						ivHelpCreateTimelinePic.setPreserveRatio(true);
+						ivHelpCreateTimelinePic.setFitHeight(300);
+
 
 						// Label used to show help text:
 						FILENAMEINAddEvent = "src/helpAddEvent.txt";
@@ -305,18 +361,52 @@ public class ApplicationView implements ChangeListener {
 							e1.printStackTrace();
 						}
 						String contenthelpDelete2 = contenthelpDelete;
+						
+						
+						FILENAMEINEditEvent = "src/helpEditEvent.txt";
+						String contenthelpEdit = null;
+						try {
+							contenthelpEdit = new String(Files.readAllBytes(Paths.get(FILENAMEINAddEvent)));
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						String contenthelpEdit2 = contenthelpEdit;
 						final Label description = new Label();
 						description.setFont(Font.font("Verdana", 12));
+						
+						FILENAMEINCreateTimeline = "src/HelpCreateTimeline.txt";
+						String contentHelpCreateTimeline = null;
+						try {
+							contentHelpCreateTimeline = new String(Files.readAllBytes(Paths.get(FILENAMEINCreateTimeline)));
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						String contentHelpCreateTimeline2 = contentHelpCreateTimeline;
+						
+						FILENAMEINDeleteTimeline = "src/HelpDeleteTimeline.txt";
+						String contentHelpDeleteTimeline = null;
+						try {
+							contentHelpDeleteTimeline = new String(Files.readAllBytes(Paths.get(FILENAMEINDeleteTimeline)));
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						String contentHelpDeleteTimeline2 = contentHelpDeleteTimeline;
+						
+						FILENAMEINScrollfunction = "src/HelpScrollfunction.txt";
+						String contentHelpScrollfunction = null;
+						try {
+							contentHelpScrollfunction= new String(Files.readAllBytes(Paths.get(FILENAMEINScrollfunction)));
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						String contentHelpScrollfunction2 = contentHelpScrollfunction;
 
 						// Main Categories:
-						Hyperlink event1 = new Hyperlink("Event"); // event1
-																	// since
-																	// event is
-																	// used as a
-																	// variable
-																	// in:
-																	// ActionEvent
-																	// event
+						Hyperlink event1 = new Hyperlink("Event"); // event1 since event is used as a variable in: ActionEvent event
 						Hyperlink timeline = new Hyperlink("Timeline");
 						Hyperlink other = new Hyperlink("Other");
 
@@ -350,6 +440,13 @@ public class ApplicationView implements ChangeListener {
 
 						timelineHelpCreate.setDisable(true);
 						timelineHelpDelete.setDisable(true);
+						
+						//Subcategories for Other:
+						Hyperlink scrollfunction = new Hyperlink("");
+						
+						scrollfunction.setFont(Font.font("Verdana", 12));
+						
+						scrollfunction.setDisable(true);
 
 						event1.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -373,6 +470,9 @@ public class ApplicationView implements ChangeListener {
 									timelineHelpCreate.setDisable(true);
 									timelineHelpDelete.setText("");
 									timelineHelpDelete.setDisable(true);
+									
+									scrollfunction.setText("");
+									scrollfunction.setDisable(true);
 
 								}
 
@@ -395,17 +495,21 @@ public class ApplicationView implements ChangeListener {
 							@Override
 							public void handle(ActionEvent event) {
 								if (timelineHelpCreate.getText() == "") {
-									// "closing" the event help if "open"
+									// "closing" the event/other help if "open"
 									eventHelpAdd.setText("");
 									eventHelpAdd.setDisable(true);
 									eventHelpDelete.setText("");
 									eventHelpDelete.setDisable(true);
 									eventHelpEdit.setText("");
 									eventHelpEdit.setDisable(true);
+									scrollfunction.setText("");
+									scrollfunction.setDisable(true);
+									
 									timeline.setLayoutY(20);
+									
 
 									timelineHelpCreate.setLayoutY(55);
-									timelineHelpCreate.setText("How to create a timeline");
+									timelineHelpCreate.setText("How to create a  timeline");
 									timelineHelpCreate.setDisable(false);
 
 									timelineHelpDelete.setLayoutY(67);
@@ -428,6 +532,47 @@ public class ApplicationView implements ChangeListener {
 								}
 							}
 						});
+					
+						other.setOnAction(new EventHandler<ActionEvent>() {
+
+							@Override
+							public void handle(ActionEvent event) {
+								if (scrollfunction.getText() == "") {
+									// "closing" the event/timeline help if "open"
+									eventHelpAdd.setText("");
+									eventHelpAdd.setDisable(true);
+									eventHelpDelete.setText("");
+									eventHelpDelete.setDisable(true);
+									eventHelpEdit.setText("");
+									eventHelpEdit.setDisable(true);
+									timelineHelpCreate.setText("");
+									timelineHelpCreate.setDisable(true);
+									timelineHelpDelete.setText("");
+									timelineHelpDelete.setDisable(true);
+									timeline.setLayoutY(20);
+								
+									other.setLayoutY(40);
+									scrollfunction.setText("How to scroll");
+									scrollfunction.setLayoutY(74);
+									scrollfunction.setDisable(false);
+									
+
+								
+
+								}
+
+								else {
+
+									scrollfunction.setText("");
+									scrollfunction.setDisable(true);
+									scrollfunction.setLayoutY(0);
+									
+								
+
+									
+								}
+							}
+						});
 
 						// events for subcategories
 						eventHelpAdd.setOnAction(new EventHandler<ActionEvent>() {
@@ -437,15 +582,21 @@ public class ApplicationView implements ChangeListener {
 								String evenHelpAddString = contenthelpAdd2;
 								if (description.getText() == evenHelpAddString) {
 									description.setText("");
-									;
+									
 									v1.getChildren().remove(ivhelpAddEventPic);
 									v2.getChildren().remove(ivhelpDeleteEventPic);
+									v3.getChildren().remove(ivhelpEditEventPic);
+									v4.getChildren().remove(ivhelpEditEventSecPic);
+									v5.getChildren().remove(ivHelpCreateTimelinePic);
 								} else {
-									description.setLayoutX(140);
+									description.setLayoutX(180);
 									description.setLayoutY(10);
 									description.setText(evenHelpAddString);
 									v1.getChildren().add(ivhelpAddEventPic);
 									v2.getChildren().remove(ivhelpDeleteEventPic);
+									v3.getChildren().remove(ivhelpEditEventPic);
+									v4.getChildren().remove(ivhelpEditEventSecPic);
+									v5.getChildren().remove(ivHelpCreateTimelinePic);
 									v1.setLayoutX(200);
 									v1.setLayoutY(370);
 
@@ -459,29 +610,152 @@ public class ApplicationView implements ChangeListener {
 								String evenHelpDeleteString = contenthelpDelete2;
 								if (description.getText() == evenHelpDeleteString) {
 									description.setText("");
-									;
+									
 									v1.getChildren().remove(ivhelpAddEventPic);
 									v2.getChildren().remove(ivhelpDeleteEventPic);
+									v3.getChildren().remove(ivhelpEditEventPic);
+									v4.getChildren().remove(ivhelpEditEventSecPic);
+									v5.getChildren().remove(ivHelpCreateTimelinePic);
 									description.setText("");
-									;
+									
 
 								} else {
-									description.setLayoutX(140);
+									description.setLayoutX(180);
 									description.setLayoutY(10);
 									description.setText(evenHelpDeleteString);
 									v1.getChildren().remove(ivhelpAddEventPic);
 									v2.getChildren().add(ivhelpDeleteEventPic);
+									v3.getChildren().remove(ivhelpEditEventPic);
+									v4.getChildren().remove(ivhelpEditEventSecPic);
+									v5.getChildren().remove(ivHelpCreateTimelinePic);
 									v2.setLayoutX(200);
 									v2.setLayoutY(370);
 
 								}
 							}
 						});
+						
+						eventHelpEdit.setOnAction(new EventHandler<ActionEvent>() {
+
+							@Override
+							public void handle(ActionEvent event) {
+								String eventHelpEditString = contenthelpEdit2;
+								if (description.getText() == eventHelpEditString) {
+									description.setText("");
+									v1.getChildren().remove(ivhelpAddEventPic);
+									v2.getChildren().remove(ivhelpDeleteEventPic);
+									v3.getChildren().remove(ivhelpEditEventPic);
+									v4.getChildren().remove(ivhelpEditEventSecPic);
+									v5.getChildren().remove(ivHelpCreateTimelinePic);
+								} else {
+									description.setLayoutX(180);
+									description.setLayoutY(10);
+									description.setText(eventHelpEditString);
+									v1.getChildren().remove(ivhelpAddEventPic);
+									v2.getChildren().remove(ivhelpDeleteEventPic);
+									v3.getChildren().add(ivhelpEditEventPic);
+									v3.setLayoutX(200);
+									v3.setLayoutY(370);
+									v4.getChildren().add(ivhelpEditEventSecPic);
+									v4.setLayoutX(650);
+									v4.setLayoutY(370);
+									v5.getChildren().remove(ivHelpCreateTimelinePic);
+
+								}
+							}
+						});
+						//timeline subcategories:
+						timelineHelpCreate.setOnAction(new EventHandler<ActionEvent>() {
+
+							@Override
+							public void handle(ActionEvent event) {
+								String contentHelpCreateTimelineString = contentHelpCreateTimeline2;
+								if (description.getText() == contentHelpCreateTimelineString) {
+									description.setText("");
+									v1.getChildren().remove(ivhelpAddEventPic);
+									v2.getChildren().remove(ivhelpDeleteEventPic);
+									v3.getChildren().remove(ivhelpEditEventPic);
+									v4.getChildren().remove(ivhelpEditEventSecPic);
+									v5.getChildren().remove(ivHelpCreateTimelinePic);
+								} else {
+									description.setLayoutX(180);
+									description.setLayoutY(10);
+									description.setText(contentHelpCreateTimeline2);
+									v1.getChildren().remove(ivhelpAddEventPic);
+									v2.getChildren().remove(ivhelpDeleteEventPic);
+									v3.getChildren().remove(ivhelpEditEventPic);
+									v4.getChildren().remove(ivhelpEditEventSecPic);
+									v5.getChildren().add(ivHelpCreateTimelinePic);
+									v5.setLayoutX(200);
+									v5.setLayoutY(370);
+
+								}
+							}
+						});
+						
+						timelineHelpDelete.setOnAction(new EventHandler<ActionEvent>() {
+
+							@Override
+							public void handle(ActionEvent event) {
+								String contentHelpDeleteTimelineString = contentHelpDeleteTimeline2;
+								if (description.getText() == contentHelpDeleteTimelineString) {
+									description.setText("");
+									v1.getChildren().remove(ivhelpAddEventPic);
+									v2.getChildren().remove(ivhelpDeleteEventPic);
+									v3.getChildren().remove(ivhelpEditEventPic);
+									v4.getChildren().remove(ivhelpEditEventSecPic);
+									v5.getChildren().remove(ivHelpCreateTimelinePic);
+									
+								} else {
+									description.setLayoutX(180);
+									description.setLayoutY(10);
+									description.setText(contentHelpDeleteTimeline2);
+									v1.getChildren().remove(ivhelpAddEventPic);
+									v2.getChildren().remove(ivhelpDeleteEventPic);
+									v3.getChildren().remove(ivhelpEditEventPic);
+									v4.getChildren().remove(ivhelpEditEventSecPic);
+									v5.getChildren().remove(ivHelpCreateTimelinePic);
+									
+
+								}
+							}
+						});
+						//other subcategories:
+						scrollfunction.setOnAction(new EventHandler<ActionEvent>() {
+
+							@Override
+							public void handle(ActionEvent event) {
+								String contentHelpScrollfunctionString = contentHelpScrollfunction2;
+								if (description.getText() == contentHelpScrollfunctionString) {
+									description.setText("");
+									v1.getChildren().remove(ivhelpAddEventPic);
+									v2.getChildren().remove(ivhelpDeleteEventPic);
+									v3.getChildren().remove(ivhelpEditEventPic);
+									v4.getChildren().remove(ivhelpEditEventSecPic);
+									v5.getChildren().remove(ivHelpCreateTimelinePic);
+									
+								} else {
+									description.setLayoutX(180);
+									description.setLayoutY(10);
+									description.setText(contentHelpScrollfunction2);
+									v1.getChildren().remove(ivhelpAddEventPic);
+									v2.getChildren().remove(ivhelpDeleteEventPic);
+									v3.getChildren().remove(ivhelpEditEventPic);
+									v4.getChildren().remove(ivhelpEditEventSecPic);
+									v5.getChildren().remove(ivHelpCreateTimelinePic);
+									
+
+								}
+							}
+						});
+						
+						
 						Group root = new Group();
-						root.getChildren().addAll(v1, v2);
+						root.getChildren().addAll(v1, v2, v3, v4, v5, v6);
 						root.getChildren().addAll(event1, timeline, other);
-						root.getChildren().addAll(eventHelpAdd, eventHelpDelete);
+						root.getChildren().addAll(eventHelpAdd, eventHelpDelete, eventHelpEdit);
 						root.getChildren().addAll(timelineHelpCreate, timelineHelpDelete);
+						root.getChildren().addAll(scrollfunction);
 						root.getChildren().addAll(description);
 						primaryStage.setScene(new Scene(root, 1267, 700));
 						primaryStage.show();
