@@ -286,6 +286,8 @@ public class ApplicationView implements ChangeListener {
 		VBox content = new VBox();
 		content.setBackground(scrollBackground);
 		content.setPadding(new Insets(0, 3, 0, 3));
+		scrollTimeline.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+		scrollTimeline.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		scrollTimeline.setBackground(scrollBackground);
 		scrollTimeline.setStyle("-fx-background: rgb(223,223,223);");
 		scrollTimeline.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, radii, BorderStroke.THIN)));
