@@ -426,12 +426,14 @@ public class ApplicationView implements ChangeListener {
 				              	if(description.getText() == evenHelpAddString){
 				              		description.setText("");;
 				              		v1.getChildren().remove(ivhelpAddEventPic);
+				              		v2.getChildren().remove(ivhelpDeleteEventPic);
 				                  	  }
 				              	else{
 				              		description.setLayoutX(140);
 				              		description.setLayoutY(10);
 				              		description.setText(evenHelpAddString);
 				              		v1.getChildren().add(ivhelpAddEventPic);
+				              		v2.getChildren().remove(ivhelpDeleteEventPic);
 				              		v1.setLayoutX(200);
 				              		v1.setLayoutY(370);
 				              		
@@ -446,6 +448,7 @@ public class ApplicationView implements ChangeListener {
 				              	if(description.getText() == evenHelpDeleteString){
 				              		description.setText("");;
 				              		v1.getChildren().remove(ivhelpAddEventPic);
+				              		v2.getChildren().remove(ivhelpDeleteEventPic);
 				              		description.setText("");;
 				              	
 				                  	  }
