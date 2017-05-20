@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import functions.Event;
 import functions.Timeline;
 import javafx.geometry.Pos;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -16,6 +19,7 @@ public class TimelineInformationBox extends HBox {
 
 	public TimelineInformationBox() {
 		this.setAlignment(Pos.BOTTOM_LEFT);
+		this.setBackground( new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
 	}
 	
 	/**

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import functions.Event;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -78,7 +80,14 @@ public class EventShape extends Circle {
 	 */
 	private void createEventShape() {
 		setStroke(Color.BLACK);
-		setFill(Color.DEEPSKYBLUE);
+		setFill(Color.web("rgb(176, 149, 203)"));
+		Light.Distant light = new Light.Distant();
+		light.setAzimuth(-20.0);
+		Lighting lighting = new Lighting();
+		lighting.setDiffuseConstant(1.2);
+		lighting.setLight(light);
+		lighting.setSurfaceScale(3.0);
+		setEffect(lighting);
 		setCenterX(startX);
 		setCenterY(25);
 		setManaged(false);
@@ -89,7 +98,14 @@ public class EventShape extends Circle {
 	 */
 	private void createEventDurationShape() {
 		setStroke(Color.BLACK);
-		setFill(Color.LAWNGREEN);
+		setFill(Color.web("rgb(199, 144, 199)"));
+		Light.Distant light = new Light.Distant();
+		light.setAzimuth(-20.0);
+		Lighting lighting = new Lighting();
+		lighting.setDiffuseConstant(1.2);
+		lighting.setLight(light);
+		lighting.setSurfaceScale(3.0);
+		setEffect(lighting);
 		setCenterX(startX);
 		setCenterY(25);
 		setManaged(false);
@@ -98,7 +114,14 @@ public class EventShape extends Circle {
 	
 	private void createEventDayBar() {
 		setStroke(Color.BLACK);
-		setFill(Color.DEEPSKYBLUE);
+		setFill(Color.web("rgb(199, 144, 199)"));
+		Light.Distant light = new Light.Distant();
+		light.setAzimuth(-20.0);
+		Lighting lighting = new Lighting();
+		lighting.setDiffuseConstant(1.2);
+		lighting.setLight(light);
+		lighting.setSurfaceScale(3.0);
+		bar.setEffect(lighting);
 		setCenterX(startX);
 		setCenterY(25);
 		setManaged(false);
@@ -107,7 +130,7 @@ public class EventShape extends Circle {
 		bar.setLayoutY(25);
 		bar.setStrokeWidth(15.0);
 		bar.setStrokeLineCap(StrokeLineCap.ROUND);
-		bar.setStroke(Color.LAWNGREEN);
+		bar.setStroke(Color.web("rgb(199, 144, 199)"));
 		bar.setManaged(false);
 		bar.setVisible(true);
 	}
@@ -120,7 +143,14 @@ public class EventShape extends Circle {
 		updateBar();
 		bar.setStrokeWidth(6.0);
 		bar.setStrokeLineCap(StrokeLineCap.ROUND);
-		bar.setStroke(Color.LAWNGREEN);
+		bar.setStroke(Color.web("rgb(199, 144, 199)"));
+		Light.Distant light = new Light.Distant();
+		light.setAzimuth(-20.0);
+		Lighting lighting = new Lighting();
+		lighting.setDiffuseConstant(1.2);
+		lighting.setLight(light);
+		lighting.setSurfaceScale(3.0);
+		setEffect(lighting);
 		bar.setVisible(false);
 		bar.setManaged(false);
 	}

@@ -388,12 +388,13 @@ public class ShowEvents extends HBox {
 	 */
 	private void createEventBox(int width, int daysMonthsOrYears) {
 		getChildren().clear();
+		setBackground( new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
 		long boxLength = ((daysMonthsOrYears) * width) + ((daysMonthsOrYears-1) * 2 );
 		setMaxWidth(boxLength);
 		setMinWidth(boxLength);
 		for (int i = 0; i <= daysMonthsOrYears ; i++) {
 			Line line = new Line();
-			line.setStroke(Color.WHITE);
+			line.setStroke(Color.WHITESMOKE);
 			line.setStrokeWidth(2);
 			line.setStartX(width*i +(2*(i-1)) + 1);
 			line.setEndX(width*i+(2*(i-1)) + 1);

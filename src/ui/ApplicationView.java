@@ -2,8 +2,15 @@ package ui;
 
 import controls.ApplicationListener;
 import controls.ChangeListener;
+import de.jensd.fx.fontawesome.AwesomeDude;
+import de.jensd.fx.fontawesome.AwesomeIcon;
 
 import java.util.ArrayList;
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXButton.ButtonType;
+
 import functions.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,10 +18,19 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -34,8 +50,19 @@ public class ApplicationView implements ChangeListener {
 	private final Tooltip saveTo = new Tooltip();
 	private final Tooltip loadTo = new Tooltip();
 	private final Tooltip helpTo = new Tooltip();
+	
+	private Background background = new Background(new BackgroundFill(Color.web("rgb(235,235,235)"), null, null));
+	private Background scrollBackground = new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null));
+	private CornerRadii radii = new CornerRadii(5);
+	private Light.Distant light = new Light.Distant();
+	
+	private Lighting lighting = new Lighting();
+	
 
-	private Button saveButton = new Button();
+	private final JFXButton saveButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.SAVE, "30")) );
+	private final JFXButton helpButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.QUESTION_SIGN, "30")) ); 
+	private final JFXButton loadButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.FILE_ALT, "30")) ); 
+
 	private EventView eventView;
 	private TimelineView timelineView;
 	private ApplicationListener appListener;
@@ -43,7 +70,7 @@ public class ApplicationView implements ChangeListener {
 	private final VBox view = new VBox();
 	// contains ComboBox to choose current timeline, add/delete timeline
 	private final HBox timelineButtons = new HBox();
-	private final HBox helpButton = new HBox();
+	private final HBox helpBox = new HBox();
 	boolean filePath;
 
 	/*
@@ -56,7 +83,7 @@ public class ApplicationView implements ChangeListener {
 	// buttons for add/edit/delete event
 	private final HBox eventButtons = new HBox();
 	// comboBox to choose timeline
-	private final ComboBox<Timeline> chooseTimeline = new ComboBox<Timeline>();
+	private final JFXComboBox<Timeline> chooseTimeline = new JFXComboBox<Timeline>();
 	// contains all events at the correct position
 	private final ShowEvents eventBox = new ShowEvents();
 	private final TimelineInformationBox informationBox = new TimelineInformationBox();
@@ -69,7 +96,6 @@ public class ApplicationView implements ChangeListener {
 	public ApplicationView() {
 		eventView = new EventView();
 		timelineView = new TimelineView();
-		saveButton = new Button();
 	}
 
 	/**
@@ -118,7 +144,7 @@ public class ApplicationView implements ChangeListener {
 	 * and the Main Timeline Box
 	 */
 	private VBox root() {
-		view.setStyle("-fx-base: #e6e6fa");
+		view.setBackground(background);
 		view.getChildren().clear();
 		view.setSpacing(10);
 		view.setAlignment(Pos.CENTER);
@@ -160,11 +186,16 @@ public class ApplicationView implements ChangeListener {
 		helpTo.setText("Help");
 		helpTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 
-		Button helpButton = new Button("",new ImageView(help));
-		helpButton.setStyle("-fx-background-radius: 5em; ");
 		helpButton.setTooltip(helpTo);
-		helpButton.setMinSize(35, 35);
-		helpButton.setMaxSize(35, 35);
+		helpButton.setRipplerFill(Color.web("rgb(87,56,97)"));
+		helpButton.setBackground(background);
+		light.setAzimuth(-20.0);
+		lighting.setDiffuseConstant(1.2);
+		lighting.setLight(light);
+		lighting.setSurfaceScale(3.0);
+		helpButton.setEffect(lighting);
+		helpButton.setButtonType(ButtonType.RAISED);
+		
 
 		helpButton.setOnAction(new EventHandler<ActionEvent>(){
 
@@ -181,13 +212,17 @@ public class ApplicationView implements ChangeListener {
 	   the user through the fileChooser.*/
 
 	private Button saveTimelineButton() {
-		saveButton = new Button("",new ImageView(saveT));
 		saveTo.setText("Save Timeline");
 		saveTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 		saveButton.setTooltip(saveTo);
-		saveButton.setMinSize(70, 35);
-		saveButton.setMaxSize(70, 35);
-		saveButton.getStylesheets().add(css);
+		saveButton.setRipplerFill(Color.web("rgb(87,56,97)"));
+		saveButton.setBackground(background);
+		light.setAzimuth(-20.0);
+		lighting.setDiffuseConstant(1.2);
+		lighting.setLight(light);
+		lighting.setSurfaceScale(3.0);
+		saveButton.setEffect(lighting);
+		saveButton.setButtonType(ButtonType.RAISED);
 
 		saveButton.setOnAction(ActionEvent  -> {
 			  appListener.onTimelineSaved();
@@ -200,17 +235,21 @@ public class ApplicationView implements ChangeListener {
 	private Button loadTimelineButton() {
 		loadTo.setText("Load Timeline");
 		loadTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-		Button loaded = new Button("",new ImageView(loadT));
+	
+		loadButton.setTooltip(loadTo);
+		loadButton.setRipplerFill(Color.web("rgb(87,56,97)"));
+		loadButton.setBackground(background);
+		light.setAzimuth(-20.0);
+		lighting.setDiffuseConstant(1.2);
+		lighting.setLight(light);
+		lighting.setSurfaceScale(3.0);
+		loadButton.setEffect(lighting);
+		loadButton.setButtonType(ButtonType.RAISED);
 
-		loaded.setTooltip(loadTo);
-		loaded.setMinSize(70, 35);
-		loaded.setMaxSize(70, 35);
-		loaded.getStylesheets().add(css);
-
-		loaded.setOnAction(ActionEvent -> {
+		loadButton.setOnAction(ActionEvent -> {
 			appListener.onTimelineLoaded();
 		});
-		return loaded;
+		return loadButton;
 }
 
 	/**
@@ -223,9 +262,9 @@ public class ApplicationView implements ChangeListener {
 
 		HBox temp = new HBox();
 		temp.getChildren().clear();
-		helpButton.getChildren().clear();
-		helpButton.getChildren().add(createHelpButton());
-		helpButton.setAlignment(Pos.BOTTOM_LEFT);
+		helpBox.getChildren().clear();
+		helpBox.getChildren().add(createHelpButton());
+		helpBox.setAlignment(Pos.BOTTOM_LEFT);
 
 		timelineButtons.getChildren().clear();
 		timelineButtons.setSpacing(18.0);
@@ -233,7 +272,7 @@ public class ApplicationView implements ChangeListener {
 		timelineButtons.setAlignment(Pos.CENTER_LEFT);
 		timelineButtons.setPadding(new Insets(0,500,0,10));
 
-		temp.getChildren().addAll(timelineButtons,helpButton);
+		temp.getChildren().addAll(timelineButtons,helpBox);
 
 		return temp;
 	}
@@ -250,8 +289,6 @@ public class ApplicationView implements ChangeListener {
 		eventButtons.setAlignment(Pos.CENTER_LEFT);
 		eventButtons.setPadding(new Insets(0,0,0,5));
 		chooseTimeline.setMinSize(150,35);
-		chooseTimeline.setStyle("-fx-base: #e6e6fa;-fx-font: 15 arial;-fx-text-alignment: center;");
-		chooseTimeline.getStylesheets().add(css);
 		return eventButtons;
 	}
 
@@ -267,6 +304,9 @@ public class ApplicationView implements ChangeListener {
 	private void chooseTimeline(ArrayList<Timeline> timelines, Timeline current) {
 
 		chooseTimeline.getItems().clear();
+		chooseTimeline.setFocusColor(Color.web("rgb(87,56,97)"));
+		chooseTimeline.setUnFocusColor(Color.web("rgb(87,56,97)"));
+		chooseTimeline.setBackground(background);
 
 		for (Timeline t : timelines) {
 			chooseTimeline.getItems().add(t);
@@ -300,8 +340,12 @@ public class ApplicationView implements ChangeListener {
 	 */
 	private ScrollPane timelineScrollBox() {
 		VBox content = new VBox();
+		content.setBackground(scrollBackground);
 		content.setPadding(new Insets(0, 3, 0, 3));
 		scrollTimeline.setPrefSize(400, 300);
+		scrollTimeline.setBackground(scrollBackground);
+		scrollTimeline.setStyle("-fx-background: rgb(223,223,223);");
+		scrollTimeline.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, radii, BorderStroke.THIN)));
 		content.getChildren().addAll(informationBox, currentTimeline, eventBox);
 		scrollTimeline.setContent(content);
 

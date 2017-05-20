@@ -44,7 +44,7 @@ public class VisualTimeline extends GridPane {
 	public VisualTimeline(ShowEvents show) {
 		eventBox = show;
 		setHgap(PANE_SPACE);
-		setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+		setBackground( new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
 			
 	}
 	
