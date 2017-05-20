@@ -176,6 +176,7 @@ public class ApplicationView implements ChangeListener {
 		helpButton.setTooltip(helpTo);
 		helpButton.setRipplerFill(Color.web("rgb(87,56,97)"));
 		helpButton.setBackground(background);
+		helpButton.setMinSize(40, 40);
 		light.setAzimuth(-20.0);
 		lighting.setDiffuseConstant(1.2);
 		lighting.setLight(light);
@@ -204,6 +205,7 @@ public class ApplicationView implements ChangeListener {
 		saveTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 		saveButton.setTooltip(saveTo);
 		saveButton.setRipplerFill(Color.web("rgb(87,56,97)"));
+		saveButton.setMinSize(40, 40);
 		saveButton.setBackground(background);
 		light.setAzimuth(-20.0);
 		lighting.setDiffuseConstant(1.2);
@@ -226,13 +228,14 @@ public class ApplicationView implements ChangeListener {
 	
 		loadButton.setTooltip(loadTo);
 		loadButton.setRipplerFill(Color.web("rgb(87,56,97)"));
+		loadButton.setMinSize(40, 40);
 		loadButton.setBackground(background);
 		light.setAzimuth(-20.0);
 		lighting.setDiffuseConstant(1.2);
 		lighting.setLight(light);
 		lighting.setSurfaceScale(3.0);
 		loadButton.setEffect(lighting);
-		loadButton.setButtonType(ButtonType.RAISED);
+		loadButton.setButtonType(ButtonType.FLAT);
 
 		loadButton.setOnAction(ActionEvent -> {
 			appListener.onTimelineLoaded();
