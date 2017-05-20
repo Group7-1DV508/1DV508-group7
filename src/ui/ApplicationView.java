@@ -183,6 +183,7 @@ public class ApplicationView implements ChangeListener {
 		helpButton.setEffect(lighting);
 		helpButton.setButtonType(ButtonType.RAISED);
 		
+		
 
 		helpButton.setOnAction(new EventHandler<ActionEvent>(){
 
@@ -247,6 +248,7 @@ public class ApplicationView implements ChangeListener {
 		timelineButtons.getChildren().clear();
 		timelineButtons.setSpacing(18.0);
 		timelineButtons.setPadding(new Insets(15, 10, 15, 10));
+		timelineButtons.setMinHeight(50);
 		timelineButtons.getChildren().addAll(chooseTimeline,getAddTimelineButton(), saveTimelineButton(), loadTimelineButton(), getDeleteTimelineButton(), getAddEventButton(), createHelpButton());
 		
 		
