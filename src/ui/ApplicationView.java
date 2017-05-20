@@ -230,7 +230,9 @@ public class ApplicationView implements ChangeListener {
 					}
 						String hej2 = comboBox.getSelectionModel().getSelectedItem();
 							if(hej2 == "Delete Event"){
-								helpText.setText("Text to be added");
+								helpText.setText("Click on the Event circle, which should be deleted.\n"
+										+ "The event information box will appear.\n"
+										+ "Click on the “ Delete” button in the bottom right corner, next to the “Edit information” button.");
 						
 						}
 						
