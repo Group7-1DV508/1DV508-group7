@@ -270,7 +270,7 @@ public class ApplicationView implements ChangeListener {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-					      Image imageHelpDeleteEvent = new Image(helpAddEventPicIS);
+					      Image imageHelpDeleteEvent = new Image(helpDeleteEventPicIS);
 					      ImageView ivhelpDeleteEventPic = new ImageView();
 					      ivhelpDeleteEventPic.setImage(imageHelpDeleteEvent);
 					      ivhelpDeleteEventPic.setPreserveRatio(true);
@@ -453,15 +453,16 @@ public class ApplicationView implements ChangeListener {
 				              		description.setLayoutX(140);
 				              		description.setLayoutY(10);
 				              		description.setText(evenHelpDeleteString);
+				              		v1.getChildren().remove(ivhelpAddEventPic);
 				              		v2.getChildren().add(ivhelpDeleteEventPic);
-				              		v2.setLayoutX(200);
-				              		v2.setLayoutY(370);
+				              	    v2.setLayoutX(200);
+				              	    v2.setLayoutY(370);
 				              		
 				              		
 				              	}
 				              }}); 
 					    Group root = new Group();
-					    root.getChildren().addAll(v1);
+					    root.getChildren().addAll(v1, v2);
 					    root.getChildren().addAll(event1, timeline, other);
 					    root.getChildren().addAll(eventHelpAdd, eventHelpDelete);
 					    root.getChildren().addAll(timelineHelpCreate, timelineHelpDelete);
