@@ -32,6 +32,8 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -110,15 +112,11 @@ public class EventView {
 	 */
 
 	public JFXButton getAddEventButton() {
-		addEvent.setPrefSize(120, 30);
-		Lighting lighting = new Lighting();
-		Light.Distant light = new Light.Distant();
 		addEvent = new JFXButton("Event", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.CALENDAR, "30")) ); 
-		light.setAzimuth(-20.0);
-		 lighting.setDiffuseConstant(1.2);
-		 lighting.setLight(light);
-		 lighting.setSurfaceScale(3.0);
-		 addEvent.setEffect(lighting);
+		addEvent.setMaxSize(40, 40);
+		addEvent.setMinSize(40, 40);
+		addEvent.setBackground(new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
+		
 
 		/*
 		 * when Add Event button is clicked a popup window is created where the

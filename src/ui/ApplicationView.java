@@ -175,14 +175,10 @@ public class ApplicationView implements ChangeListener {
 
 		helpButton.setTooltip(helpTo);
 		helpButton.setRipplerFill(Color.web("rgb(87,56,97)"));
-		helpButton.setBackground(background);
+		helpButton.setBackground(scrollBackground);
 		helpButton.setMinSize(40, 40);
-		light.setAzimuth(-20.0);
-		lighting.setDiffuseConstant(1.2);
-		lighting.setLight(light);
-		lighting.setSurfaceScale(3.0);
-		helpButton.setEffect(lighting);
-		helpButton.setButtonType(ButtonType.RAISED);
+		helpButton.setMaxSize(40, 40);
+		helpButton.setButtonType(ButtonType.FLAT);
 		
 		
 
@@ -206,13 +202,9 @@ public class ApplicationView implements ChangeListener {
 		saveButton.setTooltip(saveTo);
 		saveButton.setRipplerFill(Color.web("rgb(87,56,97)"));
 		saveButton.setMinSize(40, 40);
-		saveButton.setBackground(background);
-		light.setAzimuth(-20.0);
-		lighting.setDiffuseConstant(1.2);
-		lighting.setLight(light);
-		lighting.setSurfaceScale(3.0);
-		saveButton.setEffect(lighting);
-		saveButton.setButtonType(ButtonType.RAISED);
+		saveButton.setMaxSize(40, 40);
+		saveButton.setBackground(scrollBackground);
+		saveButton.setButtonType(ButtonType.FLAT);
 
 		saveButton.setOnAction(ActionEvent  -> {
 			  appListener.onTimelineSaved();
@@ -229,12 +221,8 @@ public class ApplicationView implements ChangeListener {
 		loadButton.setTooltip(loadTo);
 		loadButton.setRipplerFill(Color.web("rgb(87,56,97)"));
 		loadButton.setMinSize(40, 40);
-		loadButton.setBackground(background);
-		light.setAzimuth(-20.0);
-		lighting.setDiffuseConstant(1.2);
-		lighting.setLight(light);
-		lighting.setSurfaceScale(3.0);
-		loadButton.setEffect(lighting);
+		loadButton.setMaxSize(40, 40);
+		loadButton.setBackground(scrollBackground);
 		loadButton.setButtonType(ButtonType.FLAT);
 
 		loadButton.setOnAction(ActionEvent -> {

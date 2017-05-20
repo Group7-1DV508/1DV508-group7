@@ -81,11 +81,11 @@ public class TimelineView {
 		delTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 
 		deleteTimeline.setTooltip(delTo);
-		deleteTimeline.setMinSize(80, 35);
-		deleteTimeline.setMaxSize(80, 35);
+		deleteTimeline.setMinSize(40, 40);
+		deleteTimeline.setMaxSize(40, 40);
 		deleteTimeline.setPadding(new Insets(0,0,0,-3));
 		deleteTimeline.setRipplerFill(Color.web("rgb(87,56,97)"));
-		deleteTimeline.setBackground(new Background(new BackgroundFill(Color.web("rgb(212, 212, 214)"), null, null)));
+		deleteTimeline.setBackground(new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
 		deleteTimeline.setOnAction(new DeleteTimelineHandler());
 		return deleteTimeline;
 	}
@@ -99,11 +99,11 @@ public class TimelineView {
 		addTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 		addTimelineButton.getChildren().add(addTimeline);
 		addTimeline.setTooltip(addTo);
-		addTimeline.setMinSize(80, 35);
-		addTimeline.setMaxSize(80, 35);
+		addTimeline.setMinSize(40, 40);
+		addTimeline.setMaxSize(40, 40);
 		
 		addTimeline.setRipplerFill(Color.web("rgb(87,56,97)"));
-		addTimeline.setBackground(new Background(new BackgroundFill(Color.web("rgb(212, 212, 214)"), null, null)));
+		addTimeline.setBackground(new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
 		
 		addTimeline.setPadding(new Insets(0,0,0,-3));
 
@@ -118,7 +118,7 @@ public class TimelineView {
 		addTimelineWindow = new Stage();
 		// Sets what happens when "Save" button is clicked
 		confirmTimeline.setOnAction(new ConfirmTimelineHandler());
-		confirmTimeline.setBackground(new Background(new BackgroundFill(Color.web("rgb(212, 212, 214)"), null, null)));
+		confirmTimeline.setBackground(new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
 		addTimelineWindow.setTitle("Add timeline");
 		addTimelineWindow.setScene(new Scene(addTimelineRoot, 600, 300));
 		addTimelineWindow.setResizable(false);
