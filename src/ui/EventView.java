@@ -9,6 +9,8 @@ import java.util.Optional;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 
 import controls.EventListener;
@@ -51,17 +53,17 @@ public class EventView {
 	private EventListener eventListener;
 
 	// TextArea - Add Event Window
-	private TextArea description;
+	private JFXTextArea description;
 
 	// TextFields - Add Event Window
-	private TextField name;
+	private JFXTextField name;
 
 	// Buttons
 	private JFXButton addEvent  = new JFXButton ();
-	private Button ok = new Button("Finish");
-	private Button cancel = new Button("Cancel");
-	private Button editEvent = new Button("Edit Info");
-	private Button delete = new Button("Delete event");
+	private JFXButton ok = new JFXButton("Finish");
+	private JFXButton cancel = new JFXButton("Cancel");
+	private JFXButton editEvent = new JFXButton("Edit Info");
+	private JFXButton delete = new JFXButton("Delete event");
 	
 	// Texts
 	private Text titleText;
@@ -115,6 +117,8 @@ public class EventView {
 		addEvent = new JFXButton("Event", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.CALENDAR, "30")) ); 
 		addEvent.setMaxSize(40, 40);
 		addEvent.setMinSize(40, 40);
+		addEvent.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.FLAT);
+		addEvent.setRipplerFill(Color.web("rgb(87,56,97)"));
 		addEvent.setBackground(new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
 		
 
@@ -248,6 +252,9 @@ public class EventView {
 		// Button parameters
 		editEvent.setMinSize(80, 30);
 		editEvent.setFont(Font.font("Verdana", 15));
+		editEvent.setBackground(new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
+		editEvent.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.FLAT);
+		editEvent.setRipplerFill(Color.web("rgb(87,56,97)"));
 		editEvent.setTranslateX(10);
 		editEvent.setTranslateY(30);
 		editEvent.setOnAction(new EventHandler<ActionEvent>() {
@@ -381,6 +388,10 @@ public class EventView {
 	public Button getDeleteButton(Event e, Stage s) {
 		delete.setMinSize(80, 30);
 		delete.setFont(Font.font("Verdana", 15));
+		delete.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.FLAT);
+		delete.setRipplerFill(Color.web("rgb(87,56,97)"));
+		delete.setBackground(new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
+
 		delete.setTranslateX(110);
 		delete.setTranslateY(-20);
 		delete.setOnAction(new EventHandler<ActionEvent>() {
@@ -433,12 +444,16 @@ public class EventView {
 		GridPane pane = new GridPane();
 
 		// TextFields,TextAreas initialized
-		name = new TextField();
+		name = new JFXTextField();
+		name.setUnFocusColor(Color.web("rgb(87,56,97)"));
+		name.setFocusColor(Color.web("rgb(87,56,97)"));
 		name.setPromptText("Event name");
 		name.setFont(new Font("Times new Roman", 20));
 		name.setPrefWidth(446);
 
-		description = new TextArea();
+		description = new JFXTextArea();
+		description.setUnFocusColor(Color.web("rgb(87,56,97)"));
+		description.setFocusColor(Color.web("rgb(87,56,97)"));
 		description.setPromptText("Event information");
 		description.setFont(Font.font("Times new Roman", 20));
 		description.setPrefSize(446, 200);
@@ -478,10 +493,18 @@ public class EventView {
 		// Buttons initialized
 		ok.setPrefSize(135, 35);
 		ok.setFont(Font.font("Times new Roman", 20));
+		ok.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.FLAT);
+		ok.setRipplerFill(Color.web("rgb(87,56,97)"));
+		ok.setBackground(new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
+
 
 		cancel.setPrefSize(135, 35);
 		cancel.setTranslateX(175);
 		cancel.setFont(Font.font("Times new Roman", 20));
+		cancel.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.FLAT);
+		cancel.setRipplerFill(Color.web("rgb(87,56,97)"));
+		cancel.setBackground(new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
+
 
 		// HBox initialized
 
@@ -616,8 +639,12 @@ public class EventView {
 		VBox editeHolder = new VBox();
 		editeHolder.setPrefSize(400, 400);
 		editeHolder.setTranslateX(50);
-		name = new TextField(e.getEventName());
-		description = new TextArea(e.getEventDescription());
+		name = new JFXTextField(e.getEventName());
+		name.setUnFocusColor(Color.web("rgb(87,56,97)"));
+		name.setFocusColor(Color.web("rgb(87,56,97)"));
+		description = new JFXTextArea(e.getEventDescription());
+		description.setUnFocusColor(Color.web("rgb(87,56,97)"));
+		description.setFocusColor(Color.web("rgb(87,56,97)"));
 		Label nameL = new Label("Name");
 		Label descriptionL = new Label("Description");
 
