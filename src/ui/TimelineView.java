@@ -4,7 +4,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
+
 import controls.TimelineListener;
+import de.jensd.fx.fontawesome.AwesomeDude;
+import de.jensd.fx.fontawesome.AwesomeIcon;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -15,37 +22,35 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
 public class TimelineView {
 	private final Tooltip addTo = new Tooltip();
 	private final Tooltip delTo = new Tooltip();
-	private String css = this.getClass().getResource("/ui/application.css").toExternalForm();
-	private final Image addT = new Image(getClass().getResource("/addT.png").toExternalForm(), 43, 100, true, true);
-	private final Image delT = new Image(getClass().getResource("/delT.png").toExternalForm(), 35, 100, true, true);
 
-	private Button addTimeline = new Button("", new ImageView(addT));
-	private Button deleteTimeline = new Button("",new ImageView(delT));
+	private JFXButton addTimeline = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.PLUS_SIGN, "30")));
+	private JFXButton deleteTimeline = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.TRASH, "30")));
 	private Button confirmTimeline = new Button("Finish");
 	// HBox for "Add Timeline" button
 	private HBox addTimelineButton = new HBox();
 	// Stage for new window where user inputs information about timeline
 	private Stage addTimelineWindow = new Stage();
-	private final TextField timelineName = new TextField();
-	private DatePicker timelineStart = new DatePicker();
-	private DatePicker timelineEnd = new DatePicker();
+	private final JFXTextField timelineName = new JFXTextField();
+	private JFXDatePicker timelineStart = new JFXDatePicker();
+	private JFXDatePicker timelineEnd = new JFXDatePicker();
 	Converter converter = new Converter();
 	private TimelineListener timelineListener;
 	private boolean gotFilePath;
@@ -76,10 +81,11 @@ public class TimelineView {
 		delTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 
 		deleteTimeline.setTooltip(delTo);
-		deleteTimeline.setMinSize(70, 35);
-		deleteTimeline.setMaxSize(70, 35);
+		deleteTimeline.setMinSize(80, 35);
+		deleteTimeline.setMaxSize(80, 35);
 		deleteTimeline.setPadding(new Insets(0,0,0,-3));
-		deleteTimeline.getStylesheets().add(css);
+		deleteTimeline.setRipplerFill(Color.web("rgb(87,56,97)"));
+		deleteTimeline.setBackground(new Background(new BackgroundFill(Color.web("rgb(212, 212, 214)"), null, null)));
 		deleteTimeline.setOnAction(new DeleteTimelineHandler());
 		return deleteTimeline;
 	}
@@ -95,9 +101,12 @@ public class TimelineView {
 		addTimeline.setTooltip(addTo);
 		addTimeline.setMinSize(80, 35);
 		addTimeline.setMaxSize(80, 35);
+		
+		addTimeline.setRipplerFill(Color.web("rgb(87,56,97)"));
+		addTimeline.setBackground(new Background(new BackgroundFill(Color.web("rgb(212, 212, 214)"), null, null)));
+		
 		addTimeline.setPadding(new Insets(0,0,0,-3));
 
-		addTimeline.getStylesheets().add(css);
 		addTimeline.setOnAction(new TimelineHandler());
 	}
 
@@ -106,6 +115,7 @@ public class TimelineView {
 	 */
 	private void openAddTimeline() {
 		GridPane addTimelineRoot = initAddTimeline();
+		addTimelineWindow = new Stage();
 		// Sets what happens when "Save" button is clicked
 		confirmTimeline.setOnAction(new ConfirmTimelineHandler());
 		addTimelineWindow.setTitle("Add timeline");
@@ -113,6 +123,14 @@ public class TimelineView {
 		addTimelineWindow.setResizable(false);
 		addTimelineWindow.initModality(Modality.APPLICATION_MODAL);
 		addTimelineWindow.showAndWait();
+		addTimelineWindow.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent arg0) {
+				addTimelineWindow.hide();
+			}
+			
+		});
 		addTimelineRoot.requestFocus();
 	}
 
@@ -129,9 +147,13 @@ public class TimelineView {
 		confirmTimeline.setFont(new Font("Times new Roman", 20));
 		timelineName.setPromptText("Timeline Name");
 		timelineName.setFont(new Font("Times new Roman", 20));
+		timelineName.setUnFocusColor(Color.web("rgb(87,56,97)"));
+		timelineName.setFocusColor(Color.web("rgb(111, 83, 119)"));
 		timelineStart.setPromptText("Start Year");
+		timelineStart.setDefaultColor(Color.web("rgb(87,56,97)"));
 		timelineStart.setConverter(converter);
 		timelineEnd.setPromptText("End Year");
+		timelineEnd.setDefaultColor(Color.web("rgb(87,56,97)"));
 		timelineEnd.setConverter(converter);
 
 		confirmTimeline.setMinSize(100, 30);
