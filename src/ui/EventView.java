@@ -1,12 +1,19 @@
 package ui;
 
 import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTimePicker;
+
 import controls.EventListener;
+import de.jensd.fx.fontawesome.AwesomeDude;
+import de.jensd.fx.fontawesome.AwesomeIcon;
 import functions.Event;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,7 +23,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -24,6 +30,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -47,7 +55,7 @@ public class EventView {
 	private TextField name;
 
 	// Buttons
-	private Button addEvent = new Button("Add Event");
+	private JFXButton addEvent  = new JFXButton ();
 	private Button ok = new Button("Finish");
 	private Button cancel = new Button("Cancel");
 	private Button editEvent = new Button("Edit Info");
@@ -60,8 +68,10 @@ public class EventView {
 	private Text dateEndText;
 	
 	// Combo boxes
-	private ComboBox<String> timeStart = new ComboBox<String>();
-	private ComboBox<String> timeEnd = new ComboBox<String>();
+	private JFXTimePicker JtimeStart = new JFXTimePicker();
+	//private ComboBox<String> timeStart = new ComboBox<String>();
+	private JFXTimePicker JtimeEnd = new JFXTimePicker();
+	//private ComboBox<String> timeEnd = new ComboBox<String>();
 
 	// Labels - View Event Window
 	private Label title = new Label("Title:");
@@ -71,8 +81,8 @@ public class EventView {
 
 	// Other
 	private DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d yyyy (GG)  HH:mm");
-	private DatePicker checkInDatePickerStart;
-	private DatePicker checkInDatePickerEnd;
+	private JFXDatePicker checkInDatePickerStart;
+	private JFXDatePicker checkInDatePickerEnd;
 	private final Converter converter = new Converter();
 	
 	private LocalDate timelineStart;
@@ -99,8 +109,16 @@ public class EventView {
 	 * @return addEvent button
 	 */
 
-	public Button getAddEventButton() {
+	public JFXButton getAddEventButton() {
 		addEvent.setPrefSize(120, 30);
+		Lighting lighting = new Lighting();
+		Light.Distant light = new Light.Distant();
+		addEvent = new JFXButton("Event", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.CALENDAR, "30")) ); 
+		light.setAzimuth(-20.0);
+		 lighting.setDiffuseConstant(1.2);
+		 lighting.setLight(light);
+		 lighting.setSurfaceScale(3.0);
+		 addEvent.setEffect(lighting);
 
 		/*
 		 * when Add Event button is clicked a popup window is created where the
@@ -135,7 +153,7 @@ public class EventView {
 						} // End of alert for empty fields
 						else {
 							LocalDateTime startTime = LocalDateTime.of(checkInDatePickerStart.getValue(),
-									LocalTime.parse(timeStart.getValue() + ":00"));
+									LocalTime.parse(JtimeStart.getValue() + ":00"));
 							String eventname = name.getText();
 							String eventdescrip = description.getText();
 							/*
@@ -162,7 +180,7 @@ public class EventView {
 							else {
 								// Event is with duration, end time is created
 								LocalDateTime endTime = LocalDateTime.of(checkInDatePickerEnd.getValue(),
-										LocalTime.parse(timeEnd.getValue() + ":00"));
+										LocalTime.parse(JtimeEnd.getValue() + ":00"));
 								// Check if start time is later than end time
 								if (startTime.compareTo(endTime) > 0) {
 									createAlertError("Error in event dates", "Start date has to be earlier than end date!");
@@ -249,18 +267,10 @@ public class EventView {
 						 * example, user picked end time, but not end date.
 						 */
 
-						if (checkInDatePickerEnd.getEditor().getText().length() == 0) {
-							checkInDatePickerEnd.setValue(null);
-						}
-						
-						if (timeEnd.getValue() == null || timeEnd.getValue().length() == 0 || timeEnd.getValue().length() > 5) {
-							timeEnd.setValue(null);
-						}
 						
 						
-						if (timeStart.getValue().length() > 5) {
-							timeStart.setValue(null);
-						}
+							
+					
             
 						if (isNeededFieldEmpty()) {
 							createAlertError("Empty fields", "Name, description and start Date can't be empty!");
@@ -272,7 +282,7 @@ public class EventView {
 						 */
 						else {
 							LocalDateTime startTime = LocalDateTime.of(checkInDatePickerStart.getValue(),
-									LocalTime.parse(timeStart.getValue() + ":00"));
+									LocalTime.parse(JtimeStart.getValue() + ":00"));
 				                String eventname = name.getText();
 				                String eventdescrip = description.getText();
 							
@@ -304,7 +314,7 @@ public class EventView {
 
 							else if (!e.isDuration() && checkInDatePickerEnd.getValue() != null) {
 								LocalDateTime endTime = LocalDateTime.of(checkInDatePickerEnd.getValue(),
-										LocalTime.parse(timeEnd.getValue() + ":00"));							
+										LocalTime.parse(JtimeEnd.getValue() + ":00"));							
 				           
 								
 				                if (startTime.compareTo(endTime) > 0) {
@@ -324,7 +334,7 @@ public class EventView {
 							else {
 			            	// Get end date, since it's event with duration  
 							LocalDateTime endTime = LocalDateTime.of(checkInDatePickerEnd.getValue(),
-									LocalTime.parse(timeEnd.getValue() + ":00"));
+									LocalTime.parse(JtimeEnd.getValue() + ":00"));
 			
 			                
 			                if (startTime.compareTo(endTime) > 0) {
@@ -412,10 +422,16 @@ public class EventView {
 	 */
 
 	private GridPane createAddEventWindow() {
-		checkInDatePickerStart = new DatePicker();
-		checkInDatePickerEnd = new DatePicker();
 		
+		addEvent = new JFXButton("Event", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.CALENDAR, "30")) );
 		
+		addEvent.setRipplerFill(Color.web("rgb(87,56,97)"));
+		
+		 
+		checkInDatePickerStart = new JFXDatePicker();
+		checkInDatePickerEnd = new JFXDatePicker();
+		checkInDatePickerStart.setDefaultColor(Color.web("rgb(87,56,97)"));
+		checkInDatePickerEnd.setDefaultColor(Color.web("rgb(87,56,97)"));
 		GridPane pane = new GridPane();
 
 		// TextFields,TextAreas initialized
@@ -446,24 +462,11 @@ public class EventView {
      	
      	
      	// Combo box for start event times
-     	timeStart.setPromptText("Start time");
-     	timeStart.setValue(null);
-		timeStart.getItems().addAll("Start Time", "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
-				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
-				"20:00", "21:00", "22:00", "23:00");
-		timeStart.setStyle("-fx-font: 16 timesnewroman;");
-		timeStart.setMinWidth(130);
-		timeStart.setMinWidth(130);
-
+     	JtimeStart.setIs24HourView(true);
+		JtimeStart.setDefaultColor(Color.web("rgb(87,56,97)"));
 		// Combo box for end event times
-		timeEnd.setPromptText("End time");
-		timeEnd.setValue(null);
-		timeEnd.getItems().addAll("End Time","00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
-				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
-				"20:00", "21:00", "22:00", "23:00");
-		timeEnd.setStyle("-fx-font: 16 timesnewroman;");
-		timeEnd.setMinWidth(130);
-
+		JtimeEnd.setIs24HourView(true);
+		JtimeEnd.setDefaultColor(Color.web("rgb(87,56,97)"));
 		// Date pickers for start event
 		checkInDatePickerStart.setStyle("-fx-font: 16 timesnewroman;");
 		checkInDatePickerStart.setPromptText("Event start");
@@ -490,13 +493,13 @@ public class EventView {
 		HBox hb3 = new HBox();
 		HBox hb4 = new HBox();
 
-		hb.getChildren().addAll(checkInDatePickerStart, timeStart);
+		hb.getChildren().addAll(checkInDatePickerStart, JtimeStart);
 		hb.setAlignment(Pos.CENTER);
 		HBox.setMargin(checkInDatePickerStart, new Insets(5));
 		HBox.setMargin(checkInDatePickerEnd, new Insets(5));
-		HBox.setMargin(timeStart, new Insets(5));
-		HBox.setMargin(timeEnd, new Insets(5));
-		hb1.getChildren().addAll(checkInDatePickerEnd, timeEnd);
+		HBox.setMargin(JtimeStart, new Insets(5));
+		HBox.setMargin(JtimeEnd, new Insets(5));
+		hb1.getChildren().addAll(checkInDatePickerEnd, JtimeEnd);
 		hb1.setAlignment(Pos.CENTER);
 		hb2.getChildren().addAll(ok, cancel);
 		hb3.getChildren().add(name);
@@ -527,8 +530,8 @@ public class EventView {
 	public void ViewEventInfo(Event e) {
 		final Stage eventWindow = new Stage();
 
-		checkInDatePickerStart = new DatePicker();
-		checkInDatePickerEnd = new DatePicker();
+		checkInDatePickerStart = new JFXDatePicker();
+		checkInDatePickerEnd = new JFXDatePicker();
 		VBox window = new VBox();
 		window.setSpacing(20);
 		window.setPrefSize(200, 200);
@@ -589,7 +592,8 @@ public class EventView {
 		HBox all = new HBox();
 		all.setPrefSize(550, 190);
 		all.setPadding(new Insets(10, 10, 10, 10));
-		all.getChildren().addAll(window, createEditEventWindow(e));
+		
+		all.getChildren().addAll(window ,createEditEventWindow(e));
 		Scene eventScene = new Scene(all);
 		eventWindow.setTitle("Event");
 		eventWindow.setScene(eventScene);
@@ -606,7 +610,11 @@ public class EventView {
 	 * @return a window
 	 */
 	public VBox createEditEventWindow(Event e) {
-
+		
+		
+		
+		checkInDatePickerStart.setDefaultColor(Color.web("rgb(87,56,97)"));
+		checkInDatePickerEnd.setDefaultColor(Color.web("rgb(87,56,97)"));
 		VBox editeHolder = new VBox();
 		editeHolder.setPrefSize(400, 400);
 		editeHolder.setTranslateX(50);
@@ -616,8 +624,8 @@ public class EventView {
 		Label descriptionL = new Label("Description");
 
 		LocalDateTime startDate = e.getEventStart();
-    datePickerSettings(checkInDatePickerStart);
-    checkInDatePickerStart.setValue(startDate.toLocalDate());
+		datePickerSettings(checkInDatePickerStart);
+		checkInDatePickerStart.setValue(startDate.toLocalDate());
     
 		String startLocalDate = localDateTimeToString(startDate);
 		LocalDate localDate = LocalDate.parse(startLocalDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -626,17 +634,13 @@ public class EventView {
 
 		Label yearL = new Label("Start Date");
 		int strHour = e.getEventStart().getHour();
-		timeStart = new ComboBox<String>();
-		timeStart.setMinSize(150, 30);
-		timeStart.getItems().addAll("Start Time", "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
-				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
-				"20:00", "21:00", "22:00", "23:00");
-		timeStart.getSelectionModel().clearAndSelect(strHour+1);
-		timeEnd = new ComboBox<String>();
-		timeEnd.setMinSize(150, 30);
-		timeEnd.getItems().addAll("End Time", "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
-				"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
-				"20:00", "21:00", "22:00", "23:00");
+		JtimeStart.setIs24HourView(true);
+		JtimeStart.setDefaultColor(Color.web("rgb(87,56,97)"));
+		
+		
+		JtimeEnd.setIs24HourView(true);
+		JtimeEnd.setDefaultColor(Color.web("rgb(87,56,97)"));
+		
 		Label hourL = new Label("Start Time");
 
 		HBox h2 = new HBox();
@@ -644,7 +648,7 @@ public class EventView {
 		description.setDisable(true);
 		checkInDatePickerStart.setDisable(true);
 		checkInDatePickerEnd.setDisable(true);
-		timeStart.setDisable(true);
+		JtimeStart.setDisable(true);
 
 		if (e.getEventEnd() != null) {
 			LocalDateTime endDate = e.getEventEnd();
@@ -655,18 +659,18 @@ public class EventView {
 			LocalDate localDate2 = LocalDate.parse(endLocalDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
 			int strHourEnd = e.getEventEnd().getHour();
-
-			timeEnd.getSelectionModel().clearAndSelect(strHourEnd +1);
+		
+		
 
 		} else if (e.getEventEnd() == null) {
 			checkInDatePickerEnd.getEditor().clear();
-			timeEnd.setValue("");
+			//
 
 		}
 
-		h2.getChildren().addAll(checkInDatePickerEnd, timeEnd);
+		h2.getChildren().addAll(checkInDatePickerEnd, JtimeEnd);
 		checkInDatePickerEnd.setDisable(true);
-		timeEnd.setDisable(true);
+		JtimeEnd.setDisable(true);
 
 		GridPane h1 = new GridPane();
 		Label yearLE = new Label("End Date");
@@ -703,13 +707,13 @@ public class EventView {
 		vb3.getChildren().addAll(yearL, checkInDatePickerStart);
 		vb3.setPadding(new Insets(0, 5, 0, 0));
 
-		vb6.getChildren().addAll(hourL, timeStart);
+		vb6.getChildren().addAll(hourL, JtimeStart);
 		vb6.setPadding(new Insets(0, 5, 0, 0));
 
 		vb7.getChildren().addAll(yearLE, checkInDatePickerEnd);
 		vb7.setPadding(new Insets(0, 5, 0, 0));
 
-		vb10.getChildren().addAll(hourLE, timeEnd);
+		vb10.getChildren().addAll(hourLE, JtimeEnd);
 		vb10.setPadding(new Insets(0, 5, 0, 0));
 
 		hb1.getChildren().addAll(vb3, vb4, vb5, vb6);
@@ -755,16 +759,17 @@ public class EventView {
 			// check if date picker for start is not selected or if time for
 			// start
 			// is not selected
-		} else if (checkInDatePickerStart.getValue() == null || timeStart.getValue() == null) {
+		} else if (checkInDatePickerStart.getValue() == null || JtimeStart.getValue() == null) {
 			return true;
 		}
 		// check if date picker for end value is selected, but time is not
 		// selected
 		// or if date picker for end is not selected, but time is selected
-		else if ((checkInDatePickerEnd.getValue() != null && timeEnd.getValue() == null)
-				|| (checkInDatePickerEnd.getValue() == null && timeEnd.getValue() != null)) {
+		else if ((checkInDatePickerEnd.getValue() != null && JtimeEnd.getValue() == null)
+				|| (checkInDatePickerEnd.getValue() == null && JtimeEnd.getValue() != null)) {
 			return true;
-		} else {
+		}
+		 else {
 			return false;
 		}
 	}
@@ -777,7 +782,7 @@ public class EventView {
 	 */
 
 	private boolean isNotDurationEvent() {
-		if (checkInDatePickerEnd.getValue() == null || timeEnd.getValue() == null) {
+		if (checkInDatePickerEnd.getValue() == null || JtimeEnd.getValue() == null) {
 			return true;
 		} else {
 			return false;
@@ -821,8 +826,8 @@ public class EventView {
 		checkInDatePickerStart.setDisable(b);
 		checkInDatePickerEnd.setDisable(b);
 		
-		timeStart.setDisable(b);
-		timeEnd.setDisable(b);
+		JtimeStart.setDisable(b);
+		JtimeEnd.setDisable(b);
 		
 		ok.setDisable(b);
 		cancel.setDisable(b);
@@ -846,7 +851,11 @@ public class EventView {
 		dp.setDayCellFactory(dayCellFactory);
 		dp.setConverter(converter);
 		dp.setShowWeekNumbers(true);
-	}
+	}	
+	
+	
+	
+	
 	
 	/**
 	 * Help method to turn LocalDateTime to string with 0
