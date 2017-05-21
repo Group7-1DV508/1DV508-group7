@@ -21,7 +21,6 @@ public class TimelineInformationBox extends HBox {
 	public TimelineInformationBox() {
 		this.setAlignment(Pos.BOTTOM_LEFT);
 		this.setPadding(new Insets(10));
-		this.setBackground( new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
 	}
 	
 	/**

@@ -131,9 +131,9 @@ public class ApplicationView implements ChangeListener {
 		view.getChildren().clear();
 		addEventPane.getChildren().clear();
 		timelineButtonsBox();
-		addEventPane.setLayoutX(20);
+		addEventPane.setLayoutX(10);
 		addEventPane.setLayoutY(145);
-		addEventPane.getChildren().add(getAddEventButton());
+		addEventPane.getChildren().addAll(getAddEventButton(), informationBox);
 		view.setTop(timelineOptionsBox);
 		view.setCenter(timelineScrollBox());
 		view.getChildren().add(addEventPane);
@@ -296,8 +296,8 @@ public class ApplicationView implements ChangeListener {
 	private ScrollPane timelineScrollBox() {
 		VBox content = new VBox();
 		content.setBackground(scrollBackground);
-		content.setPadding(new Insets(40, 5, 20, 5));
-		content.getChildren().addAll(informationBox, currentTimeline, eventBox);
+		content.setPadding(new Insets(90, 5, 20, 5));
+		content.getChildren().addAll(currentTimeline, eventBox);
 		scrollTimeline.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		scrollTimeline.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		scrollTimeline.setBackground(scrollBackground);
