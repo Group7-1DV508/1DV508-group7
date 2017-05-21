@@ -245,7 +245,7 @@ public class ApplicationView implements ChangeListener {
 						if (helpDelete == "Delete Event") {
 							helpText.setText("Click on the Event circle, which should be deleted.\n"
 									+ "Then the event information box will appear.\n"
-									+ "Click on the â€œ Deleteâ€� button in the bottom right corner");
+									+ "Click on the â€œ Deleteâ€? button in the bottom right corner");
 
 						}
 
