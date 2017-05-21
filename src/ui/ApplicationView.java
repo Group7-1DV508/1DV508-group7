@@ -27,6 +27,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -290,15 +291,15 @@ public class ApplicationView implements ChangeListener {
 	private ScrollPane timelineScrollBox() {
 		VBox content = new VBox();
 		content.setBackground(scrollBackground);
-		content.setPadding(new Insets(0, 3, 0, 3));
+		content.setPadding(new Insets(20, 5, 20, 5));
+		content.getChildren().addAll(informationBox, currentTimeline, eventBox);
 		scrollTimeline.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		scrollTimeline.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		scrollTimeline.setBackground(scrollBackground);
 		scrollTimeline.setStyle("-fx-background: rgb(223,223,223);");
 		scrollTimeline.setContent(content);
-		scrollTimeline.setPadding(new Insets(20));
+
 		scrollTimeline.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, radii, BorderStroke.THIN)));
-		content.getChildren().addAll(informationBox, currentTimeline, eventBox);
 
 		return scrollTimeline;
 	}

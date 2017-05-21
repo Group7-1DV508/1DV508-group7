@@ -460,7 +460,10 @@ public class EventView {
 		// In case fields are disabled
 		setDisableFields(false);
 		datePickerSettings(checkInDatePickerStart);
+		checkInDatePickerStart.setValue(timelineStart.minusDays(1));
 		datePickerSettings(checkInDatePickerEnd);
+		checkInDatePickerEnd.setValue(timelineStart.minusDays(1));
+		
 		
 		
      	/* Limit the number of characters*/
@@ -877,11 +880,19 @@ public class EventView {
 
 		@Override
 		public String toString(LocalDate date) {
-			if (date != null) {
+			//System.out.println(date.toString());
+			//System.out.println(timelineStart.toString());
+			if (date!= null && date.compareTo(timelineStart) < 0) {
+				return "";
+			} 
+			else if (date != null) {
 				return formatter.format(date);
-			} else {
+			}
+			else {
 				return "";
 			}
+				
+			
 		}
 
 		@Override
