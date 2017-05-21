@@ -214,6 +214,8 @@ public class ApplicationView implements ChangeListener {
 				comboBox.getItems().add("quick help");
 				comboBox.getItems().add("Zoom");
 				comboBox.getItems().add("Delete Event");
+				comboBox.getItems().add("Edit Event");
+				comboBox.getItems().add("Empty Button"); 
 
 				comboBox.setLayoutX(0);
 				comboBox.setLayoutY(0);
@@ -258,7 +260,7 @@ public class ApplicationView implements ChangeListener {
 						}
 
 						String help2 = comboBox.getSelectionModel().getSelectedItem();
-						if (help2 == "help") {
+						if (help2 == "Empty Button") {
 							helpText.setText("empty help text");
 
 						}
