@@ -54,7 +54,7 @@ public class TimelineView {
 	Converter converter = new Converter();
 	private TimelineListener timelineListener;
 	private boolean gotFilePath;
-	private final int nameMAX_CHARS = 50;
+	private final int nameMAX_CHARS = 20;
 
 	/**
 	 * Sets listener to be able to implement functions for certain UI actions

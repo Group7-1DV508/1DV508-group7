@@ -89,7 +89,7 @@ public class EventView {
 
 	private LocalDate timelineStart;
 	private LocalDate timelineEnd;
-	private final int nameMAX_CHARS = 40;
+	private final int nameMAX_CHARS = 20;
 	private final int desMAX_CHARS = 300;
 	/**
 	 * Update the EventListener variable with the EventListener given as input
