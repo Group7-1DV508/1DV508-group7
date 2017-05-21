@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -53,6 +54,8 @@ public class TimelineView {
 	Converter converter = new Converter();
 	private TimelineListener timelineListener;
 	private boolean gotFilePath;
+	private final int nameMAX_CHARS = 50;
+
 	/**
 	 * Sets listener to be able to implement functions for certain UI actions
 	 * (such as button click)
@@ -136,6 +139,9 @@ public class TimelineView {
 
 
 		GridPane addTimelineRoot = new GridPane();
+		
+		timelineName.setTextFormatter(new TextFormatter<String>(
+				change -> change.getControlNewText().length() <= nameMAX_CHARS ? change : null));
 		
 		confirmTimeline.setFont(new Font("Times new Roman", 20));
 		timelineName.setPromptText("Timeline Name");
