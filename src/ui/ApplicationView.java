@@ -253,13 +253,13 @@ public class ApplicationView implements ChangeListener {
 									+ " The Event windows textfields are disabled so no accidental changes can be made.\n"
 									+ "To start editing press the “Edit information” button.\n"
 									+ "After clicking the edit “Event information” the name, description and dates will become editable.\n"
-									+ "Apply changes to the information as prefered, and then click the “ Finish” button when done. ");
+									+ "Apply changes to the information as preferred, and then click the “ Finish” button when done. ");
 
 						}
 
 						String help2 = comboBox.getSelectionModel().getSelectedItem();
 						if (help2 == "help") {
-							helpText.setText("");
+							helpText.setText("empty help text");
 
 						}
 					}
