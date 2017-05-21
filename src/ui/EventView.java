@@ -89,7 +89,8 @@ public class EventView {
 
 	private LocalDate timelineStart;
 	private LocalDate timelineEnd;
-
+	private final int nameMAX_CHARS = 40;
+	private final int desMAX_CHARS = 300;
 	/**
 	 * Update the EventListener variable with the EventListener given as input
 	 *
@@ -413,10 +414,10 @@ public class EventView {
 		setDisableFields(false);
 
 		/* Limit the number of characters */
-		final int nameMAX_CHARS = 40;
+		
 		name.setTextFormatter(new TextFormatter<String>(
 				change -> change.getControlNewText().length() <= nameMAX_CHARS ? change : null));
-		final int desMAX_CHARS = 300;
+		
 		description.setTextFormatter(new TextFormatter<String>(
 				change -> change.getControlNewText().length() <= desMAX_CHARS ? change : null));
 
@@ -547,7 +548,13 @@ public class EventView {
 
 		name.setText(e.getEventName());
 		description.setText(e.getEventDescription());
-
+		
+		name.setTextFormatter(new TextFormatter<String>(
+				change -> change.getControlNewText().length() <= nameMAX_CHARS ? change : null));
+		
+		description.setTextFormatter(new TextFormatter<String>(
+				change -> change.getControlNewText().length() <= desMAX_CHARS ? change : null));
+		
 		Label yearL = new Label("Start Date");
 		Label hourL = new Label("Start Time");
 
