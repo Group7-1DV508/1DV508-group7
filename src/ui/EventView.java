@@ -267,6 +267,12 @@ public class EventView {
 
 					@Override
 					public void handle(ActionEvent event) {
+						if (checkInDatePickerEnd.getValue() != null && checkInDatePickerEnd.getValue().compareTo(timelineStart)<0) {
+							checkInDatePickerEnd.setValue(null);
+						}
+						if (checkInDatePickerStart.getValue() != null &&checkInDatePickerStart.getValue().compareTo(timelineStart)<0) {
+							checkInDatePickerStart.setValue(null);
+						}
 						/*
 						 * Checking for empty fields or unfinished date choosing
 						 * example, user picked end time, but not end date.
@@ -294,7 +300,7 @@ public class EventView {
 
 							} // End of editing of event from non duration to
 								// non duration
-
+							
 							else if ((!e.isDuration() && checkInDatePickerEnd.getValue() != null)
 									|| (e.isDuration() && checkInDatePickerEnd.getValue() != null)) {
 								LocalDateTime endTime = LocalDateTime.of(checkInDatePickerEnd.getValue(),
@@ -597,12 +603,7 @@ public class EventView {
 	 * @return boolean, true if needed fields are empty otherwise false
 	 */
 	private boolean isNeededFieldEmpty() {
-		if (checkInDatePickerStart.getValue().compareTo(timelineStart)<0){
-			checkInDatePickerStart.setValue(null);
-		}
-		else if (checkInDatePickerEnd.getValue().compareTo(timelineStart)<0){
-			checkInDatePickerEnd.setValue(null);
-		}
+		
 		// Check if name or description is empty
 		if (name.getText().isEmpty() || description.getText().isEmpty()) {
 			System.out.println("name and desc");
