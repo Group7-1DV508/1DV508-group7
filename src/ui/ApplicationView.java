@@ -207,22 +207,20 @@ public class ApplicationView implements ChangeListener {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					Image imageHelpEditEvent = new Image(HelpButtonPicIS);
+					Image imageHelpHelpButtonPic = new Image(HelpButtonPicIS);
 					ImageView ivHelpButtonPic = new ImageView();
-					ivHelpButtonPic.setImage(imageHelpEditEvent);
-					ivHelpButtonPic.setPreserveRatio(true);
-					ivHelpButtonPic.setFitHeight(300);
-				  
+					ivHelpButtonPic.setImage(imageHelpHelpButtonPic);
+				
 			
 
 			    HBox hbox = new HBox();
 			  
 			    Label label1 = new Label("");
-			    label1.setGraphic(new ImageView(imageHelpEditEvent));
+			    label1.setGraphic(new ImageView(imageHelpHelpButtonPic));
 				Stage popup = new Stage();
 		            Scene scene = new Scene(label1);
 		            popup.setScene(scene);
-		    
+		           popup.setResizable(false);
 		      
 		            popup.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
 		                if ( !isNowFocused) {
