@@ -16,7 +16,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
@@ -71,6 +70,7 @@ public class ApplicationView implements ChangeListener {
 	private final ShowEvents eventBox = new ShowEvents();
 	private final TimelineInformationBox informationBox = new TimelineInformationBox();
 	private final VisualTimeline currentTimeline = new VisualTimeline(eventBox);
+	private final FlowPane addEventPane = new FlowPane();
 
 
 	/**
@@ -130,8 +130,12 @@ public class ApplicationView implements ChangeListener {
 		view.setBackground(background);
 		view.getChildren().clear();
 		timelineButtonsBox();
+		addEventPane.setLayoutX(20);
+		addEventPane.setLayoutY(145);
+		addEventPane.getChildren().add(getAddEventButton());
 		view.setTop(timelineOptionsBox);
 		view.setCenter(timelineScrollBox());
+		view.getChildren().add(addEventPane);
 		
 		return view;
 	}
@@ -141,7 +145,7 @@ public class ApplicationView implements ChangeListener {
 	 *
 	 * @return Button
 	 */
-	private Button getAddTimelineButton() {
+	private JFXButton getAddTimelineButton() {
 		return timelineView.getAddTimelineButton();
 	}
 
@@ -150,7 +154,7 @@ public class ApplicationView implements ChangeListener {
 	 *
 	 * @return Button
 	 */
-	private Button getDeleteTimelineButton() {
+	private JFXButton getDeleteTimelineButton() {
 		return timelineView.getDeleteTimelineButton();
 	}
 
@@ -159,14 +163,14 @@ public class ApplicationView implements ChangeListener {
 	 *
 	 * @return Button
 	 */
-	private Button getAddEventButton() {
+	private JFXButton getAddEventButton() {
 		return eventView.getAddEventButton();
 	}
 
 	/**
 	 * Creates the Help Button
 	 */
-	private Button createHelpButton() {
+	private JFXButton createHelpButton() {
 		helpTo.setText("Help");
 		helpTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 
@@ -193,7 +197,7 @@ public class ApplicationView implements ChangeListener {
 	 * timeline to a file path chosen by
 	   the user through the fileChooser.*/
 
-	private Button saveTimelineButton() {
+	private JFXButton saveTimelineButton() {
 		saveTo.setText("Save Timeline");
 		saveTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 		saveButton.setTooltip(saveTo);
@@ -211,7 +215,7 @@ public class ApplicationView implements ChangeListener {
 
 
 
-	private Button loadTimelineButton() {
+	private JFXButton loadTimelineButton() {
 		loadTo.setText("Load Timeline");
 		loadTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 	
@@ -238,10 +242,10 @@ public class ApplicationView implements ChangeListener {
 		timelineButtons.setSpacing(18.0);
 		timelineButtons.setPadding(new Insets(10, 10, 10, 10));
 		timelineButtons.setMinHeight(50);
-		timelineButtons.getChildren().addAll(getAddTimelineButton(), saveTimelineButton(), loadTimelineButton(), getDeleteTimelineButton(), getAddEventButton(), createHelpButton());
+		timelineButtons.getChildren().addAll(getAddTimelineButton(), saveTimelineButton(), loadTimelineButton(), getDeleteTimelineButton(), createHelpButton());
 		timelineButtons.setAlignment(Pos.CENTER);
 		timelineButtons.setBackground(new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
-		timelineChooserBox.getChildren().add(chooseTimeline);
+		timelineChooserBox.getChildren().addAll(chooseTimeline);
 		timelineChooserBox.setPadding(new Insets(20));
 		timelineChooserBox.setAlignment(Pos.CENTER);
 		timelineOptionsBox.getChildren().addAll(timelineButtons, timelineChooserBox);
@@ -291,13 +295,15 @@ public class ApplicationView implements ChangeListener {
 	private ScrollPane timelineScrollBox() {
 		VBox content = new VBox();
 		content.setBackground(scrollBackground);
-		content.setPadding(new Insets(20, 5, 20, 5));
+		content.setPadding(new Insets(40, 5, 20, 5));
 		content.getChildren().addAll(informationBox, currentTimeline, eventBox);
 		scrollTimeline.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		scrollTimeline.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		scrollTimeline.setBackground(scrollBackground);
 		scrollTimeline.setStyle("-fx-background: rgb(223,223,223);");
 		scrollTimeline.setContent(content);
+		
+		
 
 		scrollTimeline.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, radii, BorderStroke.THIN)));
 
@@ -326,12 +332,14 @@ public class ApplicationView implements ChangeListener {
 			getDeleteTimelineButton().setDisable(false);
 			eventView.setDisable(false);
 			saveButton.setDisable(false);
+			addEventPane.setVisible(true);
 		}
 		else {
 			clearTimelineBox();
 			getDeleteTimelineButton().setDisable(true);
 			eventView.setDisable(true);
 			saveButton.setDisable(true);
+			addEventPane.setVisible(false);
 		}
 
 	}

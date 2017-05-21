@@ -70,13 +70,13 @@ public class TimelineView {
 	 *
 	 * @return An HBox with a button "Add Timeline"
 	 */
-	public Button getAddTimelineButton() {
+	public JFXButton getAddTimelineButton() {
 		System.out.println(timelineStart.getEditor().getText());
 		addTimelineWindow();
 		return addTimeline;
 	}
 
-	public Button getDeleteTimelineButton() {
+	public JFXButton getDeleteTimelineButton() {
 		delTo.setText("Delete Timeline");
 		delTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 

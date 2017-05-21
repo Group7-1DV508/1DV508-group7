@@ -244,7 +244,7 @@ public class EventView {
 	 *            event to be edited
 	 * @return editEvent button
 	 */
-	public Button EditButton(Event e) {
+	public JFXButton EditButton(Event e) {
 		// Button parameters
 		editEvent.setMinSize(80, 30);
 		editEvent.setFont(Font.font("Verdana", 15));
@@ -381,7 +381,7 @@ public class EventView {
 	 *            closes event information window of delete event
 	 * @return button with set action on it.
 	 */
-	public Button getDeleteButton(Event e, Stage s) {
+	public JFXButton getDeleteButton(Event e, Stage s) {
 		delete.setMinSize(80, 30);
 		delete.setFont(Font.font("Verdana", 15));
 		delete.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.FLAT);
