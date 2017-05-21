@@ -210,15 +210,13 @@ public class ApplicationView implements ChangeListener {
 					Image imageHelpHelpButtonPic = new Image(HelpButtonPicIS);
 					ImageView ivHelpButtonPic = new ImageView();
 					ivHelpButtonPic.setImage(imageHelpHelpButtonPic);
-				
-			
-
-			    HBox hbox = new HBox();
 			  
 			    Label label1 = new Label("");
 			    label1.setGraphic(new ImageView(imageHelpHelpButtonPic));
 				Stage popup = new Stage();
+				
 		            Scene scene = new Scene(label1);
+		          
 		            popup.setScene(scene);
 		           popup.setResizable(false);
 		      
