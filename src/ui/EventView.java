@@ -529,6 +529,7 @@ public class EventView {
 
 		LocalDateTime startDate = e.getEventStart();
 		datePickerSettings(checkInDatePickerStart);
+		datePickerSettings(checkInDatePickerEnd);
 		checkInDatePickerStart.setValue(startDate.toLocalDate());
 		JtimeStart.setValue(startDate.toLocalTime());
 
@@ -542,9 +543,12 @@ public class EventView {
 
 		if (e.getEventEnd() != null) {
 			LocalDateTime endDate = e.getEventEnd();
-			datePickerSettings(checkInDatePickerEnd);
 			checkInDatePickerEnd.setValue(endDate.toLocalDate());
 			JtimeEnd.setValue(endDate.toLocalTime());
+		}
+		else {
+			checkInDatePickerEnd.setValue(timelineStart.minusDays(1));
+			JtimeEnd.setValue(null);
 		}
 
 		checkInDatePickerEnd.setDisable(true);
@@ -593,6 +597,12 @@ public class EventView {
 	 * @return boolean, true if needed fields are empty otherwise false
 	 */
 	private boolean isNeededFieldEmpty() {
+		if (checkInDatePickerStart.getValue().compareTo(timelineStart)<0){
+			checkInDatePickerStart.setValue(null);
+		}
+		else if (checkInDatePickerEnd.getValue().compareTo(timelineStart)<0){
+			checkInDatePickerEnd.setValue(null);
+		}
 		// Check if name or description is empty
 		if (name.getText().isEmpty() || description.getText().isEmpty()) {
 			System.out.println("name and desc");
@@ -757,6 +767,8 @@ public class EventView {
 			setNewTextsDuration(start, null);
 			checkInDatePickerStart.setValue(start.toLocalDate());
 			JtimeStart.setValue(start.toLocalTime());
+			checkInDatePickerEnd.setValue(timelineStart.minusDays(1));
+			JtimeEnd.setValue(null);
 			setDisableFields(true);
 		} else {
 			createAlertError("Error in chosing time",
