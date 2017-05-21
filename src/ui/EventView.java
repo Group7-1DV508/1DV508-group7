@@ -23,7 +23,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -267,12 +266,6 @@ public class EventView {
 						 * Checking for empty fields or unfinished date choosing
 						 * example, user picked end time, but not end date.
 						 */
-
-						
-						
-							
-					
-            
 						if (isNeededFieldEmpty()) {
 							createAlertError("Empty fields", "Name, description and start Date can't be empty!");
 						} // End of checking if fields are empty
@@ -661,7 +654,7 @@ public class EventView {
 		Label yearL = new Label("Start Date");
 		JtimeStart.setIs24HourView(true);
 		JtimeStart.setDefaultColor(Color.web("rgb(87,56,97)"));
-		
+		JtimeStart.setValue(startDate.toLocalTime());
 		
 		JtimeEnd.setIs24HourView(true);
 		JtimeEnd.setDefaultColor(Color.web("rgb(87,56,97)"));
@@ -679,13 +672,10 @@ public class EventView {
 			LocalDateTime endDate = e.getEventEnd();
 			datePickerSettings(checkInDatePickerEnd);
 			checkInDatePickerEnd.setValue(endDate.toLocalDate());
+			JtimeEnd.setValue(endDate.toLocalTime());
 		
 
-		} else if (e.getEventEnd() == null) {
-			checkInDatePickerEnd.getEditor().clear();
-			//
-
-		}
+		} 
 
 		h2.getChildren().addAll(checkInDatePickerEnd, JtimeEnd);
 		checkInDatePickerEnd.setDisable(true);
@@ -774,17 +764,19 @@ public class EventView {
 	private boolean isNeededFieldEmpty() {
 		// Check if name or description is empty
 		if (name.getText().isEmpty() || description.getText().isEmpty()) {
+			System.out.println("name and desc");
 			return true;
 			// check if date picker for start is not selected or if time for
 			// start
 			// is not selected
 		} else if (checkInDatePickerStart.getValue() == null || JtimeStart.getValue() == null) {
+			System.out.println("start date / time");
 			return true;
 		}
 		// check if date picker for end value is selected, but time is not
 		// selected
 		// or if date picker for end is not selected, but time is selected
-		else if ((checkInDatePickerEnd.getValue() != null && JtimeEnd.getValue() == null)
+		else if ((checkInDatePickerEnd.getValue() != null && checkInDatePickerEnd.getValue().compareTo(timelineStart)>=0 && JtimeEnd.getValue() == null)
 				|| (checkInDatePickerEnd.getValue() == null && JtimeEnd.getValue() != null)) {
 			return true;
 		}
