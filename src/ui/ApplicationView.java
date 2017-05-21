@@ -129,6 +129,7 @@ public class ApplicationView implements ChangeListener {
 	private BorderPane root() {
 		view.setBackground(background);
 		view.getChildren().clear();
+		addEventPane.getChildren().clear();
 		timelineButtonsBox();
 		addEventPane.setLayoutX(20);
 		addEventPane.setLayoutY(145);

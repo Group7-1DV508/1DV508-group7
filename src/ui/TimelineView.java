@@ -192,7 +192,7 @@ public class TimelineView {
 			JFXButton timeline = new JFXButton("Delete Timeline");
 			CheckBox checkBox = new CheckBox("-> Delete file too");
 			//Button timelineAndFile = new Button("Delete Timeline and File");
-			Button cancel = new Button("Cancel");
+			JFXButton cancel = new JFXButton("Cancel");
 			
 			if (!gotFilePath) {
 				checkBox.setDisable(true);
