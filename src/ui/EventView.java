@@ -58,6 +58,7 @@ public class EventView {
 	private JFXButton addEvent = new JFXButton("",
 			new Label("", AwesomeDude.createIconLabel(AwesomeIcon.CALENDAR, "20")));
 	private JFXButton ok = new JFXButton("Finish");
+	private JFXButton finishEdit = new JFXButton("Finish");
 	private JFXButton cancel = new JFXButton("Cancel");
 	private JFXButton editEvent = new JFXButton("Edit Info");
 	private JFXButton delete = new JFXButton("Delete event");
@@ -131,6 +132,15 @@ public class EventView {
 				VBox textFieldsStart = createAddEventWindow();
 				eventWindow.setTitle("Add event window");
 				eventWindow.setResizable(false);
+				
+				// Reset all fields
+				name.clear();
+				JtimeStart.setValue(null);
+				JtimeEnd.setValue(null);
+				datePickerSettings(checkInDatePickerStart);
+				checkInDatePickerStart.setValue(timelineStart.minusDays(1));
+				datePickerSettings(checkInDatePickerEnd);
+				checkInDatePickerEnd.setValue(timelineStart.minusDays(1));
 
 				/*
 				 * When "Ok" button is clicked, textfields are fetched and
@@ -263,7 +273,7 @@ public class EventView {
 
 				setDisableFields(false);
 
-				ok.setOnAction(new EventHandler<ActionEvent>() {
+				finishEdit.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
 					public void handle(ActionEvent event) {
@@ -401,10 +411,6 @@ public class EventView {
 
 		// In case fields are disabled
 		setDisableFields(false);
-		datePickerSettings(checkInDatePickerStart);
-		checkInDatePickerStart.setValue(timelineStart.minusDays(1));
-		datePickerSettings(checkInDatePickerEnd);
-		checkInDatePickerEnd.setValue(timelineStart.minusDays(1));
 
 		/* Limit the number of characters */
 		final int nameMAX_CHARS = 40;
@@ -585,7 +591,7 @@ public class EventView {
 
 		HBox okCancleButton = new HBox();
 		okCancleButton.setSpacing(10);
-		okCancleButton.getChildren().addAll(ok, cancel);
+		okCancleButton.getChildren().addAll(finishEdit, cancel);
 
 		VBox editFields = new VBox();
 		editFields.setPadding(new Insets(5, 0, 10, 25));
@@ -684,6 +690,7 @@ public class EventView {
 		JtimeStart.setDisable(b);
 		JtimeEnd.setDisable(b);
 
+		finishEdit.setDisable(b);
 		ok.setDisable(b);
 		cancel.setDisable(b);
 	}
@@ -753,6 +760,12 @@ public class EventView {
 		ok.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.FLAT);
 		ok.setRipplerFill(Color.web("rgb(87,56,97)"));
 		ok.setBackground(new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
+		
+		finishEdit.setPrefSize(80, 30);
+		finishEdit.setFont(Font.font("Verdana", 15));
+		finishEdit.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.FLAT);
+		finishEdit.setRipplerFill(Color.web("rgb(87,56,97)"));
+		finishEdit.setBackground(new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
 
 		cancel.setPrefSize(80, 30);
 		cancel.setFont(Font.font("Verdana", 15));
