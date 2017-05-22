@@ -47,7 +47,7 @@ public class YearView extends HBox {
 	
 	public void setText(String str) {
 		text.setFill(Color.WHITESMOKE);
-		text.setFont(Font.font ("Times New Roman", 25));
+		text.setFont(Font.font ("monospace", 25));
 		text.setText(str);
 	}
 }
