@@ -364,8 +364,10 @@ public class ApplicationView implements ChangeListener {
 
 	@Override
 	public void onTimelineSaved(Timeline current) {
-		if (current.getFile().isFile()) {
-			timelineView.setTimelineSaved(true);
+		if (current.getFile() != null) {
+			if (current.getFile().isFile()) {
+				timelineView.setTimelineSaved(true);
+			}
 		}
 		else {
 			timelineView.setTimelineSaved(false);

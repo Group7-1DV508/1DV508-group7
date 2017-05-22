@@ -86,7 +86,6 @@ public class Timeline {
 	public boolean isEmpty() {
 		return (size() == 0);
 	}
-	
 
 	/**
 	 * takes a LocalDateTime as input and recieves the year as an int
