@@ -27,6 +27,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -55,6 +56,8 @@ public class TimelineView {
 	private TimelineListener timelineListener;
 	private boolean gotFilePath;
 	private final int nameMAX_CHARS = 20;
+	
+	private BorderPane mainView;
 
 	/**
 	 * Sets listener to be able to implement functions for certain UI actions
@@ -74,7 +77,6 @@ public class TimelineView {
 	 * @return An HBox with a button "Add Timeline"
 	 */
 	public JFXButton getAddTimelineButton() {
-		System.out.println(timelineStart.getEditor().getText());
 		addTimelineWindow();
 		return addTimeline;
 	}
@@ -104,7 +106,6 @@ public class TimelineView {
 		addTimeline.setTooltip(addTo);
 		addTimeline.setMinSize(40, 40);
 		addTimeline.setMaxSize(40, 40);
-		
 		addTimeline.setRipplerFill(Color.web("rgb(87,56,97)"));
 		addTimeline.setBackground(new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null)));
 		
@@ -193,6 +194,7 @@ public class TimelineView {
 
 		@Override
 		public void handle(ActionEvent arg0) {
+			mainView.requestFocus();
 			Stage stage = new Stage();
 			HBox buttony = new HBox();
 			JFXButton timeline = new JFXButton("Delete Timeline");
@@ -268,6 +270,7 @@ public class TimelineView {
 
 		@Override
 		public void handle(ActionEvent event) {
+			mainView.requestFocus();
 			openAddTimeline();
 		}
 	}
@@ -358,6 +361,10 @@ public class TimelineView {
 	
 	public void setTimelineSaved(boolean b) {
 		gotFilePath = b;
+	}
+	
+	public void setRoot(BorderPane bp) {
+		mainView = bp;
 	}
 
 }

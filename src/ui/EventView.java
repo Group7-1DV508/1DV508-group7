@@ -32,6 +32,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -91,6 +92,8 @@ public class EventView {
 	private LocalDate timelineEnd;
 	private final int nameMAX_CHARS = 20;
 	private final int desMAX_CHARS = 300;
+	
+	private BorderPane mainView;
 	/**
 	 * Update the EventListener variable with the EventListener given as input
 	 *
@@ -125,10 +128,10 @@ public class EventView {
 		 * Name, Description and Start Date, End Date however is optional.
 		 */
 		addEvent.setOnAction(new EventHandler<ActionEvent>() {
-
+			
 			@Override
 			public void handle(ActionEvent event) {
-
+				mainView.requestFocus();
 				final Stage eventWindow = new Stage();
 				VBox textFieldsStart = createAddEventWindow();
 				eventWindow.setTitle("Add event window");
@@ -839,6 +842,9 @@ public class EventView {
 			}
 		}
 
+	}
+	public void setRoot(BorderPane bp) {
+		mainView = bp;
 	}
 
 }

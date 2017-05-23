@@ -92,6 +92,8 @@ public class ApplicationView implements ChangeListener {
 		appListener = appList;
 		eventBox.setListenerAndView(appList, eventView);
 		eventBox.setInformationBox(informationBox);
+		eventView.setRoot(view);
+		timelineView.setRoot(view);
 	}
 
 	/**
@@ -118,7 +120,6 @@ public class ApplicationView implements ChangeListener {
 	 * @return GridPane
 	 */
 	public BorderPane getRoot() {
-
 		return root();
 	}
 
@@ -137,6 +138,7 @@ public class ApplicationView implements ChangeListener {
 		view.setTop(timelineOptionsBox);
 		view.setCenter(timelineScrollBox());
 		view.getChildren().add(addEventPane);
+		
 		
 		return view;
 	}
@@ -187,7 +189,8 @@ public class ApplicationView implements ChangeListener {
 		helpButton.setOnAction(new EventHandler<ActionEvent>(){
 
 			@Override public void handle(ActionEvent e) {
-		        Stage stage = new Stage();
+				view.requestFocus();
+				Stage stage = new Stage();
 		        //Fill stage with content
 		        stage.show();
 			}
@@ -209,7 +212,8 @@ public class ApplicationView implements ChangeListener {
 		saveButton.setButtonType(ButtonType.FLAT);
 
 		saveButton.setOnAction(ActionEvent  -> {
-			  appListener.onTimelineSaved();
+			view.requestFocus();  
+			appListener.onTimelineSaved();
 		});
     return saveButton;
 	}
@@ -227,6 +231,7 @@ public class ApplicationView implements ChangeListener {
 		loadButton.setBackground(scrollBackground);
 
 		loadButton.setOnAction(ActionEvent -> {
+			view.requestFocus();
 			appListener.onTimelineLoaded();
 		});
 		return loadButton;
@@ -304,10 +309,8 @@ public class ApplicationView implements ChangeListener {
 		scrollTimeline.setStyle("-fx-background: rgb(223,223,223);");
 		scrollTimeline.setContent(content);
 		
-		
-
 		scrollTimeline.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, radii, BorderStroke.THIN)));
-
+		
 		return scrollTimeline;
 	}
 
