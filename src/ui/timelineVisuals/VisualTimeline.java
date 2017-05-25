@@ -29,8 +29,8 @@ public class VisualTimeline extends GridPane {
 	private LocalDateTime currentStartDate;
 	private LocalDateTime currentEndDate;
 	
-	boolean monthView;
-	boolean yearView;
+	private boolean monthView;
+	private boolean yearView;
 	
 	private YearView year;
 	private MonthView month;
@@ -98,7 +98,7 @@ public class VisualTimeline extends GridPane {
 	 * @param start - timeline start
 	 * @param end - timeline end
 	 */
-	public void createYear(LocalDateTime start, LocalDateTime end) {
+	private void createYear(LocalDateTime start, LocalDateTime end) {
 		if (end.getMonthValue() == 1 && end.getDayOfMonth() == 1) {
 			endDate = end.withYear(end.getYear()-1).withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59);
 			currentStartDate = start;
