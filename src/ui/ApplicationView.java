@@ -41,14 +41,12 @@ import ui.timelineVisuals.VisualTimeline;
 public class ApplicationView implements ChangeListener {
 	private final Tooltip saveTo = new Tooltip();
 	private final Tooltip loadTo = new Tooltip();
-	private final Tooltip helpTo = new Tooltip();
 	
 	private Background background = new Background(new BackgroundFill(Color.web("rgb(235,235,235)"), null, null));
 	private Background scrollBackground = new Background(new BackgroundFill(Color.web("rgb(223,223,223)"), null, null));
 	private CornerRadii radii = new CornerRadii(5);
 
 	private final JFXButton saveButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.SAVE, "20")) );
-	private final JFXButton helpButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.QUESTION_SIGN, "20")) ); 
 	private final JFXButton loadButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.FOLDER_OPEN, "20")) ); 
 
 	private EventView eventView;
@@ -174,28 +172,8 @@ public class ApplicationView implements ChangeListener {
 	 * Creates the Help Button
 	 */
 	private JFXButton createHelpButton() {
-		helpTo.setText("Help");
-		helpTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-
-		helpButton.setTooltip(helpTo);
-		helpButton.setRipplerFill(Color.web("rgb(87,56,97)"));
-		helpButton.setBackground(scrollBackground);
-		helpButton.setMinSize(40, 40);
-		helpButton.setMaxSize(40, 40);
-		helpButton.setButtonType(ButtonType.FLAT);
-		
-		
-
-		helpButton.setOnAction(new EventHandler<ActionEvent>(){
-
-			@Override public void handle(ActionEvent e) {
-				view.requestFocus();
-				Stage stage = new Stage();
-		        //Fill stage with content
-		        stage.show();
-			}
-		});
-		return helpButton;
+		HelpFunction helpFunction = new HelpFunction();
+		return helpFunction.createHelpButton();
 	}
 	/* Creates a button which saves a given
 	 * timeline to a file path chosen by
