@@ -42,8 +42,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import main.ApplicationMain;
 
 public class EventView {
 
@@ -92,6 +94,7 @@ public class EventView {
 	private LocalDate timelineEnd;
 	private final int nameMAX_CHARS = 20;
 	private final int desMAX_CHARS = 300;
+	private boolean isOpen = false;
 	
 	private BorderPane mainView;
 	/**
@@ -107,6 +110,10 @@ public class EventView {
 	public void setTimelineStartEnd(LocalDate start, LocalDate end) {
 		timelineStart = start;
 		timelineEnd = end;
+	}
+	
+	public boolean getIsOpen() {
+		return isOpen;
 	}
 
 	/**
@@ -234,9 +241,9 @@ public class EventView {
 				 */
 				Scene eventScene = new Scene(textFieldsStart);
 				eventWindow.setScene(eventScene);
+				eventWindow.setAlwaysOnTop(true);
 				eventWindow.initModality(Modality.APPLICATION_MODAL);
 				eventWindow.showAndWait();
-				eventWindow.setAlwaysOnTop(true);
 				textFieldsStart.requestFocus();
 
 			}
@@ -278,6 +285,7 @@ public class EventView {
 				setDisableFields(false);
 
 				finishEdit.setOnAction(new EventHandler<ActionEvent>() {
+					
 
 					@Override
 					public void handle(ActionEvent event) {
@@ -524,9 +532,19 @@ public class EventView {
 		all.getChildren().addAll(window, createEditEventWindow(e));
 		editEventWindow.setContent(all);
 		Scene eventScene = new Scene(editEventWindow);
+		isOpen = true;
+		eventWindow.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent event) {
+				isOpen = false;
+			}
+			
+		});
 		eventWindow.setTitle("Event");
+		eventWindow.initModality(Modality.WINDOW_MODAL);
+		eventWindow.initOwner(ApplicationMain.pS);
 		eventWindow.setScene(eventScene);
-		eventWindow.initModality(Modality.APPLICATION_MODAL);
 		eventWindow.showAndWait();
 
 	}
@@ -822,8 +840,6 @@ public class EventView {
 
 		@Override
 		public String toString(LocalDate date) {
-			// System.out.println(date.toString());
-			// System.out.println(timelineStart.toString());
 			if (date != null && date.compareTo(timelineStart) < 0) {
 				return "";
 			} else if (date != null) {

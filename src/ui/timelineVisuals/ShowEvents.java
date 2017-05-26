@@ -22,6 +22,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
+import main.ApplicationMain;
 import ui.EventView;
 
 public class ShowEvents extends HBox {
@@ -126,7 +127,7 @@ public class ShowEvents extends HBox {
 		addDayEvent();
 		
 	}
-	
+
 	/**
 	 * help method to setOnMouseEntered & setOnMouseExited for eventshapes
 	 */
@@ -148,9 +149,9 @@ public class ShowEvents extends HBox {
 				eventName.getContent().add(nameBox);
 				eventName.setX(source.localToScreen(source.getBoundsInLocal()).getMinX()+30);
 				eventName.setY(source.localToScreen(source.getBoundsInLocal()).getMinY()+6);
-				eventName.show(getScene().getWindow());
-
-				
+				if (!eventView.getIsOpen()) {
+					eventName.show(ApplicationMain.pS);
+				}
 			}
 
 		});
@@ -175,11 +176,9 @@ public class ShowEvents extends HBox {
 			
 			@Override
 			public void handle(MouseEvent event) {
-				eventName.getContent().clear();
+				eventName.hide();
 				appListener.onNewEventSelected(((EventShape)event.getSource()).getEvent());
 				eventView.ViewEventInfo(((EventShape)event.getSource()).getEvent());
-				
-
 			}
 
 		});
@@ -195,6 +194,7 @@ public class ShowEvents extends HBox {
 			
 			@Override
 			public void handle(MouseEvent event) {
+				eventName.hide();
 				appListener.onNewEventSelected(shape.getEvent());
 				eventView.ViewEventInfo(shape.getEvent());
 
@@ -205,7 +205,7 @@ public class ShowEvents extends HBox {
 	
 	private void setBarOnMouseHover(EventShape eventShape) {
 		EventShape shape = eventShape;
-		Popup eventName = new Popup();
+		eventName = new Popup();
 		HBox nameBox = new HBox();
 		nameBox.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, new CornerRadii(2.0), null)));
 		nameBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
@@ -220,8 +220,9 @@ public class ShowEvents extends HBox {
 				eventName.getContent().add(nameBox);
 				eventName.setX(event.getScreenX()+ 15);
 				eventName.setY(shape.getBar().localToScreen(shape.getBar().getBoundsInLocal()).getMinY());
-				eventName.show(getScene().getWindow());
-				
+				if (!eventView.getIsOpen()) {
+					eventName.show(ApplicationMain.pS);
+				}
 				
 			}
 
@@ -403,10 +404,5 @@ public class ShowEvents extends HBox {
 			line.setManaged(false);
 			getChildren().add(line);
 		}
-	}
-	
-	
-	
-	
-	
+	}	
 }

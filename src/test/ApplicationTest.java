@@ -19,8 +19,9 @@ import ui.ApplicationView;
 
 public class ApplicationTest implements ChangeListener {
 	
-	
+
 	private static App app;
+	@SuppressWarnings("unused")
 	private static ApplicationView appView;
 	
 	//Timeline input
@@ -48,6 +49,7 @@ public class ApplicationTest implements ChangeListener {
 	private boolean changeTimeline;
 	private boolean newTimeline;
 	private boolean editTimeline;
+	@SuppressWarnings("unused")
 	private boolean editEvent;
 	
 	@BeforeClass
@@ -154,7 +156,6 @@ public class ApplicationTest implements ChangeListener {
 
 	@Override
 	public void onTimelineSaved(Timeline current) {
-		// TODO Auto-generated method stub
 		
 	}
 

@@ -19,7 +19,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -36,6 +35,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
 public class TimelineView {
@@ -126,6 +126,15 @@ public class TimelineView {
 		addTimelineWindow.setTitle("Add timeline");
 		addTimelineWindow.setScene(new Scene(addTimelineRoot, 600, 300));
 		addTimelineWindow.setResizable(false);
+		addTimelineWindow.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent event) {
+				timelineName.setText(null);
+				timelineStart.setValue(null);
+				timelineEnd.setValue(null);
+			}
+			
+		});
 		addTimelineWindow.initModality(Modality.APPLICATION_MODAL);
 		addTimelineWindow.showAndWait();
 		addTimelineRoot.requestFocus();

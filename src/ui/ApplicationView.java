@@ -33,7 +33,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import ui.timelineVisuals.ShowEvents;
 import ui.timelineVisuals.TimelineInformationBox;
 import ui.timelineVisuals.VisualTimeline;
@@ -118,6 +117,11 @@ public class ApplicationView implements ChangeListener {
 	 * @return GridPane
 	 */
 	public BorderPane getRoot() {
+		clearTimelineBox();
+		getDeleteTimelineButton().setDisable(true);
+		eventView.setDisable(true);
+		saveButton.setDisable(true);
+		addEventPane.setVisible(false);
 		return root();
 	}
 
@@ -193,7 +197,7 @@ public class ApplicationView implements ChangeListener {
 			view.requestFocus();  
 			appListener.onTimelineSaved();
 		});
-    return saveButton;
+		return saveButton;
 	}
 
 
@@ -308,9 +312,9 @@ public class ApplicationView implements ChangeListener {
 		if (!(current == null)) {
 			chooseTimeline(timelines, current);
 			//showYear(current);
+			timelineView.setTimelineSaved(false);
 			currentTimeline.createVisualTimeline(current);
 			eventView.setTimelineStartEnd(current.getStart().toLocalDate(), current.getEnd().toLocalDate());
-
 			getDeleteTimelineButton().setDisable(false);
 			eventView.setDisable(false);
 			saveButton.setDisable(false);
