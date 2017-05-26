@@ -149,9 +149,9 @@ public class HelpFunction {
 								if (helpEdit == "Edit Event") {
 									helpText.setText("Click the Event circle, which should be edited.\n"
 											+ " The Event windows textfields are disabled so no accidental changes can be made.\n"
-											+ "To start editing press the “Edit information” button.\n"
-											+ "After clicking the edit “Event information” the name, description and dates will become editable.\n"
-											+ "Apply changes to the information as preferred, and then click the “ Finish” button when done. ");
+											+ "To start editing press the â€œEdit informationâ€� button.\n"
+											+ "After clicking the edit â€œEvent informationâ€� the name, description and dates will become editable.\n"
+											+ "Apply changes to the information as preferred, and then click the â€œ Finishâ€� button when done. ");
 
 								}
 
@@ -940,6 +940,17 @@ public class HelpFunction {
 								root.getChildren().addAll(description);
 								primaryStage.setScene(new Scene(root, 1267, 700));
 								primaryStage.show();
+								
+								primaryStage.setOnCloseRequest(ActionEvent -> {
+									v1.getChildren().remove(ivhelpAddEventPic);
+									v2.getChildren().remove(ivhelpDeleteEventPic);
+									v3.getChildren().remove(ivhelpEditEventPic);
+									v4.getChildren().remove(ivhelpEditEventSecPic);
+									v5.getChildren().remove(ivHelpCreateTimelinePic);
+									v7.getChildren().remove(ivhelpDeleteTimelinePic);
+									v8.getChildren().remove(ivhelpScrollfunctionPic);
+									v9.getChildren().remove(ivhelpScrollfunction2Pic);
+								});
 							}
 						});
 
