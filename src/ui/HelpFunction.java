@@ -78,14 +78,14 @@ public class HelpFunction {
 				label1.setGraphic(new ImageView(imageHelpHelpButtonPic));
 				Stage popup = new Stage();
 
-				VBox v = new VBox();
-				v.getChildren().add(label1);
+				VBox firstHelpWindow = new VBox();
+				firstHelpWindow.getChildren().add(label1);
 
 				popup.setResizable(false);
 
 				popup.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
 					if (!isNowFocused) {
-						popup.hide();
+						popup.close();
 					}
 
 				});
@@ -170,184 +170,39 @@ public class HelpFunction {
 								// TStage primaryStage = new Stage();
 								Stage primaryStage = new Stage();
 								primaryStage.setTitle("Help Manual");
-								// pic add:
-								final File helpAddEventPic = new File("resources/helpAddEvent.png");
-								FileInputStream helpAddEventPicIS = null;
-								try {
-									helpAddEventPicIS = new FileInputStream(helpAddEventPic);
-								} catch (FileNotFoundException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								Image imageHelpAddEvent = new Image(helpAddEventPicIS);
-								ImageView ivhelpAddEventPic = new ImageView();
-								ivhelpAddEventPic.setImage(imageHelpAddEvent);
-								ivhelpAddEventPic.setPreserveRatio(true);
-								ivhelpAddEventPic.setFitHeight(300);
-
-								final File helpDeleteEventPic = new File("resources/helpDeleteEvent.png");
-								FileInputStream helpDeleteEventPicIS = null;
-								try {
-									helpDeleteEventPicIS = new FileInputStream(helpDeleteEventPic);
-								} catch (FileNotFoundException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								Image imageHelpDeleteEvent = new Image(helpDeleteEventPicIS);
-								ImageView ivhelpDeleteEventPic = new ImageView();
-								ivhelpDeleteEventPic.setImage(imageHelpDeleteEvent);
-								ivhelpDeleteEventPic.setPreserveRatio(true);
-								ivhelpDeleteEventPic.setFitHeight(400);
-
-								final File helpEditEventPic = new File("resources/helpEditEvent.png");
-								FileInputStream helpEditEventPicIS = null;
-								try {
-									helpEditEventPicIS = new FileInputStream(helpEditEventPic);
-								} catch (FileNotFoundException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								Image imageHelpEditEvent = new Image(helpEditEventPicIS);
-								ImageView ivhelpEditEventPic = new ImageView();
-								ivhelpEditEventPic.setImage(imageHelpEditEvent);
-								ivhelpEditEventPic.setPreserveRatio(true);
-								ivhelpEditEventPic.setFitHeight(300);
-
-								final File helpEditEventSecPic = new File("resources/helpEditEvent2.png");
-								FileInputStream helpEditEventSecPicIS = null;
-								try {
-									helpEditEventSecPicIS = new FileInputStream(helpEditEventSecPic);
-								} catch (FileNotFoundException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								Image imageHelpEditEventSec = new Image(helpEditEventSecPicIS);
-								ImageView ivhelpEditEventSecPic = new ImageView();
-								ivhelpEditEventSecPic.setImage(imageHelpEditEventSec);
-								ivhelpEditEventSecPic.setPreserveRatio(true);
-								ivhelpEditEventSecPic.setFitHeight(300);
-
-								final File HelpCreateTimelinePic = new File("resources/HelpCreateTimeline.png");
-								FileInputStream HelpCreateTimelinePicIS = null;
-								try {
-									HelpCreateTimelinePicIS = new FileInputStream(HelpCreateTimelinePic);
-								} catch (FileNotFoundException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								Image imageHelpCreateTimelinePic = new Image(HelpCreateTimelinePicIS);
-								ImageView ivHelpCreateTimelinePic = new ImageView();
-								ivHelpCreateTimelinePic.setImage(imageHelpCreateTimelinePic);
-								ivHelpCreateTimelinePic.setPreserveRatio(true);
-								ivHelpCreateTimelinePic.setFitHeight(700);
+								// pic add
+								ImageView ivhelpAddEventPic = createImageView("resources/helpAddEvent.png");
 								
-								final File helpDeleteTimelinePic = new File("resources/helpDeleteTimeline.png");
-								FileInputStream helpDeleteTimelinePicIS = null;
-								try {
-									helpDeleteTimelinePicIS = new FileInputStream(helpDeleteTimelinePic);
-								} catch (FileNotFoundException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								Image imagehelpDeleteTimelinePic = new Image(helpDeleteTimelinePicIS);
-								ImageView ivhelpDeleteTimelinePic = new ImageView();
-								ivhelpDeleteTimelinePic.setImage(imagehelpDeleteTimelinePic);
-								ivhelpDeleteTimelinePic.setPreserveRatio(true);
-								ivhelpDeleteTimelinePic.setFitHeight(300);
+								ImageView ivhelpDeleteEventPic = createImageView("resources/helpDeleteEvent.png");
+							
+								ImageView ivhelpEditEventPic = createImageView("resources/helpEditEvent.png");
 								
-								final File helpScrollfunctionPic = new File("resources/HelpScrollfunction1.png");
-								FileInputStream helpScrollfunctionPicIS = null;
-								try {
-									helpScrollfunctionPicIS = new FileInputStream(helpScrollfunctionPic);
-								} catch (FileNotFoundException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								Image imagehelpScrollfunctionPic = new Image(helpScrollfunctionPicIS);
-								ImageView ivhelpScrollfunctionPic = new ImageView();
-								ivhelpScrollfunctionPic.setImage(imagehelpScrollfunctionPic);
-								ivhelpScrollfunctionPic.setPreserveRatio(true);
-								ivhelpScrollfunctionPic.setFitHeight(300);
+								ImageView ivhelpEditEventSecPic = createImageView("resources/helpEditEvent2.png");
 								
-								final File helpScrollfunction2Pic = new File("resources/HelpScrollfunction2.png");
-								FileInputStream helpScrollfunction2PicIS = null;
-								try {
-									helpScrollfunction2PicIS = new FileInputStream(helpScrollfunction2Pic);
-								} catch (FileNotFoundException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								Image imagehelpScrollfunction2Pic = new Image(helpScrollfunction2PicIS);
-								ImageView ivhelpScrollfunction2Pic = new ImageView();
-								ivhelpScrollfunction2Pic.setImage(imagehelpScrollfunction2Pic);
-								ivhelpScrollfunction2Pic.setPreserveRatio(true);
-								ivhelpScrollfunction2Pic.setFitHeight(300);
+								ImageView ivHelpCreateTimelinePic = createImageView("resources/HelpCreateTimeline.png");
+								
+								ImageView ivhelpDeleteTimelinePic = createImageView("resources/helpDeleteTimeline.png");
+							
+								ImageView ivhelpScrollfunctionPic = createImageView("resources/HelpScrollfunction1.png");
+								
+								ImageView ivhelpScrollfunction2Pic = createImageView("resources/HelpScrollfunction2.png");
+								
 
 								// Label used to show help text:
-								FILENAMEINAddEvent = "resources/helpAddEvent.txt";
-								String contenthelpAdd = null;
-								try {
-									contenthelpAdd = new String(Files.readAllBytes(Paths.get(FILENAMEINAddEvent)));
-								} catch (IOException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								String contenthelpAdd2 = contenthelpAdd;
+								
+								String contenthelpAdd2 = createHelpText("resources/helpAddEvent.txt");
 
-								FILENAMEINDeleteEvent = "resources/helpDeleteEvent.txt";
-								String contenthelpDelete = null;
-								try {
-									contenthelpDelete = new String(Files.readAllBytes(Paths.get(FILENAMEINDeleteEvent)));
-								} catch (IOException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								String contenthelpDelete2 = contenthelpDelete;
+								String contenthelpDelete2 = createHelpText("resources/helpDeleteEvent.txt");
 
-								FILENAMEINEditEvent = "resources/helpEditEvent.txt";
-								String contenthelpEdit = null;
-								try {
-									contenthelpEdit = new String(Files.readAllBytes(Paths.get(FILENAMEINEditEvent)));
-								} catch (IOException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								String contenthelpEdit2 = contenthelpEdit;
+								String contenthelpEdit2 = createHelpText("resources/helpEditEvent.txt");
 								final Label description = new Label();
 								description.setFont(Font.font("monospace", 12));
 
-								FILENAMEINCreateTimeline = "resources/HelpCreateTimeline.txt";
-								String contentHelpCreateTimeline = null;
-								try {
-									contentHelpCreateTimeline = new String(
-											Files.readAllBytes(Paths.get(FILENAMEINCreateTimeline)));
-								} catch (IOException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								String contentHelpCreateTimeline2 = contentHelpCreateTimeline;
+								String contentHelpCreateTimeline2 = createHelpText("resources/HelpCreateTimeline.txt");
 
-								FILENAMEINDeleteTimeline = "resources/HelpDeleteTimeline.txt";
-								String contentHelpDeleteTimeline = null;
-								try {
-									contentHelpDeleteTimeline = new String(
-											Files.readAllBytes(Paths.get(FILENAMEINDeleteTimeline)));
-								} catch (IOException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								String contentHelpDeleteTimeline2 = contentHelpDeleteTimeline;
+								String contentHelpDeleteTimeline2 = createHelpText("resources/HelpDeleteTimeline.txt");
 
-								FILENAMEINScrollfunction = "resources/HelpScrollfunction.txt";
-								String contentHelpScrollfunction = null;
-								try {
-									contentHelpScrollfunction = new String(
-											Files.readAllBytes(Paths.get(FILENAMEINScrollfunction)));
-								} catch (IOException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								String contentHelpScrollfunction2 = contentHelpScrollfunction;
+								String contentHelpScrollfunction2 = createHelpText("resources/HelpScrollfunction.txt");
 
 								// Main Categories:
 								Hyperlink event1 = new Hyperlink("Event"); // event1 since event is used as a variable in: ActionEvent event
@@ -967,10 +822,10 @@ public class HelpFunction {
 				});
 
 				VBox v1 = new VBox();
-				v.getChildren().add(moreHelp);
+				firstHelpWindow.getChildren().add(moreHelp);
 				GridPane root = new GridPane();
 
-				root.add(v, 3, 1);
+				root.add(firstHelpWindow, 3, 1);
 				root.add(v1, 4, 1);
 				Scene scene = new Scene(root);
 				popup.setScene(scene);
@@ -979,5 +834,31 @@ public class HelpFunction {
 			}
 		});
 		return helpButton;
+	}
+	
+	private ImageView createImageView(String str) {
+		final File file = new File(str);
+		FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(file);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		Image image = new Image(inputStream);
+		ImageView imageView = new ImageView(image);
+		imageView.setImage(image);
+		imageView.setPreserveRatio(true);
+		imageView.setFitHeight(300);
+		return imageView;
+	}
+	
+	private String createHelpText(String str) {
+		String string = null;
+		try {
+			string = new String(Files.readAllBytes(Paths.get(str)));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return string;
 	}
 }
