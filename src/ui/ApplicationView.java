@@ -117,11 +117,6 @@ public class ApplicationView implements ChangeListener {
 	 * @return GridPane
 	 */
 	public BorderPane getRoot() {
-		clearTimelineBox();
-		getDeleteTimelineButton().setDisable(true);
-		eventView.setDisable(true);
-		saveButton.setDisable(true);
-		addEventPane.setVisible(false);
 		return root();
 	}
 
@@ -160,7 +155,9 @@ public class ApplicationView implements ChangeListener {
 	 * @return Button
 	 */
 	private JFXButton getDeleteTimelineButton() {
-		return timelineView.getDeleteTimelineButton();
+		JFXButton delete = timelineView.getDeleteTimelineButton();
+		delete.setDisable(true);
+		return delete;
 	}
 
 	/**
@@ -183,6 +180,7 @@ public class ApplicationView implements ChangeListener {
 	 * timeline to a file path chosen by
 	   the user through the fileChooser.*/
 
+
 	private JFXButton saveTimelineButton() {
 		saveTo.setText("Save Timeline");
 		saveTo.setFont(Font.font("Arial", FontWeight.BOLD, 12));
@@ -197,6 +195,8 @@ public class ApplicationView implements ChangeListener {
 			view.requestFocus();  
 			appListener.onTimelineSaved();
 		});
+		
+		saveButton.setDisable(true);
 		return saveButton;
 	}
 

@@ -31,6 +31,7 @@ public class ApplicationMain extends Application {
 		App app = new App();
 		FileHandler fileHandler = new FileHandler();
 		ApplicationView appView = new ApplicationView();
+		appView.getEventView().getAddEventButton().setDisable(true);
 		ApplicationControl appControl = new ApplicationControl(appView, app, fileHandler);
 		appControl.setUpListeners();
 		

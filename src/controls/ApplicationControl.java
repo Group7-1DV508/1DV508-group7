@@ -67,44 +67,36 @@ public class ApplicationControl implements ApplicationListener {
 
 	@Override
 	public void onTimelineSaved() {
-
-		if (app.getCurrentTimeline() != null) {
-			if (app.getCurrentTimeline().getFile() != null) {
-				try {
-					fileHandler.saveTimeline(app.getCurrentTimeline(), app.getCurrentTimeline().getFile());
-					appView.onTimelineSaved(app.getCurrentTimeline());
-					Alert success = new Alert(Alert.AlertType.INFORMATION);
-					success.setTitle("Saving complete");
-					success.setHeaderText("Success!");
-					success.setContentText("Your file has been successfully saved!");
-					success.showAndWait();
-				} catch (Exception e) {
-				}
-			}
-	
-			else {
-	
-				FileChooser chooseFile = new FileChooser();
-	
-				// Set extension filter
-				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
-				chooseFile.getExtensionFilters().add(extFilter);
-	
-				// Show save file dialog
-				File file = chooseFile.showSaveDialog(appView.getRoot().getScene().getWindow());
-				app.getCurrentTimeline().setFilePath(file);
-	
-				try {
-					fileHandler.saveTimeline(app.getCurrentTimeline(), file);
-					appView.onTimelineSaved(app.getCurrentTimeline());
-				} catch (Exception saver) {
-				}
+		if (app.getCurrentTimeline().getFile().toString().length() > 2 || app.getCurrentTimeline().getFile().exists()) {
+			try {
+				fileHandler.saveTimeline(app.getCurrentTimeline(), app.getCurrentTimeline().getFile());
+				appView.onTimelineSaved(app.getCurrentTimeline());
+				Alert success = new Alert(Alert.AlertType.INFORMATION);
+				success.setTitle("Saving complete");
+				success.setHeaderText("Success!");
+				success.setContentText("Your file has been successfully saved!");
+				success.showAndWait();
+			} catch (Exception e) {
 			}
 		}
+
 		else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setContentText("No timelines are loaded or created to be saved!");
-			alert.showAndWait();
+
+			FileChooser chooseFile = new FileChooser();
+
+			// Set extension filter
+			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+			chooseFile.getExtensionFilters().add(extFilter);
+
+			// Show save file dialog
+			File file = chooseFile.showSaveDialog(appView.getRoot().getScene().getWindow());
+			app.getCurrentTimeline().setFilePath(file);
+
+			try {
+				fileHandler.saveTimeline(app.getCurrentTimeline(), file);
+				appView.onTimelineSaved(app.getCurrentTimeline());
+			} catch (Exception saver) {
+			}
 		}
 	}
 

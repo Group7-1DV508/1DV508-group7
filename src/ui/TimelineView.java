@@ -54,7 +54,7 @@ public class TimelineView {
 	private JFXDatePicker timelineEnd = new JFXDatePicker();
 	Converter converter = new Converter();
 	private TimelineListener timelineListener;
-	private boolean gotFilePath;
+	private boolean gotFilePath = false;
 	private final int nameMAX_CHARS = 20;
 	
 	private BorderPane mainView;
