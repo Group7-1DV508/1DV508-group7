@@ -236,6 +236,7 @@ public class ApplicationView implements ChangeListener {
 		timelineChooserBox.getChildren().addAll(chooseTimeline);
 		timelineChooserBox.setPadding(new Insets(20));
 		timelineChooserBox.setAlignment(Pos.CENTER);
+		timelineChooserBox.setMinWidth(300);
 		timelineOptionsBox.getChildren().addAll(timelineButtons, timelineChooserBox);
 		
 	}
@@ -260,7 +261,6 @@ public class ApplicationView implements ChangeListener {
 		chooseTimeline.setUnFocusColor(Color.web("rgb(87,56,97)"));
 		chooseTimeline.setStyle("-fx-font-size: 20px; -fx-font-family: monospace;");
 		chooseTimeline.setBackground(background);
-
 		for (Timeline t : timelines) {
 			chooseTimeline.getItems().add(t);
 		}
@@ -311,7 +311,6 @@ public class ApplicationView implements ChangeListener {
 	public void onChangedTimeline(ArrayList<Timeline> timelines, Timeline current) {
 		if (!(current == null)) {
 			chooseTimeline(timelines, current);
-			//showYear(current);
 			timelineView.setTimelineSaved(false);
 			currentTimeline.createVisualTimeline(current);
 			eventView.setTimelineStartEnd(current.getStart().toLocalDate(), current.getEnd().toLocalDate());

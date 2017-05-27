@@ -8,7 +8,6 @@ import functions.Event;
 import functions.Timeline;
 import io.FileHandler;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import ui.ApplicationView;
 
@@ -122,7 +121,6 @@ public class ApplicationControl implements ApplicationListener {
 
 	@Override
 	public ArrayList<Timeline> getTimelines() {
-		// TODO Auto-generated method stub
 		return app.getTimelines();
 	}
 

@@ -92,7 +92,7 @@ public class EventView {
 
 	private LocalDate timelineStart;
 	private LocalDate timelineEnd;
-	private final int nameMAX_CHARS = 20;
+	private final int nameMAX_CHARS = 30;
 	private final int desMAX_CHARS = 300;
 	private boolean isOpen = false;
 	

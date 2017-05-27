@@ -1,8 +1,6 @@
 package main;
 import javafx.application.*;
 
-import java.time.LocalDateTime;
-
 import controls.ApplicationControl;
 import functions.App;
 import io.FileHandler;

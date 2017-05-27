@@ -129,7 +129,7 @@ public class Event {
 	 * @return boolean
 	 */
 	public boolean isDuration() {
-		return isDuration;
+		return (this.getEventEnd() != null);
 	}
 	
 }
