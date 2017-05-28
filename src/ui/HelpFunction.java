@@ -36,7 +36,7 @@ public class HelpFunction {
 	
 	private final Tooltip helpTo = new Tooltip();
 	private final JFXButton helpButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.QUESTION_SIGN, "20")) ); 
-	private Hyperlink event1 = new Hyperlink("Event"); // event1 since event is used as a variable in: ActionEvent event
+	private Hyperlink event1 = new Hyperlink("Event"); 
 	private Hyperlink timeline = new Hyperlink("Timeline");
 	private Hyperlink other = new Hyperlink("Other");
 	private Hyperlink eventHelpAdd = new Hyperlink("");
@@ -223,8 +223,6 @@ public class HelpFunction {
 								eventHelpDelete.setDisable(true);
 								eventHelpEdit.setDisable(true);
 
-								
-
 								timelineHelpCreate.setFont(Font.font("monospace", 12));
 								timelineHelpDelete.setFont(Font.font("monospace", 12));
 
@@ -262,15 +260,7 @@ public class HelpFunction {
 											scrollfunction.setDisable(true);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 										}
 
 										else {
@@ -285,15 +275,7 @@ public class HelpFunction {
 											other.setLayoutY(40);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 										}
 									}
 								});
@@ -327,15 +309,7 @@ public class HelpFunction {
 											other.setLayoutY(84);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 
 										}
 
@@ -350,15 +324,7 @@ public class HelpFunction {
 											other.setLayoutY(40);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 										}
 									}
 								});
