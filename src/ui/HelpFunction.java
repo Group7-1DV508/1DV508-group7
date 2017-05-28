@@ -20,12 +20,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -109,20 +111,15 @@ public class HelpFunction {
 						VBox v9 = new VBox();
 
 						final ComboBox<String> comboBox = new ComboBox<>();
-						comboBox.setMaxSize(70, 70);
 						comboBox.getItems().add("Zoom");
 						comboBox.getItems().add("Delete Event");
 						comboBox.getItems().add("Edit Event");
 
-						comboBox.setLayoutX(0);
-						comboBox.setLayoutY(0);
 						Label helpText = new Label("Choose the subject you need help with from \n the "
 								+ "drop down menu or press help manual ");
-						helpText.setLayoutX(0);
-						helpText.setLayoutY(25);
+						
 						Label helpText2 = new Label();
-						helpText2.setLayoutX(0);
-						helpText2.setLayoutY(25);
+						
 						comboBox.setOnAction(new EventHandler<ActionEvent>() {
 
 							@Override
@@ -158,10 +155,7 @@ public class HelpFunction {
 
 						});
 						Button button = new Button("Help Manual");
-						VBox button2 = new VBox();
-						button2.getChildren().add(button);
-						button2.setLayoutX(75);
-						button2.setLayoutY(0);
+						
 						button.setOnAction(new EventHandler<ActionEvent>() {
 
 							@Override
@@ -650,10 +644,16 @@ public class HelpFunction {
 							}
 						});
 
-						Group root = new Group();
-
-						root.getChildren().addAll(button2, comboBox, helpText, helpText2);
-						primaryStage.setScene(new Scene(root, 550, 160));
+						VBox root = new VBox();
+						HBox comboBoxButton = new HBox();
+						comboBoxButton.getChildren().addAll(comboBox, button);
+						VBox content = new VBox();
+						content.getChildren().addAll(helpText, helpText2);
+						ScrollPane scroll = new ScrollPane();
+						scroll.setContent(content);
+						scroll.setPrefSize(550, 200);
+						root.getChildren().addAll(comboBoxButton, scroll);
+						primaryStage.setScene(new Scene(root, 550, 200));
 						primaryStage.show();
 
 					}
