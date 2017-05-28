@@ -33,19 +33,18 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class HelpFunction {
-	private static String FILENAMEIN;
-	private static String FILENAMEINAddEvent;
-	private static String FILENAMEINDeleteEvent;
-	private static String FILENAMEINEditEvent;
-
-	private static String FILENAMEINCreateTimeline;
-	private static String FILENAMEINDeleteTimeline;
-
-	private static String FILENAMEINScrollfunction;
 	
 	private final Tooltip helpTo = new Tooltip();
 	private final JFXButton helpButton = new JFXButton("", new Label("",AwesomeDude.createIconLabel(AwesomeIcon.QUESTION_SIGN, "20")) ); 
-	
+	private Hyperlink event1 = new Hyperlink("Event"); // event1 since event is used as a variable in: ActionEvent event
+	private Hyperlink timeline = new Hyperlink("Timeline");
+	private Hyperlink other = new Hyperlink("Other");
+	private Hyperlink eventHelpAdd = new Hyperlink("");
+	private Hyperlink eventHelpDelete = new Hyperlink("");
+	private Hyperlink eventHelpEdit = new Hyperlink("");
+	private Hyperlink timelineHelpCreate = new Hyperlink("");
+	private Hyperlink timelineHelpDelete = new Hyperlink("");
+	private Hyperlink scrollfunction = new Hyperlink("");
 	
 	public JFXButton createHelpButton() {
 		helpTo.setText("Help");
@@ -205,9 +204,7 @@ public class HelpFunction {
 								String contentHelpScrollfunction2 = createHelpText("resources/HelpScrollfunction.txt");
 
 								// Main Categories:
-								Hyperlink event1 = new Hyperlink("Event"); // event1 since event is used as a variable in: ActionEvent event
-								Hyperlink timeline = new Hyperlink("Timeline");
-								Hyperlink other = new Hyperlink("Other");
+								
 
 								event1.setFont(Font.font("monospace", 20));
 								timeline.setFont(Font.font("monospace", 20));
@@ -217,10 +214,6 @@ public class HelpFunction {
 								timeline.setLayoutY(20);
 								other.setLayoutY(40);
 
-								// Subcategories for Event:
-								Hyperlink eventHelpAdd = new Hyperlink("");
-								Hyperlink eventHelpDelete = new Hyperlink("");
-								Hyperlink eventHelpEdit = new Hyperlink("");
 
 								eventHelpAdd.setFont(Font.font("monospace", 12));
 								eventHelpDelete.setFont(Font.font("monospace", 12));
@@ -230,18 +223,13 @@ public class HelpFunction {
 								eventHelpDelete.setDisable(true);
 								eventHelpEdit.setDisable(true);
 
-								// Subcategories for Timeline:
-								Hyperlink timelineHelpCreate = new Hyperlink("");
-								Hyperlink timelineHelpDelete = new Hyperlink("");
+								
 
 								timelineHelpCreate.setFont(Font.font("monospace", 12));
 								timelineHelpDelete.setFont(Font.font("monospace", 12));
 
 								timelineHelpCreate.setDisable(true);
 								timelineHelpDelete.setDisable(true);
-
-								// Subcategories for Other:
-								Hyperlink scrollfunction = new Hyperlink("");
 
 								scrollfunction.setFont(Font.font("monospace", 12));
 
@@ -395,21 +383,13 @@ public class HelpFunction {
 											timeline.setLayoutY(20);
 
 											other.setLayoutY(40);
-											scrollfunction.setText("How to scroll");
+											scrollfunction.setText("How to zoom");
 											scrollfunction.setLayoutY(74);
 											scrollfunction.setDisable(false);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
-
+											setHyperLinkVisited(false);
+											
 										}
 
 										else {
@@ -419,15 +399,7 @@ public class HelpFunction {
 											scrollfunction.setLayoutY(0);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 
 										}
 									}
@@ -452,15 +424,7 @@ public class HelpFunction {
 											v9.getChildren().remove(ivhelpScrollfunction2Pic);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 										}
 										else {
 											description.setLayoutX(190);
@@ -478,15 +442,7 @@ public class HelpFunction {
 											v1.setLayoutY(370);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 
 										}
 									}
@@ -510,15 +466,7 @@ public class HelpFunction {
 											description.setText("");
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 
 										} 
 										else {
@@ -537,15 +485,7 @@ public class HelpFunction {
 											v2.setLayoutY(300);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 
 										}
 									}
@@ -568,15 +508,7 @@ public class HelpFunction {
 											v9.getChildren().remove(ivhelpScrollfunction2Pic);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 										} 
 										else {
 											description.setLayoutX(190);
@@ -596,16 +528,7 @@ public class HelpFunction {
 											v9.getChildren().remove(ivhelpScrollfunction2Pic);
 										
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
-
+											setHyperLinkVisited(false);
 										}
 									}
 								});
@@ -627,15 +550,7 @@ public class HelpFunction {
 											v9.getChildren().remove(ivhelpScrollfunction2Pic);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 										}
 										else {
 											description.setLayoutX(190);
@@ -653,15 +568,7 @@ public class HelpFunction {
 											v9.getChildren().remove(ivhelpScrollfunction2Pic);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 
 										}
 									}
@@ -684,15 +591,7 @@ public class HelpFunction {
 											v9.getChildren().remove(ivhelpScrollfunction2Pic);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 
 										}
 										else {
@@ -712,15 +611,7 @@ public class HelpFunction {
 											
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 
 										}
 									}
@@ -743,15 +634,7 @@ public class HelpFunction {
 											v9.getChildren().remove(ivhelpScrollfunction2Pic);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 
 										} 
 										else {
@@ -772,15 +655,7 @@ public class HelpFunction {
 											v9.setLayoutY(300);
 											
 											//so the color of the hypertext doesn't change
-											event1.setVisited(false);
-											eventHelpAdd.setVisited(false);
-											eventHelpDelete.setVisited(false);
-											eventHelpEdit.setVisited(false);
-											timeline.setVisited(false);
-											other.setVisited(false);
-											timelineHelpCreate.setVisited(false);
-											timelineHelpDelete.setVisited(false);
-											scrollfunction.setVisited(false);
+											setHyperLinkVisited(false);
 
 										}
 									}
@@ -811,10 +686,7 @@ public class HelpFunction {
 
 						Group root = new Group();
 
-						root.getChildren().addAll(button2);
-						root.getChildren().addAll(comboBox);
-						root.getChildren().addAll(helpText);
-						root.getChildren().addAll(helpText2);
+						root.getChildren().addAll(button2, comboBox, helpText, helpText2);
 						primaryStage.setScene(new Scene(root, 550, 160));
 						primaryStage.show();
 
@@ -860,5 +732,16 @@ public class HelpFunction {
 			e1.printStackTrace();
 		}
 		return string;
+	}
+	private void setHyperLinkVisited(boolean b) {
+		event1.setVisited(b);
+		eventHelpAdd.setVisited(b);
+		eventHelpDelete.setVisited(b);
+		eventHelpEdit.setVisited(b);
+		timeline.setVisited(b);
+		other.setVisited(b);
+		timelineHelpCreate.setVisited(b);
+		timelineHelpDelete.setVisited(b);
+		scrollfunction.setVisited(b);
 	}
 }
