@@ -63,7 +63,7 @@ public class HelpFunction {
 
 			@Override
 			public void handle(ActionEvent e) {
-				final File HelpButtonPic = new File("resources/HelpButtonPic.png");
+				final File HelpButtonPic = new File("src/resources/HelpButtonPic.png");
 				FileInputStream HelpButtonPicIS = null;
 				try {
 					HelpButtonPicIS = new FileInputStream(HelpButtonPic);
@@ -164,38 +164,38 @@ public class HelpFunction {
 								Stage primaryStage = new Stage();
 								primaryStage.setTitle("Help Manual");
 								// pic add
-								ImageView ivhelpAddEventPic = createImageView("resources/helpAddEvent.png");
+								ImageView ivhelpAddEventPic = createImageView("src/resources/helpAddEvent.png");
 								
-								ImageView ivhelpDeleteEventPic = createImageView("resources/helpDeleteEvent.png");
+								ImageView ivhelpDeleteEventPic = createImageView("src/resources/helpDeleteEvent.png");
 							
-								ImageView ivhelpEditEventPic = createImageView("resources/helpEditEvent.png");
+								ImageView ivhelpEditEventPic = createImageView("src/resources/helpEditEvent.png");
 								
-								ImageView ivhelpEditEventSecPic = createImageView("resources/helpEditEvent2.png");
+								ImageView ivhelpEditEventSecPic = createImageView("src/resources/helpEditEvent2.png");
 								
-								ImageView ivHelpCreateTimelinePic = createImageView("resources/HelpCreateTimeline.png");
+								ImageView ivHelpCreateTimelinePic = createImageView("src/resources/helpCreateTimeline.png");
 								
-								ImageView ivhelpDeleteTimelinePic = createImageView("resources/helpDeleteTimeline.png");
+								ImageView ivhelpDeleteTimelinePic = createImageView("src/resources/helpDeleteTimeline.png");
 							
-								ImageView ivhelpScrollfunctionPic = createImageView("resources/HelpScrollfunction1.png");
+								ImageView ivhelpScrollfunctionPic = createImageView("src/resources/HelpScrollfunction1.png");
 								
-								ImageView ivhelpScrollfunction2Pic = createImageView("resources/HelpScrollfunction2.png");
+								ImageView ivhelpScrollfunction2Pic = createImageView("src/resources/HelpScrollfunction2.png");
 								
 
 								// Label used to show help text:
 								
-								String contenthelpAdd2 = createHelpText("resources/helpAddEvent.txt");
+								String contenthelpAdd2 = createHelpText("src/resources/HelpAddEvent.txt");
 
-								String contenthelpDelete2 = createHelpText("resources/helpDeleteEvent.txt");
+								String contenthelpDelete2 = createHelpText("src/resources/HelpDeleteEvent.txt");
 
-								String contenthelpEdit2 = createHelpText("resources/helpEditEvent.txt");
+								String contenthelpEdit2 = createHelpText("src/resources/helpEditEvent.txt");
 								final Label description = new Label();
 								description.setFont(Font.font("monospace", 12));
 
-								String contentHelpCreateTimeline2 = createHelpText("resources/HelpCreateTimeline.txt");
+								String contentHelpCreateTimeline2 = createHelpText("src/resources/helpCreateTimeline.txt");
 
-								String contentHelpDeleteTimeline2 = createHelpText("resources/HelpDeleteTimeline.txt");
+								String contentHelpDeleteTimeline2 = createHelpText("src/resources/helpDeleteTimeline.txt");
 
-								String contentHelpScrollfunction2 = createHelpText("resources/HelpScrollfunction.txt");
+								String contentHelpScrollfunction2 = createHelpText("src/resources/HelpScrollfunction.txt");
 
 								// Main Categories:
 								
